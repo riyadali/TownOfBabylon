@@ -27,11 +27,31 @@ export class InMemoryDataService implements InMemoryDbService {
      { id: 20, name: 'Tornado' }
    ];
    let searchusers = [
-      { id: 1, name: 'Windstorm' },
-      { id: 2, name: 'Bombasto' },
-      { id: 3, name: 'Magneta' },
-      { id: 4, name: 'Tornado' },
-      { id: 5, name: 'Agnosto' }
+        {   id: 1,
+            name: "Windstorm",
+            title: "sunt aut facit",
+            body: "quia et su"
+        },
+        {   id: 2,
+            name: "Bombasto",
+            title: "sunt aut facit",
+            body: "quia et su"
+        },
+        {   id: 3,
+            name: "Magneta",
+            title: "sunt aut facit",
+            body: "quia et su"
+        },
+        {   id: 4,
+            name: "Tornado",
+            title: "sunt aut facit",
+            body: "quia et su"
+        },
+        {   id: 5,
+            name: "Agnosto",
+            title: "sunt aut facit",
+            body: "quia et su"
+        }
     ];
    return {transactions, heroes, 
    searchusers: {
