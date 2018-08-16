@@ -53,11 +53,12 @@ export class InMemoryDataService implements InMemoryDbService {
             body: "quia et su"
         }
     ];
-   return {transactions, heroes, 
-   searchusers: {
-    /*  total: searchusers.length, */
+   return {transactions, heroes, searchusers
+  /* searchusers: {
+     total: searchusers.length, 
       results: searchusers
-    }};
+    } */
+    };
  }
 }
 
