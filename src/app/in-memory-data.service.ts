@@ -35,7 +35,7 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
    return {transactions, heroes, 
    searchusers: {
-      total: searchusers.length,
+    /*  total: searchusers.length, */
       results: searchusers
     }};
  }
