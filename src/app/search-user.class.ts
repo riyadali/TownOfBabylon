@@ -3,6 +3,6 @@ export class SearchUser {
 }
 
 export interface IUserResponse {
-  total: number;
+ /* total: number;  */
   results: SearchUser[];
 }
