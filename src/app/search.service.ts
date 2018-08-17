@@ -17,40 +17,10 @@ export class SearchService {
       tap((response: IUserResponse) => {
         response = response.map(user => new SearchUser(user.id, user.name))
           // Not filtering in the server since in-memory-web-api has somewhat restricted api
-          .filter(user => user.name.includes(filter.name))
-
-     /*   return {results : response}; */
-          return {
-              results : [
-                            {   id: 1,
-                                name: "Windstorm",
-                                title: "sunt aut facit",
-                                body: "quia et su"
-                            },
-                            {   id: 2,
-                                name: "Bombasto",
-                                title: "sunt aut facit",
-                                body: "quia et su"
-                            },
-                            {   id: 3,
-                                name: "Magneta",
-                                title: "sunt aut facit",
-                                body: "quia et su"
-                            },
-                            {   id: 4,
-                                name: "Tornado",
-                                title: "sunt aut facit",
-                                body: "quia et su"
-                            },
-                            {   id: 5,
-                                name: "Agnosto",
-                                title: "sunt aut facit",
-                                body: "quia et su"
-                            }
-                      ] 
-             };
-      })
-      );
-  }
+          .filter(user => user.name.includes(filter.name))    
+        return response;,          
+         })
+    );
+  }  
 
 }
