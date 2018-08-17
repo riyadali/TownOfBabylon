@@ -18,7 +18,7 @@ export class SearchService {
         response = response.map(user => new SearchUser(user.id, user.name))
           // Not filtering in the server since in-memory-web-api has somewhat restricted api
           .filter(user => user.name.includes(filter.name))    
-        return response;,          
+        return response;          
          })
     );
   }  
