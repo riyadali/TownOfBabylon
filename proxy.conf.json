@@ -17,5 +17,6 @@
     "^/Search": "/Search"
   },
     "changeOrigin": true
+    /*,"logLevel": "debug" -- Possible options for logLevel include debug, info, warn, error, and silent (default is info) */
   }
 }
