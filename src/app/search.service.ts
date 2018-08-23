@@ -20,7 +20,9 @@ export class SearchService {
      let httpParams = new HttpParams().set('term', 'gar');    
      let httpHeaders = new HttpHeaders().set('Accept', 'application/json');
      /* refer to this site on why pipe is needed https://www.academind.com/learn/javascript/rxjs-6-what-changed/ */
-     return this.http.get<SearchDoc[]>('https://www.townofbabylon.com/Search/AutoComplete', {params: httpParams, headers: httpHeaders, responseType: 'json'})
+    /* Note: proxied reference to town of babylon site to enable cross-origin sharing. A path rewrite is done for "/Search". 
+       Refer to comments in proxy.conf.json in main folder for this site for further details */
+     return this.http.get<SearchDoc[]>('/Search/AutoComplete', {params: httpParams, headers: httpHeaders, responseType: 'json'})
        .pipe(             
               /* code that is case sensitive
               map(docs => docs.filter(doc => doc.value.includes(filter.name))
