@@ -1,0 +1,10 @@
+{
+  "/Search": {
+    "target": "https://example.com",
+    "secure": true,
+    "pathRewrite": {
+    "^/Search": "/Search"
+  },
+    "changeOrigin": true
+  }
+}
