@@ -1,6 +1,17 @@
+/* This file was created to enable cross-origin sharing by proxying requests to the real town of babylon web site.
+   Basically, I tried to use their search "api" at https://www.townofbabylon.com/Search/AutoComplete?term='xxx' to return documents that
+   match the search string".  Unfortunately, this is a security exposure and the server (i.e. town of babylon website) need to recognize
+   the request from my site with the Access-Control-Allow-Origin response header.  Since I have no control over this, I'm using this alternate 
+   method, by proxiying the town of babylon site, to get around this problem. But the true fix would be for the town of babylon site to
+   return the Access-Control-Allow-Origin header acknowledging that the request coming from my site is valid 
+   
+   The approach used here is documented, about quarter of the way into the page, at 
+   https://stackoverflow.com/questions/34790051/how-to-create-cross-domain-request
+   
+   */
 {
   "/Search": {
-    "target": "https://example.com",
+    "target": "https://www.townofbabylon.com",
     "secure": true,
     "pathRewrite": {
     "^/Search": "/Search"
