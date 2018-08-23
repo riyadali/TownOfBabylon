@@ -21,7 +21,7 @@ export class SearchService {
      let httpHeaders = new HttpHeaders().set('Accept', 'application/json');
      /* refer to this site on why pipe is needed https://www.academind.com/learn/javascript/rxjs-6-what-changed/ */
     /* Note: proxied reference to town of babylon site to enable cross-origin sharing. A path rewrite is done for "/Search". 
-       Refer to comments in proxy.conf.json in main folder for this site for further details */
+       Refer to comments in src/proxy.conf.json for further details */
      return this.http.get<SearchDoc[]>('/Search/AutoComplete', {params: httpParams, headers: httpHeaders, responseType: 'json'})
        .pipe(             
               /* code that is case sensitive
