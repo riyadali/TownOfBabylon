@@ -33,7 +33,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --disable-host-check",
+     /* Note: proxied reference to town of babylon site to enable cross-origin sharing. Refer to comments in 
+        src/proxy.conf.json for further details */    
+    "start": "ng serve --host 0.0.0.0 --disable-host-check --proxy-config proxy.conf.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
