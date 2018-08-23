@@ -85,6 +85,8 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "angular.io-example:build",
+            /* Note: proxied reference to town of babylon site to enable cross-origin sharing. Refer to comments in 
+               src/proxy.conf.json for further details */
             "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
