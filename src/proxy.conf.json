@@ -3,7 +3,7 @@
     "target": "https://www.townofbabylon.com",
     "secure": true,
     "pathRewrite": {
-    "~/Search": "/Search"
+    "^/Search": "/Search"
   },
     "changeOrigin": true 
    , "logLevel": "debug"
