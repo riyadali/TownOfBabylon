@@ -8,6 +8,9 @@
    The approach used here is documented, about quarter of the way into the page, at 
    https://stackoverflow.com/questions/34790051/how-to-create-cross-domain-request
    
+   **** Note the configuration file angular.json has been updated to add proxyConfig to the options property of the "serve" attribute 
+        located under "build".  If this item is ever rolled back, you will also need to undo the changes to angular.json.  I couldn't add the 
+        comment in the json file because it does not allow comments
    */
 {
   "/Search": {
