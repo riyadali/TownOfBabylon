@@ -39,16 +39,7 @@
                 "output": "/assets/static_web_pages"
               }
             ],
-            "styles": [
-              {
-                "input": "node_modules/font-awesome/scss/font-awesome.scss"
-              },
-              {
-                "input": "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
-              },
-              {
-                "input": "node_modules/angular-bootstrap-md/scss/mdb-free.scss"
-              },
+            "styles": [              
               {
                 "input": "src/styles.scss"
               }
