@@ -39,7 +39,10 @@
                 "output": "/assets/static_web_pages"
               }
             ],
-            "styles": [              
+            "styles": [
+              {
+                "input": "~font-awesome/scss/font-awesome.scss"
+              },              
               {
                 "input": "src/styles.scss"
               }
