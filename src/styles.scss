@@ -1,4 +1,5 @@
-$fa-font-path: "~font-awesome/fonts";
+/*This instruction is from web site https://github.com/angular/angular-cli/blob/master/docs/documentation/stories/include-font-awesome.md*/
+@import "variables";
 @import "~font-awesome/scss/font-awesome";
 /* Color scheme for Angular Materials Styling - Menus Sidenavs, Toolbars */
 @import 
