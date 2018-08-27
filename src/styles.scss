@@ -10,8 +10,8 @@
 @import "~font-awesome/scss/font-awesome";
 @import "~angular-bootstrap-md/scss/bootstrap/bootstrap.scss";
 /* getting Error in angular-bootstrap-md/scss/free/_forms.scss (5:3) property "input" must be followed by a ':'
-so I'm commenting out the import for mdb-free for now */
-@import "~angular-bootstrap-md/scss/mdb-free.scss";
+so I'm commenting out the import for mdb-free for now 
+@import "~angular-bootstrap-md/scss/mdb-free.scss"; */
 
 /* Master Styles -- commented out because affecting mdboostrap styling
 h1 {
