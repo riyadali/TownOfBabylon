@@ -39,7 +39,7 @@
                 "output": "/assets/static_web_pages"
               }
             ],
-             "styles": [
+          "styles": [
               {
                 "input": "~font-awesome/scss/font-awesome.scss"
               },   
@@ -48,7 +48,7 @@
               },
               {
                 "input": "~angular-bootstrap-md/scss/mdb-free.scss"
-              },                         
+              },     
               {
                 "input": "src/styles.scss"
               }
@@ -59,7 +59,7 @@
               },
               {
                 "input": "~hammerjs/hammer.min.js"
-              }           
+              }    
             ]
           },
           "configurations": {
@@ -85,7 +85,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular.io-example:build"
+            "browserTarget": "angular.io-example:build",          
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
