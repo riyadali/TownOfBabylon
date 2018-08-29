@@ -4,7 +4,8 @@
   "newProjectRoot": "projects",
   "projects": {
     "angular.io-example": {
-      "root": "",     
+      "root": "",
+      "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {
@@ -38,27 +39,27 @@
                 "output": "/assets/static_web_pages"
               }
             ],
-            "styles": [
+             "styles": [
               {
-                "input": "node_modules/font-awesome/scss/font-awesome.scss"
+                "input": "~font-awesome/scss/font-awesome.scss"
+              },   
+              {
+                "input": "~angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
               },
               {
-                "input": "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
-              },
-              {
-                "input": "node_modules/angular-bootstrap-md/scss/mdb-free.scss"
-              },
+                "input": "~angular-bootstrap-md/scss/mdb-free.scss"
+              },                         
               {
                 "input": "src/styles.scss"
               }
             ],
             "scripts": [
               {
-                "input": "node_modules/chart.js/dist/Chart.js"
+                "input": "~chart.js/dist/Chart.js"
               },
               {
-                "input": "node_modules/hammerjs/hammer.min.js"
-              }
+                "input": "~hammerjs/hammer.min.js"
+              }           
             ]
           },
           "configurations": {
@@ -84,7 +85,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular.io-example:build"
+            "browserTarget": "angular.io-example:build",          
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
