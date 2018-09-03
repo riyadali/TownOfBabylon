@@ -17,7 +17,7 @@ export class SearchService {
      /* original version of http get below -- updated it so that it treats the response as array instead of IUserResponse 
     return this.http.get<IUserResponse>('/api/searchusers') */
    
-     let httpParams = new HttpParams().set('term', 'gar');    
+     let httpParams = new HttpParams().set('term', filter.name);    
      let httpHeaders = new HttpHeaders().set('Accept', 'application/json');
      /* refer to this site on why pipe is needed https://www.academind.com/learn/javascript/rxjs-6-what-changed/ */
     /* Note: proxied reference to town of babylon site to enable cross-origin sharing. A path rewrite is done for "/Search". 
