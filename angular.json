@@ -41,13 +41,13 @@
             ],
           "styles": [
               {
-                "input": "~font-awesome/scss/font-awesome.scss"
+                "input": "node_modules/font-awesome/scss/font-awesome.scss"
               },   
               {
-                "input": "~angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
+                "input": "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
               },
               {
-                "input": "~angular-bootstrap-md/scss/mdb-free.scss"
+                "input": "node_modules/angular-bootstrap-md/scss/mdb-free.scss"
               },     
               {
                 "input": "src/styles.scss"
