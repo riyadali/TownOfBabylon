@@ -4,7 +4,10 @@
     <mat-label>Enter Search Text</mat-label>
     <input matInput [matAutocomplete]="auto" formControlName='userInput' color="accent">
   </mat-form-field>
+  
+  <!-- The span below was just for testing purposes
   <span>Your choice is: {{usersForm.get('userInput').value | json}}</span>
+  -->
 
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
       <!-- old version; updates since it is a straight array
