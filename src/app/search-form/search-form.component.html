@@ -1,9 +1,13 @@
 <!-- From Web site https://itnext.io/using-angular-6-material-auto-complete-with-async-data-6d89501c4b79 -->
-<form  class="example-form form-inline text-light" [formGroup]='usersForm'>
-  <mat-form-field class="example-full-width text-light" color="accent">
-    <input class="example-full-width" matInput placeholder="Choose a user" [matAutocomplete]="auto" formControlName='userInput' color="accent">
+<form  class="form-inline sample" [formGroup]='usersForm'>
+  <mat-form-field appearance="outline" color="accent">
+    <mat-label>Enter Search Text</mat-label>
+    <input matInput [matAutocomplete]="auto" formControlName='userInput' color="accent">
   </mat-form-field>
+  
+  <!-- The span below was just for testing purposes
   <span>Your choice is: {{usersForm.get('userInput').value | json}}</span>
+  -->
 
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
       <!-- old version; updates since it is a straight array
