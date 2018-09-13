@@ -37,45 +37,25 @@
                 <a class="nav-link waves-light" mdbWavesEffect>Pricing</a>
             </li>
 
-             <!-- Dropdown Menu Group-->
-           <li class="btn-group nav-item" dropdown [autoClose]="false" container="body">
-              <a  dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle btn-dark" 
-                      aria-controls="dropdown-nested">
-                This dropdown has nested submenu <span class="caret"></span>
-              </a>
-             
-              <ul id="dropdown-nested" *dropdownMenu class="dropdown-menu"
-                  role="menu" aria-labelledby="button-nested">
-                <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Action</a></li>
-             
-                <!-- Nested dropdown -->
-                <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body">
-                    <a dropdownToggle mdbWavesEffect class="dropdown-item dropdown-toggle"
-                        (click)="false">Hover me for nested dropdown <span class="caret"></span></a>
-                    <ul *dropdownMenu class="dropdown-menu" role="menu">
-                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Nested</a></li>
-                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Nested1</a></li>
-                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Nested2</a></li>
-                    </ul>
-                </li>
- 
-                <!-- Nested dropdown2 -->
-                <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body">
-                    <a dropdownToggle mdbWavesEffect class="dropdown-item dropdown-toggle"
-                        (click)="false">Hover me for nested dropdown <span class="caret"></span></a>
-                    <ul *dropdownMenu class="dropdown-menu" role="menu">
-                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">NestedA</a></li>
-                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">NestedA1</a></li>
-                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">NestedA2</a></li>
-                    </ul>
-                </li>
- 
-                <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Something else here</a></li>
-                <li class="divider dropdown-divider"></li>
-                <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Separated link</a></li>
-            </ul>
-          </li>
-          <!-- End Dropdown Menu Group-->         
+            <!-- Dropdown -->
+            <li class="nav-item dropdown" dropdown>
+                <a dropdownToggle mdbWavesEffect type="button" class="nav-link text-dark dropdown-toggle waves-light">
+                Basic dropdown<span class="caret"></span></a>
+                <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Action</a>
+                    <a dropdownToggle mdbWavesEffect type="button" class="nav-link text-dark dropdown-toggle waves-light">
+                Secondary dropdown<span class="caret"></span></a>
+                       <!-- Sub Menu -->
+                       <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Sec Action</a>
+                          <a class="dropdown-item waves-light" mdbWavesEffect href="#">Sec Action2</a>
+                       </div>
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Another action</a>
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Something else here</a>                    
+                    <div class="divider dropdown-divider"></div>
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Separated link</a>
+                </div>
+            </li>
           
           
           
