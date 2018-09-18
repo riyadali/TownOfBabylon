@@ -44,11 +44,8 @@
                 "input": "~font-awesome/scss/font-awesome.scss"
               },   
               {
-                "input": "~angular-bootstrap-md/scss/bootstrap/bootstrap.scss"
-              },
-              {
-                "input": "~angular-bootstrap-md/scss/mdb-free.scss"
-              },     
+                "input": "~bootstrap/scss/bootstrap/bootstrap.scss"
+              },             
               {
                 "input": "src/styles.scss"
               }
