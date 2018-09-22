@@ -3,14 +3,10 @@
 
  <!-- 
    Code for the Navbar is from site https://mdbootstrap.com/angular/components/navbars/
-
    Tutorial on this can be found here https://mdbootstrap.com/landing-page-lesson-1/
    (However, this tutorial may not be geared towqards an Angular site)
-
    Refer to step 2
-
    Remember to place .container inside your Navbar in order to center the links.  Also add a class .fixed-top to the Navbar so that our navbar is stuck to the top of the screen. It will be visible all the time, even when you scroll down your page.
-
  <!--Navbar-->
 <!-- this expands tool bar for large screens.  I've used a modified version below that expands for small screen so I
  could see whole tool bar during devlopment
@@ -23,10 +19,10 @@
     <mdb-navbar-brand><a class="navbar-brand" href="#">Navbar</a></mdb-navbar-brand>
 
     <!-- Collapsible content -->
-    <links>
+    <links class="myflex w-100">
 
         <!-- Links -->
-        <ul class="navbar-nav w-100 mr-auto">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link waves-light" mdbWavesEffect routerLink="/home" routerLinkActive="active">Home<span class="sr-only">(current)</span></a>
             </li>
@@ -37,38 +33,82 @@
                 <a class="nav-link waves-light" mdbWavesEffect>Pricing</a>
             </li>
 
-            <!-- Dropdown -->
-            <li class="nav-item dropdown" dropdown>
-                <a dropdownToggle mdbWavesEffect type="button" class="nav-link text-dark dropdown-toggle waves-light">
-                Basic dropdown<span class="caret"></span></a>
-                <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Action</a>
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Another action</a>
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Something else here</a>
-                    <div class="divider dropdown-divider"></div>
-                    <a class="dropdown-item waves-light" mdbWavesEffect href="#">Separated link</a>
-                </div>
-            </li>
+
+             <!-- Dropdown Menu Group-->
+           <li class="btn-group nav-item" dropdown [autoClose]="true" container="body">
+              <a  dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle btn-dark" 
+                      aria-controls="dropdown-nested">
+                This dropdown has nested submenu <span class="caret"></span>
+              </a>
+             
+              <ul id="dropdown-nested" *dropdownMenu class="dropdown-menu"
+                  role="menu" aria-labelledby="button-nested">
+                <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Action</a></li>
+             
+                <!-- Nested dropdown -->
+                <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body">
+                    <a dropdownToggle mdbWavesEffect class="dropdown-item dropdown-toggle"
+                        (click)="false">Hover me for nested dropdown <span class="caret"></span></a>
+                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Nested</a></li>
+                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Nested1</a></li>
+                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Nested2</a></li>
+                    </ul>
+                </li>
+ 
+                <!-- Nested dropdown2 -->
+                <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body">
+                    <a dropdownToggle mdbWavesEffect class="dropdown-item dropdown-toggle"
+                        (click)="false">Hover me for nested dropdown <span class="caret"></span></a>
+                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">NestedA</a></li>
+                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">NestedA1</a></li>
+                      <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">NestedA2</a></li>
+                    </ul>
+                </li>
+ 
+                <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Something else here</a></li>
+                <li class="divider dropdown-divider"></li>
+                <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Separated link</a></li>
 
             </ul>
+          <!-- End Dropdown Menu Group-->   
+          </li>    
+          
+        <!-- End First group of Link on toolbar -->    
+        </ul>
 
-    
-        <!-- Links -->
+          
+        <!-- Social Icon group
+        <ul class="navbar-nav nav-flex-icons">
+            <li class="nav-item waves-light" mdbWavesEffect>
+                <a class="nav-link"><i class="fa fa-facebook"></i></a>
+            </li>
+            <li class="nav-item waves-light" mdbWavesEffect>
+                <a class="nav-link"><i class="fa fa-twitter"></i></a>
+            </li>
+            <li class="nav-item waves-light" mdbWavesEffect>
+                <a class="nav-link"><i class="fa fa-instagram"></i></a>
+            </li>
+        </ul>
+        
 
-<!-- Search form -->
+        <!-- Search form -->
+        <ul class="navbar-nav">
+            <app-search-form></app-search-form>
+        </ul>
        
-        <app-search-form></app-search-form>
-       
-<!-- Former Search form  
+        <!-- Former Search form  
         <form class="form-inline waves-light" mdbWavesEffect>
             <div class="md-form mt-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search">
             </div>
         </form>
       -->
-
+        
+    <!-- End collapsible content --> 
     </links>
-    <!-- Collapsible content -->
+    
 
 </mdb-navbar>
 <!--/.Navbar-->
