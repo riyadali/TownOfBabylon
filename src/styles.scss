@@ -84,9 +84,11 @@ $theme: map_merge($theme, (background: $background));
 
 
 /*This instruction is from web site https://github.com/angular/angular-cli/blob/master/docs/documentation/stories/include-font-awesome.md*/
-@import "variables";
-@import "~font-awesome/scss/font-awesome";
-@import "~angular-bootstrap-md/scss/bootstrap/bootstrap.scss";
+/* commenting out imports for bootstrap, font-awesome etc since they are already in angular.json.  If this causes a problem under stackblitz
+just remove comment */
+/*@import "variables";*/
+/*@import "~font-awesome/scss/font-awesome";*/
+/*@import "~bootstrap/scss/bootstrap";*/
 /* getting Error in angular-bootstrap-md/scss/free/_forms.scss (5:3) property "input" must be followed by a ':'
 so I'm commenting out the import for mdb-free for now 
 @import "~angular-bootstrap-md/scss/mdb-free.scss"; */

@@ -3,6 +3,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; /* ngx-bootstrap dropdown package see https://valor-software.com/ngx-bootstrap/#/dropdowns#usage*/
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatSidenavModule, MatToolbarModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -57,6 +58,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
+    BsDropdownModule.forRoot(),
     MDBBootstrapModule.forRoot(),
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
