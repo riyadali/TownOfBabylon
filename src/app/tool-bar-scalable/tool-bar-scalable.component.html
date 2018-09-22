@@ -6,14 +6,12 @@
    Tutorial on this can be found here https://mdbootstrap.com/landing-page-lesson-1/
    (However, this tutorial may not be geared towqards an Angular site)
    Refer to step 2
-   Remember to place .container inside your Navbar in order to center the links.  Also add a class .fixed-top to the Navbar so that our navbar is stuck to the top of the screen. It will be visible all the time, even when you scroll down your page.
+   Remember to place .container inside your Navbar in order to center the links.  
+   Also add a class .fixed-top to the Navbar so that our navbar is stuck to the top of the screen. 
+   It will be visible all the time, even when you scroll down your page.
  <!--Navbar-->
-<!-- this expands tool bar for large screens.  I've used a modified version below that expands for small screen so I
- could see whole tool bar during devlopment
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
- -->
   
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color">
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color" [containerInside]="false">
 
     <!-- Navbar brand -->
     <mdb-navbar-brand><a class="navbar-brand" href="#">Navbar</a></mdb-navbar-brand>
