@@ -28,7 +28,8 @@ import { MainMenuComponent } from './main-menu/main-menu.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { CarouselExampleComponent } from './carousel-example/carousel-example.component';
-import { SocialIconsComponent } from './social-icons/social-icons.component';
+import { SocialIconComponent } from './social-icon/social-icon.component';  /* in navbar */
+import { SocialIconsComponent } from './social-icons/social-icons.component'; /* in footer */
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { StandardPageComponent } from './standard-page/standard-page.component';
 import { ToolBarScalableComponent } from './tool-bar-scalable/tool-bar-scalable.component';
@@ -88,6 +89,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     NavbarBrandComponent,
     CarouselExampleComponent,
     SocialIconsComponent,
+    SocialIconComponent,
     PageNotFoundComponent,
     StandardPageComponent,
     
