@@ -14,7 +14,9 @@
 <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark elegant-color" [containerInside]="false">
 
     <!-- Navbar brand -->
-    <mdb-navbar-brand><a class="navbar-brand" href="#">Navbar</a></mdb-navbar-brand>
+    <mdb-navbar-brand>
+      <app-navbar-brand></app-navbar-brand>
+    </mdb-navbar-brand>
 
     <!-- Collapsible content -->
     <links class="myflex w-100">
@@ -80,7 +82,7 @@
           
         <!-- Social Icon group -->
         <app-social-icon></app-social-icon>
-       
+
         <!-- Search form -->
         <ul class="navbar-nav">
             <app-search-form></app-search-form>

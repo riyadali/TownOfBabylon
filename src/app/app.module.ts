@@ -35,6 +35,7 @@ import { StandardPageComponent } from './standard-page/standard-page.component';
 import { ToolBarScalableComponent } from './tool-bar-scalable/tool-bar-scalable.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
+import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
 
 
@@ -85,6 +86,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     ToolBarScalableComponent,
     FooterComponent,
     SearchFormComponent,
+    NavbarBrandComponent,
     CarouselExampleComponent,
     SocialIconsComponent,
     SocialIconComponent,
