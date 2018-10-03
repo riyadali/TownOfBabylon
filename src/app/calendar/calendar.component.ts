@@ -11,9 +11,9 @@ export class MyCalendarComponent implements OnInit {
     viewTitle;
 
     isToday:boolean;
-    calendar = {
+    cal = {
         mode: 'month',
-        currentDate: new Date(),
+        curD: new Date(),
         dateFormatter: {
             formatMonthViewDay: function(date:Date) {
                 return date.getDate().toString();
@@ -55,11 +55,11 @@ export class MyCalendarComponent implements OnInit {
     }
 
     changeMode(mode) {
-        this.calendar.mode = mode;
+        this.cal.mode = mode;
     }
 
     today() {
-        this.calendar.currentDate = new Date();
+        this.cal.curD = new Date();
     }
 
     onTimeSelected(ev) {
