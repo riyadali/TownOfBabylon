@@ -15,6 +15,12 @@ import { SearchService } from './search.service';
 /* it might be safest to import the routing module last */
 import { AppRoutingModule }     from './app-routing.module';
 
+/*for calendar component -- I am using ionic2-calendar 
+at https://www.npmjs.com/package/ionic2-calendar.  You can remove the following
+if you decide to use another calendar. */
+import { IonicModule} from 'ionic-angular';
+import { NgCalendarModule  } from 'ionic2-calendar';
+
 import { AppComponent }         from './app.component';
 import { DashboardComponent }   from './dashboard/dashboard.component';
 import { HeroDetailComponent }  from './hero-detail/hero-detail.component';
@@ -37,6 +43,7 @@ import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
+import {MyCalendarComponent} from './calendar/calendar.component';
 
 
 import { PageHomeComponent } from './page-home/page-home.component';
@@ -59,6 +66,10 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    
+    NgCalendarModule,
+    IonicModule.forRoot(AppComponent),
+    
     HttpClientModule,
     BsDropdownModule.forRoot(),
     MDBBootstrapModule.forRoot(),
@@ -92,6 +103,8 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     SocialIconComponent,
     PageNotFoundComponent,
     StandardPageComponent,
+    
+    MyCalendarComponent,
     
     
     PageHomeComponent,
