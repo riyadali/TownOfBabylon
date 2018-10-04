@@ -37,6 +37,8 @@ import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
+import {MyCalendarComponent} from './calendar/calendar.component';
+
 
 
 import { PageHomeComponent } from './page-home/page-home.component';
@@ -92,6 +94,8 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     SocialIconComponent,
     PageNotFoundComponent,
     StandardPageComponent,
+    
+    MyCalendarComponent,
     
     
     PageHomeComponent,
