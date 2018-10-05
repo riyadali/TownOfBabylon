@@ -44,6 +44,10 @@ import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
 import {MyCalendarComponent} from './calendar/calendar.component';
 
+/* To include Matt Lewis calendar -- refer to site https://github.com/mattlewis92/angular-calendar */
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 
 
 import { PageHomeComponent } from './page-home/page-home.component';
@@ -69,6 +73,11 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     HttpClientModule,
     BsDropdownModule.forRoot(),
     MDBBootstrapModule.forRoot(),
+    
+    CalendarModule.forRoot({  /* To include Matt Lewis calendar */
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
