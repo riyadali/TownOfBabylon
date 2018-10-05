@@ -1,5 +1,27 @@
-Calendar works!
+Month View
 <mwl-calendar-month-view
    [viewDate]="vwDate"
    [events]="evnts">
 </mwl-calendar-month-view>
+
+Week view
+ <mwl-calendar-week-view    
+    [viewDate]="vwDate"
+    [events]="evnts"
+    [excludeDays]="exclDays">
+  </mwl-calendar-week-view>
+
+Day view
+<mwl-calendar-day-view
+  [viewDate]="vwDate"
+  [events]="evnts"
+  [hourSegments]="4">
+</mwl-calendar-day-view>
+
+Another Day View
+<mwl-calendar-day-view
+  [viewDate]="vwDate"
+  [events]="evnts"
+  [dayStartHour]="9"
+  [dayEndHour]="17">  
+</mwl-calendar-day-view>
