@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
+import { CalendarEvent, DAYS_OF_WEEK } from 'angular-calendar';
 
 @Component({
   selector: 'app-calendar',
@@ -13,6 +13,10 @@ export class MyCalendarComponent implements OnInit {
   vwDate: Date = new Date();
 
   evnts: CalendarEvent[] = [];
+
+  exclDays: number[] = [0, 6];
+
+  wkStartsOn = DAYS_OF_WEEK.SUNDAY;
   
   constructor() { }
 
