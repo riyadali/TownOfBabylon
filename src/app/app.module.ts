@@ -1,4 +1,9 @@
-import { NgModule, NO_ERRORS_SCHEMA }       from '@angular/core';
+/* Installation instructions for angular-bootstrap-md indicates to
+add NO_ERROR_SCHEMA.  However, this does not seem like a good idea because
+it masks potential errors.  Hence I'm not longer using  NO_ERRORS_SCHEMA */
+/* import { NgModule, NO_ERRORS_SCHEMA }       from '@angular/core'; */
+
+import { NgModule }       from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
@@ -81,7 +86,8 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
       InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true }
     )
   ],
-  schemas: [ NO_ERRORS_SCHEMA ],
+  /* schemas: [ NO_ERRORS_SCHEMA ], */
+  schemas: [ ],
   declarations: [
     AppComponent,
     DashboardComponent,
