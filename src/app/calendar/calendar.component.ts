@@ -16,7 +16,7 @@ export class MyCalendarComponent implements OnInit {
 
   exclDays: number[] = [0, 6];
 
-  wkStartsOn = DAYS_OF_WEEK.SUNDAY;
+  wkStartsOn = DAYS_OF_WEEK.TUESDAY;
   
   constructor() { }
 
