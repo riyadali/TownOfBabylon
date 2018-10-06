@@ -52,14 +52,43 @@
           [class.active]="vw === vwDay">
           Day
         </div>
+        <div
+          class="btn btn-primary"
+          (click)="vw = vwSDay"
+          [class.active]="vw === vwSDay">
+          Short Day
+        </div>
       </div>
     </div>
     <!-- Button group to switch between different calendar views -->
 
-    <mwl-calendar-month-view
+    <div [ngSwitch]="vw">
+      <mwl-calendar-month-view
+        *ngSwitchCase="vwMonth"
+        [viewDate]="vwDate"
+        [events]="evnts">
+      </mwl-calendar-month-view>
+      <mwl-calendar-week-view
+      *ngSwitchCase="vwWeek"    
       [viewDate]="vwDate"
-      [events]="evnts">
-    </mwl-calendar-month-view>
+      [events]="evnts"
+      [excludeDays]="exclDays"
+      [weekStartsOn]="wkStartsOn">
+      </mwl-calendar-week-view>
+      <mwl-calendar-day-view
+      *ngSwitchCase="vwDay"
+      [viewDate]="vwDate"
+      [events]="evnts"
+      [hourSegments]="4">
+    </mwl-calendar-day-view>
+     <mwl-calendar-day-view
+      *ngSwitchCase="vwSDay"
+      [viewDate]="vwDate"
+      [events]="evnts"
+      [dayStartHour]="9"
+      [dayEndHour]="17">  
+    </mwl-calendar-day-view>
+    </div>
   </mat-tab>
   <!-- Week View -->
   <mat-tab>
