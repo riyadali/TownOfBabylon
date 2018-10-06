@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { CalendarEvent, DAYS_OF_WEEK } from 'angular-calendar';
 
 @Component({
@@ -8,9 +8,13 @@ import { CalendarEvent, DAYS_OF_WEEK } from 'angular-calendar';
 })
 export class MyCalendarComponent implements OnInit {
   
-  vw: string = 'month';
+  vwMonth: string = 'month';
+  vwWeek: string = 'week';
+  vwDay: string = 'day';
 
   vwDate: Date = new Date();
+  
+  vwDateChange: EventEmitter<Date> = new EventEmitter();
 
   evnts: CalendarEvent[] = [];
 
