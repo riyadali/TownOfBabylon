@@ -12,6 +12,7 @@ export class MyCalendarComponent implements OnInit {
   vwMonth: string = 'month';
   vwWeek: string = 'week';
   vwDay: string = 'day';
+  vwSDay: string = 'sDay';
 
   vwDate: Date = new Date();
   
