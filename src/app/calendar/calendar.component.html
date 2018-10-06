@@ -30,6 +30,31 @@
             (viewDateChange)="vwDateChange.next(vwDate)">
             Next
     </div>
+    
+    <!-- Button group to switch between different calendar views -->
+     <div class="col-md-4">
+      <div class="btn-group">
+        <div
+          class="btn btn-primary"
+          (click)="vw = vwMonth"
+          [class.active]="vw === vwMonth">
+          Month
+        </div>
+        <div
+          class="btn btn-primary"
+          (click)="vw = vwWeek"
+          [class.active]="vw === vwWeek">
+          Week
+        </div>
+        <div
+          class="btn btn-primary"
+          (click)="vw = vwDay"
+          [class.active]="vw === vwDay">
+          Day
+        </div>
+      </div>
+    </div>
+    <!-- Button group to switch between different calendar views -->
 
     <mwl-calendar-month-view
       [viewDate]="vwDate"
