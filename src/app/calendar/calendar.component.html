@@ -1,17 +1,75 @@
 <mat-tab-group>
+  <!-- Month View -->
   <mat-tab>
     <ng-template mat-tab-label>
       <h4>Month</h4>
     </ng-template>
+    <div class="col-md-4">     
+      <h5>{{ vwDate | calendarDate:(vwMonth + 'ViewTitle'): locale }}</h5>
+    </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarPreviousView
+            [view]="vwMonth"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Previous
+    </div>
+
+     <div class="btn btn-outline-secondary"
+           mwlCalendarToday
+           [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Today
+          </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarNextView
+            [view]="vwMonth"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Next
+    </div>
+
     <mwl-calendar-month-view
       [viewDate]="vwDate"
       [events]="evnts">
     </mwl-calendar-month-view>
   </mat-tab>
+  <!-- Week View -->
   <mat-tab>
     <ng-template mat-tab-label>
       <h4>Week</h4>
     </ng-template>
+     <div class="col-md-4">     
+      <h5>{{ vwDate | calendarDate:(vwWeek + 'ViewTitle'): locale }}</h5>
+    </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarPreviousView
+            [view]="vwWeek"
+            [(viewDate)]="vwDate"
+            [excludeDays]="exclDays"           
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Previous
+    </div>
+
+     <div class="btn btn-outline-secondary"
+           mwlCalendarToday
+           [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Today
+          </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarNextView
+            [view]="vwWeek"
+            [(viewDate)]="vwDate"
+            [excludeDays]="exclDays"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Next
+    </div>
+
     <mwl-calendar-week-view    
       [viewDate]="vwDate"
       [events]="evnts"
@@ -19,20 +77,78 @@
       [weekStartsOn]="wkStartsOn">
     </mwl-calendar-week-view>
   </mat-tab>
+  <!-- Day View -->
   <mat-tab>
     <ng-template mat-tab-label>
       <h4>Day</h4>
     </ng-template>
+
+     <div class="col-md-4">     
+      <h5>{{ vwDate | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
+    </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarPreviousView
+            [view]="vwDay"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Previous
+    </div>
+
+     <div class="btn btn-outline-secondary"
+           mwlCalendarToday
+           [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Today
+          </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarNextView
+            [view]="vwDay"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Next
+    </div>
+
     <mwl-calendar-day-view
       [viewDate]="vwDate"
       [events]="evnts"
       [hourSegments]="4">
     </mwl-calendar-day-view>
   </mat-tab>
+  <!-- Short Day View -->
   <mat-tab>
     <ng-template mat-tab-label>
       <h4>Short Day</h4>
     </ng-template>
+
+    <div class="col-md-4">     
+      <h5>{{ vwDate | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
+    </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarPreviousView
+            [view]="vwDay"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Previous
+    </div>
+
+     <div class="btn btn-outline-secondary"
+           mwlCalendarToday
+           [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Today
+          </div>
+
+    <div class="btn btn-primary"
+          mwlCalendarNextView
+            [view]="vwDay"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Next
+    </div>
+    
     <mwl-calendar-day-view
       [viewDate]="vwDate"
       [events]="evnts"
