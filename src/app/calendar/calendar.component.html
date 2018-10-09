@@ -6,30 +6,33 @@
     
     <div class="btn-group">
         <!-- Previous button -->
-        <div class="btn btn-primary"
+        <button mdbBtn type="button" color="light-green" 
+          class="waves-light btn-sm" mdbWavesEffect
             mwlCalendarPreviousView
             [view]="vw"
             [(viewDate)]="vwDate"
             (viewDateChange)="vwDateChange.next(vwDate)">
             Previous
-        </div>
+        </button>
       
         <!-- Today button -->
-        <div class="btn btn-outline-secondary"
+        <button mdbBtn type="button" color="amber" 
+          class="waves-light btn-md" mdbWavesEffect
             mwlCalendarToday
             [(viewDate)]="vwDate"
             (viewDateChange)="vwDateChange.next(vwDate)">
             Today
-        </div>
+        </button>
 
         <!-- Next button -->
-        <div class="btn btn-primary"
+        <button mdbBtn type="button" color="light-green" 
+          class="waves-light btn-sm" mdbWavesEffect
             mwlCalendarNextView
             [view]="vw"
             [(viewDate)]="vwDate"
             (viewDateChange)="vwDateChange.next(vwDate)">
             Next
-        </div>      
+        </button>      
     </div>
     
   <!-- End button group to navigate through date -->
@@ -45,32 +48,36 @@
     
     <div class="btn-group">
       <!-- Month view - the default -->
-      <div class="btn btn-primary"
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md" mdbWavesEffect
           (click)="vw = vwMonth; vwClicked = vwMonth"
           [class.active]="vwClicked === vwMonth">
           Month
-      </div>
+      </button>
       
       <!-- Week view -->
-      <div class="btn btn-primary"
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md" mdbWavesEffect
           (click)="vw = vwWeek; vwClicked = vwWeek"
           [class.active]="vwClicked === vwWeek">
           Week
-      </div>
+      </button>
       
       <!-- Day view -->
-      <div class="btn btn-primary"
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md" mdbWavesEffect
           (click)="vw = vwDay; vwClicked = vwDay"
           [class.active]="vwClicked === vwDay">
           Day
-      </div>
+      </button>
       
       <!-- Work day view -->
-      <div class="btn btn-primary"
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md" mdbWavesEffect
           (click)="vw = vwDay; vwClicked = vwWDay"
           [class.active]="vwClicked === vwWDay">
           8hrDay
-      </div>      
+      </button>      
     </div>     
   
   <!-- End button group to switch between different calendar views -->  
