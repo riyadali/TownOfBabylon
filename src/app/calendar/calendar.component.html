@@ -1,213 +1,99 @@
-<mat-tab-group>
-  <!-- Month View -->
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <h4>Month</h4>
-    </ng-template>
-    <div class="col-md-4">     
+  <!-- View Title -->
+  <div class="col-md-4">     
       <h5>{{ vwDate | calendarDate:(vw + 'ViewTitle'): locale }}</h5>
-    </div>
+  </div>
 
-    <div class="btn btn-primary"
-          mwlCalendarPreviousView
-            [view]="vwMonth"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Previous
-    </div>
+  <!-- Previous button -->
+  <div class="btn btn-primary"
+      mwlCalendarPreviousView
+        [view]="vw"
+        [(viewDate)]="vwDate"
+        (viewDateChange)="vwDateChange.next(vwDate)">
+        Previous
+  </div>
 
-     <div class="btn btn-outline-secondary"
-           mwlCalendarToday
-           [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Today
-          </div>
+  <!-- Today button -->
+  <div class="btn btn-outline-secondary"
+     mwlCalendarToday
+       [(viewDate)]="vwDate"
+       (viewDateChange)="vwDateChange.next(vwDate)">
+       Today
+  </div>
 
-    <div class="btn btn-primary"
-          mwlCalendarNextView
-            [view]="vwMonth"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Next
-    </div>
+  <!-- Next button -->
+  <div class="btn btn-primary"
+      mwlCalendarNextView
+        [view]="vw"
+        [(viewDate)]="vwDate"
+        (viewDateChange)="vwDateChange.next(vwDate)">
+        Next
+  </div>
     
     <!-- Button group to switch between different calendar views -->
      <div class="col-md-4">
       <div class="btn-group">
         <div
           class="btn btn-primary"
-          (click)="vw = vwMonth"
-          [class.active]="vw === vwMonth">
+          (click)="vw = vwMonth; vwClicked = vwMonth"
+          [class.active]="vwClicked === vwMonth">
           Month
         </div>
         <div
           class="btn btn-primary"
-          (click)="vw = vwWeek"
-          [class.active]="vw === vwWeek">
+          (click)="vw = vwWeek; vwClicked = vwWeek"
+          [class.active]="vwClicked === vwWeek">
           Week
         </div>
         <div
           class="btn btn-primary"
-          (click)="vw = vwDay"
-          [class.active]="vw === vwDay">
+          (click)="vw = vwDay; vwClicked = vwDay"
+          [class.active]="vwClicked === vwDay">
           Day
         </div>
         <div
           class="btn btn-primary"
-          (click)="vw = vwSDay"
-          [class.active]="vw === vwSDay">
-          Short Day
+          (click)="vw = vwDay; vwClicked = vwWDay"
+          [class.active]="vwClicked === vwWDay">
+          Work Day
         </div>
       </div>
     </div>
     <!-- Button group to switch between different calendar views -->
 
-    <div [ngSwitch]="vw">
+    <!-- Various views controlled by ngSwitch vwClicked -->
+    <div [ngSwitch]="vwClicked">
+      
+      <!-- Month view - the default -->
       <mwl-calendar-month-view
         *ngSwitchCase="vwMonth"
         [viewDate]="vwDate"
         [events]="evnts">
       </mwl-calendar-month-view>
+      
+      <!-- Week view -->
       <mwl-calendar-week-view
-      *ngSwitchCase="vwWeek"    
-      [viewDate]="vwDate"
-      [events]="evnts"
-      [excludeDays]="exclDays"
-      [weekStartsOn]="wkStartsOn">
+        *ngSwitchCase="vwWeek"    
+        [viewDate]="vwDate"
+        [events]="evnts"
+        [excludeDays]="exclDays"
+        [weekStartsOn]="wkStartsOn">
       </mwl-calendar-week-view>
+      
+      <!-- Full day view -->
       <mwl-calendar-day-view
-      *ngSwitchCase="vwDay"
-      [viewDate]="vwDate"
-      [events]="evnts"
-      [hourSegments]="4">
-    </mwl-calendar-day-view>
-     <mwl-calendar-day-view
-      *ngSwitchCase="vwSDay"
-      [viewDate]="vwDate"
-      [events]="evnts"
-      [dayStartHour]="9"
-      [dayEndHour]="17">  
-    </mwl-calendar-day-view>
-    </div>
-  </mat-tab>
-  <!-- Week View -->
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <h4>Week</h4>
-    </ng-template>
-     <div class="col-md-4">     
-      <h5>{{ vwDate | calendarDate:(vwWeek + 'ViewTitle'): locale }}</h5>
-    </div>
-
-    <div class="btn btn-primary"
-          mwlCalendarPreviousView
-            [view]="vwWeek"
-            [(viewDate)]="vwDate"
-            [excludeDays]="exclDays"           
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Previous
-    </div>
-
-     <div class="btn btn-outline-secondary"
-           mwlCalendarToday
-           [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Today
-          </div>
-
-    <div class="btn btn-primary"
-          mwlCalendarNextView
-            [view]="vwWeek"
-            [(viewDate)]="vwDate"
-            [excludeDays]="exclDays"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Next
-    </div>
-
-    <mwl-calendar-week-view    
-      [viewDate]="vwDate"
-      [events]="evnts"
-      [excludeDays]="exclDays"
-      [weekStartsOn]="wkStartsOn">
-    </mwl-calendar-week-view>
-  </mat-tab>
-  <!-- Day View -->
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <h4>Day</h4>
-    </ng-template>
-
-     <div class="col-md-4">     
-      <h5>{{ vwDate | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
-    </div>
-
-    <div class="btn btn-primary"
-          mwlCalendarPreviousView
-            [view]="vwDay"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Previous
-    </div>
-
-     <div class="btn btn-outline-secondary"
-           mwlCalendarToday
-           [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Today
-          </div>
-
-    <div class="btn btn-primary"
-          mwlCalendarNextView
-            [view]="vwDay"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Next
-    </div>
-
-    <mwl-calendar-day-view
-      [viewDate]="vwDate"
-      [events]="evnts"
-      [hourSegments]="4">
-    </mwl-calendar-day-view>
-  </mat-tab>
-  <!-- Short Day View -->
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <h4>Short Day</h4>
-    </ng-template>
-
-    <div class="col-md-4">     
-      <h5>{{ vwDate | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
-    </div>
-
-    <div class="btn btn-primary"
-          mwlCalendarPreviousView
-            [view]="vwDay"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Previous
-    </div>
-
-     <div class="btn btn-outline-secondary"
-           mwlCalendarToday
-           [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Today
-          </div>
-
-    <div class="btn btn-primary"
-          mwlCalendarNextView
-            [view]="vwDay"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
-            Next
-    </div>
-    
-    <mwl-calendar-day-view
-      [viewDate]="vwDate"
-      [events]="evnts"
-      [dayStartHour]="9"
-      [dayEndHour]="17">  
-    </mwl-calendar-day-view>
-  </mat-tab>
-</mat-tab-group>
+        *ngSwitchCase="vwDay"
+        [viewDate]="vwDate"
+        [events]="evnts"
+        [hourSegments]="4">
+      </mwl-calendar-day-view>
+      
+      <!-- Work day view -->
+      <mwl-calendar-day-view
+        *ngSwitchCase="vwWDay"
+        [viewDate]="vwDate"
+        [events]="evnts"
+        [dayStartHour]="9"
+        [dayEndHour]="17">  
+      </mwl-calendar-day-view>
+    </div> 
+    <!-- End various views -->
