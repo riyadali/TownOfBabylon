@@ -1,99 +1,120 @@
+<!-- TITLE ROW -->
+<div class="row text-center">
+
+  <!-- Button group to navigate through date -->
+  <div class="col-md-4">
+    
+    <div class="btn-group">
+        <!-- Previous button -->
+        <div class="btn btn-primary"
+            mwlCalendarPreviousView
+            [view]="vw"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Previous
+        </div>
+      
+        <!-- Today button -->
+        <div class="btn btn-outline-secondary"
+            mwlCalendarToday
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Today
+        </div>
+
+        <!-- Next button -->
+        <div class="btn btn-primary"
+            mwlCalendarNextView
+            [view]="vw"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="vwDateChange.next(vwDate)">
+            Next
+        </div>      
+    </div>
+    
+  <!-- End button group to navigate through date -->
+  </div>
+
   <!-- View Title -->
   <div class="col-md-4">     
       <h5>{{ vwDate | calendarDate:(vw + 'ViewTitle'): locale }}</h5>
   </div>
-
-  <!-- Previous button -->
-  <div class="btn btn-primary"
-      mwlCalendarPreviousView
-        [view]="vw"
-        [(viewDate)]="vwDate"
-        (viewDateChange)="vwDateChange.next(vwDate)">
-        Previous
-  </div>
-
-  <!-- Today button -->
-  <div class="btn btn-outline-secondary"
-     mwlCalendarToday
-       [(viewDate)]="vwDate"
-       (viewDateChange)="vwDateChange.next(vwDate)">
-       Today
-  </div>
-
-  <!-- Next button -->
-  <div class="btn btn-primary"
-      mwlCalendarNextView
-        [view]="vw"
-        [(viewDate)]="vwDate"
-        (viewDateChange)="vwDateChange.next(vwDate)">
-        Next
-  </div>
     
-    <!-- Button group to switch between different calendar views -->
-     <div class="col-md-4">
-      <div class="btn-group">
-        <div
-          class="btn btn-primary"
+  <!-- Button group to switch between different calendar views -->  
+  <div class="col-md-4">
+    
+    <div class="btn-group">
+      <!-- Month view - the default -->
+      <div class="btn btn-primary"
           (click)="vw = vwMonth; vwClicked = vwMonth"
           [class.active]="vwClicked === vwMonth">
           Month
-        </div>
-        <div
-          class="btn btn-primary"
+      </div>
+      
+      <!-- Week view -->
+      <div class="btn btn-primary"
           (click)="vw = vwWeek; vwClicked = vwWeek"
           [class.active]="vwClicked === vwWeek">
           Week
-        </div>
-        <div
-          class="btn btn-primary"
+      </div>
+      
+      <!-- Day view -->
+      <div class="btn btn-primary"
           (click)="vw = vwDay; vwClicked = vwDay"
           [class.active]="vwClicked === vwDay">
           Day
-        </div>
-        <div
-          class="btn btn-primary"
+      </div>
+      
+      <!-- Work day view -->
+      <div class="btn btn-primary"
           (click)="vw = vwDay; vwClicked = vwWDay"
           [class.active]="vwClicked === vwWDay">
           Work Day
-        </div>
-      </div>
-    </div>
-    <!-- Button group to switch between different calendar views -->
-
-    <!-- Various views controlled by ngSwitch vwClicked -->
-    <div [ngSwitch]="vwClicked">
+      </div>      
+    </div>     
+  
+  <!-- End button group to switch between different calendar views -->  
+  </div>
+  
+<!-- END TITLE ROW -->
+</div>
+<br/>
+   
+<!-- Various views controlled by ngSwitch vwClicked -->
+<div [ngSwitch]="vwClicked">
       
-      <!-- Month view - the default -->
-      <mwl-calendar-month-view
+    <!-- Month view - the default -->
+    <mwl-calendar-month-view
         *ngSwitchCase="vwMonth"
         [viewDate]="vwDate"
         [events]="evnts">
-      </mwl-calendar-month-view>
+    </mwl-calendar-month-view>
       
-      <!-- Week view -->
-      <mwl-calendar-week-view
+    <!-- Week view -->
+    <mwl-calendar-week-view
         *ngSwitchCase="vwWeek"    
         [viewDate]="vwDate"
         [events]="evnts"
         [excludeDays]="exclDays"
         [weekStartsOn]="wkStartsOn">
-      </mwl-calendar-week-view>
+    </mwl-calendar-week-view>
       
-      <!-- Full day view -->
-      <mwl-calendar-day-view
+    <!-- Full day view -->
+    <mwl-calendar-day-view
         *ngSwitchCase="vwDay"
         [viewDate]="vwDate"
         [events]="evnts"
         [hourSegments]="4">
-      </mwl-calendar-day-view>
+    </mwl-calendar-day-view>
       
-      <!-- Work day view -->
-      <mwl-calendar-day-view
+    <!-- Work day view -->
+    <mwl-calendar-day-view
         *ngSwitchCase="vwWDay"
         [viewDate]="vwDate"
         [events]="evnts"
         [dayStartHour]="9"
         [dayEndHour]="17">  
-      </mwl-calendar-day-view>
-    </div> 
-    <!-- End various views -->
+    </mwl-calendar-day-view>
+  
+<!-- End various views -->
+</div> 
