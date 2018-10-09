@@ -8,11 +8,16 @@ import { CalendarEvent, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
 })
 export class MyCalendarComponent implements OnInit {
   
-  vw: CalendarView = CalendarView.Month;
+  vw: CalendarView = CalendarView.Month; /* default view */
+  
+  /* vwClicked is generally the same as vw except when there are multiple variations
+  of a specific view. In this case, vw would identify the acutual view (either 'month', 'week' or 'day') and vwClicked would identify the particular variation (for ex 'weekdays') */
+  vwClicked: string = CalendarView.Month; /* default view */
+  
   vwMonth: string = 'month';
   vwWeek: string = 'week';
   vwDay: string = 'day';
-  vwSDay: string = 'sDay';
+  vwWDay: string = 'wDay'; /* work day */
 
   vwDate: Date = new Date();
   
