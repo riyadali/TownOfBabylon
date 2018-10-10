@@ -7,7 +7,7 @@
     <div class="btn-group">
         <!-- Previous button -->
         <button mdbBtn type="button" color="light-green" 
-          class="waves-light btn-sm" mdbWavesEffect
+          class="waves-light btn-sm myrounded" mdbWavesEffect
             mwlCalendarPreviousView
             [view]="vw"
             [(viewDate)]="vwDate"
@@ -26,7 +26,7 @@
 
         <!-- Next button -->
         <button mdbBtn type="button" color="light-green" 
-          class="waves-light btn-sm" mdbWavesEffect
+          class="waves-light btn-sm myrounded" mdbWavesEffect
             mwlCalendarNextView
             [view]="vw"
             [(viewDate)]="vwDate"
@@ -49,7 +49,7 @@
     <div class="btn-group">
       <!-- Month view - the default -->
       <button mdbBtn type="button" color="light-green" 
-        class="waves-light btn-md" mdbWavesEffect
+        class="waves-light btn-md myrounded" mdbWavesEffect
           (click)="vw = vwMonth; vwClicked = vwMonth"
           [class.active]="vwClicked === vwMonth">
           Month
@@ -73,7 +73,7 @@
       
       <!-- Work day view -->
       <button mdbBtn type="button" color="light-green" 
-        class="waves-light btn-md" mdbWavesEffect
+        class="waves-light btn-md myrounded" mdbWavesEffect
           (click)="vw = vwDay; vwClicked = vwWDay"
           [class.active]="vwClicked === vwWDay">
           8hrDay
