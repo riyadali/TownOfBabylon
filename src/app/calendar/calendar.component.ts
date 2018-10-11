@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter, TemplateRef } from '@angular/core';
 import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {
   startOfDay,
   endOfDay,
@@ -32,6 +34,16 @@ const colors: any = {
   styleUrls: ['./calendar.component.scss']
 })
 export class MyCalendarComponent implements OnInit {
+  
+  modalRef: BsModalRef;
+
+  constructor(private modalService: BsModalService) {}
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+  }
+  
+  activeDayIsOpen: boolean = true;
   
   vw: CalendarView = CalendarView.Month; /* default view */
   
@@ -115,8 +127,23 @@ export class MyCalendarComponent implements OnInit {
   
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    this.openModal(this.modalContent);
   }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.vwDate)) {
+      this.vwDate = date;
+      if (
+        (isSameDay(this.vwDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+    }
+  }
+
 
   exclDays: number[] = [0, 6];
 
