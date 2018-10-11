@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { CalendarEvent, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView, TemplateRef } from 'angular-calendar';
 import {
   startOfDay,
   endOfDay,
@@ -47,6 +47,30 @@ export class MyCalendarComponent implements OnInit {
   vwDate: Date = new Date();
   
   vwDateChange: EventEmitter<Date> = new EventEmitter();
+  
+  modalContent: TemplateRef<any>;
+
+   modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
+
+  actions: CalendarEventAction[] = [
+    {
+      label: '<i class="fa fa-fw fa-pencil"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.handleEvent('Edited', event);
+      }
+    },
+    {
+      label: '<i class="fa fa-fw fa-times"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.evnts = this.evnts.filter(iEvent => iEvent !== event);
+        this.handleEvent('Deleted', event);
+      }
+    }
+  ];
+
 
   evnts: CalendarEvent[] = [    
     {
@@ -88,6 +112,11 @@ export class MyCalendarComponent implements OnInit {
       draggable: true
     }
   ];
+  
+  handleEvent(action: string, event: CalendarEvent): void {
+    this.modalData = { event, action };
+    this.modal.open(this.modalContent, { size: 'lg' });
+  }
 
   exclDays: number[] = [0, 6];
 
