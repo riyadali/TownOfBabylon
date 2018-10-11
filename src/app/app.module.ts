@@ -9,6 +9,7 @@ import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; /* ngx-bootstrap dropdown package see https://valor-software.com/ngx-bootstrap/#/dropdowns#usage*/
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatSidenavModule, MatToolbarModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule } from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs'; /* for tabs on web page */
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -74,6 +75,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     AppRoutingModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),
+    ModalModule.forRoot(), /* ngx-bootstrap modal */
     MDBBootstrapModule.forRoot(),
     
     CalendarModule.forRoot({  /* To include Matt Lewis calendar */
