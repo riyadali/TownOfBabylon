@@ -1,5 +1,5 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView, TemplateRef } from 'angular-calendar';
+import { Component, OnInit, EventEmitter, TemplateRef } from '@angular/core';
+import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
 import {
   startOfDay,
   endOfDay,
