@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, TemplateRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
 import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -35,6 +35,9 @@ const colors: any = {
 })
 export class MyCalendarComponent implements OnInit {
   
+  @ViewChild('modalContent')
+  modalContent: TemplateRef<any>;
+  
   modalRef: BsModalRef;
 
   constructor(private modalService: BsModalService) {}
@@ -58,9 +61,8 @@ export class MyCalendarComponent implements OnInit {
 
   vwDate: Date = new Date();
   
-  vwDateChange: EventEmitter<Date> = new EventEmitter();
-  
-  modalContent: TemplateRef<any>;
+  vwDateChange: EventEmitter<Date> = new EventEmitter();  
+ 
 
    modalData: {
     action: string;
