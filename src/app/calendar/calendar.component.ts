@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, TemplateRef, ViewChild } from '@angula
 import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { collapseAnimation } from 'angular-calendar'; /* refer to https://github.com/mattlewis92/angular-calendar/issues/747 */
 import {
   startOfDay,
   endOfDay,
@@ -31,12 +32,16 @@ const colors: any = {
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
+  animations: [collapseAnimation],
   styleUrls: ['./calendar.component.scss']
 })
 export class MyCalendarComponent implements OnInit {
   
   @ViewChild('modalContent')
   modalContent: TemplateRef<any>;
+  
+  @ViewChild('dayEventsTemplate')
+  dayEventsTemplate: TemplateRef<any>;
   
   modalRef: BsModalRef;
 
@@ -150,9 +155,7 @@ export class MyCalendarComponent implements OnInit {
   exclDays: number[] = [0, 6];
 
   wkStartsOn = DAYS_OF_WEEK.TUESDAY;
-  
-  constructor() { }
-
+    
   ngOnInit() {
   }
 
