@@ -1,3 +1,38 @@
+<ng-template
+      #dayEventsTemplate
+      let-events="events"
+      let-eventClicked="eventClicked"
+      let-isOpen="isOpen">
+      <div class="cal-open-day-events special-color-dark" [@collapse] *ngIf="isOpen">
+        <h5>Events for {{ events[0]?.start | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
+        <div
+          *ngFor="let event of events; trackBy:trackByEventId"
+          [ngClass]="event?.cssClass"
+          mwlDraggable
+          [class.cal-draggable]="event.draggable"
+          dragActiveClass="cal-drag-active"
+          [dropData]="{event: event}"
+          [dragAxis]="{x: event.draggable, y: event.draggable}">
+          <span
+            class="cal-event"
+            [style.backgroundColor]="event.color?.primary">
+          </span>
+          &ngsp;          
+          <mwl-calendar-event-title
+            [event]="event"
+            [customTemplate]="eventTitleTemplate"
+            view="month"
+            (mwlClick)="eventClicked.emit({event: event})">
+          </mwl-calendar-event-title>
+          &ngsp;
+          <mwl-calendar-event-actions
+            [event]="event"
+            [customTemplate]="eventActionsTemplate">
+          </mwl-calendar-event-actions>
+        </div>
+      </div>
+</ng-template>
+
 <ng-template #modalContent>
   <div class="modal-header">
     <h5 class="modal-title">Event action occurred</h5>
