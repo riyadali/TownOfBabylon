@@ -4,7 +4,7 @@
       let-eventClicked="eventClicked"
       let-isOpen="isOpen">
       <div class="cal-open-day-events special-color-dark" [@collapse] *ngIf="isOpen">
-        <h5>Events for {{ events[0]?.start | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
+         <h5 *ngIf="events[0]">Events for {{ events[0]?.start | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
         <div
           *ngFor="let event of events; trackBy:trackByEventId"
           [ngClass]="event?.cssClass"
@@ -153,6 +153,7 @@
         [activeDayIsOpen]="activeDayIsOpen"
         (dayClicked)="dayClicked($event.day)"
         (eventClicked)="handleEvent('Clicked', $event.event)"
+        [openDayEventsTemplate]="dayEventsTemplate"        
         [events]="evnts">
     </mwl-calendar-month-view>
       
