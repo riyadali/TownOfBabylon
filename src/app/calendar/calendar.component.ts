@@ -29,7 +29,9 @@ const colors: any = {
   }
 };
 
-/* My custom calendar event */
+/* My custom calendar event - extended from Matt Lewis CalendarEvent found at
+   https://github.com/mattlewis92/calendar-utils/blob/master/src/calendar-utils.ts
+   */
 interface CustomCalendarEvent extends CalendarEvent {
     /* curDay is only set for the first event in the event list
        for a clicked date. It is just a hack to pass the date clicked
@@ -149,7 +151,7 @@ export class MyCalendarComponent implements OnInit {
     this.openModal(this.modalContent);
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked({ date, events }: { date: Date; events: CustomCalendarEvent[] }): void {
     if (isSameMonth(date, this.vwDate)) {
       this.vwDate = date;
       if (
@@ -158,6 +160,7 @@ export class MyCalendarComponent implements OnInit {
       ) {
         this.activeDayIsOpen = false;
       } else {
+        events[0].curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
         this.activeDayIsOpen = true;
       }
     }
@@ -169,6 +172,9 @@ export class MyCalendarComponent implements OnInit {
   wkStartsOn = DAYS_OF_WEEK.TUESDAY;
     
   ngOnInit() {
+    if (this.evnts[0]) {
+       this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
+    }
   }
 
 }
