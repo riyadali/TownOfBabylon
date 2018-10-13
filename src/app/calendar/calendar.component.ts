@@ -29,6 +29,18 @@ const colors: any = {
   }
 };
 
+/* My custom calendar event */
+interface CustomCalendarEvent extends CalendarEvent {
+    /* curDay is only set for the first event in the event list
+       for a clicked date. It is just a hack to pass the date clicked
+       to the daysEvents template since this information apparently is not
+       available to the <mwl-calendar-open-day-events> component.  It is, 
+       however, available in the parent compenent, <mwl-calendar-month-view>, as
+       viewDate, but since I done control this code I cannot pass it as
+       an input to the child template.  So my hack is to pass it in the Events list>. */
+    curDay: Date;      
+};
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -91,7 +103,7 @@ export class MyCalendarComponent implements OnInit {
   ];
 
 
-  evnts: CalendarEvent[] = [    
+  evnts: CustomCalendarEvent[] = [    
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
