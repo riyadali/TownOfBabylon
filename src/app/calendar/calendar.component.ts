@@ -142,7 +142,7 @@ export class MyCalendarComponent implements OnInit {
       },
       draggable: true
     }
-  ];
+  ] as CalendarEvent[];
   
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
