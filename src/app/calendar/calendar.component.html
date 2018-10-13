@@ -67,7 +67,7 @@
             mwlCalendarPreviousView
             [view]="vw"
             [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
+            (viewDateChange)="activeDayIsOpen = false">
             <i class="fa fa-angle-left" aria-hidden="true"></i>
         </button>
       
@@ -75,8 +75,7 @@
         <button mdbBtn type="button" color="amber" 
           class="waves-light btn-md" mdbWavesEffect
             mwlCalendarToday
-            [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
+            [(viewDate)]="vwDate">
             Today
         </button>
 
@@ -86,7 +85,7 @@
             mwlCalendarNextView
             [view]="vw"
             [(viewDate)]="vwDate"
-            (viewDateChange)="vwDateChange.next(vwDate)">
+            (viewDateChange)="activeDayIsOpen = false">
             <i class="fa fa-angle-right" aria-hidden="true"></i>
         </button>      
     </div>
