@@ -118,13 +118,8 @@ export class MyCalendarComponent implements OnInit {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
       extraEventData: {   
-         /* curDay is only set for the first event in the event list
-       for a clicked date. It is just a hack to pass the date clicked
-       to the daysEvents template since this information apparently is not
-       available to the <mwl-calendar-open-day-events> component.  It is, 
-       however, available in the parent compenent, <mwl-calendar-month-view>, as
-       viewDate, but since I done control this code I cannot pass it as
-       an input to the child template.  So my hack is to pass it in the Events list>. */
+         /* initially set curDay to "Today". It needs to be set for all events 
+            because one does not know which ones are for today */
         curDay: new Date() /* set default current day to "Today" */
       },
       title: 'A 3 day event',
@@ -139,6 +134,11 @@ export class MyCalendarComponent implements OnInit {
     },
     {
       start: startOfDay(new Date()),
+      extraEventData: {   
+         /* initially set curDay to "Today". It needs to be set for all events 
+            because one does not know which ones are for today */
+        curDay: new Date() /* set default current day to "Today" */
+      },
       title: 'An event with no end date',
       color: colors.yellow,
       actions: this.actions
@@ -146,6 +146,11 @@ export class MyCalendarComponent implements OnInit {
     {
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
+      extraEventData: {   
+         /* initially set curDay to "Today". It needs to be set for all events 
+            because one does not know which ones are for today */
+        curDay: new Date() /* set default current day to "Today" */
+      },
       title: 'A long event that spans 2 months',
       color: colors.blue,
       allDay: true
@@ -153,6 +158,11 @@ export class MyCalendarComponent implements OnInit {
     {
       start: addHours(startOfDay(new Date()), 2),
       end: new Date(),
+      extraEventData: {   
+         /* initially set curDay to "Today". It needs to be set for all events 
+            because one does not know which ones are for today */
+        curDay: new Date() /* set default current day to "Today" */
+      },
       title: 'A draggable and resizable event',
       color: colors.yellow,
       actions: this.actions,
