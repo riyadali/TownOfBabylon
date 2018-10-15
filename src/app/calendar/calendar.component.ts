@@ -45,7 +45,7 @@ const colors: any = {
 
 /* This interface replaces the CustomCalendarEvent interface above */
 /* Matt Lewis uses this approach in his code */
-interface ExtraData {   
+interface ExtraEventData {   
    curDay : Date
 }
 
@@ -91,32 +91,32 @@ export class MyCalendarComponent implements OnInit {
 
    modalData: {
     action: string;
-    event: CalendarEvent<ExtraData>;
+    event: CalendarEvent<ExtraEventData>;
   };
 
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent<ExtraData> }): void => {
+      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.handleEvent('Edited', event);
       }
     },
     {
       label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent<ExtraData> }): void => {
+      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.evnts = this.evnts.filter(iEvent => iEvent !== event);
         this.handleEvent('Deleted', event);
       }
     }
   ];
 
-  extraData: ExtraData;
+  extraEventData: ExtraEventData;
   
-  evnts: Array<CalendarEvent<{ extraData: ExtraData }>> = [    
+  evnts: Array<CalendarEvent<{ extraEventData: ExtraEventData }>> = [    
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
-      extraData: {   
+      extraEventData: {   
          /* curDay is only set for the first event in the event list
        for a clicked date. It is just a hack to pass the date clicked
        to the daysEvents template since this information apparently is not
@@ -163,12 +163,12 @@ export class MyCalendarComponent implements OnInit {
     }
   ];
   
-  handleEvent(action: string, event: CalendarEvent<ExtraData>): void {
+  handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
     this.modalData = { event, action };
     this.openModal(this.modalContent);
   }
 
-  dayClicked({ date, events }: { date: Date; events: Array<CalendarEvent<ExtraData>>}): void {
+  dayClicked({ date, events }: { date: Date; events: Array<CalendarEvent<ExtraEventData>>}): void {
     if (isSameMonth(date, this.vwDate)) {
       this.vwDate = date;
       if (
@@ -178,7 +178,7 @@ export class MyCalendarComponent implements OnInit {
         this.activeDayIsOpen = false;
       } else {
         //events[0].curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
-        events[0].extraData.curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
+        events[0].extraEventData.curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
         this.activeDayIsOpen = true;
       }
     }
