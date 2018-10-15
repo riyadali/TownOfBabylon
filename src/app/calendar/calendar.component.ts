@@ -111,9 +111,9 @@ export class MyCalendarComponent implements OnInit {
     }
   ];
 
-  extraEventData: ExtraEventData;
+  /* extraEventData: ExtraEventData; */
   
-  evnts: Array<CalendarEvent<{ extraEventData: ExtraEventData }>> = [    
+  evnts: Array<CalendarEvent<ExtraEventData>> = [    
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
