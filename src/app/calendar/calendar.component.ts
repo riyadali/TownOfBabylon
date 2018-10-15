@@ -32,7 +32,7 @@ const colors: any = {
 /* My custom calendar event - extended from Matt Lewis CalendarEvent found at
    https://github.com/mattlewis92/calendar-utils/blob/master/src/calendar-utils.ts
    */
-interface CustomCalendarEvent extends CalendarEvent {
+//interface CustomCalendarEvent extends CalendarEvent {
     /* curDay is only set for the first event in the event list
        for a clicked date. It is just a hack to pass the date clicked
        to the daysEvents template since this information apparently is not
@@ -40,8 +40,12 @@ interface CustomCalendarEvent extends CalendarEvent {
        however, available in the parent compenent, <mwl-calendar-month-view>, as
        viewDate, but since I done control this code I cannot pass it as
        an input to the child template.  So my hack is to pass it in the Events list>. */
-    curDay: Date;      
-};
+//    curDay: Date;      
+//};
+
+interface ExtraData {   
+   curDay : Date
+}
 
 @Component({
   selector: 'app-calendar',
@@ -85,30 +89,41 @@ export class MyCalendarComponent implements OnInit {
 
    modalData: {
     action: string;
-    event: CalendarEvent;
+    event: CalendarEvent<ExtraData>;
   };
 
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: CalendarEvent<ExtraData> }): void => {
         this.handleEvent('Edited', event);
       }
     },
     {
       label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: CalendarEvent<ExtraData> }): void => {
         this.evnts = this.evnts.filter(iEvent => iEvent !== event);
         this.handleEvent('Deleted', event);
       }
     }
   ];
 
-
-  evnts: CustomCalendarEvent[] = [    
+  extraData: ExtraData;
+  
+  evnts: Array<CalendarEvent<{ extraData: ExtraData }>> = [    
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
+      extraData: {   
+         /* curDay is only set for the first event in the event list
+       for a clicked date. It is just a hack to pass the date clicked
+       to the daysEvents template since this information apparently is not
+       available to the <mwl-calendar-open-day-events> component.  It is, 
+       however, available in the parent compenent, <mwl-calendar-month-view>, as
+       viewDate, but since I done control this code I cannot pass it as
+       an input to the child template.  So my hack is to pass it in the Events list>. */
+        curDay: new Date() /* set default current day to "Today" */
+      },
       title: 'A 3 day event',
       color: colors.red,
       actions: this.actions,
@@ -144,14 +159,14 @@ export class MyCalendarComponent implements OnInit {
       },
       draggable: true
     }
-  ] as CalendarEvent[];
+  ];
   
-  handleEvent(action: string, event: CalendarEvent): void {
+  handleEvent(action: string, event: CalendarEvent<ExtraData>): void {
     this.modalData = { event, action };
     this.openModal(this.modalContent);
   }
 
-  dayClicked({ date, events }: { date: Date; events: CustomCalendarEvent[] }): void {
+  dayClicked({ date, events }: { date: Date; events: Array<CalendarEvent<ExtraData>>}): void {
     if (isSameMonth(date, this.vwDate)) {
       this.vwDate = date;
       if (
@@ -160,7 +175,8 @@ export class MyCalendarComponent implements OnInit {
       ) {
         this.activeDayIsOpen = false;
       } else {
-        events[0].curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
+        //events[0].curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
+        events[0].extraData.curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
         this.activeDayIsOpen = true;
       }
     }
@@ -172,9 +188,9 @@ export class MyCalendarComponent implements OnInit {
   wkStartsOn = DAYS_OF_WEEK.TUESDAY;
     
   ngOnInit() {
-    if (this.evnts[0]) {
-       this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
-    }
+  //  if (this.evnts[0]) {
+  //     this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
+  //  }
   }
 
 }
