@@ -44,7 +44,8 @@ const colors: any = {
 //};
 
 /* This interface replaces the CustomCalendarEvent interface above */
-/* Matt Lewis uses this approach in his code */
+/* Matt Lewis uses this approach in his code here 
+   https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
 interface ExtraEventData {   
    curDay : Date
 }
