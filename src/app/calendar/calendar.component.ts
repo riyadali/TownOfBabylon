@@ -43,6 +43,8 @@ const colors: any = {
 //    curDay: Date;      
 //};
 
+/* This interface replaces the CustomCalendarEvent interface above */
+/* Matt Lewis uses this approach in his code */
 interface ExtraData {   
    curDay : Date
 }
