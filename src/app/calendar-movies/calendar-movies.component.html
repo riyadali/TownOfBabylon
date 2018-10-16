@@ -1,9 +1,66 @@
+<!-- Calendar header -->
+<div class="row text-center">
+      <div class="col-md-4">
+        <div class="btn-group">
+          <div
+            class="btn btn-primary"
+            mwlCalendarPreviousView
+            [view]="vw"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="viewDateChange.next(vwDate)">
+            Previous
+          </div>
+          <div
+            class="btn btn-outline-secondary"
+            mwlCalendarToday
+            [(viewDate)]="vwDate"
+            (viewDateChange)="viewDateChange.next(vwDate)">
+            Today
+          </div>
+          <div
+            class="btn btn-primary"
+            mwlCalendarNextView
+            [view]="vw"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="viewDateChange.next(vwDate)">
+            Next
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h3>{{ vwDate | calendarDate:(vw + 'ViewTitle'):locale }}</h3>
+      </div>
+      <div class="col-md-4">
+        <div class="btn-group">
+          <div
+            class="btn btn-primary"
+            (click)="viewChange.emit('month')"
+            [class.active]="view === 'month'">
+            Month
+          </div>
+          <div
+            class="btn btn-primary"
+            (click)="viewChange.emit('week')"
+            [class.active]="view === 'week'">
+            Week
+          </div>
+          <div
+            class="btn btn-primary"
+            (click)="viewChange.emit('day')"
+            [class.active]="view === 'day'">
+            Day
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
 <mwl-demo-utils-calendar-header
   [(view)]="vw"
   [(viewDate)]="vwDate"
   (viewDateChange)="fetchEvents()"
   (viewChange)="fetchEvents()">
 </mwl-demo-utils-calendar-header>
+<!-- End calendar header -->
 
 <ng-template #loading>
   <div class="text-center">
