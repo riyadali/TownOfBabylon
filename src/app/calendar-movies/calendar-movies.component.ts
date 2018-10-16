@@ -59,7 +59,7 @@ export class MyCalendarMoviesComponent implements OnInit {
   vwWeek: string = 'week';
   vwDay: string = 'day';
   
-  vw: string = vwMonth; /* default view */
+  vw: string = this.vwMonth; /* default view */
   vwDate: Date = new Date();
 
   events$: Observable<Array<CalendarEvent<{ film: Film }>>>;
