@@ -113,15 +113,11 @@ export class MyCalendarComponent implements OnInit {
 
   /* extraEventData: ExtraEventData; */
   
+  // evnts: CustomCalendarEvent[] = [ 
   evnts: Array<CalendarEvent<ExtraEventData>> = [    
     {
       start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      extraEventData: {   
-         /* initially set curDay to "Today". It needs to be set for all events 
-            because one does not know which ones are for today */
-        curDay: new Date() /* set default current day to "Today" */
-      },
+      end: addDays(new Date(), 1),      
       title: 'A 3 day event',
       color: colors.red,
       actions: this.actions,
@@ -130,39 +126,36 @@ export class MyCalendarComponent implements OnInit {
         beforeStart: true,
         afterEnd: true
       },
-      draggable: true
+      draggable: true,
+      meta: {
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     },
     {
-      start: startOfDay(new Date()),
-      extraEventData: {   
-         /* initially set curDay to "Today". It needs to be set for all events 
-            because one does not know which ones are for today */
-        curDay: new Date() /* set default current day to "Today" */
-      },
+      start: startOfDay(new Date()),     
       title: 'An event with no end date',
       color: colors.yellow,
-      actions: this.actions
+      actions: this.actions,
+      meta: {  
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     },
     {
       start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      extraEventData: {   
-         /* initially set curDay to "Today". It needs to be set for all events 
-            because one does not know which ones are for today */
-        curDay: new Date() /* set default current day to "Today" */
-      },
+      end: addDays(endOfMonth(new Date()), 3),      
       title: 'A long event that spans 2 months',
       color: colors.blue,
-      allDay: true
+      allDay: true,
+      meta: {   
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     },
     {
       start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),
-      extraEventData: {   
-         /* initially set curDay to "Today". It needs to be set for all events 
-            because one does not know which ones are for today */
-        curDay: new Date() /* set default current day to "Today" */
-      },
+      end: new Date(),     
       title: 'A draggable and resizable event',
       color: colors.yellow,
       actions: this.actions,
@@ -170,9 +163,14 @@ export class MyCalendarComponent implements OnInit {
         beforeStart: true,
         afterEnd: true
       },
-      draggable: true
+      draggable: true,
+      meta: { 
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     }
   ];
+  //] as CalendarEvent[];
   
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
     this.modalData = { event, action };
