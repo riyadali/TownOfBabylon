@@ -1,5 +1,5 @@
 <mwl-demo-utils-calendar-header
-  [(view)]="vwMonth"
+  [(view)]="vw"
   [(viewDate)]="vwDate"
   (viewDateChange)="fetchEvents()"
   (viewChange)="fetchEvents()">
@@ -14,10 +14,10 @@
 </ng-template>
 
 <div *ngIf="events$ | async; else loading; let events">
-  <div [ngSwitch]="view">
+  <div [ngSwitch]="vw">
     <mwl-calendar-month-view
       *ngSwitchCase="'month'"
-      [viewDate]="viewDate"
+      [viewDate]="vwDate"
       [events]="events"
       [activeDayIsOpen]="activeDayIsOpen"
       (dayClicked)="dayClicked($event.day)"
@@ -25,13 +25,13 @@
     </mwl-calendar-month-view>
     <mwl-calendar-week-view
       *ngSwitchCase="'week'"
-      [viewDate]="viewDate"
+      [viewDate]="vwDate"
       [events]="events"
       (eventClicked)="eventClicked($event.event)">
     </mwl-calendar-week-view>
     <mwl-calendar-day-view
       *ngSwitchCase="'day'"
-      [viewDate]="viewDate"
+      [viewDate]="vwDate"
       [events]="events"
       (eventClicked)="eventClicked($event.event)">
     </mwl-calendar-day-view>
