@@ -54,6 +54,7 @@ const timezoneOffsetString = `T00:00:00${direction}${hoursOffset}${minutesOffset
 })
 
 export class MyCalendarMoviesComponent implements OnInit {
+  locale: string = 'en';
   
   vwMonth: string = 'month';
   vwWeek: string = 'week';
