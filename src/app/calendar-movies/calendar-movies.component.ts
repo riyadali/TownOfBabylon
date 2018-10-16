@@ -56,7 +56,10 @@ const timezoneOffsetString = `T00:00:00${direction}${hoursOffset}${minutesOffset
 export class MyCalendarMoviesComponent implements OnInit {
   
   vwMonth: string = 'month';
-
+  vwWeek: string = 'week';
+  vwDay: string = 'day';
+  
+  vw: string = vwMonth; /* default view */
   vwDate: Date = new Date();
 
   events$: Observable<Array<CalendarEvent<{ film: Film }>>>;
@@ -74,13 +77,13 @@ export class MyCalendarMoviesComponent implements OnInit {
       month: startOfMonth,
       week: startOfWeek,
       day: startOfDay
-    }[this.vwMonth];
+    }[this.vw];
 
     const getEnd: any = {
       month: endOfMonth,
       week: endOfWeek,
       day: endOfDay
-    }[this.vwMonth];
+    }[this.vw];
 
     const params = new HttpParams()
       .set(
