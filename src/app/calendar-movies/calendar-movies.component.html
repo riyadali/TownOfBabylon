@@ -34,19 +34,19 @@
         <div class="btn-group">
           <div
             class="btn btn-primary"
-            (click)="viewChange.emit('month')"
+            (click)="vw = vwMonth"
             [class.active]="vw === 'month'">
             Month
           </div>
           <div
             class="btn btn-primary"
-            (click)="viewChange.emit('week')"
+            (click)="vw = vwWeek"
             [class.active]="vw === 'week'">
             Week
           </div>
           <div
             class="btn btn-primary"
-            (click)="viewChange.emit('day')"
+            (click)="vw = vwDay"
             [class.active]="vw === 'day'">
             Day
           </div>
