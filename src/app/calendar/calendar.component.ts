@@ -187,7 +187,7 @@ export class MyCalendarComponent implements OnInit {
         this.activeDayIsOpen = false;
       } else {
         //events[0].curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
-        events[0].extraEventData.curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
+        events[0].meta.curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
         this.activeDayIsOpen = true;
       }
     }
