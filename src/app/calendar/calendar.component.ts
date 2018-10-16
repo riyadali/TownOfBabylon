@@ -32,7 +32,7 @@ const colors: any = {
 /* My custom calendar event - extended from Matt Lewis CalendarEvent found at
    https://github.com/mattlewis92/calendar-utils/blob/master/src/calendar-utils.ts
    */
-interface CustomCalendarEvent extends CalendarEvent {
+//interface CustomCalendarEvent extends CalendarEvent {
     /* curDay is only set for the first event in the event list
        for a clicked date. It is just a hack to pass the date clicked
        to the daysEvents template since this information apparently is not
@@ -40,8 +40,15 @@ interface CustomCalendarEvent extends CalendarEvent {
        however, available in the parent compenent, <mwl-calendar-month-view>, as
        viewDate, but since I done control this code I cannot pass it as
        an input to the child template.  So my hack is to pass it in the Events list>. */
-    curDay: Date;      
-};
+//    curDay: Date;      
+//};
+
+/* This interface replaces the CustomCalendarEvent interface above */
+/* Matt Lewis uses this approach in his code here 
+   https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
+interface ExtraEventData {   
+   curDay : Date
+}
 
 @Component({
   selector: 'app-calendar',
@@ -85,30 +92,32 @@ export class MyCalendarComponent implements OnInit {
 
    modalData: {
     action: string;
-    event: CalendarEvent;
+    event: CalendarEvent<ExtraEventData>;
   };
 
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.handleEvent('Edited', event);
       }
     },
     {
       label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
+      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.evnts = this.evnts.filter(iEvent => iEvent !== event);
         this.handleEvent('Deleted', event);
       }
     }
   ];
 
-
-  evnts: CustomCalendarEvent[] = [    
+  /* extraEventData: ExtraEventData; */
+  
+  // evnts: CustomCalendarEvent[] = [ 
+  evnts: Array<CalendarEvent<ExtraEventData>> = [    
     {
       start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
+      end: addDays(new Date(), 1),      
       title: 'A 3 day event',
       color: colors.red,
       actions: this.actions,
@@ -117,24 +126,36 @@ export class MyCalendarComponent implements OnInit {
         beforeStart: true,
         afterEnd: true
       },
-      draggable: true
+      draggable: true,
+      meta: {
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     },
     {
-      start: startOfDay(new Date()),
+      start: startOfDay(new Date()),     
       title: 'An event with no end date',
       color: colors.yellow,
-      actions: this.actions
+      actions: this.actions,
+      meta: {  
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     },
     {
       start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
+      end: addDays(endOfMonth(new Date()), 3),      
       title: 'A long event that spans 2 months',
       color: colors.blue,
-      allDay: true
+      allDay: true,
+      meta: {   
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     },
     {
       start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),
+      end: new Date(),     
       title: 'A draggable and resizable event',
       color: colors.yellow,
       actions: this.actions,
@@ -142,16 +163,21 @@ export class MyCalendarComponent implements OnInit {
         beforeStart: true,
         afterEnd: true
       },
-      draggable: true
+      draggable: true,
+      meta: { 
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
     }
-  ] as CalendarEvent[];
+  ];
+  //] as CalendarEvent[];
   
-  handleEvent(action: string, event: CalendarEvent): void {
+  handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
     this.modalData = { event, action };
     this.openModal(this.modalContent);
   }
 
-  dayClicked({ date, events }: { date: Date; events: CustomCalendarEvent[] }): void {
+  dayClicked({ date, events }: { date: Date; events: Array<CalendarEvent<ExtraEventData>>}): void {
     if (isSameMonth(date, this.vwDate)) {
       this.vwDate = date;
       if (
@@ -160,7 +186,8 @@ export class MyCalendarComponent implements OnInit {
       ) {
         this.activeDayIsOpen = false;
       } else {
-        events[0].curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
+        //events[0].curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
+        events[0].meta.curDay=date; /* hack to pass the date clicked to my custom dayEventsTemplate */
         this.activeDayIsOpen = true;
       }
     }
@@ -172,9 +199,9 @@ export class MyCalendarComponent implements OnInit {
   wkStartsOn = DAYS_OF_WEEK.TUESDAY;
     
   ngOnInit() {
-    if (this.evnts[0]) {
-       this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
-    }
+  //  if (this.evnts[0]) {
+  //     this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
+  //  }
   }
 
 }
