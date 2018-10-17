@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
@@ -56,6 +56,10 @@ const timezoneOffsetString = `T00:00:00${direction}${hoursOffset}${minutesOffset
 })
 
 export class MyCalendarMoviesComponent implements OnInit {
+  
+  @ViewChild('dayEventsTemplate')
+  dayEventsTemplate: TemplateRef<any>;
+  
   locale: string = 'en';
   
   vwMonth: string = 'month';
