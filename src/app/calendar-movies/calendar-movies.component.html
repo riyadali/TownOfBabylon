@@ -69,19 +69,19 @@
         <div class="btn-group">
           <button mdbBtn type="button" color="light-green" 
             class="waves-light btn-md myrounded" mdbWavesEffect
-              (click)="vw = vwMonth"
+              (click)="vw = vwMonth; fetchEvents()"
               [class.active]="vw === 'month'">
               Month
           </button>
           <button mdbBtn type="button" color="light-green" 
             class="waves-light btn-md" mdbWavesEffect
-              (click)="vw = vwWeek"
+              (click)="vw = vwWeek; fetchEvents()"
               [class.active]="vw === 'week'">
               Week
           </button>
           <button mdbBtn type="button" color="light-green" 
             class="waves-light btn-md myrounded" mdbWavesEffect
-              (click)="vw = vwDay"
+              (click)="vw = vwDay; fetchEvents()"
               [class.active]="vw === 'day'">
               Day
           </button>
