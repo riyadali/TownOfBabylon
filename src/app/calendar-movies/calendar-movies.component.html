@@ -2,54 +2,54 @@
 <div class="row text-center">
       <div class="col-md-4">
         <div class="btn-group">
-          <div
-            class="btn btn-primary"
-            mwlCalendarPreviousView
-            [view]="vw"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="fetchEvents()">
-            Previous
-          </div>
-          <div
-            class="btn btn-outline-secondary"
-            mwlCalendarToday
-            [(viewDate)]="vwDate"
-            (viewDateChange)="fetchEvents()">
-            Today
-          </div>
-          <div
-            class="btn btn-primary"
-            mwlCalendarNextView
-            [view]="vw"
-            [(viewDate)]="vwDate"
-            (viewDateChange)="fetchEvents()">
-            Next
-          </div>
+          <button mdbBtn type="button" color="light-green" 
+            class="waves-light btn-sm myrounded" mdbWavesEffect
+              mwlCalendarPreviousView
+              [view]="vw"
+              [(viewDate)]="vwDate"
+              (viewDateChange)="fetchEvents()">
+              <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </button>
+          <button mdbBtn type="button" color="amber" 
+            class="waves-light btn-md" mdbWavesEffect
+              mwlCalendarToday
+              [(viewDate)]="vwDate"
+              (viewDateChange)="fetchEvents()">
+              Today
+          </button>
+          <button mdbBtn type="button" color="light-green" 
+            class="waves-light btn-sm myrounded" mdbWavesEffect
+              mwlCalendarNextView
+              [view]="vw"
+              [(viewDate)]="vwDate"
+              (viewDateChange)="fetchEvents()">
+              <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
       <div class="col-md-4">
-        <h3>{{ vwDate | calendarDate:(vw + 'ViewTitle'):locale }}</h3>
+        <h5 class="myh5">{{ vwDate | calendarDate:(vw + 'ViewTitle'):locale }}</h5>
       </div>
       <div class="col-md-4">
         <div class="btn-group">
-          <div
-            class="btn btn-primary"
-            (click)="vw = vwMonth"
-            [class.active]="vw === 'month'">
-            Month
-          </div>
-          <div
-            class="btn btn-primary"
-            (click)="vw = vwWeek"
-            [class.active]="vw === 'week'">
-            Week
-          </div>
-          <div
-            class="btn btn-primary"
-            (click)="vw = vwDay"
-            [class.active]="vw === 'day'">
-            Day
-          </div>
+          <button mdbBtn type="button" color="light-green" 
+            class="waves-light btn-md myrounded" mdbWavesEffect
+              (click)="vw = vwMonth"
+              [class.active]="vw === 'month'">
+              Month
+          </button>
+          <button mdbBtn type="button" color="light-green" 
+            class="waves-light btn-md" mdbWavesEffect
+              (click)="vw = vwWeek"
+              [class.active]="vw === 'week'">
+              Week
+          </button>
+          <button mdbBtn type="button" color="light-green" 
+            class="waves-light btn-md myrounded" mdbWavesEffect
+              (click)="vw = vwDay"
+              [class.active]="vw === 'day'">
+              Day
+          </button>
         </div>
       </div>
     </div>
