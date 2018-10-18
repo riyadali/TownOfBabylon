@@ -40,11 +40,18 @@ interface Film {
 };
 
 const timezoneOffset = new Date().getTimezoneOffset();
-const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).padStart(
+/*const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).padStart(
   2,
   '0'
-);
-const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
+); */
+const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).length==1? 
+      '0' + String(Math.floor(Math.abs(timezoneOffset / 60))) : 
+      String(Math.floor(Math.abs(timezoneOffset / 60)));
+
+/*const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0')*/
+const minutesOffset = String(Math.abs(timezoneOffset % 60)).length==1? 
+      '0' + String(Math.abs(timezoneOffset % 60)) : 
+      String(Math.abs(timezoneOffset % 60));
 const direction = timezoneOffset > 0 ? '-' : '+';
 const timezoneOffsetString = `T00:00:00${direction}${hoursOffset}${minutesOffset}`;
 
