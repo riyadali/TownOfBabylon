@@ -53,6 +53,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 
 
+
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
 
@@ -117,6 +118,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     
     MyCalendarComponent,
     MyCalendarMoviesComponent,
+
     
     
     PageHomeComponent,

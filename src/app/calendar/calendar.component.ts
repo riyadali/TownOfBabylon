@@ -50,6 +50,7 @@ interface ExtraEventData {
    curDay : Date
 }
 
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -202,6 +203,7 @@ export class MyCalendarComponent implements OnInit {
   //  if (this.evnts[0]) {
   //     this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
   //  }
+
   }
 
 }
