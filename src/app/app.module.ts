@@ -45,6 +45,7 @@ import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
 import {MyCalendarComponent} from './calendar/calendar.component';
+import {MyCalendarMoviesComponent} from './calendar-movies/calendar-movies.component';
 
 /* To include Matt Lewis calendar -- refer to site https://github.com/mattlewis92/angular-calendar */
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -115,6 +116,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     StandardPageComponent,
     
     MyCalendarComponent,
+    MyCalendarMoviesComponent,
     
     
     PageHomeComponent,
