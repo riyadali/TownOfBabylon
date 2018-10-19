@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CalendarEvent } from 'angular-calendar';
+import { collapseAnimation } from 'angular-calendar'; /* refer to 
+    https://github.com/mattlewis92/angular-calendar/issues/747 */
 
 import {
   isSameMonth,
@@ -43,7 +45,7 @@ interface Film {
 @Component({
   selector: 'app-calendar-movies',
   templateUrl: './calendar-movies.component.html',
- /* animations: [collapseAnimation], */
+  animations: [collapseAnimation],
   styleUrls: ['./calendar-movies.component.scss']
 })
 
