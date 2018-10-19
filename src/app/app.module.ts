@@ -9,7 +9,9 @@ import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; /* ngx-bootstrap dropdown package see https://valor-software.com/ngx-bootstrap/#/dropdowns#usage*/
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { MatMenuModule, MatButtonModule, MatIconModule, MatCardModule, MatSidenavModule, MatToolbarModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule } from '@angular/material';
+import {MatTabsModule} from '@angular/material/tabs'; /* for tabs on web page */
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
@@ -43,6 +45,12 @@ import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
 import {MyCalendarComponent} from './calendar/calendar.component';
+import {MyCalendarMoviesComponent} from './calendar-movies/calendar-movies.component';
+
+/* To include Matt Lewis calendar -- refer to site https://github.com/mattlewis92/angular-calendar */
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+
 
 
 
@@ -63,12 +71,19 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     MatFormFieldModule, 
     MatInputModule, 
     MatAutocompleteModule,
+    MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),
+    ModalModule.forRoot(), /* ngx-bootstrap modal */
     MDBBootstrapModule.forRoot(),
+    
+    CalendarModule.forRoot({  /* To include Matt Lewis calendar */
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
@@ -102,6 +117,8 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     StandardPageComponent,
     
     MyCalendarComponent,
+    MyCalendarMoviesComponent,
+
     
     
     PageHomeComponent,

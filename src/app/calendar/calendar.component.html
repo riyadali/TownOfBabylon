@@ -1,1 +1,189 @@
-Calendar works!
+<ng-template
+      #dayEventsTemplate
+      let-events="events"
+      let-eventClicked="eventClicked"
+      let-isOpen="isOpen">
+      <div class="cal-open-day-events special-color-dark" [@collapse] *ngIf="isOpen">
+         <h5 *ngIf="events[0]">Events for {{ events[0]?.meta?.curDay | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
+        <div
+          *ngFor="let event of events; trackBy:trackByEventId"
+          [ngClass]="event?.cssClass"
+          mwlDraggable
+          [class.cal-draggable]="event.draggable"
+          dragActiveClass="cal-drag-active"
+          [dropData]="{event: event}"
+          [dragAxis]="{x: event.draggable, y: event.draggable}">
+          <span
+            class="cal-event"
+            [style.backgroundColor]="event.color?.primary">
+          </span>
+          &ngsp;          
+          <mwl-calendar-event-title
+            [event]="event"
+            [customTemplate]="eventTitleTemplate"
+            view="month"
+            (mwlClick)="eventClicked.emit({event: event})">
+          </mwl-calendar-event-title>
+          &ngsp;
+          <mwl-calendar-event-actions
+            [event]="event"
+            [customTemplate]="eventActionsTemplate">
+          </mwl-calendar-event-actions>
+        </div>
+      </div>
+</ng-template>
+
+<ng-template #modalContent>
+  <div class="modal-header">
+    <h5 class="modal-title">Event action occurred</h5>
+    <button type="button" class="close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      Action:
+      <pre>{{ modalData?.action }}</pre>
+    </div>
+    <div>
+      Event:
+      <pre>{{ modalData?.event | json }}</pre>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()">OK</button>
+  </div>
+</ng-template>
+<!-- TITLE ROW -->
+<div class="row text-center">
+
+  <!-- Button group to navigate through date -->
+  <div class="col-md-4">
+    
+    <div class="btn-group">
+        <!-- Previous button -->
+        <button mdbBtn type="button" color="light-green" 
+          class="waves-light btn-sm myrounded" mdbWavesEffect
+            mwlCalendarPreviousView
+            [view]="vw"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="activeDayIsOpen = false">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </button>
+      
+        <!-- Today button -->
+        <button mdbBtn type="button" color="amber" 
+          class="waves-light btn-md" mdbWavesEffect
+            mwlCalendarToday
+            [(viewDate)]="vwDate">
+            Today
+        </button>
+
+        <!-- Next button -->
+        <button mdbBtn type="button" color="light-green" 
+          class="waves-light btn-sm myrounded" mdbWavesEffect
+            mwlCalendarNextView
+            [view]="vw"
+            [(viewDate)]="vwDate"
+            (viewDateChange)="activeDayIsOpen = false">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </button>      
+    </div>
+    
+  <!-- End button group to navigate through date -->
+  </div>
+
+  <!-- View Title -->
+  <div class="col-md-4">     
+      <h5 class="myh5">{{ vwDate | calendarDate:(vw + 'ViewTitle'): locale }}</h5>
+  </div>
+    
+  <!-- Button group to switch between different calendar views -->  
+  <div class="col-md-4">
+    
+    <div class="btn-group">
+      <!-- Month view - the default -->
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md myrounded" mdbWavesEffect
+          (click)="vw = vwMonth; vwClicked = vwMonth"
+          [class.active]="vwClicked === vwMonth">
+          Month
+      </button>
+      
+      <!-- Week view -->
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md" mdbWavesEffect
+          (click)="vw = vwWeek; vwClicked = vwWeek"
+          [class.active]="vwClicked === vwWeek">
+          Week
+      </button>
+      
+      <!-- Day view -->
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md" mdbWavesEffect
+          (click)="vw = vwDay; vwClicked = vwDay"
+          [class.active]="vwClicked === vwDay">
+          Day
+      </button>
+      
+      <!-- Work day view -->
+      <button mdbBtn type="button" color="light-green" 
+        class="waves-light btn-md myrounded" mdbWavesEffect
+          (click)="vw = vwDay; vwClicked = vwWDay"
+          [class.active]="vwClicked === vwWDay">
+          8hrDay
+      </button>      
+    </div>     
+  
+  <!-- End button group to switch between different calendar views -->  
+  </div>
+  
+<!-- END TITLE ROW -->
+</div>
+<br/>
+   
+<!-- Various views controlled by ngSwitch vwClicked -->
+<div [ngSwitch]="vwClicked">
+      
+    <!-- Month view - the default -->
+    <mwl-calendar-month-view
+        *ngSwitchCase="vwMonth"
+        [viewDate]="vwDate"
+        [activeDayIsOpen]="activeDayIsOpen"
+        (dayClicked)="dayClicked($event.day)"
+        (eventClicked)="handleEvent('Clicked', $event.event)"
+        [openDayEventsTemplate]="dayEventsTemplate"        
+        [events]="evnts">
+    </mwl-calendar-month-view>
+      
+    <!-- Week view -->
+    <mwl-calendar-week-view
+        *ngSwitchCase="vwWeek"    
+        [viewDate]="vwDate"
+        [events]="evnts"
+        (eventClicked)="handleEvent('Clicked', $event.event)"
+        [excludeDays]="exclDays"
+        [weekStartsOn]="wkStartsOn">
+    </mwl-calendar-week-view>
+      
+    <!-- Full day view -->
+    <mwl-calendar-day-view
+        *ngSwitchCase="vwDay"
+        [viewDate]="vwDate"
+        [events]="evnts"
+        (eventClicked)="handleEvent('Clicked', $event.event)"
+        [hourSegments]="4">
+    </mwl-calendar-day-view>
+      
+    <!-- Work day view -->
+    <mwl-calendar-day-view
+        *ngSwitchCase="vwWDay"
+        [viewDate]="vwDate"
+        [events]="evnts"
+        (eventClicked)="handleEvent('Clicked', $event.event)"
+        [dayStartHour]="9"
+        [dayEndHour]="17">  
+    </mwl-calendar-day-view>
+  
+<!-- End various views -->
+</div> 
