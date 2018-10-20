@@ -47,6 +47,8 @@ import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 import {MyCalendarComponent} from './calendar/calendar.component';
 import {MyCalendarMoviesComponent} from './calendar-movies/calendar-movies.component';
 
+import { ngIcal } from 'angular-ical';
+
 /* To include Matt Lewis calendar -- refer to site https://github.com/mattlewis92/angular-calendar */
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -125,7 +127,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     PageDoingBusinessInBabylonComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService]
+  providers: [TransactionService, SearchService ]
 })
 export class AppModule { }
 
