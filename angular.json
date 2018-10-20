@@ -55,6 +55,9 @@
                 "input": "~chart.js/dist/Chart.js"
               },
               {
+                "input": "~icaljs/ical.js"
+              },
+              {
                 "input": "~hammerjs/hammer.min.js"
               }    
             ]
