@@ -47,7 +47,8 @@ import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 import {MyCalendarComponent} from './calendar/calendar.component';
 import {MyCalendarMoviesComponent} from './calendar-movies/calendar-movies.component';
 
-import { ngIcal } from 'angular-ical';
+/* angular-ical is an Angular factory wrapper for ical.js */
+import { ngIcal } from 'angular-ical/dist/js/angular-ical.js';
 
 /* To include Matt Lewis calendar -- refer to site https://github.com/mattlewis92/angular-calendar */
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -120,6 +121,8 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     
     MyCalendarComponent,
     MyCalendarMoviesComponent,
+    
+    ngIcal,
 
     
     
