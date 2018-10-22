@@ -55,7 +55,7 @@
                 "input": "~chart.js/dist/Chart.js"
               },
               {
-                "input": "~icaljs/ical.js"              
+                "input": "~ical.js/build/ical.js"              
               },
               {
                 "input": "~angular-ical/dist/js/angular-ical.js"                
