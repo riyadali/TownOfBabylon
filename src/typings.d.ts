@@ -4,4 +4,4 @@ interface NodeModule {
   id: string;
 }
 
-declare module "icaljs";
+declare module "ics-parser";
