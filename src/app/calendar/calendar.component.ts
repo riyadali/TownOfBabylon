@@ -12,7 +12,9 @@ import {
   isSameDay,
   isSameMonth,
   addHours
-} from 'date-fns';   
+} from 'date-fns'; 
+
+import * as myical from 'icaljs';
 
 const colors: any = {
   red: {
