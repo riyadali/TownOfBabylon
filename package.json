@@ -31,7 +31,7 @@
     "font-awesome": "4.7.0",
     "angular-calendar": "^0.26.1",
     "date-fns": "^1.29.0",    
-    "ics-parser": "^0.1.5"
+    "ics-to-json": "^0.2.1"
   },
   "version": "0.0.0",
   "license": "MIT",
