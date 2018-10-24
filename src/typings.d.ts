@@ -4,4 +4,4 @@ interface NodeModule {
   id: string;
 }
 
-declare module "ics-parser";
+declare module "ics-to-json";
