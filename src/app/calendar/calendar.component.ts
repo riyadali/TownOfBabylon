@@ -286,7 +286,8 @@ DTEND;VALUE=DATE:20111203
 END:VEVENT
 
 END:VCALENDAR`;
-    var tstevents =myics.parseICS(iCalendarData);
+    var data = icsParser.icsToJson(iCalendarData);
+  console.log(data.startDate)
 
   }
 
