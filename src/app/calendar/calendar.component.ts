@@ -14,7 +14,7 @@ import {
   addHours
 } from 'date-fns'; 
 
-import * as myics from 'ics-parser';
+import * as icsParser from 'ics-to-json';
 
 const colors: any = {
   red: {
