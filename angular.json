@@ -55,7 +55,7 @@
                 "input": "~chart.js/dist/Chart.js"
               },
               {
-                "input": "~ics-parser.js/lib/index.js"              
+                "input": "~ics-to-json/index.js"              
               },
               {
                 "input": "~hammerjs/hammer.min.js"
