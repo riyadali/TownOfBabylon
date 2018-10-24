@@ -14,6 +14,7 @@ import {
   addHours
 } from 'date-fns'; 
 
+import "regenerator-runtime/runtime.js";
 import * as icsParser from 'ics-to-json';
 
 const colors: any = {
