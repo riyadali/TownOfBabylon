@@ -276,7 +276,7 @@ LOCATION: -   Babylon NY 11702
 DESCRIPTION:Supervisor Rich Schaffer and the rest of the Town Board invite you to compete in the 2018 Autumn Surf Fishing Tournament! See below for the registration application. http://www.townofbabylon.com/calendar.aspx?EID=1193
 END:VEVENT
 END:VCALENDAR`;
-    var parsedData = icsParser.default(iCalendarData).then(function(xs) {
+    var parsedData = icsParser.default(iCalendarData).then(function(xs:IIcsCalendarEvent[]) {
    
      xs.forEach((x)=>{
        console.log(x.startDate+"--"+x.summary+"--"+x.description);
