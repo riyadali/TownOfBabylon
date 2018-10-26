@@ -4,4 +4,6 @@ interface NodeModule {
   id: string;
 }
 
-declare module "ics-to-json";
+declare module "ics-to-json"{ 
+    export function icsToJson(p: string): any; 
+}
