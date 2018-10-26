@@ -50,10 +50,10 @@
                 "input": "src/styles.scss"
               }
             ],
-            "scripts": [
+             "scripts": [
               {
                 "input": "~chart.js/dist/Chart.js"
-              },            
+              },
               {
                 "input": "~hammerjs/hammer.min.js"
               }    
