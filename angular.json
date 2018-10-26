@@ -53,10 +53,7 @@
             "scripts": [
               {
                 "input": "~chart.js/dist/Chart.js"
-              },
-               {
-                "input": "~ics-to-json/dist.js"              
-              },
+              },               
               {
                 "input": "~hammerjs/hammer.min.js"
               }    
