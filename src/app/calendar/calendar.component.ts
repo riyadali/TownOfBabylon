@@ -206,88 +206,83 @@ export class MyCalendarComponent implements OnInit {
   //  if (this.evnts[0]) {
   //     this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
   //  }
-    var iCalendarData = `BEGIN:VCALENDAR
-PRODID:-//lanyrd.com//Lanyrd//EN
-X-ORIGINAL-URL:http://lanyrd.com/topics/nodejs/nodejs.ics
-X-WR-CALNAME;CHARSET=utf-8:Node.js conferences
+        var iCalendarData = `BEGIN:VCALENDAR
 VERSION:2.0
-METHOD:PUBLISH
+PRODID:iCalendar-Ruby
 BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:Dyncon 2011
-LOCATION;CHARSET=utf-8:Stockholm, Sweden
-URL:http://lanyrd.com/2011/dyncon/
-UID:d4c826dfb701f611416d69b4df81caf9ff80b03a
-DTSTART:20110312T200000Z
-DTEND;VALUE=DATE:20110314
+UID:6f167814-916e-4cfa-9b50-29b2a1b1aee4@ny-babylon.civicplus.com
+URL:/common/modules/iCalendar/iCalendar.aspx?feed=calendar&catID=14
+CREATED:20181026T173007Z
+LAST-MODIFIED:20180109T182025Z
+SUMMARY:Town Board Meeting
+DTSTART:20181219T203000Z
+DTEND:20181220T045900Z
+LOCATION:Town Hall - 200 East Sunrise Highway  Lindenhurst NY 11757
+DESCRIPTION:There will be a regularly scheduled meeting of the Babylon Town Board on this date to be held at Babylon Town Hall. \n http://www.townofbabylon.com/calendar.aspx?EID=1147
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:[Async]: Everything Express
-LOCATION;CHARSET=utf-8:Brighton, United Kingdom
-URL:http://lanyrd.com/2011/asyncjs-express/
-UID:480a3ad48af5ed8965241f14920f90524f533c18
-DTSTART;VALUE=DATE:20110324
-DTEND;VALUE=DATE:20110325
+UID:d6e30eef-7b05-4d1a-be75-41ea3a8d492b@ny-babylon.civicplus.com
+URL:/common/modules/iCalendar/iCalendar.aspx?feed=calendar&catID=14
+CREATED:20181026T173007Z
+LAST-MODIFIED:20180109T181954Z
+SUMMARY:Town Board Meeting
+DTSTART:20181205T203000Z
+DTEND:20181206T045900Z
+LOCATION:Town Hall - 200 East Sunrise Highway  Lindenhurst NY 11757
+DESCRIPTION:There will be a regularly scheduled meeting of the Babylon Town Board on this date to be held at Babylon Town Hall. \n http://www.townofbabylon.com/calendar.aspx?EID=1146
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:JSConf US 2011
-LOCATION;CHARSET=utf-8:Portland, United States
-URL:http://lanyrd.com/2011/jsconf/
-UID:ed334cc85db5ebdff5ff5a630a7a48631a677dbe
-DTSTART;VALUE=DATE:20110502
-DTEND;VALUE=DATE:20110504
-ORGANIZER;CN=John Doe:MAILTO:john.doe@example.com
+UID:40987287-aac1-4961-89fa-cc694688aca6@ny-babylon.civicplus.com
+URL:/common/modules/iCalendar/iCalendar.aspx?feed=calendar&catID=14
+CREATED:20181026T173007Z
+LAST-MODIFIED:20180109T181913Z
+SUMMARY:Town Board Meeting
+DTSTART:20181115T203000Z
+DTEND:20181116T045900Z
+LOCATION:Town Hall - 200 East Sunrise Highway  Lindenhurst NY 11757
+DESCRIPTION:There will be a regularly scheduled meeting of the Babylon Town Board on this date to be held at Babylon Town Hall. \n http://www.townofbabylon.com/calendar.aspx?EID=1145
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:NodeConf 2011
-LOCATION;CHARSET=utf-8:Portland, United States
-URL:http://lanyrd.com/2011/nodeconf/
-UID:25169a7b1ba5c248278f47120a40878055dc8c15
-DTSTART;VALUE=DATE:20110505
-DTEND;VALUE=DATE:20110506
-ORGANIZER:MAILTO:john.doe@example.com
+UID:bb3abeaf-8ce9-47f7-9ae3-cb20fca7ec7c@ny-babylon.civicplus.com
+URL:/common/modules/iCalendar/iCalendar.aspx?feed=calendar&catID=14
+CREATED:20181026T173007Z
+LAST-MODIFIED:20181003T204311Z
+SUMMARY:Hope for the Warriors Run
+DTSTART:20181110T110000Z
+DTEND:20181111T045900Z
+LOCATION:Town Hall - 200 East Sunrise Highway  Lindenhurst NY 11757
+DESCRIPTION:Come participate in the annual Run for the Warriors! Participants can run in either a 10K, 5K or one-mile course. See the flyer for more details, and register here: http://www.athlinks.com/event/11th-annual-run-for-the-warriors-long-island-9510 http://www.townofbabylon.com/calendar.aspx?EID=1201
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:BrazilJS
-LOCATION;CHARSET=utf-8:Fortaleza, Brazil
-URL:http://lanyrd.com/2011/braziljs/
-UID:dafee3be83624f3388c5635662229ff11766bb9c
-DTSTART;VALUE=DATE:20110513
-DTEND;VALUE=DATE:20110515
+UID:9fddeca9-5584-4209-bcab-b8d612f336e7@ny-babylon.civicplus.com
+URL:/common/modules/iCalendar/iCalendar.aspx?feed=calendar&catID=14
+CREATED:20181026T173007Z
+LAST-MODIFIED:20180109T181832Z
+SUMMARY:Town Board Meeting
+DTSTART:20181108T203000Z
+DTEND:20181109T045900Z
+LOCATION:Town Hall - 200 East Sunrise Highway  Lindenhurst NY 11757
+DESCRIPTION:There will be a regularly scheduled meeting of the Babylon Town Board on this date to be held at Babylon Town Hall. \n http://www.townofbabylon.com/calendar.aspx?EID=1144
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:Falsy Values
-LOCATION;CHARSET=utf-8:Warsaw, Poland
-URL:http://lanyrd.com/2011/falsy-values/
-UID:73cad6a09ac4e7310979c6130f871d17d990b5ad
-DTSTART;VALUE=DATE:20110518
-DTEND;VALUE=DATE:20110521
+UID:9e097c9d-d71c-4905-a896-74d85458944b@ny-babylon.civicplus.com
+URL:/common/modules/iCalendar/iCalendar.aspx?feed=calendar&catID=14
+CREATED:20181026T173007Z
+LAST-MODIFIED:20180820T132848Z
+SUMMARY:Babylon Autumn Surf Fishing Tournament 2018
+DTSTART:20181026T210000Z
+DTEND:20181028T160000Z
+LOCATION: -   Babylon NY 11702
+DESCRIPTION:Supervisor Rich Schaffer and the rest of the Town Board invite you to compete in the 2018 Autumn Surf Fishing Tournament! See below for the registration application. http://www.townofbabylon.com/calendar.aspx?EID=1193
 END:VEVENT
-BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:nodecamp.eu
-LOCATION;CHARSET=utf-8:Cologne, Germany
-URL:http://lanyrd.com/2011/nodecampde/
-UID:b728a5fdb5f292b6293e4a2fd97a1ccfc69e9d6f
-DTSTART;VALUE=DATE:20110611
-DTEND;VALUE=DATE:20110613
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:Rich Web Experience 2011
-LOCATION;CHARSET=utf-8:Fort Lauderdale, United States
-URL:http://lanyrd.com/2011/rich-web-experience/
-UID:47f6ea3f28af2986a2192fa39a91fa7d60d26b76
-DTSTART;VALUE=DATE:20111129
-DTEND;VALUE=DATE:20111203
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY;CHARSET=utf-8:Foobar
-UID:sdfkf09fsd0
-DTSTART;VALUE=DATE:Next Year
-DTEND;VALUE=DATE:20111203
-END:VEVENT
-
 END:VCALENDAR`;
-    var data = icsParser.icsToJson(iCalendarData);
-  console.log(data.startDate)
+    var parsedData = icsParser.default(iCalendarData).then(function(xs) {
+   
+     xs.forEach((x)=>{
+       console.log(x.startDate+"--"+x.summary+"--"+x.description);
+     });
+        
+});
 
   }
 
