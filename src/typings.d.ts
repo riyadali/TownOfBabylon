@@ -5,5 +5,14 @@ interface NodeModule {
 }
 
 declare module "ics-to-json"{ 
-    export function icsToJson(p: string): any; 
+   /* export function icsToJson(p: string): any; */
+   export default function (string) : any;
+}
+
+interface ICalendarEvent {
+  startDate: string;
+  endDate: string;
+  description: string;
+  summary: string;
+  location: string;
 }
