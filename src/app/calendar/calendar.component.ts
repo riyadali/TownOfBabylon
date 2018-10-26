@@ -15,7 +15,7 @@ import {
 } from 'date-fns'; 
 
 import "regenerator-runtime/runtime.js";
-import * as icsParser from '../../javascript/ics-to-json';
+import * as icsParser from 'ics-to-json';
 
 const colors: any = {
   red: {
