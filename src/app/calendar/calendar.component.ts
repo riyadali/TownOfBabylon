@@ -1,4 +1,9 @@
 import { Component, OnInit, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -6,11 +11,15 @@ import { collapseAnimation } from 'angular-calendar'; /* refer to https://github
 import {
   startOfDay,
   endOfDay,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
   subDays,
   addDays,
-  endOfMonth,
   isSameDay,
   isSameMonth,
+  format,
   addHours
 } from 'date-fns'; 
 
@@ -52,6 +61,15 @@ const colors: any = {
 interface ExtraEventData {   
    curDay : Date
 }
+
+interface BabylonEvent {  
+  start: Date;
+  end: Date;
+  location: string;
+  summary: string; 
+  description: string;  
+  url: URL;
+};
 
 
 @Component({
@@ -117,6 +135,7 @@ export class MyCalendarComponent implements OnInit {
 
   /* extraEventData: ExtraEventData; */
   
+  events$: Observable<Array<CalendarEvent<BabylonEvent>>>;
   // evnts: CustomCalendarEvent[] = [ 
   evnts: Array<CalendarEvent<ExtraEventData>> = [    
     {
@@ -284,6 +303,41 @@ END:VCALENDAR`;
         
 });
 
+  }
+
+  fetchEvents(): void {
+    
+    const params = new HttpParams()
+      .set(
+        'primary_release_date.gte',
+        format(startOfDay(this.vwDate), 'YYYY-MM-DD')
+      )
+      .set(
+        'primary_release_date.lte',
+        format(endOfDay(this.vwDate), 'YYYY-MM-DD')
+      )
+      .set('api_key', '0ec33936a68018857d727958dca1424f');
+
+    this.events$ = this.http
+      .get('https://api.themoviedb.org/3/discover/movie', { params })
+      .pipe(
+        map(({ results }: { results: BabylonEvent[] }) => {
+          return results.map((bEvent: BabylonEvent) => {
+            return {
+             /* title: bEvent.summary, */
+              start: new Date(bEvent.start),
+              color: colors.yellow,
+              meta: {
+                bEvent
+              }
+            };
+          });
+        })
+      );
+
+      const subscribe = this.events$.subscribe(val => console.log(val));
+
+    
   }
 
 }
