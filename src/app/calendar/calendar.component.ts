@@ -88,7 +88,7 @@ export class MyCalendarComponent implements OnInit {
   
   modalRef: BsModalRef;
 
-  constructor(private modalService: BsModalService) {}
+  constructor(private modalService: BsModalService, private http: HttpClient) {}
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
