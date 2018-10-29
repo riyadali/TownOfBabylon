@@ -75,6 +75,7 @@
         <button mdbBtn type="button" color="amber" 
           class="waves-light btn-md" mdbWavesEffect
             mwlCalendarToday
+            (viewDateChange)="fetchEvents()"
             [(viewDate)]="vwDate">
             Today
         </button>
