@@ -325,7 +325,7 @@ END:VCALENDAR`;
     bData$ = this.http
       .get('/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', {headers: httpHeaders, responseType: 'text'})
       .pipe(
-        map((evnts: String) => { return evnts;)
+        map((evnts: String) => { return evnts;})
       );
 
       const subscribe = bData$.subscribe(val => console.log(val));
