@@ -68,7 +68,7 @@ interface BabylonEvent {
 /*  location: string; */
 /*  summary: string;  */
 /*  description: string;  */
-  url: str;
+  url: string;
 };
 
 
