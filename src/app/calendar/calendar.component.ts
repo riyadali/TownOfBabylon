@@ -63,11 +63,11 @@ interface ExtraEventData {
 }
 
 interface BabylonEvent {  
-  start: Date;
-  end: Date;
-  location: string;
-  summary: string; 
-  description: string;  
+ /* start: Date; */
+ /* end: Date; */
+/*  location: string; */
+/*  summary: string;  */
+/*  description: string;  */
   url: URL;
 };
 
@@ -325,7 +325,7 @@ END:VCALENDAR`;
           return results.map((bEvent: BabylonEvent) => {
             return {
               title: "Some Title", 
-              start: new Date(bEvent.start), 
+              start: new Date(), 
               color: colors.yellow,
               meta: {
                 bEvent
