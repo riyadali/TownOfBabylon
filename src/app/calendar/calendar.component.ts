@@ -324,8 +324,8 @@ END:VCALENDAR`;
         map(({ results }: { results: BabylonEvent[] }) => {
           return results.map((bEvent: BabylonEvent) => {
             return {
-             /* title: bEvent.summary, */
-             /* start: new Date(bEvent.start), */
+              title: "Some Title", 
+              start: new Date(bEvent.start), 
               color: colors.yellow,
               meta: {
                 bEvent
