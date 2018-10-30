@@ -328,16 +328,17 @@ END:VCALENDAR`;
         map((evnts: String) => { return evnts;})
       );
 
+      var bEvents: IIcsCalendarEvent[];
       const subscribe = bData$.subscribe(val => {
-          this.events$ = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
-            xs.map((x:IIcsCalendarEvent)=>{
+          this.events$ = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) : BabylonEvent[] {
+            return xs.map((x:IIcsCalendarEvent)=>{
               console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
               return {
                 title: x.summary,
                 start: new Date(),
                 color: colors.yellow,
-                meta: {
-                  url: "www.link.com",
+                url: "www.link.com",
+                meta: {                  
                   x
                 }
               }; /* end return */
@@ -345,7 +346,7 @@ END:VCALENDAR`;
           }); /* end then */
       }); /* end subscribe */
 
-      console.log("++++events+++"+events$);
+      console.log("++++events+++"+bEvents);
 
     
   }
