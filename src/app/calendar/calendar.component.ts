@@ -329,12 +329,23 @@ END:VCALENDAR`;
       );
 
       const subscribe = bData$.subscribe(val => {
-          var parsedData = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
-            xs.forEach((x)=>{
+          this.events$ = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
+            xs.map((x:IIcsCalendarEvent)=>{
               console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
-            });
-          });
-      });
+              return {
+                title: x.summary,
+                start: new Date(),
+                color: colors.yellow,
+                meta: {
+                  url: "www.link.com",
+                  x
+                }
+              }; /* end return */
+            }); /* end map */
+          }); /* end then */
+      }); /* end subscribe */
+
+      console.log("++++events+++"+events$;
 
     
   }
