@@ -328,7 +328,12 @@ END:VCALENDAR`;
         map((evnts: String) => { return evnts;})
       );
 
-      const subscribe = bData$.subscribe(val => console.log(val));
+      const subscribe = bData$.subscribe(val => {
+          var parsedData = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
+            xs.forEach((x)=>{
+            console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
+         });
+      });
 
     
   }
