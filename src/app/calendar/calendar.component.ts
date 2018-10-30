@@ -319,7 +319,7 @@ END:VCALENDAR`;
       .set('api_key', '0ec33936a68018857d727958dca1424f');
 
     this.events$ = this.http
-      .get('https://www.townofbabylon.com/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar')
+      .get('/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar')
       .pipe(
         map(({ results }: { results: BabylonEvent[] }) => {
           return results.map((bEvent: BabylonEvent) => {
