@@ -345,7 +345,7 @@ END:VCALENDAR`;
           }); /* end then */
       }); /* end subscribe */
 
-      console.log("++++events+++"+events$;
+      console.log("++++events+++"+events$);
 
     
   }
