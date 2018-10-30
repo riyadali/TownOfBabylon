@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -307,6 +307,9 @@ END:VCALENDAR`;
 
   fetchEvents(): void {
     
+    var bData:string;
+    var bData$: Observable<String>;
+    
     const params = new HttpParams()
       .set(
         'primary_release_date.gte',
@@ -317,27 +320,15 @@ END:VCALENDAR`;
         format(endOfDay(this.vwDate), 'YYYY-MM-DD')
       )
       .set('api_key', '0ec33936a68018857d727958dca1424f');
+      let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
 
-    this.events$ = this.http
-      .get('/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar')
+    bData$ = this.http
+      .get('/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', {headers: httpHeaders, responseType: 'text'})
       .pipe(
-        map(({ results }: { results: BabylonEvent[] }) => {
-          return results.map((bEvent: BabylonEvent) => {
-            return {
-              title: "Some Title", 
-              start: new Date(), 
-              color: colors.yellow,
-              meta: {
-                 url: "www.abc.com",
-                bEvent
-               
-              }
-            };
-          });
-        })
+        map((evnts: String) => { return evnts;)
       );
 
-      const subscribe = this.events$.subscribe(val => console.log(val));
+      const subscribe = bData$.subscribe(val => console.log(val));
 
     
   }
