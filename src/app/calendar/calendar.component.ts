@@ -328,7 +328,9 @@ END:VCALENDAR`;
               start: new Date(), 
               color: colors.yellow,
               meta: {
+                 url: "www.abc.com",
                 bEvent
+               
               }
             };
           });
