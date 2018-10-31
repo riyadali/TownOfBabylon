@@ -135,9 +135,10 @@ export class MyCalendarComponent implements OnInit {
 
   /* extraEventData: ExtraEventData; */
   
+  evnts: Array<CalendarEvent<ExtraEventData>>;
   events$: Promise<Array<CalendarEvent<BabylonEvent>>>;
   // evnts: CustomCalendarEvent[] = [ 
-  evnts: Array<CalendarEvent<ExtraEventData>> = [    
+  oldevnts: Array<CalendarEvent<ExtraEventData>> = [    
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),      
@@ -345,6 +346,7 @@ END:VCALENDAR`;
             }); /* end return xs.map */            
           }); /* end then */
       }); /* end subscribe */
+      self.events$.then(evts=>self.evnts=evts);
 
       /* console.log("++++events+++"+bEvents); */
 
