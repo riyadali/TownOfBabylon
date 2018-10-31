@@ -135,7 +135,7 @@ export class MyCalendarComponent implements OnInit {
 
   /* extraEventData: ExtraEventData; */
   
-  events$: Array<CalendarEvent<BabylonEvent>>;
+  events$: Observable<Array<CalendarEvent<BabylonEvent>>>;
   // evnts: CustomCalendarEvent[] = [ 
   evnts: Array<CalendarEvent<ExtraEventData>> = [    
     {
@@ -332,7 +332,7 @@ END:VCALENDAR`;
       let self = this;
       const subscribe = bData$.subscribe(val => {
           icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
-            self.events$ = xs.map((x:IIcsCalendarEvent) => {
+            self.events$ = Observable.from(xs.map((x:IIcsCalendarEvent) => {
               console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
               return {
                 title: x.summary,
@@ -344,7 +344,7 @@ END:VCALENDAR`;
                   x
                 }
               }; /* end return */
-            }); /* end map */
+            })); /* end map */
           }); /* end then */
       }); /* end subscribe */
 
