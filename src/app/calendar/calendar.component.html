@@ -1,3 +1,11 @@
+<ng-template #loading>
+  <div class="text-center">
+    <i class="fa fa-spin fa-spinner fa-5x"></i>
+    <br>
+    Loading events...
+  </div>
+</ng-template>
+
 <ng-template
       #dayEventsTemplate
       let-events="events"
@@ -144,7 +152,8 @@
 <br/>
    
 <!-- Various views controlled by ngSwitch vwClicked -->
-<div [ngSwitch]="vwClicked">
+<div *ngIf="events$ | async; else loading; let events">
+  <div [ngSwitch]="vwClicked">
       
     <!-- Month view - the default -->
     <mwl-calendar-month-view
@@ -186,5 +195,6 @@
         [dayEndHour]="17">  
     </mwl-calendar-day-view>
   
-<!-- End various views -->
-</div> 
+  <!-- End various views -->
+  </div>
+</div>
