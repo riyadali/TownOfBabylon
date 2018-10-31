@@ -338,7 +338,8 @@ END:VCALENDAR`;
                 start: new Date(),
                 color: colors.yellow,
                 url: "www.link.com",
-                meta: {                  
+                meta: {  
+                   url: "www.link.com",
                   x
                 }
               }; /* end return */
