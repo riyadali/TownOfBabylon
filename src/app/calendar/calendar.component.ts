@@ -135,7 +135,7 @@ export class MyCalendarComponent implements OnInit {
 
   /* extraEventData: ExtraEventData; */
   
-  events$: Observable<Array<CalendarEvent<BabylonEvent>>>;
+  events$: Promise<Array<CalendarEvent<BabylonEvent>>>;
   // evnts: CustomCalendarEvent[] = [ 
   evnts: Array<CalendarEvent<ExtraEventData>> = [    
     {
