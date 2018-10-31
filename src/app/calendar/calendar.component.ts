@@ -332,7 +332,7 @@ END:VCALENDAR`;
       let self = this;
       const subscribe = bData$.subscribe(val => {
           icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
-            self.events$ = from(xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
+            let temp: CalendarEvent<BabylonEvent>[] = xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
               console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
               return {
                 title: x.summary,
@@ -344,7 +344,8 @@ END:VCALENDAR`;
                   x
                 }
               }; /* end return */
-            })); /* end map */
+            }); /* end map */
+            self.events$=from<CalendarEvent<BabylonEvent>[]>(temp);
           }); /* end then */
       }); /* end subscribe */
 
