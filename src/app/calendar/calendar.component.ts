@@ -328,10 +328,10 @@ END:VCALENDAR`;
         map((evnts: String) => { return evnts;})
       );
 
-      var bEvents: IIcsCalendarEvent[];
+      var bEvents: CalendarEvent<BabylonEvent>[];
       const subscribe = bData$.subscribe(val => {
-          this.events$ = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) : BabylonEvent[] {
-            return xs.map((x:IIcsCalendarEvent)=>{
+          this.events$ = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
+            bEvents= xs.map((x:IIcsCalendarEvent) => {
               console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
               return {
                 title: x.summary,
