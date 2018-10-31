@@ -337,8 +337,7 @@ END:VCALENDAR`;
               return {
                 title: x.summary,
                 start: new Date(),
-                color: colors.yellow,
-                url: "www.link.com",
+                color: colors.yellow,                
                 meta: {  
                    url: "www.link.com"
                 }
