@@ -332,7 +332,7 @@ END:VCALENDAR`;
       let self = this;
       const subscribe = bData$.subscribe(val => {
           icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
-            self.events$ = Observable.from(xs.map((x:IIcsCalendarEvent) => {
+            self.events$ = Observable.from(xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
               console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
               return {
                 title: x.summary,
