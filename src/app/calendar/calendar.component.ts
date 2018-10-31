@@ -346,7 +346,19 @@ END:VCALENDAR`;
             }); /* end return xs.map */            
           }); /* end then */
       }); /* end subscribe */
-      self.events$.then(evts=>self.evnts=evts);
+      self.events$.then(evts=> {
+        self.evnts=evts.map((ev:CalendarEvent<BabylonEvent>): CalendarEvent<ExtraEventData> => {
+           return {
+                title: ev.title,
+                start: ev.start,
+                color: ev.color,                
+                meta: {  
+                   curDay: new Date()
+                }
+           } /* end return */
+        });
+      });
+
 
       /* console.log("++++events+++"+bEvents); */
 
