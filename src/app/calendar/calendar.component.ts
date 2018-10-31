@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
@@ -331,8 +331,8 @@ END:VCALENDAR`;
      /* var bEvents: CalendarEvent<BabylonEvent>[]; */
       let self = this;
       const subscribe = bData$.subscribe(val => {
-          icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) {
-            let temp: CalendarEvent<BabylonEvent>[] = xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
+          self.events$ = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] {
+            return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
               console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
               return {
                 title: x.summary,
@@ -340,12 +340,10 @@ END:VCALENDAR`;
                 color: colors.yellow,
                 url: "www.link.com",
                 meta: {  
-                   url: "www.link.com",
-                  x
+                   url: "www.link.com"
                 }
               }; /* end return */
-            }); /* end map */
-            self.events$=from<CalendarEvent<BabylonEvent>[]>(temp);
+            }); /* end return xs.map */            
           }); /* end then */
       }); /* end subscribe */
 
