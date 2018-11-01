@@ -327,7 +327,7 @@ END:VCALENDAR`;
           '/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', 
           {headers: httpHeaders, responseType: 'text'}).subscribe(val => {             
               self.events$ = icsParser.default(val).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
-                    self.evnts = xs.map(x=>self.createBabylonEvent(x));             
+                    self.evnts = xs.map(x=>self.createCustomEvent(x));             
                     return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
                         console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
                         return {
@@ -347,7 +347,7 @@ END:VCALENDAR`;
     
   }
   
-  createBabylonEvent(cevent : IIcsCalendarEvent) : CalendarEvent<BabylonEvent> {
+  createCustomEvent(cevent : IIcsCalendarEvent) : CalendarEvent<ExtraEventData> {
     return {
              title: cevent.summary,
              start: new Date(),
