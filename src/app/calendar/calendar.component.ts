@@ -134,68 +134,12 @@ export class MyCalendarComponent implements OnInit {
   ];
 
   /* extraEventData: ExtraEventData; */
+  // evnts: CustomCalendarEvent[] = [...defined the entries.. ] as CalendarEvent[];
+                               
   
   evnts: Array<CalendarEvent<ExtraEventData>>;
   events$: Promise<Array<CalendarEvent<BabylonEvent>>>;
-  // evnts: CustomCalendarEvent[] = [ 
-  oldevnts: Array<CalendarEvent<ExtraEventData>> = [    
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),      
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true,
-      meta: {
-        /* Initially set curDay to "Today" -- the default date. */
-        curDay: new Date()
-      }
-    },
-    {
-      start: startOfDay(new Date()),     
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions,
-      meta: {  
-        /* Initially set curDay to "Today" -- the default date. */
-        curDay: new Date()
-      }
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),      
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true,
-      meta: {   
-        /* Initially set curDay to "Today" -- the default date. */
-        curDay: new Date()
-      }
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),     
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true,
-      meta: { 
-        /* Initially set curDay to "Today" -- the default date. */
-        curDay: new Date()
-      }
-    }
-  ];
-  //] as CalendarEvent[];
-  
+   
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
     this.modalData = { event, action };
     this.openModal(this.modalContent);
@@ -254,7 +198,7 @@ export class MyCalendarComponent implements OnInit {
               self.events$ = icsParser.default(val).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
                     self.evnts = xs.map(x=>self.createCustomEvent(x));             
                     return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
-                        console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
+                        //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
                         return {
                           title: x.summary,
                           start: new Date(),
@@ -377,4 +321,65 @@ DESCRIPTION:Supervisor Rich Schaffer and the rest of the Town Board invite you t
 END:VEVENT
 END:VCALENDAR`;
 */
+
+// raw declaration of events array fo testing purposes 
+/*
+evnts: Array<CalendarEvent<ExtraEventData>> = [    
+    {
+      start: subDays(startOfDay(new Date()), 1),
+      end: addDays(new Date(), 1),      
+      title: 'A 3 day event',
+      color: colors.red,
+      actions: this.actions,
+      allDay: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true,
+      meta: {
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
+    },
+    {
+      start: startOfDay(new Date()),     
+      title: 'An event with no end date',
+      color: colors.yellow,
+      actions: this.actions,
+      meta: {  
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
+    },
+    {
+      start: subDays(endOfMonth(new Date()), 3),
+      end: addDays(endOfMonth(new Date()), 3),      
+      title: 'A long event that spans 2 months',
+      color: colors.blue,
+      allDay: true,
+      meta: {   
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
+    },
+    {
+      start: addHours(startOfDay(new Date()), 2),
+      end: new Date(),     
+      title: 'A draggable and resizable event',
+      color: colors.yellow,
+      actions: this.actions,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true,
+      meta: { 
+        /* Initially set curDay to "Today" -- the default date. */
+        curDay: new Date()
+      }
+    }
+  ];
+*/
+ 
 
