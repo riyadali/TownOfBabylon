@@ -226,7 +226,87 @@ export class MyCalendarComponent implements OnInit {
   //  if (this.evnts[0]) {
   //     this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
   //  }
-        var iCalendarData = `BEGIN:VCALENDAR
+       
+   
+
+  }
+
+  fetchEvents(): void {
+    
+       
+    const params = new HttpParams()
+      .set(
+        'primary_release_date.gte',
+        format(startOfDay(this.vwDate), 'YYYY-MM-DD')
+      )
+      .set(
+        'primary_release_date.lte',
+        format(endOfDay(this.vwDate), 'YYYY-MM-DD')
+      )
+      .set('api_key', '0ec33936a68018857d727958dca1424f');
+      let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
+
+      /* var bEvents: CalendarEvent<BabylonEvent>[]; */
+      let self = this;
+      const subscribe = this.http.get(
+          '/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', 
+          {headers: httpHeaders, responseType: 'text'}).subscribe(val => {             
+              self.events$ = icsParser.default(val).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
+                    self.evnts = xs.map(x=>self.createCustomEvent(x));             
+                    return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
+                        console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
+                        return {
+                          title: x.summary,
+                          start: new Date(),
+                          color: colors.yellow,                
+                          meta: {  
+                                url: "www.link.com"
+                          }
+                        }; /* end return */
+                    }); /* end return xs.map */            
+                  }); /* end then */             
+          }); /* end subscribe */
+      
+      /* console.log("++++events+++"+bEvents); */
+
+    
+  }
+  
+  createCustomEvent(cevent : IIcsCalendarEvent) : CalendarEvent<ExtraEventData> {
+    return {
+             title: cevent.summary,
+             start: this.convertVCalendarDate(cevent.startDate),
+             color: colors.yellow,                
+             meta: {  
+                    curDay: new Date()
+                   }
+          }; /* end return */
+  }
+  
+  convertVCalendarDate(vdate:string) : Date {    
+     
+    let reggie = /(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/,
+        [, year, month, day, hours, minutes, seconds] = reggie.exec(vdate)
+     
+     /*console.log("Date "+vdate+"-year-"+year+"-month-"+month+"-day-"+day+"_"+hours+":"+minutes+":"+seconds)*/
+    
+    return new Date(Date.UTC(parseInt(year), parseInt(month)-1, parseInt(day), 
+                              parseInt(hours), parseInt(minutes), parseInt(seconds)))
+  }
+
+}
+// Sample code to parse raw ics calendar data below
+// var parsedData = icsParser.default(iCalendarData).then(function(xs:IIcsCalendarEvent[]) {
+   
+//     xs.forEach((x)=>{
+//       console.log(x.startDate+"--"+x.summary+"--"+x.description);
+//     });
+        
+//    });
+
+// Sample calendar .ics file
+/*
+ var iCalendarData = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:iCalendar-Ruby
 BEGIN:VEVENT
@@ -296,67 +376,5 @@ LOCATION: -   Babylon NY 11702
 DESCRIPTION:Supervisor Rich Schaffer and the rest of the Town Board invite you to compete in the 2018 Autumn Surf Fishing Tournament! See below for the registration application. http://www.townofbabylon.com/calendar.aspx?EID=1193
 END:VEVENT
 END:VCALENDAR`;
-    var parsedData = icsParser.default(iCalendarData).then(function(xs:IIcsCalendarEvent[]) {
-   
-     xs.forEach((x)=>{
-       console.log(x.startDate+"--"+x.summary+"--"+x.description);
-     });
-        
-});
-
-  }
-
-  fetchEvents(): void {
-    
-       
-    const params = new HttpParams()
-      .set(
-        'primary_release_date.gte',
-        format(startOfDay(this.vwDate), 'YYYY-MM-DD')
-      )
-      .set(
-        'primary_release_date.lte',
-        format(endOfDay(this.vwDate), 'YYYY-MM-DD')
-      )
-      .set('api_key', '0ec33936a68018857d727958dca1424f');
-      let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
-
-      /* var bEvents: CalendarEvent<BabylonEvent>[]; */
-      let self = this;
-      const subscribe = this.http.get(
-          '/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', 
-          {headers: httpHeaders, responseType: 'text'}).subscribe(val => {             
-              self.events$ = icsParser.default(val).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
-                    self.evnts = xs.map(x=>self.createCustomEvent(x));             
-                    return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
-                        console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
-                        return {
-                          title: x.summary,
-                          start: new Date(),
-                          color: colors.yellow,                
-                          meta: {  
-                                url: "www.link.com"
-                          }
-                        }; /* end return */
-                    }); /* end return xs.map */            
-                  }); /* end then */             
-          }); /* end subscribe */
-      
-      /* console.log("++++events+++"+bEvents); */
-
-    
-  }
-  
-  createCustomEvent(cevent : IIcsCalendarEvent) : CalendarEvent<ExtraEventData> {
-    return {
-             title: cevent.summary,
-             start: new Date(),
-             color: colors.yellow,                
-             meta: {  
-                    curDay: new Date()
-                   }
-          }; /* end return */
-  }
-
-}
+*/
 
