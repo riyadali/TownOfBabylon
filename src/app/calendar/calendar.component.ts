@@ -308,9 +308,7 @@ END:VCALENDAR`;
 
   fetchEvents(): void {
     
-    var bData:string;
-    var bData$: Observable<String>;
-    
+       
     const params = new HttpParams()
       .set(
         'primary_release_date.gte',
@@ -323,46 +321,41 @@ END:VCALENDAR`;
       .set('api_key', '0ec33936a68018857d727958dca1424f');
       let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
 
-    bData$ = this.http
-      .get('/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', {headers: httpHeaders, responseType: 'text'})
-      .pipe(
-        map((evnts: String) => { return evnts;})
-      );
-
-     /* var bEvents: CalendarEvent<BabylonEvent>[]; */
+      /* var bEvents: CalendarEvent<BabylonEvent>[]; */
       let self = this;
-      const subscribe = bData$.subscribe(val => {
-          self.events$ = icsParser.default(val).then(function(xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] {
-            return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
-              console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
-              return {
-                title: x.summary,
-                start: new Date(),
-                color: colors.yellow,                
-                meta: {  
-                   url: "www.link.com"
-                }
-              }; /* end return */
-            }); /* end return xs.map */            
-          }); /* end then */
-      }); /* end subscribe */
-      self.events$.then(evts=> {
-        self.evnts=evts.map((ev:CalendarEvent<BabylonEvent>): CalendarEvent<ExtraEventData> => {
-           return {
-                title: ev.title,
-                start: ev.start,
-                color: ev.color,                
-                meta: {  
-                   curDay: new Date()
-                }
-           } /* end return */
-        });
-      });
-
-
+      const subscribe = this.http.get(
+          '/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', 
+          {headers: httpHeaders, responseType: 'text'}).subscribe(val => {             
+              self.events$ = icsParser.default(val).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
+                    self.evnts = xs.map(x=>self.createBabylonEvent(x));             
+                    return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
+                        console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
+                        return {
+                          title: x.summary,
+                          start: new Date(),
+                          color: colors.yellow,                
+                          meta: {  
+                                url: "www.link.com"
+                          }
+                        }; /* end return */
+                    }); /* end return xs.map */            
+                  }); /* end then */             
+          }); /* end subscribe */
+      
       /* console.log("++++events+++"+bEvents); */
 
     
+  }
+  
+  createBabylonEvent(cevent : IIcsCalendarEvent) : CalendarEvent<BabylonEvent> {
+    return {
+             title: cevent.summary,
+             start: new Date(),
+             color: colors.yellow,                
+             meta: {  
+                    curDay: new Date()
+                   }
+          }; /* end return */
   }
 
 }
