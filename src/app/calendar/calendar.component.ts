@@ -338,7 +338,7 @@ evnts: Array<CalendarEvent<ExtraEventData>> = [
       },
       draggable: true,
       meta: {
-        /* Initially set curDay to "Today" -- the default date. */
+        // Initially set curDay to "Today" -- the default date. 
         curDay: new Date()
       }
     },
@@ -348,7 +348,7 @@ evnts: Array<CalendarEvent<ExtraEventData>> = [
       color: colors.yellow,
       actions: this.actions,
       meta: {  
-        /* Initially set curDay to "Today" -- the default date. */
+        // Initially set curDay to "Today" -- the default date. 
         curDay: new Date()
       }
     },
@@ -359,7 +359,7 @@ evnts: Array<CalendarEvent<ExtraEventData>> = [
       color: colors.blue,
       allDay: true,
       meta: {   
-        /* Initially set curDay to "Today" -- the default date. */
+        // Initially set curDay to "Today" -- the default date. 
         curDay: new Date()
       }
     },
@@ -375,7 +375,7 @@ evnts: Array<CalendarEvent<ExtraEventData>> = [
       },
       draggable: true,
       meta: { 
-        /* Initially set curDay to "Today" -- the default date. */
+        // Initially set curDay to "Today" -- the default date. 
         curDay: new Date()
       }
     }
