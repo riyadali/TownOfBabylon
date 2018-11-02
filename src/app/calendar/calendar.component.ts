@@ -180,14 +180,14 @@ export class MyCalendarComponent implements OnInit {
   fetchEvents(): void {
     
    // params as set up for the movies db http call.  It is not required here.    
-   /* const params = new HttpParams()
+   const params = new HttpParams()
       .set(
-        'primary_release_date.gte',
-        format(startOfDay(this.vwDate), 'YYYY-MM-DD')
+        'catID',
+        '14' /* for town of babylon calendar */
       )
       .set(
-        'primary_release_date.lte',
-        format(endOfDay(this.vwDate), 'YYYY-MM-DD')
+        'feed',
+        'calendar'  /* not exatcly sure what ovther feeds they have besides 'calendar' */
       )
       .set('api_key', '0ec33936a68018857d727958dca1424f'); */
     
@@ -195,8 +195,8 @@ export class MyCalendarComponent implements OnInit {
 
       let self = this;
       const subscribe = this.http.get(
-          '/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', 
-          {headers: httpHeaders, responseType: 'text'}).subscribe(val => {             
+          '/common/modules/iCalendar/iCalendar.aspx', 
+          {headers: httpHeaders, params: params, responseType: 'text'}).subscribe(val => {             
               self.events$ = icsParser.default(val).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
                     self.evnts = xs.map(x=>self.createCustomEvent(x));             
                     return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
