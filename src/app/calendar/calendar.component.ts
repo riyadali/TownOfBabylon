@@ -178,9 +178,22 @@ export class MyCalendarComponent implements OnInit {
   }
 
   fetchEvents(): void {
+      
+      let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
+
+      let self = this;
     
-    
-   const params = new HttpParams()
+      const params1 = new HttpParams()
+      .set(
+        'catID',
+        '14' /* for town of babylon calendar */
+      )
+      .set(
+        'feed',
+        'calendar'  /* not exatcly sure what ovther feeds they have besides 'calendar' */
+      )
+
+      const params2 = new HttpParams()
       .set(
         'catID',
         '14' /* for town of babylon calendar */
@@ -192,38 +205,53 @@ export class MyCalendarComponent implements OnInit {
      // api key param as set up for the movies db http call.  It is not required here.
      /* .set('api_key', '0ec33936a68018857d727958dca1424f'); */
     
-      let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
-
-      let self = this;
-      const subscribe = this.http.get(
+    const cal1Subscribe = this.http.get(
           '/common/modules/iCalendar/iCalendar.aspx', 
-          {headers: httpHeaders, params: params, responseType: 'text'}).subscribe(val => {             
-              self.events$ = icsParser.default(val).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
-                    self.evnts = xs.map(x=>self.createCustomEvent(x));             
-                    return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
-                        //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
-                        return {
-                          title: x.summary,
-                          start: new Date(),
-                          color: colors.yellow,                
-                          meta: {  
-                                url: "www.link.com"
+          {headers: httpHeaders, params: params1, responseType: 'text'});
+
+    const cal2Subscribe = this.http.get(
+          '/common/modules/iCalendar/iCalendar.aspx', 
+          {headers: httpHeaders, params: params2, responseType: 'text'});
+
+     // api key param as set up for the movies db http call.  It is not required here.
+     /* .set('api_key', '0ec33936a68018857d727958dca1424f'); */
+    
+      
+    Observable.forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
+      self.evnts=self.createEvents(val1, colors.blue).concat( 
+      self.createEvents(val2, colors.yellow));
+      self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => {                               
+        return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
+            //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
+            return {
+                    title: x.summary,
+                    start: new Date(),
+                    color: colors.yellow,                
+                    meta: {  
+                            url: "www.link.com"
                           }
-                        }; /* end return */
-                    }); /* end return xs.map */            
-                  }); /* end then */             
-          }); /* end subscribe */
+                  }; /* end return */
+        }); /* end return xs.map */            
+      }); /* end then */             
+    }); /* end subscribe */
       
       /* console.log("++++events+++"+bEvents); */
 
     
   }
   
-  createCustomEvent(cevent : IIcsCalendarEvent) : CalendarEvent<ExtraEventData> {
+  // Note having color defined as any is a bit shaky ... but it is ok for now
+  createEvents(calData : string, clr : any) : CalendarEvent<ExtraEventData> {
+      icsParser.default(calData).then((xs:IIcsCalendarEvent[]) : CalendarEvent<ExtraEventData>[] => {
+        return xs.map(x=>this.createCustomEvent(x,clr)); 
+      }); /* end then */
+  }
+
+  createCustomEvent(cevent : IIcsCalendarEvent, clr : any) : CalendarEvent<ExtraEventData> {
     return {
              title: cevent.summary,
              start: this.convertVCalendarDate(cevent.startDate),
-             color: colors.yellow,                
+             color: clr,                
              meta: {  
                     curDay: new Date()
                    }
