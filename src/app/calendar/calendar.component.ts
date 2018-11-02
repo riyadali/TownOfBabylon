@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
@@ -217,9 +217,9 @@ export class MyCalendarComponent implements OnInit {
      /* .set('api_key', '0ec33936a68018857d727958dca1424f'); */
     
       
-    Observable.forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
-      self.evnts=self.createEvents(val1, colors.blue).concat( 
-      self.createEvents(val2, colors.yellow));
+    forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
+      self.createEvents(val1, colors.blue); 
+      self.createEvents(val2, colors.yellow);
       self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => {                               
         return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
             //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
@@ -241,9 +241,9 @@ export class MyCalendarComponent implements OnInit {
   }
   
   // Note having color defined as any is a bit shaky ... but it is ok for now
-  createEvents(calData : string, clr : any) : CalendarEvent<ExtraEventData> {
-      icsParser.default(calData).then((xs:IIcsCalendarEvent[]) : CalendarEvent<ExtraEventData>[] => {
-        return xs.map(x=>this.createCustomEvent(x,clr)); 
+  createEvents(calData : string, clr : any)  {
+      icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
+        this.evnts.concat(xs.map(x=>this.createCustomEvent(x,clr))); 
       }); /* end then */
   }
 
