@@ -218,22 +218,23 @@ export class MyCalendarComponent implements OnInit {
     
       
     forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
-      self.createEvents(val1, colors.blue); 
-      self.createEvents(val2, colors.yellow);
-      self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => {                               
-        return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
+      self.createEvents(val1, colors.blue).then(
+        prms1=>self.createEvents(val2, colors.yellow)).then(prms2=>{
+          self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => {                               
+            return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
             //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
-            return {
+              return {
                     title: x.summary,
                     start: new Date(),
                     color: colors.yellow,                
                     meta: {  
                             url: "www.link.com"
                           }
-                  }; /* end return */
-        }); /* end return xs.map */            
-      }); /* end then */             
-    }); /* end subscribe */
+                    }; /* end return */
+            }); /* end return xs.map */            
+          }); /* end then self.events$ */             
+        }); /* end then prms2 */
+    }); /* end forkJoin subscribe */
       
       /* console.log("++++events+++"+bEvents); */
 
