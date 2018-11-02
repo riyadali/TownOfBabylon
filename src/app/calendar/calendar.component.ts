@@ -171,7 +171,7 @@ export class MyCalendarComponent implements OnInit {
   //     this.evnts[0].curDay=new Date(); /* set default current day for dayEventsTemplate */
   //  }
        
-   
+    this.fetchEvents(); 
 
   }
 
