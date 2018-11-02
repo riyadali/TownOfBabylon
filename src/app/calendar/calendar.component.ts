@@ -139,7 +139,7 @@ export class MyCalendarComponent implements OnInit {
   // evnts: CustomCalendarEvent[] = [...defined the entries.. ] as CalendarEvent[];
                                
   
-  evnts: Array<CalendarEvent<ExtraEventData>>;
+  evnts: Array<CalendarEvent<ExtraEventData>> = [];
   events$: Promise<Array<CalendarEvent<BabylonEvent>>>;
    
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
