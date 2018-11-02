@@ -179,7 +179,7 @@ export class MyCalendarComponent implements OnInit {
 
   fetchEvents(): void {
     
-   // params as set up for the movies db http call.  It is not required here.    
+    
    const params = new HttpParams()
       .set(
         'catID',
@@ -189,7 +189,8 @@ export class MyCalendarComponent implements OnInit {
         'feed',
         'calendar'  /* not exatcly sure what ovther feeds they have besides 'calendar' */
       )
-      .set('api_key', '0ec33936a68018857d727958dca1424f'); */
+     // api key param as set up for the movies db http call.  It is not required here.
+     /* .set('api_key', '0ec33936a68018857d727958dca1424f'); */
     
       let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
 
