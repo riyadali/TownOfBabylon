@@ -94,7 +94,9 @@ export class MyCalendarComponent implements OnInit {
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
   }
   
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;  /* need to set to false initially since
+                                        you don't know if any events exist 
+                                        for "today" */
   
   vw: CalendarView = CalendarView.Month; /* default view */
   
@@ -177,8 +179,8 @@ export class MyCalendarComponent implements OnInit {
 
   fetchEvents(): void {
     
-       
-    const params = new HttpParams()
+   // params as set up for the movies db http call.  It is not required here.    
+   /* const params = new HttpParams()
       .set(
         'primary_release_date.gte',
         format(startOfDay(this.vwDate), 'YYYY-MM-DD')
@@ -187,10 +189,10 @@ export class MyCalendarComponent implements OnInit {
         'primary_release_date.lte',
         format(endOfDay(this.vwDate), 'YYYY-MM-DD')
       )
-      .set('api_key', '0ec33936a68018857d727958dca1424f');
+      .set('api_key', '0ec33936a68018857d727958dca1424f'); */
+    
       let httpHeaders = new HttpHeaders().set('Accept', 'text/calendar');
 
-      /* var bEvents: CalendarEvent<BabylonEvent>[]; */
       let self = this;
       const subscribe = this.http.get(
           '/common/modules/iCalendar/iCalendar.aspx?catID=14&feed=calendar', 
