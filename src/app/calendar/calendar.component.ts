@@ -196,7 +196,7 @@ export class MyCalendarComponent implements OnInit {
       const params2 = new HttpParams()
       .set(
         'catID',
-        '14' /* for town of babylon calendar */
+        '28' /* supplemental boards calendar */
       )
       .set(
         'feed',
@@ -245,7 +245,9 @@ export class MyCalendarComponent implements OnInit {
   createEvents(calData : string, clr : any) : Promise<string> {
       return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
         console.log("createevents-"+calData+"-"+xs[0].summary+"---");
+        console.log("Events before: "+ evnts)
         this.evnts.concat(xs.map(x=>this.createCustomEvent(x,clr)));
+        console.log("Events after: "+ evnts)
         return "astring";
       }); /* end then */
   }
