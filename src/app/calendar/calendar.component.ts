@@ -139,7 +139,7 @@ export class MyCalendarComponent implements OnInit {
   // evnts: CustomCalendarEvent[] = [...defined the entries.. ] as CalendarEvent[];
                                
   
-  evnts: Array<CalendarEvent<ExtraEventData>> = [];
+  evnts: Array<CalendarEvent<ExtraEventData>>;
   events$: Promise<Array<CalendarEvent<BabylonEvent>>>;
    
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
@@ -219,17 +219,16 @@ export class MyCalendarComponent implements OnInit {
       
     forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
       icsParser.default(val1).then((xs:IIcsCalendarEvent[])  => {
-        console.log("createevents-"+val1+"-"+xs[0].summary+"---");
-        console.log("Events before: "+ self.evnts)
-        self.evnts.concat(xs.map(x=>self.createCustomEvent(x,colors.blue)));
-        console.log("Events after: "+ self.evnts)
+        console.log("createevents-"+val1+"-"+xs[0].summary+"---");        
+        let evnts1=xs.map(x=>self.createCustomEvent(x,colors.blue));
+        console.log("Events1 after: "+ evnts1);
         return "astring";
       }).then(parm1=>{
-            icsParser.default(val2).then((xs:IIcsCalendarEvent[])  => {
-              console.log("createevents-"+val2+"-"+xs[0].summary+"---");
-              console.log("Events before: "+ self.evnts)
-              self.evnts.concat(xs.map(x=>self.createCustomEvent(x,colors.yellow)));
-              console.log("Events after: "+ self.evnts)
+            icsParser.default(val2).then((xs2:IIcsCalendarEvent[])  => {
+              console.log("createevents-"+val2+"-"+xs2[0].summary+"---");              
+              let evnts2=xs2.map(x=>self.createCustomEvent(x,colors.yellow));
+              evnts=evnts1.concat(evnts2);
+              console.log("Events2 after: "+ evnts2 + evnts);
               return "astring";
             }).then(parm2=>{
                   self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => {                               
