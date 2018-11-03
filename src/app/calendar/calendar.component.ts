@@ -222,7 +222,7 @@ export class MyCalendarComponent implements OnInit {
         prms1=>self.createEvents(val2, colors.yellow)).then(prms2=>{
           self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => {                               
             return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
-            //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
+            console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
               return {
                     title: x.summary,
                     start: new Date(),
@@ -244,6 +244,7 @@ export class MyCalendarComponent implements OnInit {
   // Note having color defined as any is a bit shaky ... but it is ok for now
   createEvents(calData : string, clr : any) : Promise<string> {
       return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
+        console.log("createevents-"+calData+"-"+IIcsCalendarEvent[0].summary+"---");
         this.evnts.concat(xs.map(x=>this.createCustomEvent(x,clr)));
         return "astring";
       }); /* end then */
