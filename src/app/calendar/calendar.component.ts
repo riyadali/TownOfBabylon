@@ -223,6 +223,7 @@ export class MyCalendarComponent implements OnInit {
         console.log("createevents-"+val1+"-"+xs[0].summary+"---");        
         evnts1=xs.map(x=>self.createCustomEvent(x,colors.blue));
         console.log("Events1 after: "+ evnts1);
+        xs.length=0;
         return "astring";
       }).then(parm1=>{
             icsParser.default(val2).then((xs2:IIcsCalendarEvent[])  => {
@@ -231,9 +232,11 @@ export class MyCalendarComponent implements OnInit {
               self.evnts=evnts1.concat(evnts2);
               console.log("Events2 after: "+ evnts2);
               console.log("Events final: "+ self.evnts);
+              xs2.length=0;
               return "astring";
             }).then(parm2=>{
-                  self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => {                               
+                  self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
+                    console.log("Evenst$ input ---: "+ xs);                                              
                     return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
                       console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
                       return {
