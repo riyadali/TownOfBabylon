@@ -219,8 +219,8 @@ export class MyCalendarComponent implements OnInit {
       
     forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
       var evnts1:Array<CalendarEvent<ExtraEventData>>;
-      createEvents(val1, colors.blue).then(xs => {
-        createEvents(val2, colors.blue).then(xy => {
+      self.createEvents(val1, colors.blue).then(xs => {
+        self.createEvents(val2, colors.blue).then(xy => {
           self.evnts=xs.concat(xy);
           self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
             //console.log("Evenst$ input ---: "+ xs);                                              
