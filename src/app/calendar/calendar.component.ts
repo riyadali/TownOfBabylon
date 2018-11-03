@@ -245,7 +245,8 @@ export class MyCalendarComponent implements OnInit {
                             }; /* end return */
                     }); /* end return xs.map */            
                   }); /* end then self.events$ */             
-                }); /* end then prms2 */
+                }); /* end then parm2 */
+          }); /* end then parm1 */
     }); /* end forkJoin subscribe */
       
       /* console.log("++++events+++"+bEvents); */
