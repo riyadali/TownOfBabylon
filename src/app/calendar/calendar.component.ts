@@ -219,38 +219,25 @@ export class MyCalendarComponent implements OnInit {
       
     forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
       var evnts1:Array<CalendarEvent<ExtraEventData>>;
-      icsParser.default(val1).then((xs:IIcsCalendarEvent[])  => {
-        //console.log("createevents-"+val1+"-"+xs[0].summary+"---");        
-        evnts1=xs.map(x=>self.createCustomEvent(x,colors.blue));
-        //console.log("Events1 after: "+ evnts1);
-        xs.length=0;
-        return "astring";
-      }).then(parm1=>{
-            icsParser.default(val2).then((xs:IIcsCalendarEvent[])  => {
-              //console.log("createevents-"+val2+"-"+xs[0].summary+"---");              
-              let evnts2=xs.map(x=>self.createCustomEvent(x,colors.yellow));
-              self.evnts=evnts1.concat(evnts2);
-              //console.log("Events2 after: "+ evnts2);
-              //console.log("Events final: "+ self.evnts);
-              xs.length=0;
-              return "astring";
-            }).then(parm2=>{
-                  self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
-                    //console.log("Evenst$ input ---: "+ xs);                                              
-                    return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
-                      //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
-                      return {
-                              title: x.summary,
-                              start: new Date(),
-                              color: colors.yellow,                
-                              meta: {  
-                                      url: "www.link.com"
-                                    }
-                            }; /* end return */
-                    }); /* end return xs.map */            
-                  }); /* end then self.events$ */             
-                }); /* end then parm2 */
-          }); /* end then parm1 */
+      createEvents(val1, colors.blue).then(xs => {
+        createEvents(val2, colors.blue).then(xy => {
+          self.evnts=xs.concat(xy);
+          self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
+            //console.log("Evenst$ input ---: "+ xs);                                              
+            return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
+            //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
+              return {
+                      title: x.summary,
+                      start: new Date(),
+                      color: colors.yellow,                
+                      meta: {  
+                             url: "www.link.com"
+                            }
+                      }; /* end return */
+            }); /* end return xs.map */            
+          }); /* end then self.events$ */             
+        }); /* end then createEvents */
+      }); /* end then createEvents */
     }); /* end forkJoin subscribe */
       
       /* console.log("++++events+++"+bEvents); */
@@ -259,13 +246,12 @@ export class MyCalendarComponent implements OnInit {
   }
   
   // Note having color defined as any is a bit shaky ... but it is ok for now
-  createEvents(calData : string, clr : any) : Promise<string> {
+  createEvents(calData : string, clr : any) : Promise<Array<CalendarEvent<ExtraEventData>>> {
       return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
-        console.log("createevents-"+calData+"-"+xs[0].summary+"---");
-        console.log("Events before: "+ this.evnts)
-        this.evnts.concat(xs.map(x=>this.createCustomEvent(x,clr)));
-        console.log("Events after: "+ this.evnts)
-        return "astring";
+        //console.log("createevents-"+calData+"-"+xs[0].summary+"---");        
+        let y=xs.map(x=>this.createCustomEvent(x,clr)); 
+        xs.length=0;  // need to do this because ics-to-json does not reset array after each call
+        return y;
       }); /* end then */
   }
 
