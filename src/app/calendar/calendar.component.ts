@@ -245,7 +245,7 @@ export class MyCalendarComponent implements OnInit {
   createEvents(calData : string, clr : any) : Promise<string> {
       return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
         this.evnts.concat(xs.map(x=>this.createCustomEvent(x,clr)));
-        return 'astring";
+        return "astring";
       }); /* end then */
   }
 
