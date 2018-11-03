@@ -244,7 +244,7 @@ export class MyCalendarComponent implements OnInit {
   // Note having color defined as any is a bit shaky ... but it is ok for now
   createEvents(calData : string, clr : any) : Promise<string> {
       return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
-        console.log("createevents-"+calData+"-"+IIcsCalendarEvent[0].summary+"---");
+        console.log("createevents-"+calData+"-"+xs[0].summary+"---");
         this.evnts.concat(xs.map(x=>this.createCustomEvent(x,clr)));
         return "astring";
       }); /* end then */
