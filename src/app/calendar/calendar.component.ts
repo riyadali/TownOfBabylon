@@ -218,7 +218,7 @@ export class MyCalendarComponent implements OnInit {
     
       
     forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => { 
-      processCalendarData([val1,val2], [colors.blue, colors.yellow], 1, []).then(resArray => {
+      this.processCalendarData([val1,val2], [colors.blue, colors.yellow], 1, []).then(resArray => {
           self.evnts=resArray;
            self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
             //console.log("Evenst$ input ---: "+ xs);                                              
@@ -243,12 +243,13 @@ export class MyCalendarComponent implements OnInit {
   }
   
   processCalendarData(calArray: Array<string>, colorArray: Array<any>, arrIndex: number, resultsArray: Array<CalendarEvent<ExtraEventData>>) : Promise<Array<CalendarEvent<ExtraEventData>>> {
-    let createCalFunc=createEvents(calArray[arrIndex], colorArray[arrIndex], resultsArray);
+    let createCalFunc=this.createEvents(calArray[arrIndex], colorArray[arrIndex], resultsArray);
+    let self=this;
     if (arrIndex==0)
       return createCalFunc;
     else
       return createCalFunc.then(resultsArr => {
-          return processCalendarData(calArray, colorArray, arrIndex-1, resultsArr);
+          return self.processCalendarData(calArray, colorArray, arrIndex-1, resultsArr);
         });
   }
   // Note having color defined as any is a bit shaky ... but it is ok for now
