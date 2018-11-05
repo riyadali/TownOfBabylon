@@ -217,12 +217,10 @@ export class MyCalendarComponent implements OnInit {
      /* .set('api_key', '0ec33936a68018857d727958dca1424f'); */
     
       
-    forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
-      var evnts1:Array<CalendarEvent<ExtraEventData>>;
-      self.createEvents(val1, colors.blue).then(xs => {
-        self.createEvents(val2, colors.yellow).then(xy => {
-          self.evnts=xs.concat(xy);
-          self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
+    forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => { 
+      processCalendarData([val1,val2], [colors.blue, colors.yellow], 1, []).then(resArray => {
+          self.evnts=resArray;
+           self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
             //console.log("Evenst$ input ---: "+ xs);                                              
             return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
             //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
@@ -235,9 +233,8 @@ export class MyCalendarComponent implements OnInit {
                             }
                       }; /* end return */
             }); /* end return xs.map */            
-          }); /* end then self.events$ */             
-        }); /* end then createEvents */
-      }); /* end then createEvents */
+          }); /* end then self.events$ */ 
+        }); /* end then processCalendarData */      
     }); /* end forkJoin subscribe */
       
       /* console.log("++++events+++"+bEvents); */
@@ -245,10 +242,19 @@ export class MyCalendarComponent implements OnInit {
     
   }
   
+  processCalendarData(calArray: Array<string>, colorArray: Array<any>, arrIndex: number, resultsArray: Array<CalendarEvent<ExtraEventData>>) : Promise<Array<CalendarEvent<ExtraEventData>>> {
+    let createCalFunc=createEvents(calArray[arrIndex], colorArray[arrIndex], resultsArray);
+    if (arrIndex==0)
+      return createCalFunc;
+    else
+      return createCalFunc.then(resultsArr => {
+          return processCalendarData(calArray, colorArray, arrIndex-1, resultsArr);
+        });
+  }
   // Note having color defined as any is a bit shaky ... but it is ok for now
-  createEvents(calData : string, clr : any) : Promise<Array<CalendarEvent<ExtraEventData>>> {
+  createEvents(calData : string, clr : any, resultsArray: Array<CalendarEvent<ExtraEventData>>) : Promise<Array<CalendarEvent<ExtraEventData>>> {
       return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
-        let y=xs.map(x=>this.createCustomEvent(x,clr)); 
+        let y=resultsArray.concat(xs.map(x=>this.createCustomEvent(x,clr))); 
         xs.length=0;  // need to do this because ics-to-json does not reset array after each call
         return y;
       }); /* end then */
