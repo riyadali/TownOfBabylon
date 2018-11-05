@@ -6,7 +6,7 @@ interface NodeModule {
 
 declare module "ics-to-json"{ 
    /* export function icsToJson(p: string): any; */
-   export default function (string) : Promise<IIcsCalendarEvent[]>;
+   export default function (string) : Array<IIcsCalendarEvent>;
 }
 
 interface IIcsCalendarEvent {
