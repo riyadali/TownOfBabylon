@@ -249,9 +249,9 @@ export class MyCalendarComponent implements OnInit {
   createEvents(calData : string, clr : any) : Promise<Array<CalendarEvent<ExtraEventData>>> {
       return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
         //console.log("createevents-"+calData+"-"+xs[0].summary+"---");        
-        let y=xs.map(x=>this.createCustomEvent(x,clr)); 
-        xs.length=0;  // need to do this because ics-to-json does not reset array after each call
-        return y;
+        //let y=xs.map(x=>this.createCustomEvent(x,clr)); 
+       // xs.length=0;  // need to do this because ics-to-json does not reset array after each call
+        return xs.map(x=>this.createCustomEvent(x,clr));
       }); /* end then */
   }
 
