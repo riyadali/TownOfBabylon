@@ -23,7 +23,6 @@ import {
   addHours
 } from 'date-fns'; 
 
-import "regenerator-runtime/runtime.js";
 import * as icsParser from 'ics-to-json';
 
 const colors: any = {
@@ -62,14 +61,14 @@ interface ExtraEventData {
    curDay : Date
 }
 
-interface BabylonEvent {  
+//interface BabylonEvent {  
  /* start: Date; */
  /* end: Date; */
 /*  location: string; */
 /*  summary: string;  */
 /*  description: string;  */
-  url: string;
-};
+//  url: string;
+//};
 
 
 @Component({
@@ -140,7 +139,7 @@ export class MyCalendarComponent implements OnInit {
                                
   
   evnts: Array<CalendarEvent<ExtraEventData>>;
-  events$: Promise<Array<CalendarEvent<BabylonEvent>>>;
+  events$: Promise<Array<CalendarEvent<ExtraEventData>>>;
    
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
     this.modalData = { event, action };
@@ -217,27 +216,10 @@ export class MyCalendarComponent implements OnInit {
      /* .set('api_key', '0ec33936a68018857d727958dca1424f'); */
     
       
-    forkJoin(cal1Subscribe,cal2Subscribe).subscribe(([val1,val2] : string[]) => {
-      var evnts1:Array<CalendarEvent<ExtraEventData>>;
-      self.createEvents(val1, colors.blue).then(xs => {
-        self.createEvents(val2, colors.yellow).then(xy => {
-          self.evnts=xs.concat(xy);
-          self.events$ = icsParser.default(val1+val2).then((xs:IIcsCalendarEvent[]) : CalendarEvent<BabylonEvent>[] => { 
-            //console.log("Evenst$ input ---: "+ xs);                                              
-            return xs.map((x:IIcsCalendarEvent) : CalendarEvent<BabylonEvent> => {
-            //console.log("_______"+x.startDate+"--"+x.summary+"--"+x.description);
-              return {
-                      title: x.summary,
-                      start: new Date(),
-                      color: colors.yellow,                
-                      meta: {  
-                             url: "www.link.com"
-                            }
-                      }; /* end return */
-            }); /* end return xs.map */            
-          }); /* end then self.events$ */             
-        }); /* end then createEvents */
-      }); /* end then createEvents */
+    forkJoin(cal1Subscribe,cal2Subscribe).subscribe((icsArray : string[]) => {
+      this.evnts=this.processCalendarData(icsArray, [colors.blue, colors.yellow], icsArray.length-1);
+      this.events$=from(this.evnts);
+      this.events$.subscribe();
     }); /* end forkJoin subscribe */
       
       /* console.log("++++events+++"+bEvents); */
@@ -245,21 +227,27 @@ export class MyCalendarComponent implements OnInit {
     
   }
   
+  processCalendarData(calArray: Array<string>, colorArray: Array<any>, arrIndex: number) : Array<CalendarEvent<ExtraEventData>> {
+    let calEvents=this.createEvents(calArray[arrIndex], colorArray[arrIndex]);    
+    if (arrIndex==0)
+      return calEvents;
+    else
+      return calEvents.concat(processCalendarData(calArray, colorArray, arrIndex-1);      
+  }
+  
   // Note having color defined as any is a bit shaky ... but it is ok for now
-  createEvents(calData : string, clr : any) : Promise<Array<CalendarEvent<ExtraEventData>>> {
-      return icsParser.default(calData).then((xs:IIcsCalendarEvent[])  => {
-        //console.log("createevents-"+calData+"-"+xs[0].summary+"---");        
-        //let y=xs.map(x=>this.createCustomEvent(x,clr)); 
-       // xs.length=0;  // need to do this because ics-to-json does not reset array after each call
-        return xs.map(x=>this.createCustomEvent(x,clr));
-      }); /* end then */
+  createEvents(calData : string, clr : any, resultsArray: Array<CalendarEvent<ExtraEventData>>) : Array<CalendarEvent<ExtraEventData>> {
+      return icsParser.default(calData).map(x=>this.createCustomEvent(x,clr));
   }
 
   createCustomEvent(cevent : IIcsCalendarEvent, clr : any) : CalendarEvent<ExtraEventData> {
     return {
              title: cevent.summary,
              start: this.convertVCalendarDate(cevent.startDate),
-             color: clr,                
+             color: clr, 
+             /* curDay is a hack to pass the date clicked to the daysEvents template.
+                For the initial view, when no day was clicked as yet, just set it to "today"
+                which represents the current active day in the calendar view. */
              meta: {  
                     curDay: new Date()
                    }
