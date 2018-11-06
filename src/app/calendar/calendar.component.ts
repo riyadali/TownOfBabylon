@@ -219,7 +219,7 @@ export class MyCalendarComponent implements OnInit {
     forkJoin(cal1Subscribe,cal2Subscribe).subscribe((icsArray : string[]) => {
       this.evnts=this.processCalendarData(icsArray, [colors.blue, colors.yellow], icsArray.length-1);
       this.events$=of(this.evnts);
-      this.events$.subscribe();
+      // this.events$.subscribe();
     }); /* end forkJoin subscribe */
       
       /* console.log("++++events+++"+bEvents); */
