@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CalendarEvent, CalendarEventAction, DAYS_OF_WEEK, CalendarView } from 'angular-calendar';
@@ -139,7 +139,7 @@ export class MyCalendarComponent implements OnInit {
                                
   
   evnts: Array<CalendarEvent<ExtraEventData>>;
-  events$: Promise<Array<CalendarEvent<ExtraEventData>>>;
+  events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
    
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
     this.modalData = { event, action };
@@ -218,7 +218,7 @@ export class MyCalendarComponent implements OnInit {
       
     forkJoin(cal1Subscribe,cal2Subscribe).subscribe((icsArray : string[]) => {
       this.evnts=this.processCalendarData(icsArray, [colors.blue, colors.yellow], icsArray.length-1);
-      this.events$=from(this.evnts);
+      this.events$=of(this.evnts);
       this.events$.subscribe();
     }); /* end forkJoin subscribe */
       
