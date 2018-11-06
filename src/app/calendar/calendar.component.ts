@@ -232,7 +232,7 @@ export class MyCalendarComponent implements OnInit {
     if (arrIndex==0)
       return calEvents;
     else
-      return calEvents.concat(processCalendarData(calArray, colorArray, arrIndex-1);      
+      return calEvents.concat(processCalendarData(calArray, colorArray, arrIndex-1));      
   }
   
   // Note having color defined as any is a bit shaky ... but it is ok for now
