@@ -7,5 +7,14 @@
   },
     "changeOrigin": true 
    , "logLevel": "debug"
+  },
+   "/common": {
+    "target": "https://www.townofbabylon.com",
+    "secure": true,
+    "pathRewrite": {
+    "^/common": "/common"
+  },
+    "changeOrigin": true 
+   , "logLevel": "debug"
   }
 }
