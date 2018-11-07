@@ -135,12 +135,13 @@ export class MyCalendarComponent implements OnInit {
   ];
 
   /* extraEventData: ExtraEventData; */
+  
   // evnts: CustomCalendarEvent[] = [...defined the entries.. ] as CalendarEvent[];
                                
   
   evnts: Array<CalendarEvent<ExtraEventData>>;
-  events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
-   
+  events$: Observable<Array<CalendarEvent<ExtraEventData>>>;   
+
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
     this.modalData = { event, action };
     this.openModal(this.modalContent);
@@ -161,7 +162,6 @@ export class MyCalendarComponent implements OnInit {
       }
     }
   }
-
 
   exclDays: number[] = [0, 6];
 
@@ -263,6 +263,7 @@ export class MyCalendarComponent implements OnInit {
     
     return new Date(Date.UTC(parseInt(year), parseInt(month)-1, parseInt(day), 
                               parseInt(hours), parseInt(minutes), parseInt(seconds)))
+
   }
 
 }
