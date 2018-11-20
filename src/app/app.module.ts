@@ -39,7 +39,9 @@ import { SocialIconComponent } from './social-icon/social-icon.component';  /* i
 import { SocialIconsComponent } from './social-icons/social-icons.component'; /* in footer */
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { StandardPageComponent } from './standard-page/standard-page.component';
+
 import { ToolBarScalableComponent } from './tool-bar-scalable/tool-bar-scalable.component';
+import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
@@ -56,6 +58,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
+import { PageLoginComponent } from './page-login/page-login.component';
 
 
 @NgModule({
@@ -107,6 +110,7 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     SideNavComponent,
     ToolBarComponent,
     ToolBarScalableComponent,
+    HeaderComponent,
     FooterComponent,
     SearchFormComponent,
     NavbarBrandComponent,
@@ -122,7 +126,8 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     
     
     PageHomeComponent,
-    PageDoingBusinessInBabylonComponent
+    PageDoingBusinessInBabylonComponent,
+    PageLoginComponent
   ],
   bootstrap: [ AppComponent ],
   providers: [TransactionService, SearchService]
