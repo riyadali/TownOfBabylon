@@ -14,7 +14,7 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 import { StandardPageComponent }   from './standard-page/standard-page.component';
 import { PageHomeComponent }   from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent }   from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
-import { PageLogin }   from './page-login/page-login.component';
+import { PageLoginComponent }   from './page-login/page-login.component';
 
 
 
