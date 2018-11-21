@@ -23,7 +23,7 @@ export class PageLoginComponent implements OnInit {
     title: "Sign in to Town of Babylon",
     strapline: ""
   }
-  constructor(private authentionService: AuthService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
