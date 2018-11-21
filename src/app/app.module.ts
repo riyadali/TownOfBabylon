@@ -18,6 +18,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
+import { AuthService } from './auth.service';
 
 /* it might be safest to import the routing module last */
 import { AppRoutingModule }     from './app-routing.module';
@@ -130,7 +131,7 @@ import { PageLoginComponent } from './page-login/page-login.component';
     PageLoginComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService]
+  providers: [TransactionService, SearchService, AuthService]
 })
 export class AppModule { }
 
