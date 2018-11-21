@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {LoginResultModel} from './model/LoginResultModel'
 
 @Injectable()
 export class AuthService {
@@ -54,7 +55,7 @@ export class AuthService {
   register function(user) { 
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
-      return this.http.post<User>('/api/register', user)
+      return this.http.post<LoginResultModel>('/api/register', user)
         .do(res => this.saveToken(res.token))
         .shareReplay();      
   }
@@ -62,7 +63,7 @@ export class AuthService {
   login function(user) {
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
-      return this.http.post<User>('/api/login', user)
+      return this.http.post<LoginResultModel>('/api/login', user)
         .do(res => this.saveToken(res.token))
         .shareReplay();  
   }
