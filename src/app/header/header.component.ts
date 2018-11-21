@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
+interface HeaderContent {  
+  title: string;
+  strapline: string;
+};
 @Component({
   selector: 'app-page-header',
   templateUrl: './header.component.html',
@@ -8,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   
   @Input()
-  content: string;
+  content: HeaderContent;
 
   constructor() { }
 
