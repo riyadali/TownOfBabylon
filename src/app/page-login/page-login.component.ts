@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from '../auth.service';
 
 interface HeaderContent {  
   title: string;
@@ -12,13 +13,41 @@ interface HeaderContent {
 })
 export class PageLoginComponent implements OnInit {
   
+  formError: string = "";
+  credentials = {
+      email : "",
+      password : ""
+    };
+  
   loginHeader : HeaderContent = {
     title: "Sign in to Town of Babylon",
     strapline: ""
   }
-  constructor() { }
+  constructor(private authentionService: AuthService) { }
 
   ngOnInit() {
   }
+  
+  onSubmit function () {
+      this.formError = "";
+      if (!this.credentials.email || !this.credentials.password) {
+        this.formError = "All fields required, please try again";
+        return false;
+      } else {
+        this.doLogin();
+      }
+  }
+  
+  doLogin function() {
+      this.formError = "";
+      authentication
+        .login(this.credentials)
+        .error(function(err){
+          this.formError = err;
+        })
+        .then(function(){
+          // do something here
+        });
+    };
 
 }
