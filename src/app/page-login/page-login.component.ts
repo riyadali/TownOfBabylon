@@ -13,8 +13,8 @@ interface HeaderContent {
 export class PageLoginComponent implements OnInit {
   
   loginHeader : HeaderContent = {
-    title: {"Sign in to "};
-    strapline: {"Town of Babylon"};
+    title: "Sign in to Town of Babylon",
+    strapline: ""
   }
   constructor() { }
 
