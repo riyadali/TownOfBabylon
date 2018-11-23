@@ -33,7 +33,7 @@ export class PageLoginComponent implements OnInit {
   ngOnInit() {
   }
   
-  onSubmit function () {
+  onSubmit () {
       this.formError = "";
       if (!this.credentials.email || !this.credentials.password) {
         this.formError = "All fields required, please try again";
@@ -43,7 +43,7 @@ export class PageLoginComponent implements OnInit {
       }
   }
   
-  doLogin function() {
+  doLogin () {
       this.formError = "";
       authentication
         .login(this.credentials)
