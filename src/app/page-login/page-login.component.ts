@@ -19,6 +19,11 @@ export class PageLoginComponent implements OnInit {
       password : ""
     };
   
+  // if you want to redirect to specific page after registering
+  // For example you may want to a particular calendar entry.
+  //returnPage = $location.search().page || '/'; 
+  returnPage='/'; // for now just redirect to home page
+  
   loginHeader : HeaderContent = {
     title: "Sign in to Town of Babylon",
     strapline: ""
