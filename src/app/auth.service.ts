@@ -30,7 +30,7 @@ export class AuthService {
   }
   
   isLoggedIn () {
-    var token = getToken();
+    var token = this.getToken();
 
     if(token){
       var payload = JSON.parse(atob(token.split('.')[1]));
@@ -42,8 +42,8 @@ export class AuthService {
   }
   
   currentUser () {
-    if(isLoggedIn()){
-      var token = getToken();
+    if(this.isLoggedIn()){
+      var token = this.getToken();
       var payload = JSON.parse(atob(token.split('.')[1]));
       return {
           email : payload.email,
