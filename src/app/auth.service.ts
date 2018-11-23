@@ -21,15 +21,15 @@ export class AuthService {
   //      localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
   //}    
   
-  saveToken function (token) {
+  saveToken (token) {
       localStorage.setItem('tob_id_token', token);
   }
   
-  getToken function () {
+  getToken () {
       return localStorage.getItem("tob_id_token");
   }
   
-  isLoggedIn function() {
+  isLoggedIn () {
     var token = getToken();
 
     if(token){
@@ -41,7 +41,7 @@ export class AuthService {
     }
   }
   
-  currentUser function() {
+  currentUser () {
     if(isLoggedIn()){
       var token = getToken();
       var payload = JSON.parse(atob(token.split('.')[1]));
@@ -52,7 +52,7 @@ export class AuthService {
     }
   }
   
-  register function(user) { 
+  register (user) { 
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
       return this.http.post<LoginResultModel>('/api/register', user)
@@ -60,7 +60,7 @@ export class AuthService {
         .shareReplay();      
   }
             
-  login function(user) {
+  login (user) {
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
       return this.http.post<LoginResultModel>('/api/login', user)
@@ -68,7 +68,7 @@ export class AuthService {
         .shareReplay();  
   }
   
-  logout function() {
+  logout () {
       localStorage.removeItem("tob_id_token");
   }
          
