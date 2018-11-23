@@ -45,14 +45,14 @@ export class PageLoginComponent implements OnInit {
   
   doLogin () {
       this.formError = "";
-      authentication
+      this.authService
         .login(this.credentials)
-        .error(function(err){
-          this.formError = err;
-        })
-        .then(function(){
-          // do something here
+        .subscribe({
+            next(x) { console.log('data: ', x); },
+            error(err) { this.formError = err.message;
+                          console.log('Some error '+err.message); 
+                       }
         });
-    };
+    }
 
 }
