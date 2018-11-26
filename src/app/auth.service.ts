@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { tap, shareReplay } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import 'rxjs/add/operator/shareReplay';
 import {LoginResultModel} from './model/LoginResultModel'
 
 @Injectable()
