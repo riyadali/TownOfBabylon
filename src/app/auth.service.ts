@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { tap } from 'rxjs/operators';
-import 'rxjs/add/operator/shareReplay';
+import { tap, shareReplay } from 'rxjs/operators';
 import {LoginResultModel} from './model/LoginResultModel';
 
 @Injectable()
@@ -71,7 +70,7 @@ export class AuthService {
                 res => this.saveToken(res.token),       
                 error => console.log("failure after post "+ error.message)
               )
-        ).shareReplay();
+        ).pipe(shareReplay());
   }
   
   logout () {
