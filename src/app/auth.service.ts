@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, shareReplay } from 'rxjs/operators';
 import {LoginResultModel} from './model/LoginResultModel'
 
 @Injectable()
@@ -63,15 +63,14 @@ export class AuthService {
             
   login (user) {
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
-      // triggering multiple POST requests due to multiple subscriptions.
-      // --- not sure how to incorporate shareReplay ???
+      // triggering multiple POST requests due to multiple subscriptions.      
       return this.http.post<LoginResultModel>('/api/login', user)        
         .pipe<LoginResultModel>(
            tap( // Log the result or error
                 res => this.saveToken(res.token),       
                 error => console.log("failure after post "+ error.message)
               )
-        )
+        ).shareReplay();
   }
   
   logout () {
