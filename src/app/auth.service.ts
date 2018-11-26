@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import 'rxjs/add/operator/shareReplay';
-import {LoginResultModel} from './model/LoginResultModel'
+import {LoginResultModel} from './model/LoginResultModel';
 
 @Injectable()
 export class AuthService {
