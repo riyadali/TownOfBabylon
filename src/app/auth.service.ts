@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
 import {LoginResultModel} from './model/LoginResultModel';
+import {apiURL} from './config';
 
 @Injectable()
 export class AuthService {
@@ -71,7 +72,7 @@ export class AuthService {
   login (user) {
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.      
-      return this.http.post<LoginResultModel>('/api/login', user)        
+      return this.http.post<LoginResultModel>(apiURL+'users/login', user)        
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
