@@ -1,3 +1,5 @@
+/* sample code found here https://angular.io/generated/live-examples/http/stackblitz.html */
+
 /* Note on function of Interceptors from https://angular.io/guide/http#intercepting-requests-and-responses
 
 HTTP Interception is a major feature of @angular/common/http. With interception, 
