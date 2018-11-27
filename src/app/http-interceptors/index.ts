@@ -20,5 +20,8 @@ import { EnsureHttpsInterceptor } from './ensure-https-interceptor';
 /* As you create new interceptors, add them to the httpInterceptorProviders 
    array and you won't have to revisit the AppModule. */
 export const httpInterceptorProviders = [
-  { provide: HTTP_INTERCEPTORS, useClass: EnsureHttpsInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: EnsureHttpsInterceptor, multi: true }
+  //,{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  //,{ provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }
+  //,{ provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true }
 ];
