@@ -26,6 +26,15 @@
     "changeOrigin": true 
    , "logLevel": "debug"
   },
+  "/api/register": {
+    "target": "http://angular6-tour-heroes.herokuapp.com",
+    "secure": true,
+    "pathRewrite": {
+    "^/api/register": "/api/register"
+    },
+    "changeOrigin": true 
+   , "logLevel": "debug"
+  },
   "/api/*": {
     "target": "http://angular6-tour-heroes.herokuapp.com",
     "secure": false,
