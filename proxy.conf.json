@@ -4,7 +4,7 @@
     "secure": true,
     "pathRewrite": {
     "^/Search": "/Search"
-  },
+    },
     "changeOrigin": true 
    , "logLevel": "debug"
   },
@@ -13,7 +13,25 @@
     "secure": true,
     "pathRewrite": {
     "^/common": "/common"
+    },
+    "changeOrigin": true 
+   , "logLevel": "debug"
   },
+  "/api/login": {
+    "target": "http://angular6-tour-heroes.herokuapp.com",
+    "secure": true,
+    "pathRewrite": {
+    "^/api/login": "/api/login"
+    },
+    "changeOrigin": true 
+   , "logLevel": "debug"
+  },
+  "/api/*": {
+    "target": "http://angular6-tour-heroes.herokuapp.com",
+    "secure": false,
+    "pathRewrite": {
+    "^/api": "/api"
+    },
     "changeOrigin": true 
    , "logLevel": "debug"
   }
