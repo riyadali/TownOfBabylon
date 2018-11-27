@@ -1,5 +1,9 @@
 /* sample code found here https://angular.io/generated/live-examples/http/stackblitz.html */
 
+/* Note the interceptors apply to all http calls and there is no way to easily customize the list
+   for a specific call -- for example may want http on certain calls for efficiency. Follow this 
+   thread to see if it ever got implement into angular https://github.com/angular/angular/issues/18155 */
+
 /* Note on function of Interceptors from https://angular.io/guide/http#intercepting-requests-and-responses
 
 HTTP Interception is a major feature of @angular/common/http. With interception, 
