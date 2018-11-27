@@ -15,9 +15,11 @@ export class PageLoginComponent implements OnInit {
   
   formError: string = "";
   credentials = {
-      email : "",
-      password : ""
-    };
+    user: {
+            email : "",
+            password : ""
+          } 
+  };
   
   // if you want to redirect to specific page after registering
   // For example you may want to a particular calendar entry.
@@ -35,7 +37,7 @@ export class PageLoginComponent implements OnInit {
   
   onSubmit () {
       this.formError = "";
-      if (!this.credentials.email || !this.credentials.password) {
+      if (!this.credentials.user.email || !this.credentials.user.password) {
         this.formError = "All fields required, please try again";
         return false;
       } else {
