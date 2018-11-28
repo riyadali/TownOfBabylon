@@ -7,6 +7,13 @@ import { NgModule }       from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
+
+/* Because interceptors are (optional) dependencies of the HttpClient service, you 
+   must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
+   Interceptors provided after DI creates the HttpClient are ignored.
+
+   This app provides HttpClient in the app's root injector, as a side-effect of importing the 
+   HttpClientModule in AppModule. You should provide interceptors in AppModule as well. */
 import { HttpClientModule }    from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; /* ngx-bootstrap dropdown package see https://valor-software.com/ngx-bootstrap/#/dropdowns#usage*/
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -19,6 +26,8 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
 import { AuthService } from './auth.service';
+
+import { httpInterceptorProviders } from './http-interceptors/index';
 
 /* it might be safest to import the routing module last */
 import { AppRoutingModule }     from './app-routing.module';
@@ -131,7 +140,7 @@ import { PageLoginComponent } from './page-login/page-login.component';
     PageLoginComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService, AuthService]
+  providers: [TransactionService, SearchService, AuthService, httpInterceptorProviders]
 })
 export class AppModule { }
 
