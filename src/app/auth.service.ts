@@ -25,6 +25,7 @@ export class AuthService {
   
   saveToken (token) {
       localStorage.setItem('tob_id_token', token);
+    console.log('token is....'+token);
   }
   
   getToken () {
@@ -33,6 +34,7 @@ export class AuthService {
   
   isLoggedIn () {
     var token = this.getToken();
+    console.log('token is....'+token)
 
     if(token){
       var payload = JSON.parse(atob(token.split('.')[1]));
