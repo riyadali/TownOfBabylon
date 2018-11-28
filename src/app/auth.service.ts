@@ -34,7 +34,13 @@ export class AuthService {
   
   isLoggedIn () {
     var token = this.getToken();
-    console.log('isloggedIn token is....'+token)
+    /* the console write below is indicating that this routine is being called regularly.
+       The template for tool-bar-scalable checks isLoggedIn before displaying the sigin button.
+       Maybe there is no way around this because you need to check regularly in case some action
+       causes the user to be logged out.  But this means that this routine will need to be super
+       efficient.  Let's hope so since it reparses the token every single time. */
+    
+    //console.log('isloggedIn token is....'+token)
 
     if(token){
       var payload = JSON.parse(atob(token.split('.')[1]));
