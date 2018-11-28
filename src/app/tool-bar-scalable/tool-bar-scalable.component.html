@@ -96,8 +96,9 @@
         </form>
       -->
       
-      <!-- Sign in or logout button -->
-      <div [hidden]="authService.isLoggedIn()">
+      <!-- Sign in or logout button 
+      <div [hidden]="authService.isLoggedIn()"> -->
+      <div [hidden]="false">
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link waves-light" mdbWavesEffect routerLink="/sign_in" routerLinkActive="active">Sign in</a>
