@@ -66,7 +66,7 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.token),       
+                res => this.saveToken(res.user.token),       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -81,7 +81,7 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.token),       
+                res => this.saveToken(res.user.token),       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
