@@ -96,11 +96,35 @@
         </form>
       -->
       
-      <!-- Sign in or logout button -->          
+      <!-- Sign in -->          
       <ul class="navbar-nav" [hidden]="authService.isLoggedIn()">
         <li class="nav-item">
           <a class="nav-link waves-light" mdbWavesEffect routerLink="/sign_in" routerLinkActive="active">Sign in</a>
         </li>
+      </ul>
+      
+      <!-- User profile button group --> 
+      <ul class="navbar-nav dropdown" [hidden]="!authService.isLoggedIn()">
+        
+        <!-- Dropdown Menu Group-->
+        <li class="btn-group nav-item" dropdown [autoClose]="true" container="body">
+          
+          <!-- User profile button -->
+          <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle btn-dark" 
+              aria-controls="dropdown-nested-user">
+            Sign Out <span class="caret"></span>
+          </a>
+           
+          <!-- Nested dropdown associated with user profile button -->
+          <ul id="dropdown-nested-user" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-nested-user">
+            <li role="menuitem"><a class="dropdown-item" href="#/dropdowns#nested">Logout</a></li>
+          </ul>
+             
+        <!-- End Dropdown Menu Group-->   
+        </li>
+           
+      <!-- End User profile button group --> 
       </ul>
       
       
