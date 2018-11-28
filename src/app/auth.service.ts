@@ -25,7 +25,7 @@ export class AuthService {
   
   saveToken (token) {
       localStorage.setItem('tob_id_token', token);
-    console.log('token is....'+token);
+    console.log('saveToken token is....'+token);
   }
   
   getToken () {
@@ -34,7 +34,7 @@ export class AuthService {
   
   isLoggedIn () {
     var token = this.getToken();
-    console.log('token is....'+token)
+    console.log('isloggedIn token is....'+token)
 
     if(token){
       var payload = JSON.parse(atob(token.split('.')[1]));
@@ -50,8 +50,10 @@ export class AuthService {
       var token = this.getToken();
       var payload = JSON.parse(atob(token.split('.')[1]));
       return {
-          email : payload.email,
-          name : payload.name
+           user: {
+              email : payload.email,
+              name : payload.name
+           }
       };
     }
   }
