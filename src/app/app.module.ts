@@ -139,7 +139,7 @@ import { PageRegisterComponent } from './page-register/page-register.component';
     PageHomeComponent,
     PageDoingBusinessInBabylonComponent,
     PageLoginComponent,
-    PageLoginComponent
+    PageRegisterComponent
   ],
   bootstrap: [ AppComponent ],
   providers: [TransactionService, SearchService, AuthService, httpInterceptorProviders]
