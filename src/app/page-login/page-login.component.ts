@@ -50,7 +50,7 @@ export class PageLoginComponent implements OnInit {
       this.authService
         .login(this.credentials)
         .subscribe({
-            next(x) { console.log('data: ', x); },
+            next(x) { //console.log('data: ', x); },
             error(err) { this.formError = err.message;
                           console.log('Some error '+err.message); 
                        }
