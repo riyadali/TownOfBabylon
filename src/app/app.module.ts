@@ -69,6 +69,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
 import { PageLoginComponent } from './page-login/page-login.component';
+import { PageRegisterComponent } from './page-register/page-register.component';
 
 
 @NgModule({
@@ -137,6 +138,7 @@ import { PageLoginComponent } from './page-login/page-login.component';
     
     PageHomeComponent,
     PageDoingBusinessInBabylonComponent,
+    PageLoginComponent,
     PageLoginComponent
   ],
   bootstrap: [ AppComponent ],
