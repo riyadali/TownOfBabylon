@@ -2,7 +2,8 @@
 
   <div class="row">
     <div class="col-md-6 col-sm-8">      
-      <p class="lead">Already a member? Please <a href="/#login?page={{ returnPage }}">log in</a> instead.</p>
+      <p class="lead">Already a member? Please <a routerLink="/sign_in" [queryParams]="{page: returnPage}" 
+                                                  routerLinkActive="active">log in</a> instead.</p>
       <form (ngSubmit)="onSubmit()">
         <div role="alert" ng-show="formError" class="alert alert-danger">{{ formError }}</div>
         <div class="form-group">
