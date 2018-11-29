@@ -8,7 +8,8 @@
         <div role="alert" ng-show="formError" class="alert alert-danger">{{ formError }}</div>
         <div class="form-group">
           <label for="name">Full name</label>
-          <input type="text" class="form-control" id="name" placeholder="Enter your name" [(ngModel)]="credentials.user.name">
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" 
+                 [(ngModel)]="credentials.user.name" name="fullname">
         </div>
         <div class="form-group">
           <label for="email">Email address</label>
