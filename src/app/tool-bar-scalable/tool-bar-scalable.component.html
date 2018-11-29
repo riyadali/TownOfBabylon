@@ -112,7 +112,7 @@
           <!-- User profile button -->
           <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle btn-dark" 
               aria-controls="dropdown-nested-user">
-            {{authService.currentUser().user.name}}<span class="caret"></span>
+            {{authService.currentUser().user.name||""}}<span class="caret"></span>
           </a>
            
           <!-- Nested dropdown associated with user profile button -->
