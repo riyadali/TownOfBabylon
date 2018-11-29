@@ -25,7 +25,7 @@ export class AuthService {
   
   saveToken (token) {
       localStorage.setItem('tob_id_token', token);
-    console.log('saveToken token is....'+token);
+      // console.log('saveToken token is....'+token);
   }
   
   getToken () {
@@ -52,6 +52,8 @@ export class AuthService {
   }
   
   currentUser () {
+    /* since currentUser() is also referenced in template, comments regarding efficiency from
+       isLoggedIn() also apply */
     if(this.isLoggedIn()){
       var token = this.getToken();
       var payload = JSON.parse(atob(token.split('.')[1]));
