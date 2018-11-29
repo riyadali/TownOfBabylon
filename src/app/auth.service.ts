@@ -72,7 +72,7 @@ export class AuthService {
   register (user) { 
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
-      return this.http.post<LoginResultModel>('/api/register', user)
+      return this.http.post<LoginResultModel>(apiURL+'users', user)
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
