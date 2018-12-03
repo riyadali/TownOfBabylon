@@ -18,7 +18,8 @@ export class PageRegisterComponent implements OnInit {
     user: {
             username : "",
             email : "",
-            password : ""
+            password : "",
+            bio : ""
           } 
   };
   
