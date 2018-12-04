@@ -83,6 +83,21 @@ export class AuthService {
            shareReplay<LoginResultModel>()
         );   
   }
+  
+  updateProfile (user) { 
+      // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
+      // triggering multiple POST requests due to multiple subscriptions.
+      return this.http.pst<LoginResultModel>(apiURL+'users', user) // needs updating ?????
+        // see this link on why pipe needs to be typed
+        // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
+        .pipe<LoginResultModel,LoginResultModel>(          
+           tap<LoginResultModel>( // Log the result or error
+                res => this.saveToken(res.user.token),       
+                error => console.log("failure after post "+ error.message)
+              ),
+           shareReplay<LoginResultModel>()
+        );   
+  }
             
   login (user) {
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
