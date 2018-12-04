@@ -1,4 +1,7 @@
 export interface LoginResultModel {
-  token: string;
-  error: string;
+  user: {
+    token: string;
+    error: string;
+  }
+  
 }

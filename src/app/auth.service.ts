@@ -25,6 +25,7 @@ export class AuthService {
   
   saveToken (token) {
       localStorage.setItem('tob_id_token', token);
+      // console.log('saveToken token is....'+token);
   }
   
   getToken () {
@@ -33,6 +34,13 @@ export class AuthService {
   
   isLoggedIn () {
     var token = this.getToken();
+    /* the console write below is indicating that this routine is being called regularly.
+       The template for tool-bar-scalable checks isLoggedIn before displaying the sigin button.
+       Maybe there is no way around this because you need to check regularly in case some action
+       causes the user to be logged out.  But this means that this routine will need to be super
+       efficient.  Let's hope so since it reparses the token every single time. */
+    
+    //console.log('isloggedIn token is....'+token)
 
     if(token){
       var payload = JSON.parse(atob(token.split('.')[1]));
@@ -44,12 +52,19 @@ export class AuthService {
   }
   
   currentUser () {
+    /* since currentUser() is also referenced in template, comments regarding efficiency from
+       isLoggedIn() also apply */
     if(this.isLoggedIn()){
       var token = this.getToken();
       var payload = JSON.parse(atob(token.split('.')[1]));
       return {
-          email : payload.email,
-          name : payload.name
+           user: {
+           //  email : payload.email, -- email not in payload just username and id
+           //  if you need to update payload the server code would need to be updated
+           //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
+           //  my node-express-realword repository.  I'm not sure if this is the only change needed
+              name : payload.username
+           }
       };
     }
   }
@@ -57,12 +72,12 @@ export class AuthService {
   register (user) { 
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
-      return this.http.post<LoginResultModel>('/api/register', user)
+      return this.http.post<LoginResultModel>(apiURL+'users', user)
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.token),       
+                res => this.saveToken(res.user.token),       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -77,7 +92,7 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.token),       
+                res => this.saveToken(res.user.token),       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()

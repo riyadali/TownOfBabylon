@@ -7,17 +7,19 @@ interface HeaderContent {
 };
 
 @Component({
-  selector: 'app-page-login',
-  templateUrl: './page-login.component.html',
-  styleUrls: ['./page-login.component.scss']
+  selector: 'app-page-register',
+  templateUrl: './page-register.component.html',
+  styleUrls: ['./page-register.component.scss']
 })
-export class PageLoginComponent implements OnInit {
+export class PageRegisterComponent implements OnInit {
   
   formError: string = "";
   credentials = {
     user: {
+            username : "",
             email : "",
-            password : ""
+            password : "",
+            bio : ""
           } 
   };
   
@@ -26,8 +28,8 @@ export class PageLoginComponent implements OnInit {
   //returnPage = $location.search().page || '/'; 
   returnPage='/'; // for now just redirect to home page
   
-  loginHeader : HeaderContent = {
-    title: "Sign in to Town of Babylon",
+  registerHeader : HeaderContent = {
+    title: "Create a new Town of Babylon account",
     strapline: ""
   }
   constructor(private authService: AuthService) { }
@@ -37,18 +39,18 @@ export class PageLoginComponent implements OnInit {
   
   onSubmit () {
       this.formError = "";
-      if (!this.credentials.user.email || !this.credentials.user.password) {
-        this.formError = "All fields required, please try again";
+      if (!this.credentials.user.username || !this.credentials.user.email || !this.credentials.user.password) {
+        this.formError = "All fields except bio required, please try again";
         return false;
       } else {
-        this.doLogin();
+        this.doRegister();
       }
   }
   
-  doLogin () {
+  doRegister () {
       this.formError = "";
       this.authService
-        .login(this.credentials)
+        .register(this.credentials)
         .subscribe({
             next(x) { /*console.log('data: ', x);*/ },
             error(err) { this.formError = err.message;
@@ -58,3 +60,4 @@ export class PageLoginComponent implements OnInit {
     }
 
 }
+

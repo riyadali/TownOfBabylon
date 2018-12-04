@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {AuthService} from '../auth.service';
 
@@ -9,9 +10,14 @@ import {AuthService} from '../auth.service';
 })
 export class ToolBarScalableComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(private router:Router, private authService: AuthService) { }
 
   ngOnInit() {
+  }
+  
+  logout() {
+      this.authService.logout();
+      this.router.navigate(["/"]); // redirect home
   }
 
 }
