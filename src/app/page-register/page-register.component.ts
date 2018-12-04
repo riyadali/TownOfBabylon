@@ -40,7 +40,7 @@ export class PageRegisterComponent implements OnInit {
   onSubmit () {
       this.formError = "";
       if (!this.credentials.user.username || !this.credentials.user.email || !this.credentials.user.password) {
-        this.formError = "All fields except biography required, please try again";
+        this.formError = "All fields except bio required, please try again";
         return false;
       } else {
         this.doRegister();
