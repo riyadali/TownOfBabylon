@@ -95,7 +95,7 @@ export class AuthService {
           .pipe<LoginResultModel,LoginResultModel>(          
             tap<LoginResultModel>( // Log the result or error
                 res => this.saveProfile(res.user,profile),       
-                error => console.log("failure after get profile "+ error.message)
+                error => console.log("failure on http get profile "+ error.message)
               ),
             shareReplay<LoginResultModel>()
           );   
