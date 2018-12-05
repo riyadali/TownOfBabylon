@@ -57,11 +57,9 @@ export class PageUpdateProfileComponent implements OnInit {
                           console.log('Some error '+err.message); 
                        }
         });
-    }
-
-}
-
-getProfile () {
+  }
+  
+  getProfile () {
       var profile = {
               username : "",
               email : "",         
@@ -81,4 +79,6 @@ getProfile () {
                           console.log('Error getting profile... '+err.message); 
                        }
         });
+  }
+
 }
