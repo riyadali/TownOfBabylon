@@ -38,7 +38,7 @@ export class PageUpdateProfileComponent implements OnInit {
   
   onSubmit () {
       this.formError = "";
-      if (!this.credentials.user.username || !this.credentials.user.email || !this.credentials.user.password) {
+      if (!this.credentials.user.username || !this.credentials.user.email) {
         this.formError = "All fields except bio required, please try again";
         return false;
       } else {
