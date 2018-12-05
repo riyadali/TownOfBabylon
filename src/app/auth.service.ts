@@ -85,23 +85,32 @@ export class AuthService {
   }
   
   // gets user profile associated with current authorization token (from prior login)
-  getProfile (user) { 
+  getProfile (profile) { 
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
-      // triggering multiple POST requests due to multiple subscriptions.
-      return this.http.pst<LoginResultModel>(apiURL+'users', user) // needs updating ?????
-        // see this link on why pipe needs to be typed
-        // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
-        .pipe<LoginResultModel,LoginResultModel>(          
-           tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.user.token),       
-                error => console.log("failure after post "+ error.message)
+      // triggering multiple GET requests due to multiple subscriptions.
+      if(this.isLoggedIn()){
+        return this.http.get<LoginResultModel>(apiURL+'user') 
+          // see this link on why pipe needs to be typed
+          // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
+          .pipe<LoginResultModel,LoginResultModel>(          
+            tap<LoginResultModel>( // Log the result or error
+                res => this.saveProfile(res.user,profile),       
+                error => console.log("failure after get profile "+ error.message)
               ),
-           shareReplay<LoginResultModel>()
-        );   
+            shareReplay<LoginResultModel>()
+          );   
+      }
   }
   
-   // updates user profile associated with current authorization token (from prior login)
-   updateProfile (user) { 
+  // save profile from user data returned in response 
+  saveProfile (user, profile) {
+      profile.email = user.email;
+      profile.bio = user.bio;
+      profile.username = user.username; 
+  }
+  
+ // updates user profile associated with current authorization token (from prior login)
+ updateProfile (user) { 
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
       return this.http.pst<LoginResultModel>(apiURL+'users', user) // needs updating ?????
