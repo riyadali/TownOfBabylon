@@ -34,6 +34,7 @@ export class PageUpdateProfileComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.getProfile();
   }
   
   onSubmit () {
@@ -58,4 +59,26 @@ export class PageUpdateProfileComponent implements OnInit {
         });
     }
 
+}
+
+getProfile () {
+      var profile = {
+              username : "",
+              email : "",         
+              bio : ""
+            };
+      this.formError = "";
+      let self=this;
+      this.authService
+        .getProfile(profile)
+        .subscribe({
+            next(x) { /*console.log('data: ', x);*/ 
+                      self.credentials.user.username=profile.username;
+                      self.credentials.user.email=profile.email;
+                      self.credentials.user.bio=profile.bio;
+                    },
+            error(err) { this.formError = err.message;
+                          console.log('Error getting profile... '+err.message); 
+                       }
+        });
 }
