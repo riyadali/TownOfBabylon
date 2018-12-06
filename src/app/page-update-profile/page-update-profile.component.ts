@@ -80,17 +80,12 @@ export class PageUpdateProfileComponent implements OnInit {
           }    
   }
   
-  getProfile () {
-      var profile = {
-              username : "",
-              email : "",         
-              bio : ""
-            };
+  getProfile () {    
       this.formError = "";
       this.formInfo = "";
       let self=this;
       this.authService
-        .getProfile(profile)
+        .getProfile(this.profile)
         .subscribe({
             next(x) { /*console.log('data: ', x);*/ 
                       self.credentials.user.username=self.profile.username;
