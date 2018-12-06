@@ -16,6 +16,7 @@ import { PageHomeComponent }   from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent }   from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
 import { PageLoginComponent }   from './page-login/page-login.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
+import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
 
 
@@ -97,6 +98,7 @@ const routes: Routes = [
  { path: 'doing_business_in_babylon', component: PageDoingBusinessInBabylonComponent, pathMatch: 'full' },
  { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' },
  { path: 'register', component: PageRegisterComponent, pathMatch: 'full' },
+ { path: 'update_profile', component: PageUpdateProfileComponent, pathMatch: 'full' },
  { path: 'standard-page/:id', component: StandardPageComponent },
  { path: 'dashboard', component: DashboardComponent },
   { path: 'static_pages', loadChildren: './static-pages/static-pages.module#StaticPagesModule' },

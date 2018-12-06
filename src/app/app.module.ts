@@ -70,6 +70,7 @@ import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
 import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
+import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
 
 @NgModule({
@@ -139,7 +140,8 @@ import { PageRegisterComponent } from './page-register/page-register.component';
     PageHomeComponent,
     PageDoingBusinessInBabylonComponent,
     PageLoginComponent,
-    PageRegisterComponent
+    PageRegisterComponent,
+    PageUpdateProfileComponent
   ],
   bootstrap: [ AppComponent ],
   providers: [TransactionService, SearchService, AuthService, httpInterceptorProviders]

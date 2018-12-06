@@ -19,13 +19,14 @@ the server's responses on their way back to the application. */
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { EnsureHttpsInterceptor } from './ensure-https-interceptor';
+import { AuthInterceptor } from './auth-interceptor';
 
 /** Http interceptor providers in outside-in order */
 /* As you create new interceptors, add them to the httpInterceptorProviders 
    array and you won't have to revisit the AppModule. */
 export const httpInterceptorProviders = [
-  { provide: HTTP_INTERCEPTORS, useClass: EnsureHttpsInterceptor, multi: true }
-  //,{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  { provide: HTTP_INTERCEPTORS, useClass: EnsureHttpsInterceptor, multi: true },
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   //,{ provide: HTTP_INTERCEPTORS, useClass: LoggingInterceptor, multi: true }
   //,{ provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true }
 ];
