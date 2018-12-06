@@ -135,7 +135,7 @@ export class AuthService {
       credentials.user.username=user.username;
     if (user.bio!==profile.bio)
       credentials.user.bio=user.bio;
-
+    return credentials;
   }
   
  // updates user profile associated with current authorization token (from prior login)
@@ -143,7 +143,7 @@ export class AuthService {
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple PUT requests due to multiple subscriptions.
       let self=this; 
-      return this.http.put<LoginResultModel>(apiURL+'users', 
+      return this.http.put<LoginResultModel>(apiURL+'user', 
                                              this.buildUserCredentials(user,profile))
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
