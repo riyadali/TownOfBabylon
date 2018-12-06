@@ -14,12 +14,19 @@ interface HeaderContent {
 export class PageUpdateProfileComponent implements OnInit {
   
   formError: string = "";
+  formInfo: string = "";
   credentials = {
     user: {
             username : "",
             email : "",         
             bio : ""
           } 
+  };
+  
+  profile = {
+              username : "",
+              email : "",         
+              bio : ""
   };
   
   // if you want to redirect to specific page after updating profile
@@ -39,6 +46,7 @@ export class PageUpdateProfileComponent implements OnInit {
   
   onSubmit () {
       this.formError = "";
+      this.formInfo = "";
       if (!this.credentials.user.username || !this.credentials.user.email) {
         this.formError = "All fields except bio required, please try again";
         return false;
@@ -48,15 +56,28 @@ export class PageUpdateProfileComponent implements OnInit {
   }
   
   doUpdate () {
-      this.formError = "";
-      this.authService
-        .updateProfile(this.credentials)
-        .subscribe({
-            next(x) { /*console.log('data: ', x);*/ },
-            error(err) { this.formError = err.message;
-                          console.log('Some error '+err.message); 
-                       }
-        });
+      // update only necessary if something changed
+      if (this.profile.username!==this.credentials.user.username ||
+          this.profile.email!==this.credentials.user.email ||
+          this.profile.bio!==this.credentials.user.bio
+          ) {
+            this.formError = "";
+            this.formInfo = "";
+            let self=this;
+            this.authService
+              .updateProfile(this.credentials.user, this.profile) 
+              .subscribe({
+                  next(x) { /*console.log('data: ', x);*/ 
+                            self.formInfo= "Profile updated successfully";
+                  },
+                  error(err) { self.formError = err.message;
+                                console.log('Some error '+err.message); 
+                             }
+              });
+
+          } else {
+            this.formInfo= "Profile updated successfully";  
+          }    
   }
   
   getProfile () {
@@ -66,16 +87,17 @@ export class PageUpdateProfileComponent implements OnInit {
               bio : ""
             };
       this.formError = "";
+      this.formInfo = "";
       let self=this;
       this.authService
         .getProfile(profile)
         .subscribe({
             next(x) { /*console.log('data: ', x);*/ 
-                      self.credentials.user.username=profile.username;
-                      self.credentials.user.email=profile.email;
-                      self.credentials.user.bio=profile.bio;
+                      self.credentials.user.username=self.profile.username;
+                      self.credentials.user.email=self.profile.email;
+                      self.credentials.user.bio=self.profile.bio;
                     },
-            error(err) { this.formError = err.message;
+            error(err) { self.formError = err.message;
                           console.log('Error getting profile... '+err.message); 
                        }
         });
