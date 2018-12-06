@@ -109,16 +109,47 @@ export class AuthService {
       profile.username = user.username; 
   }
   
+  // build the credentials to be passed as the body of PUT request to update a user profile
+  // only fields that were modified will be sent
+
+  buildUserCredentials(user, profile) {
+    // an object that can acquire dynamically added properties
+    //  interface LooseObject {
+    //     [key: string]: any
+    //  }
+
+    // a user profile object that can acquire only certain dynamically added properties
+    interface UserProfile {
+        username?: string,
+        bio?: string,
+        email?: string,
+        token?: string
+    }
+    var credentials :  { user: UserProfile } = { 
+          user:{} // the default with no changes
+    };
+    
+    if (user.email!==profile.email)
+      credentials.user.email=user.email;
+    if (user.username!==profile.username)
+      credentials.user.username=user.username;
+    if (user.bio!==profile.bio)
+      credentials.user.bio=user.bio;
+
+  }
+  
  // updates user profile associated with current authorization token (from prior login)
  updateProfile (user, profile) { 
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple PUT requests due to multiple subscriptions.
-      return this.http.put<LoginResultModel>(apiURL+'users', user) // needs updating ?????
+      let self=this; 
+      return this.http.put<LoginResultModel>(apiURL+'users', 
+                                             this.buildUserCredentials(user,profile))
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.user.token),       
+                res => self.saveToken(res.user.token),       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
