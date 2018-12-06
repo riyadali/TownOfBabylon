@@ -68,6 +68,8 @@ export class PageUpdateProfileComponent implements OnInit {
               .updateProfile(this.credentials.user, this.profile) 
               .subscribe({
                   next(x) { /*console.log('data: ', x);*/ 
+                            // update local copy of profile with latest information
+                            self.authService.saveProfile(self.credentials.user,self.profile); 
                             self.formInfo= "Profile updated successfully";
                   },
                   error(err) { self.formError = err.message;
