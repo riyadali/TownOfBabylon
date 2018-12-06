@@ -1,7 +1,9 @@
 export interface LoginResultModel {
   user: {
     token: string;
-    error: string;
+    username: string;
+    email: string;
+    bio: string;
   }
   
 }
