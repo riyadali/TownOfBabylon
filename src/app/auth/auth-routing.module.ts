@@ -2,10 +2,10 @@ import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard }            from './auth.guard';
 import { AuthService }          from './auth.service';
-import { LoginComponent }       from './login/login.component';
+import { PageLoginComponent }    from '../page-login/page-login.component';
 
 const authRoutes: Routes = [
-  { path: 'login', component: LoginComponent }
+  { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' }
 ];
 
 @NgModule({
