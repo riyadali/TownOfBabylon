@@ -4,11 +4,15 @@ import { FormsModule }    from '@angular/forms';
 
 import { PageLoginComponent }    from '../page-login/page-login.component';
 import { AuthRoutingModule } from './auth-routing.module';
+// page header component moved to separate module because it
+// is being shared by app.module as well as auth.module
+import { HeaderModule } from '../header.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    HeaderModule,
     AuthRoutingModule
   ],
   declarations: [
