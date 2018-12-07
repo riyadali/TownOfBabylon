@@ -25,7 +25,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 
 import { httpInterceptorProviders } from './http-interceptors/index';
 
