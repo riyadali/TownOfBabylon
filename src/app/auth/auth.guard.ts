@@ -1,3 +1,7 @@
+// You can read more about guards here https://angular.io/guide/router#milestone-5-route-guards
+// Live code is found here https://stackblitz.com/angular/yregjpanjrn
+// In that exapmle all admin routes are guarded so that you need to be logged in
+// before you can access that section of the site
 import { Injectable }       from '@angular/core';
 import {
   CanActivate, Router,
