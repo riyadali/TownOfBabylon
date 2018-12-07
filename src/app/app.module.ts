@@ -10,6 +10,10 @@ import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
 
 import { Router } from '@angular/router';
 
+// page header component moved to separate module because it
+// is being shared by app.module as well as auth.module
+import { HeaderModule } from './header.module';
+
 /* Because interceptors are (optional) dependencies of the HttpClient service, you 
    must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
    Interceptors provided after DI creates the HttpClient are ignored.
@@ -55,7 +59,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { StandardPageComponent } from './standard-page/standard-page.component';
 
 import { ToolBarScalableComponent } from './tool-bar-scalable/tool-bar-scalable.component';
-import { HeaderComponent } from './header/header.component';
+// page header component moved to separate module because it
+// is being shared by app.module as well as auth.module
+// import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
@@ -94,6 +100,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
+    HeaderModule,
     AuthModule,
     AppRoutingModule,
     HttpClientModule,
@@ -128,7 +135,9 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     SideNavComponent,
     ToolBarComponent,
     ToolBarScalableComponent,
-    HeaderComponent,
+    // page header component moved to separate module because it
+    // is being shared by app.module as well as auth.module
+    // HeaderComponent,
     FooterComponent,
     SearchFormComponent,
     NavbarBrandComponent,
