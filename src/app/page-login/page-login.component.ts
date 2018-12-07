@@ -47,11 +47,12 @@ export class PageLoginComponent implements OnInit {
   
   doLogin () {
       this.formError = "";
+      let self=this;
       this.authService
         .login(this.credentials)
         .subscribe({
             next(x) { /*console.log('data: ', x);*/ },
-            error(err) { this.formError = err.message;
+            error(err) { self.formError = err.message;
                           console.log('Some error '+err.message); 
                        }
         });
