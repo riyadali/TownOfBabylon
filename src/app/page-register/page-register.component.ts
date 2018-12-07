@@ -49,11 +49,12 @@ export class PageRegisterComponent implements OnInit {
   
   doRegister () {
       this.formError = "";
+      let self=this;
       this.authService
         .register(this.credentials)
         .subscribe({
             next(x) { /*console.log('data: ', x);*/ },
-            error(err) { this.formError = err.message;
+            error(err) { self.formError = err.message;
                           console.log('Some error '+err.message); 
                        }
         });
