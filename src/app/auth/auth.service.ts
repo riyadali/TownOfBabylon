@@ -7,6 +7,9 @@ import {apiURL} from '../config';
 
 @Injectable()
 export class AuthService {
+  
+  // store the URL so we can redirect after logging in
+  redirectUrl: string;
 
   constructor(private http: HttpClient) {}
    
