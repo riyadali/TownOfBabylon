@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
-import {LoginResultModel} from './model/LoginResultModel';
-import {apiURL} from './config';
+import {LoginResultModel} from '../model/LoginResultModel';
+import {apiURL} from '../config';
 
 @Injectable()
 export class AuthService {
