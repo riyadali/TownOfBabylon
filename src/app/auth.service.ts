@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
 import {LoginResultModel} from './model/LoginResultModel';
 import {apiURL} from './config';
@@ -99,6 +99,8 @@ export class AuthService {
               ),
             shareReplay<LoginResultModel>()
           );   
+      } else {
+        return of({}); // return an observable with an empty value
       }
   }
   
