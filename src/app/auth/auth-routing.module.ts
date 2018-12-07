@@ -1,3 +1,7 @@
+// You can read more about guarded routes here https://angular.io/guide/router#milestone-5-route-guards
+// Live code is found here https://stackblitz.com/angular/yregjpanjrn
+// In that exapmle all admin routes are guarded so that you need to be logged in
+// before you can access that section of the site
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard }            from './auth.guard';
