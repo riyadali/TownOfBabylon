@@ -8,6 +8,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
 
+import { Router } from '@angular/router';
+
 /* Because interceptors are (optional) dependencies of the HttpClient service, you 
    must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
    Interceptors provided after DI creates the HttpClient are ignored.
@@ -31,6 +33,8 @@ import { httpInterceptorProviders } from './http-interceptors/index';
 
 /* it might be safest to import the routing module last */
 import { AppRoutingModule }     from './app-routing.module';
+
+import { AuthModule }           from './auth/auth.module'; 
 
 import { AppComponent }         from './app.component';
 import { DashboardComponent }   from './dashboard/dashboard.component';
@@ -89,6 +93,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
+    AuthModule,
     AppRoutingModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),
@@ -146,7 +151,17 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
   bootstrap: [ AppComponent ],
   providers: [TransactionService, SearchService, AuthService, httpInterceptorProviders]
 })
-export class AppModule { }
+export class AppModule {
+  
+  // Diagnostic only: inspect router configuration
+  constructor(router: Router) {
+    // Use a custom replacer to display function names in the route configs
+    // const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
+
+    // console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
+  }
+  
+}
 
 
 /*
