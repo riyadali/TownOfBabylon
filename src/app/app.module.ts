@@ -72,7 +72,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
-import { PageLoginComponent } from './page-login/page-login.component';
+// LoginComponent moved to AuthModule
+// import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
@@ -144,7 +145,8 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     
     PageHomeComponent,
     PageDoingBusinessInBabylonComponent,
-    PageLoginComponent,
+    // LoginComponent moved to AuthModule
+    // PageLoginComponent,
     PageRegisterComponent,
     PageUpdateProfileComponent
   ],
