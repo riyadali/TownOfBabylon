@@ -1,5 +1,5 @@
-// page header component moved to separate module because it
-// is being shared by app.module as well as auth.module
+// Some components moved to separate module because they
+// are being shared by app.module as well as auth.module
 
 import { NgModule }       from '@angular/core';
 
@@ -9,7 +9,7 @@ import { HeaderComponent } from './header/header.component';
   declarations: [ HeaderComponent ],
   exports: [ HeaderComponent ]
 })
-export class HeaderModule {}
+export class CommonModule {}
 
 
 /*
