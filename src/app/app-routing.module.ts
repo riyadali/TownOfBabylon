@@ -1,6 +1,8 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard }  from './auth/auth.guard';
+
 /* imports from the original heroes app ---
 
 import { DashboardComponent }   from './dashboard/dashboard.component';
@@ -100,7 +102,17 @@ const routes: Routes = [
  // sign in route moved to auth routing module
  // { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' },
  { path: 'register', component: PageRegisterComponent, pathMatch: 'full' },
- { path: 'update_profile', component: PageUpdateProfileComponent, pathMatch: 'full' },
+ { 
+   path: 'update_profile', 
+   component: PageUpdateProfileComponent,
+   // Refer to link to preventloading of protected module if not authorized
+   // https://angular.io/guide/router#canload-guard-guarding-unauthorized-loading-of-feature-modules
+   // Add a CanLoad guard that only loads the AdminModule once the 
+   // user is logged in and attempts to access the admin feature area. 
+   //canLoad: [AuthGuard],
+   canActivate: [AuthGuard],
+   pathMatch: 'full' 
+ },
  { path: 'standard-page/:id', component: StandardPageComponent },
  { path: 'dashboard', component: DashboardComponent },
   { path: 'static_pages', loadChildren: './static-pages/static-pages.module#StaticPagesModule' },
