@@ -1,6 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 
+import {
+  Router
+ // CanActivate,
+ // ActivatedRouteSnapshot,
+ // RouterStateSnapshot,
+ // CanActivateChild,
+ // NavigationExtras,
+ // CanLoad, Route
+}  from '@angular/router';
+
 interface HeaderContent {  
   title: string;
   strapline: string;
@@ -30,7 +40,7 @@ export class PageLoginComponent implements OnInit {
     title: "Sign in to Town of Babylon",
     strapline: ""
   }
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, public router: Router) { }
 
   ngOnInit() {
   }
@@ -51,7 +61,30 @@ export class PageLoginComponent implements OnInit {
       this.authService
         .login(this.credentials)
         .subscribe({
-            next(x) { /*console.log('data: ', x);*/ },
+            next(x) { /*console.log('data: ', x);*/ 
+                       if (this.authService.isLoggedIn()) {
+                          // Get the redirect URL from our auth service
+                          // If no redirect has been set, use the default
+                          // let redirect = this.authService.redirectUrl ?      this.authService.redirectUrl : '/admin';
+                          let redirect = self.authService.redirectUrl ? 
+                                            self.authService.redirectUrl : '/home';
+
+                          // Set our navigation extras object
+                          // that passes on our global query params and fragment
+
+                          // Notes on preserveFragment
+                          // Preserve fragment from /results#top to /view#top
+                          // this.router.navigate(['/view'], { preserveFragment: true });
+                          // let navigationExtras: NavigationExtras = {
+                          //  queryParamsHandling: 'preserve',
+                          //  preserveFragment: true
+                          // };
+
+                          // Redirect the user
+                          // self.router.navigate([redirect], navigationExtras);
+                          self.router.navigate([redirect]);
+                        }
+                    },
             error(err) { self.formError = err.message;
                           console.log('Some error '+err.message); 
                        }
