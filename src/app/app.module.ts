@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 
 // page header component moved to separate module because it
 // is being shared by app.module as well as auth.module
-import { HeaderModule } from './header.module';
+import { AppCommonModule } from './common.module';
 
 /* Because interceptors are (optional) dependencies of the HttpClient service, you 
    must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
@@ -100,7 +100,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
-    HeaderModule,
+    AppCommonModule,
     AuthModule,
     AppRoutingModule,
     HttpClientModule,
