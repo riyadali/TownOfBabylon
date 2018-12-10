@@ -7,27 +7,33 @@ import {
   CanActivate, Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  CanActivateChild,
-  NavigationExtras,
+ // CanActivateChild,
+ // NavigationExtras,
   CanLoad, Route
-}                           from '@angular/router';
+} from '@angular/router';
 import { AuthService }      from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
+//export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AuthGuard implements CanActivate, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
+  // A guard's return value controls the router's behavior:
+  //        If it returns true, the navigation process continues.
+  //        If it returns false, the navigation process stops and the user stays put.
+  //        If it returns a UrlTree, the current navigation cancels and a new navigation is initiated to the UrlTree returned.
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
 
     return this.checkLogin(url);
   }
 
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    return this.canActivate(route, state);
-  }
+  // This is to protect child routes -- for example all routes under /admin
+  // canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  //  return this.canActivate(route, state);
+  // }
 
   canLoad(route: Route): boolean {
     let url = `/${route.path}`;
@@ -36,23 +42,30 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn) { return true; }
+    if (this.authService.isLoggedIn()) { return true; }
 
     // Store the attempted URL for redirecting
     this.authService.redirectUrl = url; 
 
     // Create a dummy session id
-    let sessionId = 123456789;
+    // let sessionId = 123456789;
 
     // Set our navigation extras object
     // that contains our global query params and fragment
-    let navigationExtras: NavigationExtras = {
-      queryParams: { 'session_id': sessionId },
-      fragment: 'anchor'
-    };
+    // let navigationExtras: NavigationExtras = {
+    //  queryParams: { 'session_id': sessionId },
+    //  fragment: 'anchor'
+    // };
+
+    // notes on Fragments --
+    // Navigate to /results#top
+    // this.router.navigate(['/results'], { fragment: 'top' });
 
     // Navigate to the login page with extras
-    this.router.navigate(['/login'], navigationExtras);
+    // this.router.navigate(['/login'], navigationExtras);
+
+    // Navigate to the login page
+    this.router.navigate(['/sign_in']);
     return false;
   }
 }

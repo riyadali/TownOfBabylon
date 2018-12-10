@@ -15,8 +15,9 @@ export class AuthService {
    
   // angular university - https://blog.angular-university.io/angular-jwt-authentication/ - uses the following method
   //  login(email:string, password:string ) {
+  //      let self=this;
   //      return this.http.post<User>('/api/login', {email, password})
-  //          .do(res => this.setSession) 
+  //          .do(res => self.setSession) 
   //          .shareReplay();
   //  }
   //private setSession(authResult) {
@@ -73,6 +74,7 @@ export class AuthService {
   }
   
   register (user) { 
+      let self=this;
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple POST requests due to multiple subscriptions.
       return this.http.post<LoginResultModel>(apiURL+'users', user)
@@ -80,7 +82,7 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.user.token),       
+                res => self.saveToken(res.user.token),       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -89,6 +91,7 @@ export class AuthService {
   
   // gets user profile associated with current authorization token (from prior login)
   getProfile (profile) { 
+      let self=this;
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple GET requests due to multiple subscriptions.
       if(this.isLoggedIn()){
@@ -97,7 +100,7 @@ export class AuthService {
           // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
           .pipe<LoginResultModel,LoginResultModel>(          
             tap<LoginResultModel>( // Log the result or error
-                res => this.saveProfile(res.user,profile),       
+                res => self.saveProfile(res.user,profile),       
                 error => console.log("failure on http get profile "+ error.message)
               ),
             shareReplay<LoginResultModel>()
@@ -163,13 +166,14 @@ export class AuthService {
             
   login (user) {
       // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
-      // triggering multiple POST requests due to multiple subscriptions.      
+      // triggering multiple POST requests due to multiple subscriptions.
+      let self=this; 
       return this.http.post<LoginResultModel>(apiURL+'users/login', user)        
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => this.saveToken(res.user.token),       
+                res => self.saveToken(res.user.token),       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
