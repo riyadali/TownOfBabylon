@@ -25,7 +25,9 @@ export class PageRegisterComponent implements OnInit {
   
   // if you want to redirect to specific page after registering
   // For example you may want to a particular calendar entry.
-  //returnPage = $location.search().page || '/'; 
+  //returnPage = $location.search().page || '/';
+  // The above is from the getting mean site (it may still be useful)
+  // However, for now I use the redirectURL in authService to control redirection.
   returnPage='/'; // for now just redirect to home page
   
   registerHeader : HeaderContent = {
