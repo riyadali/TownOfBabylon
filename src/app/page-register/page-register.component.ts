@@ -91,7 +91,6 @@ export class PageRegisterComponent implements OnInit {
                           self.router.navigate([redirect]);
                         }
                     },
-                    },
             error(err) { self.formError = err.message;
                           console.log('Some error '+err.message); 
                        }
