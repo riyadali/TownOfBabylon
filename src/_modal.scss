@@ -11,9 +11,10 @@
     position:  fixed;
     top: 300px;
     left: 50%;
-    width: 375px;
+    transform: translateX(-50%);
+    max-width: 375px;
     background: white;
-    margin-left: -187.5px;
+    //margin-left: -187.5px;
     text-align: center;
     box-shadow: 0px 0px 2px 1px black;
     z-index: 100;
