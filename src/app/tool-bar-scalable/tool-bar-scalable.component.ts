@@ -15,6 +15,13 @@ export class ToolBarScalableComponent implements OnInit {
   ngOnInit() {
   }
   
+  initLoginModal() {
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageLoginComponent, inputs, {});
+  }
+  
   logout() {
       this.authService.logout();
       this.router.navigate(["/"]); // redirect home
