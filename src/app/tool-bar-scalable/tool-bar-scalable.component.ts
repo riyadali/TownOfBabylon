@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { ModalService } from '../modal.service';
 
+import { PageLoginComponent } from '../page-login/page-login.component';
+
 @Component({
   selector: 'app-tool-bar-scalable',
   templateUrl: './tool-bar-scalable.component.html',
