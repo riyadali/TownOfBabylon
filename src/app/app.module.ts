@@ -32,6 +32,8 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
 import { AuthService } from './auth/auth.service';
+import { ModalService } from './modal.service';
+import { DomService } from './dom.service';
 
 import { httpInterceptorProviders } from './http-interceptors/index';
 
@@ -160,7 +162,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     PageUpdateProfileComponent
   ],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService, AuthService, httpInterceptorProviders]
+  providers: [TransactionService, SearchService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
 export class AppModule {
   
