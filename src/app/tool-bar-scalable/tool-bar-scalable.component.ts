@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {AuthService} from '../auth/auth.service';
+import { AuthService } from '../auth/auth.service';
+import { ModalService } from '../modal.service';
 
 @Component({
   selector: 'app-tool-bar-scalable',
@@ -10,7 +11,7 @@ import {AuthService} from '../auth/auth.service';
 })
 export class ToolBarScalableComponent implements OnInit {
 
-  constructor(private router:Router, private authService: AuthService) { }
+  constructor(private router:Router, private authService: AuthService, private modalService: ModalService) { }
 
   ngOnInit() {
   }
