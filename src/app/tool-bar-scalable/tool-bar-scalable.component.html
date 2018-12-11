@@ -99,7 +99,10 @@
       <!-- Sign in -->          
       <ul class="navbar-nav" [hidden]="authService.isLoggedIn()">
         <li class="nav-item">
+          <!--
           <a class="nav-link waves-light" mdbWavesEffect routerLink="/sign_in" routerLinkActive="active">Sign in</a>
+          -->
+          <a class="nav-link waves-light" mdbWavesEffect  (click)="initLoginModal()">Sign in</a>
         </li>
       </ul>
       
