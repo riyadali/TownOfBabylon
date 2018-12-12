@@ -6,10 +6,16 @@ import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard }            from './auth.guard';
 import { AuthService }          from './auth.service';
-import { PageLoginComponent }    from '../page-login/page-login.component';
+// Because PageLoginComponent is loaded dynamically into the modal dialog,
+// it is imported and defined as an entryComponent in app.module.ts.
+// Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
+// import { PageLoginComponent }    from '../page-login/page-login.component';
 
 const authRoutes: Routes = [
-  { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' }
+  // sign_in is no longer treated as a valid route
+  // Sign_in can only be accessed through the sign_in button which dynamically
+  // loads the PageLoginComponent in the modal component
+  // { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' }
 ];
 
 @NgModule({
