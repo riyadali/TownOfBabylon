@@ -43,7 +43,7 @@ export class PageRegisterComponent implements OnInit {
   
   
   registerHeader : HeaderContent = {
-    title: "Create a new Town of Babylon account",
+    title: "Sign up",
     strapline: ""
   }
   constructor(private authService: AuthService, public router: Router) { }
