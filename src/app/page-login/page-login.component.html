@@ -6,9 +6,9 @@
     <div class="col-md-6 col-sm-8">
     -->
     <div class="col">
+      <br/>
       <p class="lead"><strong>Sign in</strong></p>
-      <p class="lead">Not a member? Please <a routerLink="/register" [queryParams]="{page: returnPage}" 
-                                              routerLinkActive="active">register</a> first.</p>
+      
       <form (ngSubmit)="onSubmit()">
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
         <div class="form-group">
@@ -23,6 +23,10 @@
         </div>
         <button type="submit" class="btn btn-default">Sign in!</button>
       </form>
+      
+      <br/><br/><br/><br/><br/>
+      <p><strong>Don't have an account? <a routerLink="/register" [queryParams]="{page: returnPage}" 
+                                              routerLinkActive="active">Sign up</a></strong></p>
     </div>
   </div>
   </div>
