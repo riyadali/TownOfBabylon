@@ -40,7 +40,7 @@ export class PageLoginComponent implements OnInit {
   
   
   loginHeader : HeaderContent = {
-    title: "Sign in to Town of Babylon",
+    title: "Town of Babylon",
     strapline: ""
   }
   constructor(private authService: AuthService, public router: Router) { }
