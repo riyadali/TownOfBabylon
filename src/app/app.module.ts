@@ -80,8 +80,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
-// LoginComponent moved to AuthModule
-// import { PageLoginComponent } from './page-login/page-login.component';
+// Because PageLoginComponent is loaded dynamically into the modal dialog,
+// it is imported and defined as an entryComponent in app.module.ts.
+// Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
+import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
@@ -157,10 +159,14 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     PageHomeComponent,
     PageDoingBusinessInBabylonComponent,
     // LoginComponent moved to AuthModule
-    // PageLoginComponent,
+    // PageLoginComponent, (now defined in entryComponent)
     PageRegisterComponent,
     PageUpdateProfileComponent
   ],
+  // Because PageLoginComponent is loaded dynamically into the modal dialog,
+  // it is imported and defined as an entryComponent in app.module.ts.
+  // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
+  entryComponents: [PageLoginComponent],
   bootstrap: [ AppComponent ],
   providers: [TransactionService, SearchService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
