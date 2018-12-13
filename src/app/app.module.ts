@@ -63,6 +63,10 @@ import { StandardPageComponent } from './standard-page/standard-page.component';
 import { ToolBarScalableComponent } from './tool-bar-scalable/tool-bar-scalable.component';
 // page header component moved to separate module because it
 // is being shared by app.module as well as auth.module
+// *** discovered that header component was more trouble than its worth when used in pagelogin
+// *** so just updated pagelogin's html to remove need for header
+// *** But for now leaving header component in AppCommonModule 
+// *** because may want to use appcommon for other shared components
 // import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
@@ -104,6 +108,10 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
+// *** discovered that header component was more trouble than its worth when used in pagelogin
+// *** so just updated pagelogin's html to remove need for header
+// *** But for now leaving header component in AppCommonModule 
+// *** because may want to use appcommon for other shared components
     AppCommonModule,
     AuthModule,
     AppRoutingModule,
@@ -141,6 +149,10 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     ToolBarScalableComponent,
     // page header component moved to separate module because it
     // is being shared by app.module as well as auth.module
+    // *** discovered that header component was more trouble than its worth when used in pagelogin
+    // *** so just updated pagelogin's html to remove need for header
+    // *** But for now leaving header component in AppCommonModule 
+    // *** because may want to use appcommon for other shared components
     // HeaderComponent,
     FooterComponent,
     SearchFormComponent,
