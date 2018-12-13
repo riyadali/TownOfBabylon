@@ -1,14 +1,36 @@
 <br/>
-<app-page-header [content]="loginHeader"></app-page-header>
 
-  <div class="container">
+<div class="container">
+  
+  <!--Header row with close button -->
   <div class="row">
-    <!--
-    <div class="col-md-6 col-sm-8">
-    -->
+    <!--Use 9 columns on all device types for title -->
+    <div class="col-9">
+      <h4 class="modal-title">Town of Babylon</h4>
+    </div>
+    
+    <!--Use 3 columns on all device types for close button -->
+    <div class="col-3">  
+      <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  </div>
+  
+  <!--Row for "Login" text -->
+  <div class="row">
+    <!-- Use just "col" for same width column across devices.
+    In this case, there is only one column for the entire row -->
+    
     <div class="col">
       <br/>
-      <p class="lead"><strong>Sign in</strong></p>
+      <p class="lead"><strong>Login</strong></p>
+    </div>
+  </div>
+  
+  <!--Row for entire form -->
+  <div class="row">
+    <div class="col">
       
       <form (ngSubmit)="onSubmit()">
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
@@ -30,10 +52,18 @@
         </div>
         <button type="submit" class="btn btn-default">Sign in!</button>
       </form>
-      
-      <br/><br/><br/><br/><br/>
+    </div>
+  </div>
+  
+  <br/><br/><br/><br/><br/>
+  
+  <!--Row for "Don't have account" line -->
+  <div class="row">
+    <div class="col">  
       <p><strong>Don't have an account? <a routerLink="/register" [queryParams]="{page: returnPage}" 
                                               routerLinkActive="active">Sign up</a></strong></p>
     </div>
   </div>
-  </div>
+  
+<!-- end of container div -->
+</div>
