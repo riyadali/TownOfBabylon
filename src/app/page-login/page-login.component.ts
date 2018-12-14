@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../auth/auth.service';
 import {ModalService} from '../modal.service';
+import {PageRegisterComponent} from "../page-register/page-register.component";
 
 import {
   Router
@@ -41,6 +42,14 @@ export class PageLoginComponent implements OnInit {
   
   close() {
     this.modalService.destroy();
+  }
+  
+  loadRegisterModal() {
+    this.close(); // close this modal dialog
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageRegisterComponent, inputs, {});
   }
   
   onSubmit () {
