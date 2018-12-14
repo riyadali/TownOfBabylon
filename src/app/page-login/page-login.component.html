@@ -60,8 +60,8 @@
   <!--Row for "Don't have account" line -->
   <div class="row">
     <div class="col">  
-      <p><strong>Don't have an account? <a routerLink="/register" [queryParams]="{page: returnPage}" 
-                                              routerLinkActive="active">Sign up</a></strong></p>
+      <p><strong>Don't have an account? </strong><a class="text-primary"  
+                                                    (click)="loadRegisterModal()">Sign up</a></p>
     </div>
   </div>
   
