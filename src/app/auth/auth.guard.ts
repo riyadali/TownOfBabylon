@@ -1,6 +1,6 @@
 // You can read more about guards here https://angular.io/guide/router#milestone-5-route-guards
 // Live code is found here https://stackblitz.com/angular/yregjpanjrn
-// In that exapmle all admin routes are guarded so that you need to be logged in
+// In that example all admin routes are guarded so that you need to be logged in
 // before you can access that section of the site
 import { Injectable }       from '@angular/core';
 import {
@@ -14,6 +14,7 @@ import {
 import { AuthService }      from './auth.service';
 import { ModalService } from '../modal.service';
 import { PageLoginComponent } from "../page-login/page-login.component";
+import { PageRegisterComponent } from "../page-register/page-register.component";
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,14 @@ export class AuthGuard implements CanActivate, CanLoad {
       isMobile: false
     }
     this.modalService.init(PageLoginComponent, inputs, {});
+  }
+  
+  private loadRegisterModal() {
+    //this.close(); // close this modal dialog   
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageRegisterComponent, inputs, {});
   }
 
   // A guard's return value controls the router's behavior:
@@ -78,9 +87,14 @@ export class AuthGuard implements CanActivate, CanLoad {
     // this.router.navigate(['/sign_in']);
 
     // For all guarded routes use the home page as default page
-    // with sign_in page displayed as modal
+    // with sign_in page displayed as modal.  However,
+    // the register page is displayed as the modal if the user explicitly
+    // used the register link.
     this.router.navigate(['/home']);
-    this.loadLoginModal();
+    if (url=="/register")      
+      this.loadRegisterModal();
+    else
+      this.loadLoginModal();
     return false;
   }
 }
