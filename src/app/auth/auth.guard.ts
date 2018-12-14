@@ -12,13 +12,23 @@ import {
   CanLoad, Route
 } from '@angular/router';
 import { AuthService }      from './auth.service';
+import { ModalService } from '../modal.service';
+import { PageLoginComponent } from "../page-login/page-login.component";
 
 @Injectable({
   providedIn: 'root',
 })
 //export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 export class AuthGuard implements CanActivate, CanLoad {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private modalService: ModalService, private router: Router) {}
+  
+  private loadLoginModal() {
+   // this.close(); // close this modal dialog
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageLoginComponent, inputs, {});
+  }
 
   // A guard's return value controls the router's behavior:
   //        If it returns true, the navigation process continues.
@@ -65,7 +75,12 @@ export class AuthGuard implements CanActivate, CanLoad {
     // this.router.navigate(['/login'], navigationExtras);
 
     // Navigate to the login page
-    this.router.navigate(['/sign_in']);
+    // this.router.navigate(['/sign_in']);
+
+    // For all guarded routes use the home page as default page
+    // with sign_in page displayed as modal
+    this.router.navigate(['/home']);
+    this.loadLoginModal();
     return false;
   }
 }
