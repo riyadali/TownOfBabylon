@@ -172,13 +172,13 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     PageDoingBusinessInBabylonComponent,
     // LoginComponent moved to AuthModule
     // PageLoginComponent, (now defined in entryComponent)
-    PageRegisterComponent,
+    // PageRegisterComponent, (now defined in entryComponent)
     PageUpdateProfileComponent
   ],
-  // Because PageLoginComponent is loaded dynamically into the modal dialog,
-  // it is imported and defined as an entryComponent in app.module.ts.
+  // Because PageLoginComponent and PageRegisterComponent are loaded dynamically into the modal dialog,
+  // they are imported and defined as entryComponent in app.module.ts.
   // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
-  entryComponents: [PageLoginComponent],
+  entryComponents: [PageLoginComponent, PageRegisterComponent],
   bootstrap: [ AppComponent ],
   providers: [TransactionService, SearchService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
