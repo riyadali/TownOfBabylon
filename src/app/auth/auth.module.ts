@@ -3,6 +3,7 @@ import { CommonModule }   from '@angular/common';
 import { FormsModule }    from '@angular/forms';
 
 import { PageLoginComponent }    from '../page-login/page-login.component';
+import { PageRegisterComponent }    from '../page-register/page-register.component';
 import { AuthRoutingModule } from './auth-routing.module';
 // page header component moved to common module because it
 // is being shared by app.module as well as auth.module
@@ -18,7 +19,8 @@ import { AuthRoutingModule } from './auth-routing.module';
     AuthRoutingModule
   ],
   declarations: [
-    PageLoginComponent
+    PageLoginComponent,
+    PageRegisterComponent
   ]
 })
 export class AuthModule {}
