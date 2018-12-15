@@ -61,10 +61,14 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn()) { return true; }
+    if (this.authService.isLoggedIn()) { 
+      if (url!=="/register")
+        return true; 
+    }
 
     // Store the attempted URL for redirecting
-    this.authService.redirectUrl = url; 
+    if (url!=="/register"&&url!=="/sign_in")
+      this.authService.redirectUrl = url; 
 
     // Create a dummy session id
     // let sessionId = 123456789;
@@ -89,13 +93,18 @@ export class AuthGuard implements CanActivate, CanLoad {
     // For all guarded routes use the home page as default page
     // with sign_in page displayed as modal.  However,
     // the register page is displayed as the modal if the user explicitly
-    // used the register link.
+    // used the register link.    
     this.router.navigate(['/home']);
-    if (url=="/register")      
-      this.loadRegisterModal();
-    else
+    if (url=="/register") {     
+      this.loadRegisterModal();      
+      return true;  // route is resolved
+    } else if (url=="/sign_in") { 
       this.loadLoginModal();
-    return false;
+      return true; // route is resolved
+    } else {
+      this.loadLoginModal();
+      return false; // route not resolved -- will eventually be by redirect after successful login
+    }
   }
 }
 
