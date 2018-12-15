@@ -62,12 +62,17 @@ export class AuthGuard implements CanActivate, CanLoad {
 
   checkLogin(url: string): boolean {
     if (this.authService.isLoggedIn()) { 
-      if (url!=="/register")
+      if (url!=="/register") {
+        if (url=="/sign_in") {
+          // change the route shown on navigation bar to home
+          this.router.navigate(['/home']);
+        }
         return true; 
+      }
     }
 
     // Store the attempted URL for redirecting
-    if (url!=="/register"&&url!=="/sign_in")
+    if (url!=="/register")
       this.authService.redirectUrl = url; 
 
     // Create a dummy session id
@@ -98,9 +103,6 @@ export class AuthGuard implements CanActivate, CanLoad {
     if (url=="/register") {     
       this.loadRegisterModal();      
       return true;  // route is resolved
-    } else if (url=="/sign_in") { 
-      this.loadLoginModal();
-      return true; // route is resolved
     } else {
       this.loadLoginModal();
       return false; // route not resolved -- will eventually be by redirect after successful login
