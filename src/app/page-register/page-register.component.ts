@@ -93,6 +93,7 @@ export class PageRegisterComponent implements OnInit {
                           // Redirect the user
                           // self.router.navigate([redirect], navigationExtras);
                           self.router.navigate([redirect]);
+                          self.close(); // close modal dialog
                         }
                     },
             error(err) { self.formError = err.message;
