@@ -18,7 +18,8 @@ import { PageHomeComponent }   from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent }   from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
 // sign in route moved to auth routing module
 // import { PageLoginComponent }   from './page-login/page-login.component';
-import { PageRegisterComponent } from './page-register/page-register.component';
+// register route moved to auth routing module
+// import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
 
@@ -101,7 +102,8 @@ const routes: Routes = [
  { path: 'doing_business_in_babylon', component: PageDoingBusinessInBabylonComponent, pathMatch: 'full' },
  // sign in route moved to auth routing module
  // { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' },
- { path: 'register', component: PageRegisterComponent, pathMatch: 'full' },
+ // register route moved to auth routing module
+ // { path: 'register', component: PageRegisterComponent, pathMatch: 'full' },
  { 
    path: 'update_profile', 
    component: PageUpdateProfileComponent,

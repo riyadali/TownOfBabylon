@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../auth/auth.service';
+import {ModalService} from '../modal.service';
+import {PageRegisterComponent} from "../page-register/page-register.component";
 
 import {
   Router
@@ -10,11 +12,6 @@ import {
  // NavigationExtras,
  // CanLoad, Route
 }  from '@angular/router';
-
-interface HeaderContent {  
-  title: string;
-  strapline: string;
-};
 
 @Component({
   selector: 'app-page-login',
@@ -38,14 +35,21 @@ export class PageLoginComponent implements OnInit {
   // The above is from the getting mean site (it may still be useful)
   // However, for now I use the redirectURL in authService to control redirection)
   
-  
-  loginHeader : HeaderContent = {
-    title: "Sign in to Town of Babylon",
-    strapline: ""
-  }
-  constructor(private authService: AuthService, public router: Router) { }
+  constructor(private authService: AuthService, private modalService: ModalService, public router: Router) { }
 
   ngOnInit() {
+  }
+  
+  close() {
+    this.modalService.destroy();
+  }
+  
+  loadRegisterModal() {
+    this.close(); // close this modal dialog
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageRegisterComponent, inputs, {});
   }
   
   onSubmit () {
@@ -86,6 +90,7 @@ export class PageLoginComponent implements OnInit {
                           // Redirect the user
                           // self.router.navigate([redirect], navigationExtras);
                           self.router.navigate([redirect]);
+                          self.close(); // close modal dialog
                         }
                     },
             error(err) { self.formError = err.message;

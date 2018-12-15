@@ -25,6 +25,11 @@
 <app-footer></app-footer>
 
 <app-messages></app-messages>
+
+<!-- Custom modal setup from site 
+     https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1 -->
+<div id="modal-container" class="hidden"></div>
+<div id="overlay" (click)="removeModal()" class="hidden"></div>
 <!-- 
 Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that

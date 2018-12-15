@@ -1,6 +1,6 @@
 // You can read more about guards here https://angular.io/guide/router#milestone-5-route-guards
 // Live code is found here https://stackblitz.com/angular/yregjpanjrn
-// In that exapmle all admin routes are guarded so that you need to be logged in
+// In that example all admin routes are guarded so that you need to be logged in
 // before you can access that section of the site
 import { Injectable }       from '@angular/core';
 import {
@@ -12,13 +12,32 @@ import {
   CanLoad, Route
 } from '@angular/router';
 import { AuthService }      from './auth.service';
+import { ModalService } from '../modal.service';
+import { PageLoginComponent } from "../page-login/page-login.component";
+import { PageRegisterComponent } from "../page-register/page-register.component";
 
 @Injectable({
   providedIn: 'root',
 })
 //export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 export class AuthGuard implements CanActivate, CanLoad {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private modalService: ModalService, private router: Router) {}
+  
+  private loadLoginModal() {
+   // this.close(); // close this modal dialog
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageLoginComponent, inputs, {});
+  }
+  
+  private loadRegisterModal() {
+    //this.close(); // close this modal dialog   
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageRegisterComponent, inputs, {});
+  }
 
   // A guard's return value controls the router's behavior:
   //        If it returns true, the navigation process continues.
@@ -42,10 +61,19 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn()) { return true; }
+    if (this.authService.isLoggedIn()) { 
+      if (url!=="/register") {
+        if (url=="/sign_in") {
+          // change the route shown on navigation bar to home
+          this.router.navigate(['/home']);
+        }
+        return true; 
+      }
+    }
 
     // Store the attempted URL for redirecting
-    this.authService.redirectUrl = url; 
+    if (url!=="/register")
+      this.authService.redirectUrl = url; 
 
     // Create a dummy session id
     // let sessionId = 123456789;
@@ -65,8 +93,20 @@ export class AuthGuard implements CanActivate, CanLoad {
     // this.router.navigate(['/login'], navigationExtras);
 
     // Navigate to the login page
-    this.router.navigate(['/sign_in']);
-    return false;
+    // this.router.navigate(['/sign_in']);
+
+    // For all guarded routes use the home page as default page
+    // with sign_in page displayed as modal.  However,
+    // the register page is displayed as the modal if the user explicitly
+    // used the register link.    
+    this.router.navigate(['/home']);
+    if (url=="/register") {     
+      this.loadRegisterModal();      
+      return true;  // route is resolved
+    } else {
+      this.loadLoginModal();
+      return false; // route not resolved -- will eventually be by redirect after successful login
+    }
   }
 }
 

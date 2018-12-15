@@ -32,6 +32,8 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
 import { AuthService } from './auth/auth.service';
+import { ModalService } from './modal.service';
+import { DomService } from './dom.service';
 
 import { httpInterceptorProviders } from './http-interceptors/index';
 
@@ -61,6 +63,10 @@ import { StandardPageComponent } from './standard-page/standard-page.component';
 import { ToolBarScalableComponent } from './tool-bar-scalable/tool-bar-scalable.component';
 // page header component moved to separate module because it
 // is being shared by app.module as well as auth.module
+// *** discovered that header component was more trouble than its worth when used in pagelogin
+// *** so just updated pagelogin's html to remove need for header
+// *** But for now leaving header component in AppCommonModule 
+// *** because may want to use appcommon for other shared components
 // import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
@@ -78,8 +84,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
-// LoginComponent moved to AuthModule
-// import { PageLoginComponent } from './page-login/page-login.component';
+// Because PageLoginComponent is loaded dynamically into the modal dialog,
+// it is imported and defined as an entryComponent in app.module.ts.
+// Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
+import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
@@ -100,6 +108,10 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
+// *** discovered that header component was more trouble than its worth when used in pagelogin
+// *** so just updated pagelogin's html to remove need for header
+// *** But for now leaving header component in AppCommonModule 
+// *** because may want to use appcommon for other shared components
     AppCommonModule,
     AuthModule,
     AppRoutingModule,
@@ -137,6 +149,10 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     ToolBarScalableComponent,
     // page header component moved to separate module because it
     // is being shared by app.module as well as auth.module
+    // *** discovered that header component was more trouble than its worth when used in pagelogin
+    // *** so just updated pagelogin's html to remove need for header
+    // *** But for now leaving header component in AppCommonModule 
+    // *** because may want to use appcommon for other shared components
     // HeaderComponent,
     FooterComponent,
     SearchFormComponent,
@@ -155,12 +171,16 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     PageHomeComponent,
     PageDoingBusinessInBabylonComponent,
     // LoginComponent moved to AuthModule
-    // PageLoginComponent,
-    PageRegisterComponent,
+    // PageLoginComponent, (now defined in entryComponent)
+    // PageRegisterComponent, (now defined in entryComponent)
     PageUpdateProfileComponent
   ],
+  // Because PageLoginComponent and PageRegisterComponent are loaded dynamically into the modal dialog,
+  // they are imported and defined as entryComponent in app.module.ts.
+  // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
+  entryComponents: [PageLoginComponent, PageRegisterComponent],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService, AuthService, httpInterceptorProviders]
+  providers: [TransactionService, SearchService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
 export class AppModule {
   
