@@ -73,6 +73,7 @@ import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
 import {MyCalendarComponent} from './calendar/calendar.component';
+import {MyCalendarEditableComponent} from './calendar-editable/calendar-editable.component';
 import {MyCalendarMoviesComponent} from './calendar-movies/calendar-movies.component';
 
 /* To include Matt Lewis calendar -- refer to site https://github.com/mattlewis92/angular-calendar */
@@ -164,6 +165,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     StandardPageComponent,
     
     MyCalendarComponent,
+    MyCalendarEditableComponent,
     MyCalendarMoviesComponent,
 
     
