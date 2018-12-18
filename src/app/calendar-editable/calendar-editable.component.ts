@@ -20,6 +20,9 @@ import {
   endOfWeek,
   startOfDay,
   endOfDay,
+  subDays,
+  addDays,
+  addHours,
   format
 } from 'date-fns';
 
@@ -71,7 +74,7 @@ export class MyCalendarEditableComponent implements OnInit {
   vw: string = this.vwMonth; /* default view */
   vwDate: Date = new Date();
 
-  events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
+  //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
   evnts: Array<CalendarEvent<ExtraEventData>>;
 
   activeDayIsOpen: boolean = false; /* need to set to false initially since
@@ -98,7 +101,47 @@ export class MyCalendarEditableComponent implements OnInit {
       }
     }
   ];
-
+    
+  events$: CalendarEvent[] = [
+    {
+      start: subDays(startOfDay(new Date()), 1),
+      end: addDays(new Date(), 1),
+      title: 'A 3 day event',
+      color: colors.red,
+      actions: this.actions,
+      allDay: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true
+    },
+    {
+      start: startOfDay(new Date()),
+      title: 'An event with no end date',
+      color: colors.yellow,
+      actions: this.actions
+    },
+    {
+      start: subDays(endOfMonth(new Date()), 3),
+      end: addDays(endOfMonth(new Date()), 3),
+      title: 'A long event that spans 2 months',
+      color: colors.blue,
+      allDay: true
+    },
+    {
+      start: addHours(startOfDay(new Date()), 2),
+      end: new Date(),
+      title: 'A draggable and resizable event',
+      color: colors.yellow,
+      actions: this.actions,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true
+    }
+  ];
 
   constructor(private modalService: BsModalService, private http: HttpClient) {}
 
@@ -107,7 +150,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchEvents();
+    /*this.fetchEvents();*/
   }
   
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
@@ -115,6 +158,7 @@ export class MyCalendarEditableComponent implements OnInit {
     this.openModal(this.modalContent);
   }
   
+  /*
   fetchEvents(): void {
     const getStart: any = {
       month: startOfMonth,
@@ -156,6 +200,7 @@ export class MyCalendarEditableComponent implements OnInit {
         })
       );
   }
+  */
   
   dayClicked({
     date,
