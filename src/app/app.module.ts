@@ -31,6 +31,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
+import { CalEventService } from './cal-event.service';
 import { AuthService } from './auth/auth.service';
 import { ModalService } from './modal.service';
 import { DomService } from './dom.service';
@@ -182,7 +183,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
   // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
   entryComponents: [PageLoginComponent, PageRegisterComponent],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService, AuthService, ModalService, DomService, httpInterceptorProviders]
+  providers: [TransactionService, SearchService, CalEventService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
 export class AppModule {
   
