@@ -151,7 +151,10 @@
 <br/>
    
 <!-- Various views controlled by ngSwitch vwClicked -->
+<!-- 
 <div *ngIf="events$ | async; else loading; let events">
+-->
+<div *ngIf="events$; else loading; let evnts">
   <div [ngSwitch]="vwClicked">
       
     <!-- Month view - the default -->
