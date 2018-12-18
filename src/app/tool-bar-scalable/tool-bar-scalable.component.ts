@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { AuthService } from '../auth/auth.service';
+import { ModalService } from '../modal.service';
+
+import { PageLoginComponent } from '../page-login/page-login.component';
 
 @Component({
   selector: 'app-tool-bar-scalable',
@@ -7,9 +13,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolBarScalableComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router:Router, private authService: AuthService, private modalService: ModalService) { }
 
   ngOnInit() {
+  }
+  
+  initLoginModal() {
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageLoginComponent, inputs, {});
+  }
+  
+  logout() {
+      this.authService.logout();
+      this.router.navigate(["/"]); // redirect home
   }
 
 }

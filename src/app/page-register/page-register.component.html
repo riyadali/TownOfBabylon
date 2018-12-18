@@ -1,0 +1,78 @@
+<br/>
+<!--
+<app-page-header [content]="registerHeader"></app-page-header>
+-->
+  
+  <div class="container">
+    
+  <!--Header row with close button -->
+  <div class="row">
+    <!--Use 9 columns on all device types for title -->
+    <div class="col-9">
+      <h4 class="modal-title">Sign up</h4>
+    </div>
+    
+    <!--Use 3 columns on all device types for close button -->
+    <div class="col-3">  
+      <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+          <span aria-hidden="true">×</span>
+      </button>
+    </div>
+  </div>
+   
+   <!--Row for entire form -->
+  <div class="row">
+    <div class="col">    
+      
+      <form (ngSubmit)="onSubmit()">
+        <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
+        <div class="form-group">
+          <br/>
+          <!--
+          <label for="name">Full name</label>
+          -->
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" 
+                 [(ngModel)]="credentials.user.username" name="fullname">
+        </div>
+         
+        <div class="form-group">
+          <!--
+          <label for="email">Email address</label>
+          -->
+          <br/>
+          <input type="email" class="form-control" id="email" placeholder="Enter email" required 
+                 [(ngModel)]="credentials.user.email" name="email">
+        </div>
+        <div class="form-group">
+          <!--
+          <label for="password">Password</label>
+          -->
+          <br/>
+          <input type="password" class="form-control" id="password" placeholder="Password" required 
+                 [(ngModel)]="credentials.user.password" name="password">
+        </div>
+        <div class="form-group">
+          <!--
+          <label for="bio">Bio</label>
+          -->
+          <br/>
+          <textarea class="form-control" rows="2" id="bio" name="bio" 
+                    [(ngModel)]="credentials.user.bio" placeholder="Add a bio (optional)"></textarea>
+        </div>       
+        <button type="submit" class="btn btn-default">Register!</button>
+      </form>
+    </div>
+  </div>
+
+  <br/>
+    
+  <!--Row for "Already have account" line -->
+  <div class="row">
+    <div class="col">  
+      <p><strong>Already have an account? <a class="text-primary"  
+                                                    (click)="loadLoginModal()">Sign in</a></strong></p>
+    </div>
+  </div>
+      
+  <!-- end of container div -->
+</div>

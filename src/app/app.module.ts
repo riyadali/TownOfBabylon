@@ -7,6 +7,19 @@ import { NgModule }       from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule,  ReactiveFormsModule }    from '@angular/forms';
+
+import { Router } from '@angular/router';
+
+// page header component moved to separate module because it
+// is being shared by app.module as well as auth.module
+import { AppCommonModule } from './common.module';
+
+/* Because interceptors are (optional) dependencies of the HttpClient service, you 
+   must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
+   Interceptors provided after DI creates the HttpClient are ignored.
+
+   This app provides HttpClient in the app's root injector, as a side-effect of importing the 
+   HttpClientModule in AppModule. You should provide interceptors in AppModule as well. */
 import { HttpClientModule }    from '@angular/common/http';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown'; /* ngx-bootstrap dropdown package see https://valor-software.com/ngx-bootstrap/#/dropdowns#usage*/
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -18,9 +31,16 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
+import { AuthService } from './auth/auth.service';
+import { ModalService } from './modal.service';
+import { DomService } from './dom.service';
+
+import { httpInterceptorProviders } from './http-interceptors/index';
 
 /* it might be safest to import the routing module last */
 import { AppRoutingModule }     from './app-routing.module';
+
+import { AuthModule }           from './auth/auth.module'; 
 
 import { AppComponent }         from './app.component';
 import { DashboardComponent }   from './dashboard/dashboard.component';
@@ -39,7 +59,15 @@ import { SocialIconComponent } from './social-icon/social-icon.component';  /* i
 import { SocialIconsComponent } from './social-icons/social-icons.component'; /* in footer */
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { StandardPageComponent } from './standard-page/standard-page.component';
+
 import { ToolBarScalableComponent } from './tool-bar-scalable/tool-bar-scalable.component';
+// page header component moved to separate module because it
+// is being shared by app.module as well as auth.module
+// *** discovered that header component was more trouble than its worth when used in pagelogin
+// *** so just updated pagelogin's html to remove need for header
+// *** But for now leaving header component in AppCommonModule 
+// *** because may want to use appcommon for other shared components
+// import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
@@ -56,6 +84,12 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { PageHomeComponent } from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
+// Because PageLoginComponent is loaded dynamically into the modal dialog,
+// it is imported and defined as an entryComponent in app.module.ts.
+// Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
+import { PageLoginComponent } from './page-login/page-login.component';
+import { PageRegisterComponent } from './page-register/page-register.component';
+import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
 
 @NgModule({
@@ -74,6 +108,12 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     MatTabsModule,
     FormsModule,
     ReactiveFormsModule,
+// *** discovered that header component was more trouble than its worth when used in pagelogin
+// *** so just updated pagelogin's html to remove need for header
+// *** But for now leaving header component in AppCommonModule 
+// *** because may want to use appcommon for other shared components
+    AppCommonModule,
+    AuthModule,
     AppRoutingModule,
     HttpClientModule,
     BsDropdownModule.forRoot(),
@@ -107,6 +147,13 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     SideNavComponent,
     ToolBarComponent,
     ToolBarScalableComponent,
+    // page header component moved to separate module because it
+    // is being shared by app.module as well as auth.module
+    // *** discovered that header component was more trouble than its worth when used in pagelogin
+    // *** so just updated pagelogin's html to remove need for header
+    // *** But for now leaving header component in AppCommonModule 
+    // *** because may want to use appcommon for other shared components
+    // HeaderComponent,
     FooterComponent,
     SearchFormComponent,
     NavbarBrandComponent,
@@ -122,12 +169,30 @@ import { PageDoingBusinessInBabylonComponent } from './page-doing-business-in-ba
     
     
     PageHomeComponent,
-    PageDoingBusinessInBabylonComponent
+    PageDoingBusinessInBabylonComponent,
+    // LoginComponent moved to AuthModule
+    // PageLoginComponent, (now defined in entryComponent)
+    // PageRegisterComponent, (now defined in entryComponent)
+    PageUpdateProfileComponent
   ],
+  // Because PageLoginComponent and PageRegisterComponent are loaded dynamically into the modal dialog,
+  // they are imported and defined as entryComponent in app.module.ts.
+  // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
+  entryComponents: [PageLoginComponent, PageRegisterComponent],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService]
+  providers: [TransactionService, SearchService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
-export class AppModule { }
+export class AppModule {
+  
+  // Diagnostic only: inspect router configuration
+  constructor(router: Router) {
+    // Use a custom replacer to display function names in the route configs
+    // const replacer = (key, value) => (typeof value === 'function') ? value.name : value;
+
+    // console.log('Routes: ', JSON.stringify(router.config, replacer, 2));
+  }
+  
+}
 
 
 /*

@@ -1,6 +1,8 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard }  from './auth/auth.guard';
+
 /* imports from the original heroes app ---
 
 import { DashboardComponent }   from './dashboard/dashboard.component';
@@ -14,6 +16,11 @@ import { DashboardComponent }   from './dashboard/dashboard.component';
 import { StandardPageComponent }   from './standard-page/standard-page.component';
 import { PageHomeComponent }   from './page-home/page-home.component';
 import { PageDoingBusinessInBabylonComponent }   from './page-doing-business-in-babylon/page-doing-business-in-babylon.component';
+// sign in route moved to auth routing module
+// import { PageLoginComponent }   from './page-login/page-login.component';
+// register route moved to auth routing module
+// import { PageRegisterComponent } from './page-register/page-register.component';
+import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
 
 
@@ -93,6 +100,21 @@ const routes: Routes = [
  { path: '', redirectTo: '/home', pathMatch: 'full' },
  { path: 'home', component: PageHomeComponent, pathMatch: 'full' },
  { path: 'doing_business_in_babylon', component: PageDoingBusinessInBabylonComponent, pathMatch: 'full' },
+ // sign in route moved to auth routing module
+ // { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' },
+ // register route moved to auth routing module
+ // { path: 'register', component: PageRegisterComponent, pathMatch: 'full' },
+ { 
+   path: 'update_profile', 
+   component: PageUpdateProfileComponent,
+   // Refer to link to preventloading of protected module if not authorized
+   // https://angular.io/guide/router#canload-guard-guarding-unauthorized-loading-of-feature-modules
+   // Add a CanLoad guard that only loads the AdminModule once the 
+   // user is logged in and attempts to access the admin feature area. 
+   //canLoad: [AuthGuard],
+   canActivate: [AuthGuard],
+   pathMatch: 'full' 
+ },
  { path: 'standard-page/:id', component: StandardPageComponent },
  { path: 'dashboard', component: DashboardComponent },
   { path: 'static_pages', loadChildren: './static-pages/static-pages.module#StaticPagesModule' },

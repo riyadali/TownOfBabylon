@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ModalService } from './modal.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Town of Babylon';
+  
+  removeModal() {
+    this.modalService.destroy();
+  }
+  
+  constructor(private modalService: ModalService) { }
 }
 
 

@@ -95,6 +95,43 @@
             </div>
         </form>
       -->
+      
+      <!-- Sign in -->          
+      <ul class="navbar-nav" [hidden]="authService.isLoggedIn()">
+        <li class="nav-item">
+          <!--
+          <a class="nav-link waves-light" mdbWavesEffect routerLink="/sign_in" routerLinkActive="active">Sign in</a>
+          -->
+          <a class="nav-link waves-light" mdbWavesEffect  (click)="initLoginModal()">Sign in</a>
+        </li>
+      </ul>
+      
+      <!-- User profile button group --> 
+      <ul class="navbar-nav dropdown" [hidden]="!authService.isLoggedIn()">
+        
+        <!-- Dropdown Menu Group-->
+        <li class="btn-group nav-item" dropdown [autoClose]="true" container="body">
+          
+          <!-- User profile button -->
+          <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle btn-dark" 
+              aria-controls="dropdown-nested-user">
+            {{authService.currentUser()?.user.name}}<span class="caret"></span>
+          </a>
+           
+          <!-- Nested dropdown associated with user profile button -->
+          <ul id="dropdown-nested-user" *dropdownMenu class="dropdown-menu"
+              role="menu" aria-labelledby="button-nested-user">
+            <li role="menuitem"><a class="dropdown-item" routerLink="/update_profile" routerLinkActive="active">Update Profile</a></li>
+            <li role="menuitem"><a class="dropdown-item" href="" (click)="logout()">Logout</a></li>
+          </ul>
+             
+        <!-- End Dropdown Menu Group-->   
+        </li>
+           
+      <!-- End User profile button group --> 
+      </ul>
+      
+      
 
         
     <!-- End collapsible content --> 
