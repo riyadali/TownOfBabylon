@@ -12,7 +12,7 @@ const httpOptions = {
 };
 
 @Injectable({ providedIn: 'root' })
-export class HeroService {
+export class CalEventService {
 
   private heroesUrl = 'api/heroes';  // URL to web api
 
