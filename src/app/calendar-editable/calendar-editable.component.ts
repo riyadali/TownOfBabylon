@@ -4,6 +4,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { CalEvent } from '../calevent';
+import { CalEventService } from '../cal-event.service';
+
 import { CalendarEvent, CalendarEventAction, CalendarView } from 'angular-calendar';
 import { collapseAnimation } from 'angular-calendar'; /* refer to 
     https://github.com/mattlewis92/angular-calendar/issues/747 */
@@ -102,48 +105,9 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   ];
     
-  events$: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.blue,
-      allDay: true
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),
-      title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    }
-  ];
+  events$: CalendarEvent[];
 
-  constructor(private modalService: BsModalService, private http: HttpClient) {}
+  constructor(private calEventService: CalEventService, private modalService: BsModalService, private http: HttpClient) {}
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
@@ -151,6 +115,12 @@ export class MyCalendarEditableComponent implements OnInit {
 
   ngOnInit() {
     /*this.fetchEvents();*/
+    this.getCalendarEvents();
+  }
+  
+  getCalendarEvents(): void {
+    this.calEventService.getCalendarEvents()
+    .subscribe(calEvents => this.events$ = calEvents);
   }
   
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
