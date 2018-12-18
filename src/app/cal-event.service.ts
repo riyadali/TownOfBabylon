@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Hero } from './hero';
+import { CalEvent } from './calEvent';
 import { MessageService } from './message.service';
 
 const httpOptions = {
@@ -14,82 +14,82 @@ const httpOptions = {
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
-  private heroesUrl = 'api/heroes';  // URL to web api
+  private calEventsUrl = 'api/calEvents';  // URL to web api
 
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
 
-  /** GET heroes from the server */
-  getHeroes (): Observable<Hero[]> {
-    return this.http.get<Hero[]>(this.heroesUrl)
+  /** GET calendar events from the server */
+  getCalendarEvents (): Observable<CalEvent[]> {
+    return this.http.get<CalEvent[]>(this.calEventsUrl)
       .pipe(
-        tap(heroes => this.log(`fetched heroes`)),
-        catchError(this.handleError('getHeroes', []))
+        tap(calEvents => this.log(`fetched calendar events`)),
+        catchError(this.handleError('getCalendarEvents', []))
       );
   }
 
-  /** GET hero by id. Return `undefined` when id not found */
-  getHeroNo404<Data>(id: number): Observable<Hero> {
-    const url = `${this.heroesUrl}/?id=${id}`;
-    return this.http.get<Hero[]>(url)
+  /** GET calendar event by id. Return `undefined` when id not found */
+  getCalendarEventNo404<Data>(id: number): Observable<CalEvent> {
+    const url = `${this.calEventsUrl}/?id=${id}`;
+    return this.http.get<CalEvent[]>(url)
       .pipe(
-        map(heroes => heroes[0]), // returns a {0|1} element array
-        tap(h => {
-          const outcome = h ? `fetched` : `did not find`;
-          this.log(`${outcome} hero id=${id}`);
+        map(calEvents => calEvents[0]), // returns a {0|1} element array
+        tap(c => {
+          const outcome = c ? `fetched` : `did not find`;
+          this.log(`${outcome} calendar event id=${id}`);
         }),
-        catchError(this.handleError<Hero>(`getHero id=${id}`))
+        catchError(this.handleError<CalEvent>(`getCalendarEvent id=${id}`))
       );
   }
 
-  /** GET hero by id. Will 404 if id not found */
-  getHero(id: number): Observable<Hero> {
-    const url = `${this.heroesUrl}/${id}`;
-    return this.http.get<Hero>(url).pipe(
-      tap(_ => this.log(`fetched hero id=${id}`)),
-      catchError(this.handleError<Hero>(`getHero id=${id}`))
+  /** GET calerndar event by id. Will 404 if id not found */
+  getCalendarEvent(id: number): Observable<CalEvent> {
+    const url = `${this.calEventsUrl}/${id}`;
+    return this.http.get<CalEvent>(url).pipe(
+      tap(_ => this.log(`fetched calendar event id=${id}`)),
+      catchError(this.handleError<CalEvent>(`getCalendarEvent id=${id}`))
     );
   }
 
-  /* GET heroes whose name contains search term */
-  searchHeroes(term: string): Observable<Hero[]> {
+  /* GET calendar events  whose title contains search term */
+  searchCalendarEvents(term: string): Observable<CalEvent[]> {
     if (!term.trim()) {
-      // if not search term, return empty hero array.
+      // if not search term, return empty calendar event array.
       return of([]);
     }
-    return this.http.get<Hero[]>(`api/heroes/?name=${term}`).pipe(
-      tap(_ => this.log(`found heroes matching "${term}"`)),
-      catchError(this.handleError<Hero[]>('searchHeroes', []))
+    return this.http.get<CalEvent[]>(this.calEventsUrl+`/?title=${term}`).pipe(
+      tap(_ => this.log(`found calendar events whose title matches "${term}"`)),
+      catchError(this.handleError<CalEvent[]>('searchCalendarEvents', []))
     );
   }
 
   //////// Save methods //////////
 
-  /** POST: add a new hero to the server */
-  addHero (hero: Hero): Observable<Hero> {
-    return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
-      tap((hero: Hero) => this.log(`added hero w/ id=${hero.id}`)),
-      catchError(this.handleError<Hero>('addHero'))
+  /** POST: add a new calendar event to the server */
+  addCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
+    return this.http.post<CalEvent>(this.calEventsUrl, calEvent, httpOptions).pipe(
+      tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      catchError(this.handleError<CalEvent>('addCalendarEvent'))
     );
   }
 
-  /** DELETE: delete the hero from the server */
-  deleteHero (hero: Hero | number): Observable<Hero> {
-    const id = typeof hero === 'number' ? hero : hero.id;
-    const url = `${this.heroesUrl}/${id}`;
+  /** DELETE: delete the calendar event from the server */
+  deleteCalendarEvent (calEvent: CalEvent | number): Observable<CalEvent> {
+    const id = typeof calEvent === 'number' ? calEvent : calEvent.id;
+    const url = `${this.calEventsUrl}/${id}`;
 
-    return this.http.delete<Hero>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted hero id=${id}`)),
-      catchError(this.handleError<Hero>('deleteHero'))
+    return this.http.delete<CalEvent>(url, httpOptions).pipe(
+      tap(_ => this.log(`deleted calendar event id=${id}`)),
+      catchError(this.handleError<CalEvent>('deleteCalendarEvent'))
     );
   }
 
-  /** PUT: update the hero on the server */
-  updateHero (hero: Hero): Observable<any> {
-    return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
-      tap(_ => this.log(`updated hero id=${hero.id}`)),
-      catchError(this.handleError<any>('updateHero'))
+  /** PUT: update the calendar event on the server */
+  updateCalendarEvent (calEvent: CalEvent): Observable<any> {
+    return this.http.put(this.calEventsUrl, calEvent, httpOptions).pipe(
+      tap(_ => this.log(`updated calendar event id=${calEvent.id}`)),
+      catchError(this.handleError<any>('updateCalendarEvent'))
     );
   }
 
@@ -113,9 +113,9 @@ export class CalEventService {
     };
   }
 
-  /** Log a HeroService message with the MessageService */
+  /** Log a CalendarEventService message with the MessageService */
   private log(message: string) {
-    this.messageService.add('HeroService: ' + message);
+    this.messageService.add('CalendarEventService: ' + message);
   }
 }
 
