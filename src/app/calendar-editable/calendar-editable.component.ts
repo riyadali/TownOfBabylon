@@ -74,6 +74,9 @@ export class MyCalendarEditableComponent implements OnInit {
   vwWeek: string = 'week';
   vwDay: string = 'day';
   
+  /* vwClicked is generally the same as vw except when there are multiple variations
+  of a specific view. In this case, vw would identify the acutual view (either 'month', 'week' or 'day') and vwClicked would identify the particular variation (for ex 'weekdays') */
+  vwClicked: string = CalendarView.Month; /* default view */
   vw: string = this.vwMonth; /* default view */
   vwDate: Date = new Date();
 
