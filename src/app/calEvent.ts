@@ -9,15 +9,15 @@ export class CalEvent {
   id: number;
   title: string;
   start: Date;
-  allDay: boolean;
-  end: Date;      
+  allDay?: boolean;
+  end?: Date;      
   color: Color;
   actions: CalendarEventAction[];
-  resizable: {
+  resizable?: {
         beforeStart: boolean;
         afterEnd: boolean;
   };
-  draggable: boolean;
+  draggable?: boolean;
 }
 
 
