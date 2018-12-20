@@ -4,12 +4,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import { CalendarEvent } from 'angular-calendar';
 import { CalEvent } from './calEvent';
 import { MessageService } from './message.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
+interface ExtraEventData {   
+   curDay : Date
+}
 
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
@@ -19,12 +24,38 @@ export class CalEventService {
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
+  
+  private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
+       let result : CalendarEvent<ExtraEventData>= {
+             title: cevent.title,
+             start: new Date(cevent.start),
+             color: cevent.color,
+             /* curDay is a hack to pass the date clicked to the daysEvents template.
+                For the initial view, when no day was clicked as yet, just set it to "today"
+                which represents the current active day in the calendar view. */
+             meta: {  
+                    curDay: new Date()
+                   }
+            };
+
+        if (cevent.draggable) 
+          result.draggable = cevent.draggable;
+        if (cevent.resizable) 
+          result.resizable = cevent.resizable;
+        if (cevent.allDay) 
+          result.allDay = cevent.allDay;
+        if (cevent.end) 
+          result.end = new Date(cevent.end);
+      return result;  
+  }
 
   /** GET calendar events from the server */
   getCalendarEvents (): Observable<CalEvent[]> {
+    let self=this;
     return this.http.get<CalEvent[]>(this.calEventsUrl)
       .pipe(
-        tap(calEvents => this.log(`fetched calendar events`)),
+        map<CalEvent[],CalEvent[]>(calEvents => calEvents.map(x=>self.createCalendarEvent(x))),
+       // tap(calEvents => this.log(`fetched calendar events`)),
         catchError(this.handleError('getCalendarEvents', []))
       );
   }
