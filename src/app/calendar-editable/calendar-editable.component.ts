@@ -51,6 +51,7 @@ interface ExtraEventData {
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
+import editEventTemplate from "../modal-views/edit-event.template.html";
 import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
@@ -102,7 +103,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit an Event", "Submit");
+        this.handleEvent('Edited', event, "Edit an Event", editEventTemplate, "Submit");
       }
     },
     {
@@ -110,7 +111,7 @@ export class MyCalendarEditableComponent implements OnInit {
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
-        this.handleEvent('Deleted', event, "Delete an Event", "OK", "Cancel");
+        this.handleEvent('Deleted', event, "Delete an Event", editEventTemplate, "OK", "Cancel");
       }
     }
   ];
@@ -144,7 +145,8 @@ export class MyCalendarEditableComponent implements OnInit {
     .subscribe(calEvents => this.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
   }
   
-  handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, button1Text: string, button2Text?: string): void {
+  handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
+               body: string, button1Text: string, button2Text?: string): void {
     if (button2Text)
       this.modalData = { header, button1Text, button2Text, event, action };
     else
