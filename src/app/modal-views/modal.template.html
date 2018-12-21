@@ -9,7 +9,7 @@
     </button>
   </div>
   <div class="modal-body">     
-     <ng-container *ngTemplateOutlet="customBodyTemplate || defaultBodyTemplate"></ng-container> 
+     <ng-container *ngTemplateOutlet="modalData?.bodyTemplate || defaultBodyTemplate"></ng-container> 
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()">{{modalData?.button1Text}}</button>
