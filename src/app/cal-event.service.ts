@@ -12,10 +12,6 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
-interface ExtraEventData {   
-   curDay : Date
-}
-
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
@@ -25,18 +21,12 @@ export class CalEventService {
     private http: HttpClient,
     private messageService: MessageService) { }
   
-  private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
-       let result : CalendarEvent<ExtraEventData>= {
+  private createCalendarEvent(cevent : CalEvent) : CalEvent {
+       let result : CalEvent = {
              title: cevent.title,
              start: new Date(cevent.start),
              color: cevent.color,
-             actions: cevent.actions,
-             /* curDay is a hack to pass the date clicked to the daysEvents template.
-                For the initial view, when no day was clicked as yet, just set it to "today"
-                which represents the current active day in the calendar view. */
-             meta: {  
-                    curDay: new Date()
-                   }
+             actions: cevent.actions             
             };
 
         if (cevent.draggable) 
