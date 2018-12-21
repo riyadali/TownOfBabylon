@@ -91,6 +91,9 @@ export class MyCalendarEditableComponent implements OnInit {
                                         for "today" */
   
   modalData: {
+    header: string;
+    button1Text: string;
+    button2Text?: string;
     action: string;
     event: CalendarEvent<ExtraEventData>;
   };
@@ -99,14 +102,14 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event);
+        this.handleEvent('Edited', event, "Edit an Event", "Submit");
       }
     },
     {
       label: '<i class="fa fa-fw fa-times"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.evnts = this.evnts.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        this.handleEvent('Deleted', event, "Delete an Event", "OK", "Cancel");
       }
     }
   ];
@@ -129,8 +132,11 @@ export class MyCalendarEditableComponent implements OnInit {
     .subscribe(calEvents => this.events$ = calEvents);
   }
   
-  handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
-    this.modalData = { event, action };
+  handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, button1Text: string, button2Text?: string): void {
+    if (button2Text)
+      this.modalData = { header, button1Text, button2Text, event, action };
+    else
+       this.modalData = { header, button1Text, event, action };
     this.openModal(this.modalContent);
   }
   
