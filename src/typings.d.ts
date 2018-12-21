@@ -16,11 +16,3 @@ interface IIcsCalendarEvent {
   summary: string;
   location: string;
 }
-
-// Needed to import template files as string.
-// An example of where this is used is for the modal content templates
-
-declare module "*.html" {
-  const content: string;
-  export default content;
-}
