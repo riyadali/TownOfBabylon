@@ -70,6 +70,9 @@ export class MyCalendarEditableComponent implements OnInit {
   @ViewChild('dayEventsTemplate')
   dayEventsTemplate: TemplateRef<any>;
   
+  @ViewChild('editEventContent')
+  editEventContent: TemplateRef<any>;
+  
   modalRef: BsModalRef;
   
  // locale: string = 'en';
@@ -103,7 +106,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit an Event", editEventTemplate, "Submit");
+        this.handleEvent('Edited', event, "Edit an Event", this.editEventContent, "Submit");
       }
     },
     {
@@ -111,7 +114,7 @@ export class MyCalendarEditableComponent implements OnInit {
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
-        this.handleEvent('Deleted', event, "Delete an Event", editEventTemplate, "OK", "Cancel");
+        this.handleEvent('Deleted', event, "Delete an Event", this.editEventContent, "OK", "Cancel");
       }
     }
   ];
@@ -146,11 +149,11 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
-               body: string, button1Text: string, button2Text?: string): void {
+               bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
     if (button2Text)
-      this.modalData = { header, button1Text, button2Text, event, action };
+      this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
-       this.modalData = { header, button1Text, event, action };
+       this.modalData = { bodyTemplate, header, button1Text, event, action };
     this.openModal(this.modalContent);
   }
   
