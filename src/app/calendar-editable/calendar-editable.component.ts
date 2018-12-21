@@ -95,6 +95,7 @@ export class MyCalendarEditableComponent implements OnInit {
                                         for "today" */
   
   modalData: {
+    bodyTemplate: TemplateRef<any>;
     header: string;
     button1Text: string;
     button2Text?: string;
