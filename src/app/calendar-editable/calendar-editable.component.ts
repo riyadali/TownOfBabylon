@@ -129,7 +129,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
        
-      return { cevent,
+      return { ...cevent,
                actions: this.actions,
                meta: {  
                       curDay: new Date()
