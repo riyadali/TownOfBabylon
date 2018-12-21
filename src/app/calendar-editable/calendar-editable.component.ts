@@ -50,10 +50,13 @@ interface ExtraEventData {
    curDay : Date
 }
 
+import modalTemplate from "../modal-views/modal.template.html";
+import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
-  templateUrl: './calendar-editable.component.html',
+ // templateUrl: './calendar-editable.component.html',
+  template: modalTemplate+mainTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
