@@ -26,7 +26,7 @@ export class CalEventService {
              title: cevent.title,
              start: new Date(cevent.start),
              color: cevent.color,
-             actions: cevent.actions             
+             //actions: cevent.actions             
             };
 
         if (cevent.draggable) 
