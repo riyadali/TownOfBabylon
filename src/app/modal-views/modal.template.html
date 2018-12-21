@@ -16,6 +16,8 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()">OK</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()">{{modalData?.button1Text}}</button>
+    <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-outline-secondary" 
+            (click)="modalRef.hide()">{{modalData?.button2Text}}</button>
   </div>
 </ng-template>
