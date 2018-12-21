@@ -30,6 +30,7 @@ export class CalEventService {
              title: cevent.title,
              start: new Date(cevent.start),
              color: cevent.color,
+             actions: cevent.actions,
              /* curDay is a hack to pass the date clicked to the daysEvents template.
                 For the initial view, when no day was clicked as yet, just set it to "today"
                 which represents the current active day in the calendar view. */
