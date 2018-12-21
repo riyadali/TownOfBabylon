@@ -127,9 +127,20 @@ export class MyCalendarEditableComponent implements OnInit {
     this.getCalendarEvents();
   }
   
+  private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
+       
+      return { cevent,
+               actions: this.actions,
+               meta: {  
+                      curDay: new Date()
+                     }  
+      };
+  }
+  
   getCalendarEvents(): void {
+    let self=this;
     this.calEventService.getCalendarEvents()
-    .subscribe(calEvents => this.events$ = calEvents);
+    .subscribe(calEvents => this.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
   }
   
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, button1Text: string, button2Text?: string): void {
