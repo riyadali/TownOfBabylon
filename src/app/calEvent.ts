@@ -10,7 +10,7 @@ export class CalEvent {
   allDay?: boolean;
   end?: Date;      
   color: Color;
-  actions: string[];
+  //actions: string[];
   resizable?: {
         beforeStart: boolean;
         afterEnd: boolean;
