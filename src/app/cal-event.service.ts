@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { CalendarEvent } from 'angular-calendar';
+//import { CalendarEvent } from 'angular-calendar';
 import { CalEvent } from './calEvent';
 import { MessageService } from './message.service';
 
