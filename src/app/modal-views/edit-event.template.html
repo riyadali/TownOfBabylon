@@ -2,16 +2,18 @@
 
 <div class="container">
   
-  <!--Row for "Login" text -->
+  <!--Row for form lead in text 
   <div class="row">
+  -->
     <!-- Use just "col" for same width column across devices.
-    In this case, there is only one column for the entire row -->
-    
+    In this case, there is only one column for the entire row -->   
+    <!-- Comment out lead text
     <div class="col">
       <br/>
       <p class="lead"><strong>Login</strong></p>
-    </div>
+    </div>   
   </div>
+   -->
   
   <!--Row for entire form -->
   <div class="row">
@@ -19,22 +21,113 @@
       
       <form (ngSubmit)="onSubmit()">
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
-        <div class="form-group">
-          <!--
-          <label for="email">Email address</label>
-          -->
+        <div class="form-group">          
+          <small>
+          <label for="title">Title</label>
+          </small>         
           <br/>
-          <input type="email" class="form-control" id="email" placeholder="Enter email" required 
-                 [(ngModel)]="email" name="email">
+
+          <input type="text" class="form-control" id="title" placeholder="Enter Event Title" required 
+                 [(ngModel)]="title" name="title">
         </div>
+
         <div class="form-group">
-          <!--
-          <label for="password">Password</label>
-          -->
+          <small>
+          <label for="description">Description (optional)</label>
+           </small>         
           <br/>
-          <input type="password" class="form-control" id="password" placeholder="Password" required 
-                 [(ngModel)]="password" name="password">
+
+          <textarea class="form-control" rows="4" id="description" name="decription" 
+                    [(ngModel)]="description" placeholder="Desribe the event"></textarea>
         </div>        
+
+        <div class="form-group">
+          <small>
+          <label for="startDate">Start Date</label>
+          </small>         
+          <br/>
+
+          <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date and time" required 
+                 [(ngModel)]="startDate" name="startDate">
+          
+        </div>
+
+        <div class="form-group">
+          <input type="checkbox" name="allday" id="allday" value="allDay"><small> All Day Event?</small>
+        </div>
+
+        <div class="form-group">
+          <small>
+          <label for="endDate">End Date (optional)</label>
+          </small>         
+          <br/>
+
+          <input type="datetime-local" class="form-control" id="endDate" placeholder="End Date and time" 
+                 [(ngModel)]="endDate" name="endDate">
+        </div>
+
+        <br/>
+        <small>
+          <p>Specify color scheme for event icon. Use the <strong>Select Color</strong> control below or create your own <strong>custom color sheme</strong></p> 
+        </small>
+        <!--
+        <select name="colors"></select>
+        -->
+        <div class="myindent">
+        <div class="form-group">
+          <small>
+          <label for="colors">Select Color Scheme</label>
+          </small>         
+          <br/>
+
+          <select name="colors" id="colors">
+            <option value=""> </option>
+            <option value="red">Red</option>
+            <option value="yellow">Yellow</option>
+            <option value="blue">Blue</option>         
+          </select>
+        </div>
+
+        <br/>
+        <small>
+          <p>Custom color scheme</p> 
+        </small>
+        <form name="customColorForm" class="myoutline">
+
+          <div class="form-group">          
+            <small>
+            <label for="colorName">Specify color scheme's name</label>
+            </small>         
+            <br/>
+
+            <input type="text" class="form-control" id="colorname" placeholder="Name" required 
+                 [(ngModel)]="colorName" name="colorname">
+          </div>
+
+          <div class="form-group">
+            <small>
+            <label for="primarycolor">Event's icon primary color</label>
+            </small>         
+            <br/>
+
+            <input type="color" class="form-control" id="primarycolor" placeholder="Event's icon primary color" value="#ad2121" 
+                 [(ngModel)]="primaryColor" name="primarycolor">        
+          </div>
+
+          <div class="form-group">
+            <small>
+            <label for="secondarycolor">Event's icon secondary color</label>
+            </small>         
+            <br/>
+
+            <input type="color" class="form-control" id="secondarycolor" placeholder="Event's icon secondary color" value="#FAE3E3" 
+                 [(ngModel)]="secondaryColor" name="secondarycolor">        
+          </div>
+        <!-- End Custom color form -->
+        </form>
+        <!-- End div causing indent -->
+        </div>             
+
       </form>
     </div>
   </div>
