@@ -1,5 +1,3 @@
-import { CalendarEvent, CalendarEventAction } from 'angular-calendar';
-
 interface Color {
     primary: string;
     secondary: string;
@@ -12,7 +10,7 @@ export class CalEvent {
   allDay?: boolean;
   end?: Date;      
   color: Color;
-  actions: CalendarEventAction[];
+  //actions: string[];
   resizable?: {
         beforeStart: boolean;
         afterEnd: boolean;

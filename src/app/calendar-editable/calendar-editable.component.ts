@@ -50,10 +50,14 @@ interface ExtraEventData {
    curDay : Date
 }
 
+import modalTemplate from "../modal-views/modal.template.html";
+import editEventTemplate from "../modal-views/edit-event.template.html";
+import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
-  templateUrl: './calendar-editable.component.html',
+ // templateUrl: './calendar-editable.component.html',
+  template: modalTemplate+mainTemplate+editEventTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
@@ -65,6 +69,11 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('dayEventsTemplate')
   dayEventsTemplate: TemplateRef<any>;
+  
+  @ViewChild('editEventContent')
+  editEventContent: TemplateRef<any>;
+  
+  formError: string = ""; // used in modal forms
   
   modalRef: BsModalRef;
   
@@ -88,6 +97,10 @@ export class MyCalendarEditableComponent implements OnInit {
                                         for "today" */
   
   modalData: {
+    bodyTemplate: TemplateRef<any>;
+    header: string;
+    button1Text: string;
+    button2Text?: string;
     action: string;
     event: CalendarEvent<ExtraEventData>;
   };
@@ -96,14 +109,15 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event);
+        this.handleEvent('Edited', event, "Edit an Event", this.editEventContent, "Submit");
       }
     },
     {
       label: '<i class="fa fa-fw fa-times"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.evnts = this.evnts.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        this.events$ = this.events$.filter(iEvent => iEvent !== event);
+        this.activeDayIsOpen=false; // may have deleted all events for current day
+        this.handleEvent('Deleted', event, "Delete an Event", this.editEventContent, "OK", "Cancel");
       }
     }
   ];
@@ -113,7 +127,8 @@ export class MyCalendarEditableComponent implements OnInit {
   constructor(private calEventService: CalEventService, private modalService: BsModalService, private http: HttpClient) {}
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.modalService.show(template);
   }
 
   ngOnInit() {
@@ -121,13 +136,28 @@ export class MyCalendarEditableComponent implements OnInit {
     this.getCalendarEvents();
   }
   
-  getCalendarEvents(): void {
-    this.calEventService.getCalendarEvents()
-    .subscribe(calEvents => this.events$ = calEvents);
+  private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
+       
+      return { ...cevent,
+               actions: this.actions,
+               meta: {  
+                      curDay: new Date()
+                     }  
+      };
   }
   
-  handleEvent(action: string, event: CalendarEvent<ExtraEventData>): void {
-    this.modalData = { event, action };
+  getCalendarEvents(): void {
+    let self=this;
+    this.calEventService.getCalendarEvents()
+    .subscribe(calEvents => this.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
+  }
+  
+  handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
+               bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
+    if (button2Text)
+      this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
+    else
+       this.modalData = { bodyTemplate, header, button1Text, event, action };
     this.openModal(this.modalContent);
   }
   
