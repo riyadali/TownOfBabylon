@@ -3,21 +3,6 @@
 
 <div class="container">
   
-  <!--Header row with close button -->
-  <div class="row">
-    <!--Use 9 columns on all device types for title -->
-    <div class="col-9">
-      <h4 class="modal-title">Town of Babylon</h4>
-    </div>
-    
-    <!--Use 3 columns on all device types for close button -->
-    <div class="col-3">  
-      <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
-          <span aria-hidden="true">×</span>
-      </button>
-    </div>
-  </div>
-  
   <!--Row for "Login" text -->
   <div class="row">
     <!-- Use just "col" for same width column across devices.
@@ -50,22 +35,12 @@
           <br/>
           <input type="password" class="form-control" id="password" placeholder="Password" required 
                  [(ngModel)]="credentials.user.password" name="password">
-        </div>
-        <button type="submit" class="btn btn-default">Sign in!</button>
+        </div>        
       </form>
     </div>
   </div>
   
-  <br/><br/><br/><br/><br/>
-  
-  <!--Row for "Don't have account" line -->
-  <div class="row">
-    <div class="col">  
-      <p><strong>Don't have an account? </strong><a class="text-primary"  
-                                                    (click)="loadRegisterModal()">Sign up</a></p>
-    </div>
-  </div>
-  
+ 
 <!-- end of container div -->
 </div>
 </ng-template>
