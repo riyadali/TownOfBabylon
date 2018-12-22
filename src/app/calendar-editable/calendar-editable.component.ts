@@ -73,6 +73,8 @@ export class MyCalendarEditableComponent implements OnInit {
   @ViewChild('editEventContent')
   editEventContent: TemplateRef<any>;
   
+  formError: string = ""; // used in modal forms
+  
   modalRef: BsModalRef;
   
  // locale: string = 'en';
