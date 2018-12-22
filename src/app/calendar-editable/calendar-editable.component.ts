@@ -127,7 +127,8 @@ export class MyCalendarEditableComponent implements OnInit {
   constructor(private calEventService: CalEventService, private modalService: BsModalService, private http: HttpClient) {}
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.modalService.show(template);
   }
 
   ngOnInit() {
