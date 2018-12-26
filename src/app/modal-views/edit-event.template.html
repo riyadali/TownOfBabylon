@@ -28,7 +28,7 @@
           <br/>
 
           <input type="text" class="form-control" id="title" placeholder="Enter Event Title" required 
-                 [(ngModel)]="title" name="title">
+                 [(ngModel)]="curEvent.title" name="title">
         </div>
 
         <div class="form-group">
@@ -38,7 +38,7 @@
           <br/>
 
           <textarea class="form-control" rows="4" id="description" name="decription" 
-                    [(ngModel)]="description" placeholder="Describe the event"></textarea>
+                    [(ngModel)]="curEvent.description" placeholder="Describe the event"></textarea>
         </div>        
 
         <div class="form-group">
@@ -48,7 +48,7 @@
           <br/>
 
           <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date and time" required 
-                 [(ngModel)]="startDate" name="startDate">
+                 [(ngModel)]="curEvent.startDate" name="startDate">
           
         </div>
 
@@ -63,7 +63,7 @@
           <br/>
 
           <input type="datetime-local" class="form-control" id="endDate" placeholder="End Date and time" 
-                 [(ngModel)]="endDate" name="endDate">
+                 [(ngModel)]="curEvent.endDate" name="endDate">
         </div>
 
         <br/>
@@ -100,7 +100,7 @@
             <br/>
 
             <input type="text" class="form-control" id="colorname" placeholder="Name" required 
-                 [(ngModel)]="colorName" name="colorname">
+                 [(ngModel)]="curEvent.color" name="colorname">
           </div>
 
           <div class="form-group">
