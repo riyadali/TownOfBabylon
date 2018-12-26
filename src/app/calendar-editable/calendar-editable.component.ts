@@ -49,7 +49,8 @@ const colors: any = {
 /* Matt Lewis uses this approach in his code here 
    https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
 interface ExtraEventData {   
-   curDay : Date
+   curDay : Date;
+   description : string;
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -91,6 +92,7 @@ export class MyCalendarEditableComponent implements OnInit {
   vw: string = this.vwMonth; /* default view */
   vwDate: Date = new Date();
 
+  curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
   evnts: Array<CalendarEvent<ExtraEventData>>;
 
@@ -155,7 +157,8 @@ export class MyCalendarEditableComponent implements OnInit {
       } 
       return { ...cevent,
                actions: this.actions,
-               meta: {  
+               meta: { 
+                      description: cevent.description,
                       curDay: new Date()
                      }  
       };
@@ -169,6 +172,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
+    this.curEvent=event; // make current event available to templates
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
