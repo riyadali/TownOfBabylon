@@ -48,12 +48,12 @@
           <br/>
 
           <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date and time" required 
-                 [(ngModel)]="curEvent.startDate" name="startDate">
+                 [(ngModel)]="curEvent.start" name="startDate">
           
         </div>
 
         <div class="form-group">
-          <input type="checkbox" name="allday" id="allday" value="allDay"><small> All Day Event?</small>
+          <input type="checkbox" name="allday" id="allday" [(ngModel)]="curEvent.allDay"><small> All Day Event?</small>
         </div>
 
         <div class="form-group">
@@ -63,7 +63,7 @@
           <br/>
 
           <input type="datetime-local" class="form-control" id="endDate" placeholder="End Date and time" 
-                 [(ngModel)]="curEvent.endDate" name="endDate">
+                 [(ngModel)]="curEvent.end" name="endDate">
         </div>
 
         <br/>
