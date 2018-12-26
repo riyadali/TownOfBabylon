@@ -50,7 +50,7 @@ const colors: any = {
    https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
 interface ExtraEventData {   
    curDay : Date;
-   description : string;
+   description? : string;
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -154,14 +154,31 @@ export class MyCalendarEditableComponent implements OnInit {
         this.actions=this.actionsLoggedIn;
       } else {
         this.actions=[];
-      } 
-      return { ...cevent,
-               actions: this.actions,
-               meta: { 
-                      description: cevent.description,
-                      curDay: new Date()
-                     }  
+      }
+    
+      let result: CalendarEvent<ExtraEventData>= {
+        start: new Date(cevent.start),
+        title: cevent.title,
+        meta: {                 
+                curDay: new Date()
+              }  
+
       };
+      if (cevent.id)
+        result.id=cevent.id;
+      if (cevent.color)
+        result.color=cevent.color;
+      if (cevent.description)
+        result.meta.description=cevent.description;
+      if (cevent.end)
+        result.end=new Date(cevent.end);
+      if (cevent.allDay)
+        result.allDay=cevent.allDay;
+      if (cevent.resizable)
+        result.resizable=cevent.resizable;
+      if (cevent.draggable)
+        result.draggable=cevent.draggable;
+      return result;
   }
   
   getCalendarEvents(): void {
