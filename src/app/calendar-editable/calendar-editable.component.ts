@@ -149,7 +149,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
       if (this.authService.isLoggedIn()) {
-        this.actions=this.actionsL;
+        this.actions=this.actionsLoggedIn;
       } else {
         this.actions=[];
       } 
