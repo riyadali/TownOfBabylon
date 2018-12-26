@@ -136,6 +136,11 @@ export class MyCalendarEditableComponent implements OnInit {
     this.getCalendarEvents();
   }
   
+  onSubmit() {
+    //console.log("submitted...")
+    this.modalRef.hide();
+  }
+  
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
        
       return { ...cevent,
