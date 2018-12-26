@@ -108,7 +108,7 @@ export class MyCalendarEditableComponent implements OnInit {
   };
 
   // initially no actions available for an event because don't know if logged in
-  actionsLoggedIn: CalendarEventAction[]=[];
+  actions: CalendarEventAction[]=[];
   // available actions when logged in
   actionsLoggedIn: CalendarEventAction[] = [
     {
