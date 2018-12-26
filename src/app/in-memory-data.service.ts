@@ -1,7 +1,5 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
-import { CalendarEvent, CalendarEventAction } from 'angular-calendar';
-
 import {
   endOfMonth,  
   startOfDay,
@@ -26,25 +24,6 @@ const colors: any = {
   }
 };
 
-interface ExtraEventData {   
-   curDay : Date
-}
-
-const actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
-      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event);
-      }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.evnts = this.evnts.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
-    }
-  ];
 
 export class InMemoryDataService implements InMemoryDbService {
  createDb() {
@@ -84,7 +63,6 @@ export class InMemoryDataService implements InMemoryDbService {
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
       color: colors.red,
-      actions: actions,
       allDay: true,
       resizable: {
         beforeStart: true,
@@ -95,8 +73,7 @@ export class InMemoryDataService implements InMemoryDbService {
     {
       start: startOfDay(new Date()),
       title: 'An event with no end date',
-      color: colors.yellow,
-      actions: actions
+      color: colors.yellow
     },
     {
       start: subDays(endOfMonth(new Date()), 3),
@@ -109,8 +86,7 @@ export class InMemoryDataService implements InMemoryDbService {
       start: addHours(startOfDay(new Date()), 2),
       end: new Date(),
       title: 'A draggable and resizable event',
-      color: colors.yellow,
-      actions: actions,
+      color: colors.yellow
       resizable: {
         beforeStart: true,
         afterEnd: true
