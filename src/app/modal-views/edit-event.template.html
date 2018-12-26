@@ -80,7 +80,7 @@
           </small>         
           &nbsp;
 
-          <select name="colors" id="colors">
+          <select name="colors" id="colors" [(ngModel)]="curEvent.color">
             <option value=""> </option>
             <option value="red">Red</option>
             <option value="yellow">Yellow</option>
@@ -100,7 +100,7 @@
             <br/>
 
             <input type="text" class="form-control" id="colorname" placeholder="Name" required 
-                 [(ngModel)]="curEvent.color" name="colorname">
+                  name="colorname">
           </div>
 
           <div class="form-group">
