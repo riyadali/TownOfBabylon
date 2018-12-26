@@ -86,7 +86,7 @@ export class InMemoryDataService implements InMemoryDbService {
       start: addHours(startOfDay(new Date()), 2),
       end: new Date(),
       title: 'A draggable and resizable event',
-      color: colors.yellow
+      color: colors.yellow,
       resizable: {
         beforeStart: true,
         afterEnd: true
