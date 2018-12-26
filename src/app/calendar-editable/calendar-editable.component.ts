@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
 import { CalEvent } from '../calevent';
 import { CalEventService } from '../cal-event.service';
 
+import { AuthService } from '../auth/auth.service';
+
 import { CalendarEvent, CalendarEventAction, CalendarView } from 'angular-calendar';
 import { collapseAnimation } from 'angular-calendar'; /* refer to 
     https://github.com/mattlewis92/angular-calendar/issues/747 */
@@ -105,7 +107,10 @@ export class MyCalendarEditableComponent implements OnInit {
     event: CalendarEvent<ExtraEventData>;
   };
 
-  actions: CalendarEventAction[] = [
+  // initially no actions available for an event because don't know if logged in
+  actionsLoggedIn: CalendarEventAction[]=[];
+  // available actions when logged in
+  actionsLoggedIn: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
@@ -124,7 +129,8 @@ export class MyCalendarEditableComponent implements OnInit {
     
   events$: CalendarEvent[];
 
-  constructor(private calEventService: CalEventService, private modalService: BsModalService, private http: HttpClient) {}
+  constructor(private calEventService: CalEventService, private authService: AuthService, 
+               private modalService: BsModalService, private http: HttpClient) {}
 
   openModal(template: TemplateRef<any>) {
     //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
@@ -142,7 +148,11 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
-       
+      if (this.authService.isLoggedIn()) {
+        this.actions=this.actionsL;
+      } else {
+        this.actions=[];
+      } 
       return { ...cevent,
                actions: this.actions,
                meta: {  
