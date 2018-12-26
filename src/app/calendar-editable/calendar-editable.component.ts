@@ -150,12 +150,6 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
-      if (this.authService.isLoggedIn()) {
-        this.actions=this.actionsLoggedIn;
-      } else {
-        this.actions=[];
-      }
-    
       let result: CalendarEvent<ExtraEventData>= {
         start: new Date(cevent.start),
         title: cevent.title,
@@ -164,6 +158,10 @@ export class MyCalendarEditableComponent implements OnInit {
               }  
 
       };
+      if (this.authService.isLoggedIn()) {
+        result.actions=this.actionsLoggedIn;
+      }     
+      
       if (cevent.id)
         result.id=cevent.id;
       if (cevent.color)
