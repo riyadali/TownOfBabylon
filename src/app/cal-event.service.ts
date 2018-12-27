@@ -23,12 +23,15 @@ export class CalEventService {
   
   private createCalendarEvent(cevent : CalEvent) : CalEvent {
        let result : CalEvent = {
+             id: cevent.id,
              title: cevent.title,
              start: new Date(cevent.start),
              color: cevent.color,
              //actions: cevent.actions             
             };
-
+    
+        if (cevent.description)
+          result.description=cevent.description;
         if (cevent.draggable) 
           result.draggable = cevent.draggable;
         if (cevent.resizable) 
