@@ -7,6 +7,10 @@
 /*"~@angular/material/prebuilt-themes/purple-green.css";*/
 /*"~@angular/material/prebuilt-themes/deeppurple-amber.css";*/
 
+/* styles for owldatetime -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830
+and here https://daniel-projects.firebaseapp.com/owlng/date-time-picker */
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
 @import "modal";
 
 //-- Custom theming from site https://alligator.io/angular/angular-material-custom-theme/
