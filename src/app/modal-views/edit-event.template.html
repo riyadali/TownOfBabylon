@@ -51,7 +51,7 @@
           <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date and time" required 
                  [(ngModel)]="curEvent.start" name="startDate">
           -->
-          <input placeholder="Date and Time" name="startDate" id="startDate" required
+          <input placeholder="Date and time" name="startDate" id="startDate" required
                [(ngModel)]="curEvent.start"
                [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
           <owl-date-time #dt1></owl-date-time>
@@ -73,7 +73,7 @@
           <input type="datetime-local" class="form-control" id="endDate" placeholder="End Date and time" 
                  [(ngModel)]="curEvent.end" name="endDate">
           -->
-           <input placeholder="Date and Time" name="endDate" id="endDate"
+           <input placeholder="Date and time" name="endDate" id="endDate"
                [(ngModel)]="curEvent.end"
                [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2">
             <owl-date-time #dt2></owl-date-time>
