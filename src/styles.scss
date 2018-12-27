@@ -10,6 +10,29 @@
 /* styles for owldatetime -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830
 and here https://daniel-projects.firebaseapp.com/owlng/date-time-picker */
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+/* Note the following is needed if owlDateTIme is used in modal window.
+   Without this setting the popup for owlDateTime gets hidden behind the modal window.
+   Reference https://stackoverflow.com/questions/50578354/ng-pick-datetimer-calendar-shows-behind-dialog-box */
+.cdk-overlay-container {    
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: absolute;
+    z-index: 9999999 !important;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: absolute;
+    z-index: 9999999 !important;
+}
 
 @import "modal";
 
