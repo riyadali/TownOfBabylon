@@ -81,6 +81,12 @@ import {MyCalendarMoviesComponent} from './calendar-movies/calendar-movies.compo
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
+/* owldatetime picker -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830 
+                         and also https://daniel-projects.firebaseapp.com/owlng/date-time-picker 
+                         code is here https://github.com/DanielYKPan/owl-examples/tree/date-time-picker*/
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
+
 
 
 
@@ -126,6 +132,12 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
       provide: DateAdapter,
       useFactory: adapterFactory
     }),
+    
+    /* owldatetime picker -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830 
+                         and also https://daniel-projects.firebaseapp.com/owlng/date-time-picker 
+                         code is here https://github.com/DanielYKPan/owl-examples/tree/date-time-picker*/
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
