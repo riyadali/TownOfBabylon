@@ -84,10 +84,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 /* owldatetime picker -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830 
                          and also https://daniel-projects.firebaseapp.com/owlng/date-time-picker 
                          code is here https://github.com/DanielYKPan/owl-examples/tree/date-time-picker*/
-    OwlDateTimeModule, 
-    OwlNativeDateTimeModule,
-
-
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 
 import { PageHomeComponent } from './page-home/page-home.component';
