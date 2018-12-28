@@ -48,8 +48,7 @@ const colors: any = {
 
 /* Matt Lewis uses this approach in his code here 
    https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
-interface ExtraEventData {   
-   curDay : Date;
+interface ExtraEventData {  
    description? : string;
 }
 
@@ -158,11 +157,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
       let result: CalendarEvent<ExtraEventData>= {
         start: cevent.start,
-        title: cevent.title,
-        meta: {                 
-                curDay: new Date()
-              }  
-
+        title: cevent.title
       };
       if (this.authService.isLoggedIn()) {
         result.actions=this.actionsLoggedIn;
@@ -173,7 +168,7 @@ export class MyCalendarEditableComponent implements OnInit {
       if (cevent.color)
         result.color=cevent.color;
       if (cevent.description)
-        result.meta.description=cevent.description;
+        result.meta = { description: cevent.description };
       if (cevent.end)
         result.end=cevent.end;
       if (cevent.allDay)
@@ -215,7 +210,7 @@ export class MyCalendarEditableComponent implements OnInit {
       };
       
      
-      if (event.meta.description)
+      if (event.meta?.description)
         result.description=event.meta.description;
       if (event.end)
         result.end=event.end;
