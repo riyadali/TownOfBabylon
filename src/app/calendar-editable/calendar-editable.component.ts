@@ -157,7 +157,8 @@ export class MyCalendarEditableComponent implements OnInit {
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
       let result: CalendarEvent<ExtraEventData>= {
         start: cevent.start,
-        title: cevent.title
+        title: cevent.title,
+        meta: {}
       };
       if (this.authService.isLoggedIn()) {
         result.actions=this.actionsLoggedIn;
@@ -168,7 +169,7 @@ export class MyCalendarEditableComponent implements OnInit {
       if (cevent.color)
         result.color=cevent.color;
       if (cevent.description)
-        result.meta = { description: cevent.description };
+        result.meta.description = cevent.description;
       if (cevent.end)
         result.end=cevent.end;
       if (cevent.allDay)
@@ -210,7 +211,7 @@ export class MyCalendarEditableComponent implements OnInit {
       };
       
      
-      if (event.meta?.description)
+      if (event.meta.description)
         result.description=event.meta.description;
       if (event.end)
         result.end=event.end;
