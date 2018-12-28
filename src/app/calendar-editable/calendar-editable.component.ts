@@ -85,6 +85,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private modalRef: BsModalRef;
   
  // locale: string = 'en';
+ private dateClicked: Date;
   
   private vwMonth: string = 'month';
   private vwWeek: string = 'week';
@@ -289,6 +290,7 @@ export class MyCalendarEditableComponent implements OnInit {
     date: Date;
     events: Array<CalendarEvent<{ film: Film }>>;
   }): void {
+    this.dateClicked=date;
     if (isSameMonth(date, this.vwDate)) {
       if (
         (isSameDay(this.vwDate, date) && this.activeDayIsOpen === true) ||
