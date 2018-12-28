@@ -151,7 +151,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
       let result: CalendarEvent<ExtraEventData>= {
-        start: new Date(cevent.start),
+        start: cevent.start,
         title: cevent.title,
         meta: {                 
                 curDay: new Date()
@@ -169,7 +169,7 @@ export class MyCalendarEditableComponent implements OnInit {
       if (cevent.description)
         result.meta.description=cevent.description;
       if (cevent.end)
-        result.end=new Date(cevent.end);
+        result.end=cevent.end;
       if (cevent.allDay)
         result.allDay=cevent.allDay;
       if (cevent.resizable)
