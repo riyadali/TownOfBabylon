@@ -68,39 +68,40 @@ import mainTemplate from "./calendar-editable.component.html";
 export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('modalContent')
-  modalContent: TemplateRef<any>;
+  private modalContent: TemplateRef<any>;
   
   @ViewChild('dayEventsTemplate')
-  dayEventsTemplate: TemplateRef<any>;
+  private dayEventsTemplate: TemplateRef<any>;
   
   @ViewChild('editEventContent')
-  editEventContent: TemplateRef<any>;
+  private editEventContent: TemplateRef<any>;
   
-  formError: string = ""; // used in modal forms
+  private formError: string = ""; // used in modal forms
+  // formInfo: string = ""; // used in modal forms
   
-  modalRef: BsModalRef;
+  private modalRef: BsModalRef;
   
  // locale: string = 'en';
   
-  vwMonth: string = 'month';
-  vwWeek: string = 'week';
-  vwDay: string = 'day';
+  private vwMonth: string = 'month';
+  private vwWeek: string = 'week';
+  private vwDay: string = 'day';
   
   /* vwClicked is generally the same as vw except when there are multiple variations
   of a specific view. In this case, vw would identify the acutual view (either 'month', 'week' or 'day') and vwClicked would identify the particular variation (for ex 'weekdays') */
-  vwClicked: string = CalendarView.Month; /* default view */
-  vw: string = this.vwMonth; /* default view */
-  vwDate: Date = new Date();
+  private vwClicked: string = CalendarView.Month; /* default view */
+  private vw: string = this.vwMonth; /* default view */
+  private vwDate: Date = new Date();
 
-  curEvent: CalendarEvent<ExtraEventData>; // currently selected event
+  private curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
-  evnts: Array<CalendarEvent<ExtraEventData>>;
+  private evnts: Array<CalendarEvent<ExtraEventData>>;
 
-  activeDayIsOpen: boolean = false; /* need to set to false initially since
+  private activeDayIsOpen: boolean = false; /* need to set to false initially since
                                         you don't know if any events exist 
                                         for "today" */
   
-  modalData: {
+  private modalData: {
     bodyTemplate: TemplateRef<any>;
     header: string;
     button1Text: string;
@@ -110,9 +111,9 @@ export class MyCalendarEditableComponent implements OnInit {
   };
 
   // initially no actions available for an event because don't know if logged in
-  actions: CalendarEventAction[]=[];
+  private actions: CalendarEventAction[]=[];
   // available actions when logged in
-  actionsLoggedIn: CalendarEventAction[] = [
+  private actionsLoggedIn: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
@@ -129,12 +130,12 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   ];
     
-  events$: CalendarEvent[];
+  private events$: CalendarEvent[];
 
   constructor(private calEventService: CalEventService, private authService: AuthService, 
                private modalService: BsModalService, private http: HttpClient) {}
 
-  openModal(template: TemplateRef<any>) {
+  private openModal(template: TemplateRef<any>) {
     //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
     this.modalRef = this.modalService.show(template);
   }
@@ -144,8 +145,9 @@ export class MyCalendarEditableComponent implements OnInit {
     this.getCalendarEvents();
   }
   
-  onSubmit() {
-    //console.log("submitted...")
+  private onSubmit() {
+    //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    this.updateCalendarEvent(this.curEvent);
     this.modalRef.hide();
   }
   
@@ -179,13 +181,50 @@ export class MyCalendarEditableComponent implements OnInit {
       return result;
   }
   
-  getCalendarEvents(): void {
+  private getCalendarEvents(): void {
     let self=this;
     this.calEventService.getCalendarEvents()
     .subscribe(calEvents => this.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
   }
   
-  handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
+  private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    let self=this;
+    this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
+    .subscribe({
+                  next(x) { /*console.log('data: ', x);*/ 
+                            // update calendar event with latest information
+                        //    self.formInfo= "Event has been updated updated successfully";
+                  },
+                  error(err) { self.formError = err.message;
+                                console.log('Some error '+err.message); 
+                             }
+              });
+  }
+
+  private transformToCalEvent(event: CalendarEvent<ExtraEventData>): CalEvent {
+    let result: CalEvent= {
+        start: event.start,
+        title: event.title,
+        id: event.id||0,
+        color: event.color||colors.red
+      };
+      
+     
+      if (event.meta.description)
+        result.description=event.meta.description;
+      if (event.end)
+        result.end=event.end;
+      if (event.allDay)
+        result.allDay=event.allDay;
+      if (event.resizable)
+        result.resizable=event.resizable;
+      if (event.draggable)
+        result.draggable=event.draggable;
+      return result;
+
+  } 
+  
+  private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
     this.curEvent=event; // make current event available to templates
     if (button2Text)
@@ -196,7 +235,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   /*
-  fetchEvents(): void {
+  private fetchEvents(): void {
     const getStart: any = {
       month: startOfMonth,
       week: startOfWeek,
@@ -239,7 +278,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   */
   
-  dayClicked({
+  private dayClicked({
     date,
     events
   }: {
@@ -259,11 +298,13 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
   
-  eventClicked(event: CalendarEvent<{ film: Film }>): void {
+  /*
+  private eventClicked(event: CalendarEvent<{ film: Film }>): void {
     window.open(
       `https://www.themoviedb.org/movie/${event.meta.film.id}`,
       '_blank'
     );
   }
+  */
   
 }
