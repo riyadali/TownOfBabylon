@@ -150,8 +150,14 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private onSubmit() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    this.updateCalendarEvent(this.curEvent);
-    this.modalRef.hide();
+    if (!this.curEvent.start || !this.curEvent.title || !this.curEvent.color) {
+        this.formError = "Start, title and color scheme required";
+        return false;
+    } else {
+        this.formError = ""; // reset in case of prior error
+        this.updateCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    }
   }
   
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
