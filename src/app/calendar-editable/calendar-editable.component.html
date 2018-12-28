@@ -11,10 +11,7 @@
       let-events="events"
       let-eventClicked="eventClicked"
       let-isOpen="isOpen">
-      <div [hidden]="events.length<=0" class="cal-open-day-events special-color-dark" [@collapse] *ngIf="isOpen">
-         <!--
-         <h5 *ngIf="events[0]">Events for {{ events[0]?.meta?.curDay | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
-         -->
+      <div [hidden]="events.length<=0" class="cal-open-day-events special-color-dark" [@collapse] *ngIf="isOpen">        
          <h5 *ngIf="dateClicked">Events for {{ dateClicked | calendarDate:(vwDay + 'ViewTitle'): locale }}</h5>
         <div
           *ngFor="let event of events; trackBy:trackByEventId"
