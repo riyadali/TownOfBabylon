@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CalEvent } from '../calevent';
@@ -75,6 +75,9 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
+  
+  // Controls refresh of display after changes have been made to events
+  private refresh: Subject<any> = new Subject();
   
   private formError: string = ""; // used in modal forms
   // formInfo: string = ""; // used in modal forms
@@ -193,7 +196,8 @@ export class MyCalendarEditableComponent implements OnInit {
     .subscribe({
                   next(x) { /*console.log('data: ', x);*/ 
                             // update calendar event with latest information
-                        //    self.formInfo= "Event has been updated updated successfully";
+                            // self.formInfo= "Event has been updated updated successfully";
+                            self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
                                 console.log('Some error '+err.message); 
