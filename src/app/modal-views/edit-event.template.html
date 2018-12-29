@@ -107,7 +107,7 @@
         <small>          
           <p class="text-center">-- or define custom scheme --</p>        
         </small>
-        <form name="customColorForm" class="myoutline">
+        <div class="myoutline">
 
           <div class="form-group">          
             <small>
@@ -116,7 +116,8 @@
             <br/>
 
             <small>
-            <input type="text" class="w-25" id="colorname" placeholder="Sample" required name="colorname">
+            <input type="text" class="w-25" id="colorname" placeholder="Custom" required 
+                   [(ngModel)]="sampleColorName" name="colorname">
             </small>
           </div>
 
@@ -139,8 +140,8 @@
             <input type="color" class="w-50" id="secondarycolor" placeholder="Event's icon secondary color" 
                  [(ngModel)]="sampleColorSecondary" name="secondarycolor">      
           </div>
-        <!-- End Custom color form -->
-        </form>
+        <!-- End div for outline box for custom colors -->
+        </div>
         <!-- End div causing indent -->
         </div>             
 
