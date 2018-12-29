@@ -115,8 +115,9 @@
             </small>         
             <br/>
 
-            <input type="text" class="form-control" id="colorname" placeholder="Name" required 
-                  name="colorname">
+            <small>
+            <input type="text" class="w-25" id="colorname" placeholder="Sample" required name="colorname">
+            </small>
           </div>
 
           <div class="form-group">
@@ -125,8 +126,8 @@
             </small>         
             <br/>
 
-            <input type="color" class="form-control" id="primarycolor" placeholder="Event's icon primary color" value="#ad2121" 
-                 [(ngModel)]="primaryColor" name="primarycolor">        
+            <input type="color" class="w-50" id="primarycolor" placeholder="Event's icon primary color"  
+                 [(ngModel)]="sampleColorPrimary" name="primarycolor">       
           </div>
 
           <div class="form-group">
@@ -135,8 +136,8 @@
             </small>         
             <br/>
 
-            <input type="color" class="form-control" id="secondarycolor" placeholder="Event's icon secondary color" value="#FAE3E3" 
-                 [(ngModel)]="secondaryColor" name="secondarycolor">        
+            <input type="color" class="w-50" id="secondarycolor" placeholder="Event's icon secondary color" 
+                 [(ngModel)]="sampleColorSecondary" name="secondarycolor">      
           </div>
         <!-- End Custom color form -->
         </form>

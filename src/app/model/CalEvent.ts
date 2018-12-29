@@ -1,8 +1,4 @@
-interface Color {
-    primary: string;
-    secondary: string;
-};
- 
+
 export class CalEvent {
   id: number;
   title: string;
@@ -10,7 +6,7 @@ export class CalEvent {
   start: Date;
   allDay?: boolean;
   end?: Date;      
-  color: Color;
+  color: ColorScheme;
   //actions: string[];
   resizable?: {
         beforeStart: boolean;

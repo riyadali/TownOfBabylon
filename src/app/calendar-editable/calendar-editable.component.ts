@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CalEvent } from '../calevent';
+import { CalEvent } from '../model/CalEvent';
 import { CalEventService } from '../cal-event.service';
 
 import { AuthService } from '../auth/auth.service';
@@ -15,6 +15,8 @@ import { collapseAnimation } from 'angular-calendar'; /* refer to
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+import { ColorScheme } from '../model/ColorScheme';
 
 import {
   isSameMonth,
@@ -31,20 +33,6 @@ import {
   format
 } from 'date-fns';
 
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3'
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF'
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA'
-  }
-};
 
 /* Matt Lewis uses this approach in his code here 
    https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
@@ -74,6 +62,30 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
+  
+  // Some default color schemes
+  private colors = {
+    red: {
+      primary: '#ad2121',
+      secondary: '#FAE3E3'
+    },
+    blue: {
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+    },
+    yellow: {
+      primary: '#e3bc08',
+      secondary: '#FDF1BA'
+    }
+  };
+
+private sampleColor: ColorScheme = {
+   primary: '#ff7d04',
+   secondary: '#ffcf9b'
+}
+
+private sampleColorPrimary: string;
+private sampleColorSecondary: string;
   
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
@@ -213,7 +225,7 @@ export class MyCalendarEditableComponent implements OnInit {
         start: event.start,
         title: event.title,
         id: event.id||0,
-        color: event.color||colors.red
+        color: event.color || this.colors.red
       };
       
      
@@ -234,6 +246,9 @@ export class MyCalendarEditableComponent implements OnInit {
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
     this.curEvent=event; // make current event available to templates
+    // make fresh copy of sample color available to templates
+    this.sampleColorPrimary = this.sampleColor.primary;
+    this.sampleColorSecondary = this.sampleColor.secondary;
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
