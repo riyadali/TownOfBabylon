@@ -93,12 +93,13 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   };
 
-private sampleColorOrig: ColorScheme = {
+private sampleColor: ColorScheme = {
    primary: '#ff7d04',
    secondary: '#ffcf9b'
 }
 
-private sampleColor: ColorScheme;
+private sampleColorPrimary: string;
+private sampleColorSecondary: string;
   
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
@@ -260,7 +261,8 @@ private sampleColor: ColorScheme;
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
     this.curEvent=event; // make current event available to templates
     // make fresh copy of sample color available to templates
-    this.sampleColor = this.sampleColorOrig;
+    this.sampleColorPrimary = this.sampleColor.primary;
+    this.sampleColorSecondary = this.sampleColor.secondary;
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
