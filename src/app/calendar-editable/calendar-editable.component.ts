@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { CalEvent } from '../calevent';
+import { CalEvent } from '../model/CalEvent';
 import { CalEventService } from '../cal-event.service';
 
 import { AuthService } from '../auth/auth.service';
