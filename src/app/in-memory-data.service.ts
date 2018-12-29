@@ -1,5 +1,7 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
+import { ColorScheme } from './model/ColorScheme';
+
 import {
   endOfMonth,  
   startOfDay,
