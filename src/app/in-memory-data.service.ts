@@ -16,16 +16,19 @@ export class InMemoryDataService implements InMemoryDbService {
  
   // Some default color schemes
   redColorScheme : ColorScheme = {
+      name: 'Red',
       primary: '#ad2121',
       secondary: '#FAE3E3'
   };
 
   yellowColorScheme : ColorScheme = {
+      name: 'Yellow',
       primary: '#e3bc08',
       secondary: '#FDF1BA'
   };
  
   blueColorScheme : ColorScheme = {
+      name: 'Blue',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
   };
