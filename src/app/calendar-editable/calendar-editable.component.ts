@@ -63,29 +63,14 @@ export class MyCalendarEditableComponent implements OnInit {
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
   
-  // Some default color schemes
-  private colors = {
-    red: {
-      primary: '#ad2121',
-      secondary: '#FAE3E3'
-    },
-    blue: {
-      primary: '#1e90ff',
-      secondary: '#D1E8FF'
-    },
-    yellow: {
-      primary: '#e3bc08',
-      secondary: '#FDF1BA'
-    }
-  };
+  // Some default color schemes 
+  private sampleColor: ColorScheme = {
+    primary: '#ff7d04',
+    secondary: '#ffcf9b'
+  }
 
-private sampleColor: ColorScheme = {
-   primary: '#ff7d04',
-   secondary: '#ffcf9b'
-}
-
-private sampleColorPrimary: string;
-private sampleColorSecondary: string;
+  private sampleColorPrimary: string;
+  private sampleColorSecondary: string;
   
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
@@ -225,7 +210,7 @@ private sampleColorSecondary: string;
         start: event.start,
         title: event.title,
         id: event.id||0,
-        color: event.color || this.colors.red
+        color: event.color || this.sampleColor
       };
       
      
