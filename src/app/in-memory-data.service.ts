@@ -16,18 +16,21 @@ export class InMemoryDataService implements InMemoryDbService {
  
   // Some default color schemes
   redColorScheme : ColorScheme = {
+      id: 1,
       name: 'Red',
       primary: '#ad2121',
       secondary: '#FAE3E3'
   };
 
   yellowColorScheme : ColorScheme = {
+      id: 2,
       name: 'Yellow',
       primary: '#e3bc08',
       secondary: '#FDF1BA'
   };
  
   blueColorScheme : ColorScheme = {
+      id: 3,
       name: 'Blue',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
@@ -106,7 +109,12 @@ export class InMemoryDataService implements InMemoryDbService {
       draggable: true
     }
   ];
-   return {transactions, heroes, calEvents
+  let colorSchemes: ColorScheme[] = [
+    this.redColorScheme,
+    this.blueColorScheme,
+    this.yellowColorScheme
+  ];
+  return {transactions, heroes, calEvents, colorSchemes
    /*searchusers: {
       total: searchusers.length,
       results: searchusers
