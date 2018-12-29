@@ -213,7 +213,7 @@ export class MyCalendarEditableComponent implements OnInit {
         start: event.start,
         title: event.title,
         id: event.id||0,
-        color: event.color||colors.red
+        color: event.color || this.colors.red
       };
       
      
