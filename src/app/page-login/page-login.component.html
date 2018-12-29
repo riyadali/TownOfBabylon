@@ -1,21 +1,15 @@
-<br/>
-
-<div class="container">
+<!--
+<app-page-header [content]="loginHeader"></app-page-header>
+-->
+<!--Header row with close button -->
+<div class="modal-header">
+  <h5 class="modal-title">Town of Babylon</h5>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+  </button>    
+</div>
   
-  <!--Header row with close button -->
-  <div class="row">
-    <!--Use 9 columns on all device types for title -->
-    <div class="col-9">
-      <h4 class="modal-title">Town of Babylon</h4>
-    </div>
-    
-    <!--Use 3 columns on all device types for close button -->
-    <div class="col-3">  
-      <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
-          <span aria-hidden="true">×</span>
-      </button>
-    </div>
-  </div>
+<div class="container">
   
   <!--Row for "Login" text -->
   <div class="row">

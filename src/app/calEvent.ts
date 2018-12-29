@@ -6,6 +6,7 @@ interface Color {
 export class CalEvent {
   id: number;
   title: string;
+  description?: string;
   start: Date;
   allDay?: boolean;
   end?: Date;      

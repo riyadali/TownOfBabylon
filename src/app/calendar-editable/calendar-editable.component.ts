@@ -1,11 +1,13 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CalEvent } from '../calevent';
 import { CalEventService } from '../cal-event.service';
+
+import { AuthService } from '../auth/auth.service';
 
 import { CalendarEvent, CalendarEventAction, CalendarView } from 'angular-calendar';
 import { collapseAnimation } from 'angular-calendar'; /* refer to 
@@ -46,8 +48,8 @@ const colors: any = {
 
 /* Matt Lewis uses this approach in his code here 
    https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
-interface ExtraEventData {   
-   curDay : Date
+interface ExtraEventData {  
+   description? : string;
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -65,38 +67,44 @@ import mainTemplate from "./calendar-editable.component.html";
 export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('modalContent')
-  modalContent: TemplateRef<any>;
+  private modalContent: TemplateRef<any>;
   
   @ViewChild('dayEventsTemplate')
-  dayEventsTemplate: TemplateRef<any>;
+  private dayEventsTemplate: TemplateRef<any>;
   
   @ViewChild('editEventContent')
-  editEventContent: TemplateRef<any>;
+  private editEventContent: TemplateRef<any>;
   
-  formError: string = ""; // used in modal forms
+  // Controls refresh of display after changes have been made to events
+  private refresh: Subject<any> = new Subject();
   
-  modalRef: BsModalRef;
+  private formError: string = ""; // used in modal forms
+  // formInfo: string = ""; // used in modal forms
+  
+  private modalRef: BsModalRef;
   
  // locale: string = 'en';
+ private dateClicked: Date;
   
-  vwMonth: string = 'month';
-  vwWeek: string = 'week';
-  vwDay: string = 'day';
+  private vwMonth: string = 'month';
+  private vwWeek: string = 'week';
+  private vwDay: string = 'day';
   
   /* vwClicked is generally the same as vw except when there are multiple variations
   of a specific view. In this case, vw would identify the acutual view (either 'month', 'week' or 'day') and vwClicked would identify the particular variation (for ex 'weekdays') */
-  vwClicked: string = CalendarView.Month; /* default view */
-  vw: string = this.vwMonth; /* default view */
-  vwDate: Date = new Date();
+  private vwClicked: string = CalendarView.Month; /* default view */
+  private vw: string = this.vwMonth; /* default view */
+  private vwDate: Date = new Date();
 
+  private curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
-  evnts: Array<CalendarEvent<ExtraEventData>>;
+  private evnts: Array<CalendarEvent<ExtraEventData>>;
 
-  activeDayIsOpen: boolean = false; /* need to set to false initially since
+  private activeDayIsOpen: boolean = false; /* need to set to false initially since
                                         you don't know if any events exist 
                                         for "today" */
   
-  modalData: {
+  private modalData: {
     bodyTemplate: TemplateRef<any>;
     header: string;
     button1Text: string;
@@ -105,11 +113,14 @@ export class MyCalendarEditableComponent implements OnInit {
     event: CalendarEvent<ExtraEventData>;
   };
 
-  actions: CalendarEventAction[] = [
+  // initially no actions available for an event because don't know if logged in
+  private actions: CalendarEventAction[]=[];
+  // available actions when logged in
+  private actionsLoggedIn: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit an Event", this.editEventContent, "Submit");
+        this.handleEvent('Edited', event, "Edit an Event", this.editEventContent, "Update", "Cancel");
       }
     },
     {
@@ -117,16 +128,17 @@ export class MyCalendarEditableComponent implements OnInit {
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
-        this.handleEvent('Deleted', event, "Delete an Event", this.editEventContent, "OK", "Cancel");
+        this.handleEvent('Deleted', event, "Delete an Event", this.editEventContent, "Delete", "Cancel");
       }
     }
   ];
     
-  events$: CalendarEvent[];
+  private events$: CalendarEvent[];
 
-  constructor(private calEventService: CalEventService, private modalService: BsModalService, private http: HttpClient) {}
+  constructor(private calEventService: CalEventService, private authService: AuthService, 
+               private modalService: BsModalService, private http: HttpClient) {}
 
-  openModal(template: TemplateRef<any>) {
+  private openModal(template: TemplateRef<any>) {
     //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
     this.modalRef = this.modalService.show(template);
   }
@@ -136,24 +148,92 @@ export class MyCalendarEditableComponent implements OnInit {
     this.getCalendarEvents();
   }
   
-  private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
-       
-      return { ...cevent,
-               actions: this.actions,
-               meta: {  
-                      curDay: new Date()
-                     }  
-      };
+  private onSubmit() {
+    //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    if (!this.curEvent.start || !this.curEvent.title || !this.curEvent.color) {
+        this.formError = "Start, title and color scheme required";
+        return false;
+    } else {
+        this.formError = ""; // reset in case of prior error
+        this.updateCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    }
   }
   
-  getCalendarEvents(): void {
+  private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
+      let result: CalendarEvent<ExtraEventData>= {
+        start: cevent.start,
+        title: cevent.title,
+        meta: {}
+      };
+      if (this.authService.isLoggedIn()) {
+        result.actions=this.actionsLoggedIn;
+      }     
+      
+      if (cevent.id)
+        result.id=cevent.id;
+      if (cevent.color)
+        result.color=cevent.color;
+      if (cevent.description)
+        result.meta.description = cevent.description;
+      if (cevent.end)
+        result.end=cevent.end;
+      if (cevent.allDay)
+        result.allDay=cevent.allDay;
+      if (cevent.resizable)
+        result.resizable=cevent.resizable;
+      if (cevent.draggable)
+        result.draggable=cevent.draggable;
+      return result;
+  }
+  
+  private getCalendarEvents(): void {
     let self=this;
     this.calEventService.getCalendarEvents()
     .subscribe(calEvents => this.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
   }
   
-  handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
+  private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    let self=this;
+    this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
+    .subscribe({
+                  next(x) { /*console.log('data: ', x);*/ 
+                            // update calendar event with latest information
+                            // self.formInfo= "Event has been updated updated successfully";
+                            self.refresh.next();
+                  },
+                  error(err) { self.formError = err.message;
+                                console.log('Some error '+err.message); 
+                             }
+              });
+  }
+
+  private transformToCalEvent(event: CalendarEvent<ExtraEventData>): CalEvent {
+    let result: CalEvent= {
+        start: event.start,
+        title: event.title,
+        id: event.id||0,
+        color: event.color||colors.red
+      };
+      
+     
+      if (event.meta.description)
+        result.description=event.meta.description;
+      if (event.end)
+        result.end=event.end;
+      if (event.allDay)
+        result.allDay=event.allDay;
+      if (event.resizable)
+        result.resizable=event.resizable;
+      if (event.draggable)
+        result.draggable=event.draggable;
+      return result;
+
+  } 
+  
+  private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
+    this.curEvent=event; // make current event available to templates
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
@@ -162,7 +242,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   /*
-  fetchEvents(): void {
+  private fetchEvents(): void {
     const getStart: any = {
       month: startOfMonth,
       week: startOfWeek,
@@ -205,13 +285,14 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   */
   
-  dayClicked({
+  private dayClicked({
     date,
     events
   }: {
     date: Date;
     events: Array<CalendarEvent<{ film: Film }>>;
   }): void {
+    this.dateClicked=date;
     if (isSameMonth(date, this.vwDate)) {
       if (
         (isSameDay(this.vwDate, date) && this.activeDayIsOpen === true) ||
@@ -225,11 +306,13 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
   
-  eventClicked(event: CalendarEvent<{ film: Film }>): void {
+  /*
+  private eventClicked(event: CalendarEvent<{ film: Film }>): void {
     window.open(
       `https://www.themoviedb.org/movie/${event.meta.film.id}`,
       '_blank'
     );
   }
+  */
   
 }

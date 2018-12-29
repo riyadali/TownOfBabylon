@@ -19,7 +19,10 @@
   <div class="row">
     <div class="col">
       
-      <form (ngSubmit)="onSubmit()">
+      <form>
+         <!--
+          <div role="alert" [hidden]="formInfo==''" class="alert alert-info">{{ formInfo }}</div>
+          -->
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
         <div class="form-group">          
           <small>
@@ -28,7 +31,7 @@
           <br/>
 
           <input type="text" class="form-control" id="title" placeholder="Enter Event Title" required 
-                 [(ngModel)]="title" name="title">
+                 [(ngModel)]="curEvent.title" name="title">
         </div>
 
         <div class="form-group">
@@ -38,7 +41,7 @@
           <br/>
 
           <textarea class="form-control" rows="4" id="description" name="decription" 
-                    [(ngModel)]="description" placeholder="Desribe the event"></textarea>
+                    [(ngModel)]="curEvent.meta.description" placeholder="Describe the event"></textarea>
         </div>        
 
         <div class="form-group">
@@ -46,14 +49,21 @@
           <label for="startDate">Start Date</label>
           </small>         
           <br/>
-
+          
+          <!--
           <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date and time" required 
-                 [(ngModel)]="startDate" name="startDate">
+                 [(ngModel)]="curEvent.start" name="startDate">
+          -->
+          <input placeholder="Date and time" name="startDate" id="startDate" required
+               [(ngModel)]="curEvent.start"
+               [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
+          <owl-date-time #dt1></owl-date-time>
+     
           
         </div>
 
         <div class="form-group">
-          <input type="checkbox" name="allday" id="allday" value="allDay"><small> All Day Event?</small>
+          <input type="checkbox" name="allday" id="allday" [(ngModel)]="curEvent.allDay"><small> All Day Event?</small>
         </div>
 
         <div class="form-group">
@@ -62,13 +72,19 @@
           </small>         
           <br/>
 
+          <!--
           <input type="datetime-local" class="form-control" id="endDate" placeholder="End Date and time" 
-                 [(ngModel)]="endDate" name="endDate">
+                 [(ngModel)]="curEvent.end" name="endDate">
+          -->
+           <input placeholder="Date and time" name="endDate" id="endDate"
+               [(ngModel)]="curEvent.end"
+               [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2">
+            <owl-date-time #dt2></owl-date-time>
         </div>
 
         <br/>
         <small>
-          <p>Specify color scheme for event icon. Use the <strong>Select Color Scheme</strong> control below or create your own <strong>custom color sheme</strong></p> 
+          <p>Specify color scheme for event icon. Use the <strong>Select Color Scheme</strong> control below or create your own <strong>custom color scheme</strong></p> 
         </small>
         <!--
         <select name="colors"></select>
@@ -80,7 +96,7 @@
           </small>         
           &nbsp;
 
-          <select name="colors" id="colors">
+          <select name="colors" id="colors" [(ngModel)]="curEvent.color">
             <option value=""> </option>
             <option value="red">Red</option>
             <option value="yellow">Yellow</option>
@@ -100,7 +116,7 @@
             <br/>
 
             <input type="text" class="form-control" id="colorname" placeholder="Name" required 
-                 [(ngModel)]="colorName" name="colorname">
+                  name="colorname">
           </div>
 
           <div class="form-group">
