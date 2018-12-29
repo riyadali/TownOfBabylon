@@ -16,6 +16,8 @@ import { collapseAnimation } from 'angular-calendar'; /* refer to
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+import { ColorScheme } from '../model/ColorScheme';
+
 import {
   isSameMonth,
   isSameDay,
@@ -74,6 +76,29 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
+  
+   // Some default color schemes
+  private colors = {
+    red: {
+      primary: '#ad2121',
+      secondary: '#FAE3E3'
+    },
+    blue: {
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+    },
+    yellow: {
+      primary: '#e3bc08',
+      secondary: '#FDF1BA'
+    }
+  };
+
+private sampleColorOrig: ColorScheme = {
+   primary: '#ff7d04',
+   secondary: '#ffcf9b'
+}
+
+private sampleColor: ColorScheme;
   
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
@@ -234,6 +259,8 @@ export class MyCalendarEditableComponent implements OnInit {
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
     this.curEvent=event; // make current event available to templates
+    // make fresh copy of sample color available to templates
+    this.sampleColor = this.sampleColorOrig;
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
