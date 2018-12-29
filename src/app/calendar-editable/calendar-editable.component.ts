@@ -33,20 +33,6 @@ import {
   format
 } from 'date-fns';
 
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3'
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF'
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA'
-  }
-};
 
 /* Matt Lewis uses this approach in his code here 
    https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
@@ -77,7 +63,7 @@ export class MyCalendarEditableComponent implements OnInit {
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
   
-   // Some default color schemes
+  // Some default color schemes
   private colors = {
     red: {
       primary: '#ad2121',
