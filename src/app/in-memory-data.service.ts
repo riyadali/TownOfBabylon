@@ -66,7 +66,7 @@ export class InMemoryDataService implements InMemoryDbService {
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
       description: 'Yabba Dabba Doo',
-      color: colors.red,
+      color: this.colors.red,
       allDay: true,
       resizable: {
         beforeStart: true,
@@ -78,14 +78,14 @@ export class InMemoryDataService implements InMemoryDbService {
       id: 2,
       start: startOfDay(new Date()),
       title: 'An event with no end date',
-      color: colors.yellow
+      color: this.colors.yellow
     },
     {
       id: 3,
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
       title: 'A long event that spans 2 months',
-      color: colors.blue,
+      color: this.colors.blue,
       allDay: true
     },
     {
@@ -93,7 +93,7 @@ export class InMemoryDataService implements InMemoryDbService {
       start: addHours(startOfDay(new Date()), 2),
       end: new Date(),
       title: 'A draggable and resizable event',
-      color: colors.yellow,
+      color: this.colors.yellow,
       resizable: {
         beforeStart: true,
         afterEnd: true
