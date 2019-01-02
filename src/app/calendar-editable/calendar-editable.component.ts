@@ -69,6 +69,30 @@ export class MyCalendarEditableComponent implements OnInit {
     primary: '#ff7d04',
     secondary: '#ffcf9b'
   }
+  
+  redColorScheme : ColorScheme = {
+      id: 1,
+      name: 'Red',
+      primary: '#ad2121',
+      secondary: '#FAE3E3'
+  };
+
+  yellowColorScheme : ColorScheme = {
+      id: 2,
+      name: 'Yellow',
+      primary: '#e3bc08',
+      secondary: '#FDF1BA'
+  };
+ 
+  blueColorScheme : ColorScheme = {
+      id: 3,
+      name: 'Blue',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+
+  private colorSchemes: ColorScheme[]; // color schemes to be displayed in view
+  private selectedColorScheme: ColorScheme;
 
   private sampleColorPrimary: string;
   private sampleColorSecondary: string;
@@ -144,6 +168,7 @@ export class MyCalendarEditableComponent implements OnInit {
 
   ngOnInit() {
     /*this.fetchEvents();*/
+    this.loadColorSchemes();
     this.getCalendarEvents();
   }
   
@@ -184,6 +209,10 @@ export class MyCalendarEditableComponent implements OnInit {
       if (cevent.draggable)
         result.draggable=cevent.draggable;
       return result;
+  }
+  
+  private loadColorSchemes(): void {
+    this.colorSchemes=[this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
   }
   
   private getCalendarEvents(): void {
