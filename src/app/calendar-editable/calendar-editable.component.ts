@@ -196,9 +196,10 @@ export class MyCalendarEditableComponent implements OnInit {
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
-                  next(x) { /*console.log('data: ', x);*/ 
+                  next() { /*console.log('data: ', x);*/ 
                             // update calendar event with latest information
                             // self.formInfo= "Event has been updated updated successfully";
+                            self.getCalendarEvents(); // refresh the events array from the server
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
