@@ -97,7 +97,7 @@ export class MyCalendarEditableComponent implements OnInit {
 
   private curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
-  private evnts: Array<CalendarEvent<ExtraEventData>>;
+  //private evnts: Array<CalendarEvent<ExtraEventData>>;
 
   private activeDayIsOpen: boolean = false; /* need to set to false initially since
                                         you don't know if any events exist 
@@ -242,6 +242,7 @@ export class MyCalendarEditableComponent implements OnInit {
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
     this.openModal(this.modalContent);
+    this.getCalendarEvents(); // refresh events after modal in case anything changed
   }
   
   /*
