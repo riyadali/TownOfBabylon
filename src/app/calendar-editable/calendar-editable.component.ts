@@ -236,8 +236,10 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
-    // use ... syntax to ensure that a new version of curEvent is created
-    // By doing this the view will reflect the new version
+    // use ... syntax to ensure that curEvent is distinct from the event stored in the events array -- the
+    // events array always represent the truth (i.e. it is a reflection of the server)
+    // Thus if the view (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e.,
+    // the events array
     this.curEvent={...event}; // make current event available to templates
     // make fresh copy of sample color available to templates
     this.sampleColorPrimary = this.sampleColor.primary;
