@@ -122,9 +122,7 @@ export class CalEventService {
            // Put returns null response
            tap<null>( // Log the result or error
                // res => self.saveEvent(res), 
-                res => {console.log("Calendar Event saved...")
-                        return calEvent;
-                        },         
+                res => console.log("Calendar Event saved..."),                               
                 error => self.handleError<any>('updateCalendarEvent')
               ),
            shareReplay<CalEvent>()
