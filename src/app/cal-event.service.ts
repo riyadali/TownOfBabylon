@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 //import { CalendarEvent } from 'angular-calendar';
-import { CalEvent } from './calEvent';
+import { CalEvent } from './model/calEvent';
 import { MessageService } from './message.service';
 
 const httpOptions = {
