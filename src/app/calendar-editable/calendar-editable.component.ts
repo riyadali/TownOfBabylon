@@ -236,7 +236,9 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
-    this.curEvent=event; // make current event available to templates
+    // use ... syntax to ensure that a new version of curEvent is created
+    // By doing this the view will reflect the new version
+    this.curEvent={...event}; // make current event available to templates
     // make fresh copy of sample color available to templates
     this.sampleColorPrimary = this.sampleColor.primary;
     this.sampleColorSecondary = this.sampleColor.secondary;
