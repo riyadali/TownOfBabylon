@@ -199,6 +199,9 @@ export class MyCalendarEditableComponent implements OnInit {
                   next() { /*console.log('data: ', x);*/ 
                             // update calendar event with latest information
                             // self.formInfo= "Event has been updated updated successfully";
+                            // update the events array so that it reflects the latest info on the server
+                            // The views which are dependent on this array will therefore also reflect
+                            // the latest version
                             self.getCalendarEvents(); // refresh the events array from the server
                             self.refresh.next();
                   },
@@ -243,6 +246,9 @@ export class MyCalendarEditableComponent implements OnInit {
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
     this.openModal(this.modalContent);
+    // handleEvents exits before the modal closes. The call to getCalendarEvents below,
+    // gets another version of the events array.  The modal view is bound to the older version
+    // so any changes in the modal is not reflected in the new view.
     this.getCalendarEvents(); // refresh events after modal in case anything changed
   }
   
