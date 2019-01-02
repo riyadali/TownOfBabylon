@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, tap, shareReplay } from 'rxjs/operators';
 
 //import { CalendarEvent } from 'angular-calendar';
 import { CalEvent } from './model/calEvent';
@@ -110,12 +110,23 @@ export class CalEventService {
     );
   }
 
-  /** PUT: update the calendar event on the server */
+  /** PUT: update the calendar event on the server */  
   updateCalendarEvent (calEvent: CalEvent): Observable<any> {
-    return this.http.put(this.calEventsUrl, calEvent, httpOptions).pipe(
-      tap(_ => this.log(`updated calendar event id=${calEvent.id}`)),
-      catchError(this.handleError<any>('updateCalendarEvent'))
-    );
+     // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
+      // triggering multiple PUT requests due to multiple subscriptions.
+      let self=this; 
+      return this.http.put<CalEvent>(this.calEventsUrl, calEvent) 
+        // see this link on why pipe needs to be typed
+        // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
+        .pipe<null,CalEvent>(
+           // Put returns null response
+           tap<null>( // Log the result or error
+               // res => self.saveEvent(res), 
+                res => console.log("Calendar Event saved..."),       
+                error => self.handleError<any>('updateCalendarEvent')
+              ),
+           shareReplay<CalEvent>()
+        );   
   }
 
   /**
