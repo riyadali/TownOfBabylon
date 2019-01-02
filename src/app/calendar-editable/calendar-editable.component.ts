@@ -64,7 +64,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private editEventContent: TemplateRef<any>;
   
   // Some default color schemes 
-  private sampleColor: ColorScheme = {
+  private sampleColorScheme: ColorScheme = {
     name: 'Sample',
     primary: '#ff7d04',
     secondary: '#ffcf9b'
@@ -245,7 +245,7 @@ export class MyCalendarEditableComponent implements OnInit {
         start: event.start,
         title: event.title,
         id: event.id||0,
-        color: event.color || this.sampleColor
+        color: event.color || this.sampleColorScheme
       };
       
      
@@ -271,9 +271,9 @@ export class MyCalendarEditableComponent implements OnInit {
     // the events array
     this.curEvent={...event}; // make current event available to templates
     // make fresh copy of sample color available to templates
-    this.sampleColorPrimary = this.sampleColor.primary;
-    this.sampleColorSecondary = this.sampleColor.secondary;
-    this.sampleColorName = this.sampleColor.name;
+    this.sampleColorPrimary = this.sampleColorScheme.primary;
+    this.sampleColorSecondary = this.sampleColorScheme.secondary;
+    this.sampleColorName = this.sampleColorScheme.name;
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
