@@ -96,11 +96,11 @@
           </small>         
           &nbsp;
 
-          <select name="colors" id="colors" [(ngModel)]="curEvent.color">
-            <option value=""> </option>
-            <option value="red">Red</option>
-            <option value="yellow">Yellow</option>
-            <option value="blue">Blue</option>         
+          <!-- from this site https://stackoverflow.com/questions/35945001/binding-select-element-to-object-in-angular
+                Also, may want to take a deeper look at this issue https://github.com/angular/angular/issues/13268
+          --> 
+          <select [(ngModel)]="selectedColorScheme">
+            <option *ngFor="let c of colorSchemes" [ngValue]="c">{{c.name}}</option>
           </select>
         </div>
         
