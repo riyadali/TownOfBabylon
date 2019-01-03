@@ -19,8 +19,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ColorScheme } from '../model/ColorScheme';
 
 import {
+  compareAsc,
   isSameMonth,
   isSameDay,
+  isSameHour,
+  isSameMinute,
   startOfMonth,
   endOfMonth,
   startOfWeek,
@@ -176,6 +179,16 @@ export class MyCalendarEditableComponent implements OnInit {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
     if (!this.curEvent.start || !this.curEvent.title || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
+        return false;
+     } else if (compareAsc(this.curEvent.start,this.curEvent.end)!==-1
+                // the or condition is for the case where the end datetime is after the start because of the "seconds" portion
+                // but in reality the two times are the same when least significant part of the time being
+                // considered is minutes
+                || (isSameDay(this.curEvent.start,this.curEvent.end)&&
+                    isSameHour(this.curEvent.start,this.curEvent.end)&&
+                    isSameMinute(this.curEvent.start,this.curEvent.end)) 
+                ) {
+        this.formError = "End date must be after start date";
         return false;
     } else {
         this.formError = ""; // reset in case of prior error
