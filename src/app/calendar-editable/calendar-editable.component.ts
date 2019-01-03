@@ -230,6 +230,13 @@ export class MyCalendarEditableComponent implements OnInit {
     nullColorScheme.name="";
     this.colorSchemes=[nullColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
   }
+
+  private compareColorSchemes = (a: ColorScheme, b: ColorScheme) => this._compareColorSchemes(a, b);
+
+  _compareColorSchemes(a: ColorScheme, b: ColorScheme) {
+    // Handle compare logic (eg check if unique ids are the same)
+    return a.name === b.name;
+  }
   
   private getCalendarEvents(): void {
     let self=this;
@@ -290,6 +297,7 @@ export class MyCalendarEditableComponent implements OnInit {
     this.sampleColorPrimary = this.sampleColorScheme.primary;
     this.sampleColorSecondary = this.sampleColorScheme.secondary;
     this.sampleColorName = "";
+    this.selectedColorScheme=event.color; 
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
