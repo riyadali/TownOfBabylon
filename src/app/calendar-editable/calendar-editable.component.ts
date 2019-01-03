@@ -245,6 +245,13 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    if (this.selectedColorScheme.name)
+      event.color=this.selectedColorScheme;
+    else if (this.sampleColorName) {
+      event.color.name=this.sampleColorName;
+      event.color.primary=this.sampleColorPrimary;
+      event.color.secondary=this.sampleColorSecondary;
+    }
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
