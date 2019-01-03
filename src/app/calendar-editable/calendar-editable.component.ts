@@ -180,7 +180,8 @@ export class MyCalendarEditableComponent implements OnInit {
     if (!this.curEvent.start || !this.curEvent.title || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
         return false;
-     } else if (compareAsc(this.curEvent.start,this.curEvent.end)!==-1
+     } else if ((this.curEvent.end&&
+                compareAsc(this.curEvent.start,this.curEvent.end)!==-1
                 // the or condition is for the case where the end datetime is after the start because of the "seconds" portion
                 // but in reality the two times are the same when least significant part of the time being
                 // considered is minutes
