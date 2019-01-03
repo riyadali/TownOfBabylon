@@ -1,5 +1,7 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
+import { ColorScheme } from './model/ColorScheme';
+
 import {
   endOfMonth,  
   startOfDay,
@@ -12,22 +14,28 @@ import {
 
 export class InMemoryDataService implements InMemoryDbService {
  
- // Some default color schemes
-  private colors = {
-    red: {
+  // Some default color schemes
+  redColorScheme : ColorScheme = {
+      id: 1,
+      name: 'Red',
       primary: '#ad2121',
       secondary: '#FAE3E3'
-    },
-    blue: {
-      primary: '#1e90ff',
-      secondary: '#D1E8FF'
-    },
-    yellow: {
+  };
+
+  yellowColorScheme : ColorScheme = {
+      id: 2,
+      name: 'Yellow',
       primary: '#e3bc08',
       secondary: '#FDF1BA'
-    }
   };
-  
+ 
+  blueColorScheme : ColorScheme = {
+      id: 3,
+      name: 'Blue',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+    
  createDb() {
    const transactions = [
      { id: 11, name: 'Mr. Nice', blockHeight: 521795},
@@ -66,7 +74,7 @@ export class InMemoryDataService implements InMemoryDbService {
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
       description: 'Yabba Dabba Doo',
-      color: this.colors.red,
+      color: this.redColorScheme,
       allDay: true,
       resizable: {
         beforeStart: true,
@@ -78,14 +86,14 @@ export class InMemoryDataService implements InMemoryDbService {
       id: 2,
       start: startOfDay(new Date()),
       title: 'An event with no end date',
-      color: this.colors.yellow
+      color: this.yellowColorScheme
     },
     {
       id: 3,
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
       title: 'A long event that spans 2 months',
-      color: this.colors.blue,
+      color: this.blueColorScheme,
       allDay: true
     },
     {
@@ -93,7 +101,7 @@ export class InMemoryDataService implements InMemoryDbService {
       start: addHours(startOfDay(new Date()), 2),
       end: new Date(),
       title: 'A draggable and resizable event',
-      color: this.colors.yellow,
+      color: this.yellowColorScheme,
       resizable: {
         beforeStart: true,
         afterEnd: true
@@ -101,7 +109,12 @@ export class InMemoryDataService implements InMemoryDbService {
       draggable: true
     }
   ];
-   return {transactions, heroes, calEvents
+  let colorSchemes: ColorScheme[] = [
+    this.redColorScheme,
+    this.blueColorScheme,
+    this.yellowColorScheme
+  ];
+  return {transactions, heroes, calEvents, colorSchemes
    /*searchusers: {
       total: searchusers.length,
       results: searchusers

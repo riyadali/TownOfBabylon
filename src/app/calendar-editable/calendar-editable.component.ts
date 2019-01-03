@@ -63,29 +63,40 @@ export class MyCalendarEditableComponent implements OnInit {
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
   
-  // Some default color schemes
-  private colors = {
-    red: {
+  // Some default color schemes 
+  private sampleColorScheme: ColorScheme = {
+    name: 'Sample',
+    primary: '#ff7d04',
+    secondary: '#ffcf9b'
+  }
+  
+  redColorScheme : ColorScheme = {
+      id: 1,
+      name: 'Red',
       primary: '#ad2121',
       secondary: '#FAE3E3'
-    },
-    blue: {
-      primary: '#1e90ff',
-      secondary: '#D1E8FF'
-    },
-    yellow: {
-      primary: '#e3bc08',
-      secondary: '#FDF1BA'
-    }
   };
 
-private sampleColor: ColorScheme = {
-   primary: '#ff7d04',
-   secondary: '#ffcf9b'
-}
+  yellowColorScheme : ColorScheme = {
+      id: 2,
+      name: 'Yellow',
+      primary: '#e3bc08',
+      secondary: '#FDF1BA'
+  };
+ 
+  blueColorScheme : ColorScheme = {
+      id: 3,
+      name: 'Blue',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
 
-private sampleColorPrimary: string;
-private sampleColorSecondary: string;
+  private colorSchemes: ColorScheme[]; // color schemes to be displayed in view
+  private selectedColorScheme: ColorScheme;
+
+  private sampleColorPrimary: string;
+  private sampleColorSecondary: string;
+  private sampleColorName: string;
   
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
@@ -110,7 +121,7 @@ private sampleColorSecondary: string;
 
   private curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
-  private evnts: Array<CalendarEvent<ExtraEventData>>;
+  //private evnts: Array<CalendarEvent<ExtraEventData>>;
 
   private activeDayIsOpen: boolean = false; /* need to set to false initially since
                                         you don't know if any events exist 
@@ -157,6 +168,7 @@ private sampleColorSecondary: string;
 
   ngOnInit() {
     /*this.fetchEvents();*/
+    this.loadColorSchemes();
     this.getCalendarEvents();
   }
   
@@ -199,6 +211,12 @@ private sampleColorSecondary: string;
       return result;
   }
   
+  private loadColorSchemes(): void {
+    let nullColorScheme=this.sampleColorScheme;
+    nullColorScheme.name="";
+    this.colorSchemes=[nullColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
+  }
+  
   private getCalendarEvents(): void {
     let self=this;
     this.calEventService.getCalendarEvents()
@@ -209,9 +227,13 @@ private sampleColorSecondary: string;
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
-                  next(x) { /*console.log('data: ', x);*/ 
+                  next() { /*console.log('data: ', x);*/ 
                             // update calendar event with latest information
                             // self.formInfo= "Event has been updated updated successfully";
+                            // update the events array so that it reflects the latest info on the server
+                            // The views which are dependent on this array will therefore also reflect
+                            // the latest version
+                            self.getCalendarEvents(); // refresh the events array from the server
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
@@ -225,7 +247,7 @@ private sampleColorSecondary: string;
         start: event.start,
         title: event.title,
         id: event.id||0,
-        color: event.color || this.colors.red
+        color: event.color || this.sampleColorScheme
       };
       
      
@@ -245,15 +267,24 @@ private sampleColorSecondary: string;
   
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
-    this.curEvent=event; // make current event available to templates
+    // use ... syntax to ensure that curEvent is distinct from the event stored in the events array -- the
+    // events array always represent the truth (i.e. it is a reflection of the server)
+    // Thus if the view (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e.,
+    // the events array
+    this.curEvent={...event}; // make current event available to templates
     // make fresh copy of sample color available to templates
-    this.sampleColorPrimary = this.sampleColor.primary;
-    this.sampleColorSecondary = this.sampleColor.secondary;
+    this.sampleColorPrimary = this.sampleColorScheme.primary;
+    this.sampleColorSecondary = this.sampleColorScheme.secondary;
+    this.sampleColorName = this.sampleColorScheme.name;
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
     this.openModal(this.modalContent);
+    // handleEvents exits before the modal closes. The call to getCalendarEvents below,
+    // gets another version of the events array.  The modal view is bound to the older version
+    // so any changes in the modal is not reflected in the new view.
+    this.getCalendarEvents(); // refresh events after modal in case anything changed
   }
   
   /*

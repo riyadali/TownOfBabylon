@@ -96,18 +96,18 @@
           </small>         
           &nbsp;
 
-          <select name="colors" id="colors" [(ngModel)]="curEvent.color">
-            <option value=""> </option>
-            <option value="red">Red</option>
-            <option value="yellow">Yellow</option>
-            <option value="blue">Blue</option>         
+          <!-- from this site https://stackoverflow.com/questions/35945001/binding-select-element-to-object-in-angular
+                Also, may want to take a deeper look at this issue https://github.com/angular/angular/issues/13268
+          --> 
+          <select [(ngModel)]="selectedColorScheme" name="selectedScheme" id="selectedScheme">
+            <option *ngFor="let c of colorSchemes" [ngValue]="c">{{c.name}}</option>
           </select>
         </div>
         
-        <small>
-          <p>Custom color scheme</p> 
+        <small>          
+          <p class="text-center">-- or define custom scheme --</p>        
         </small>
-        <form name="customColorForm" class="myoutline">
+        <div class="myoutline">
 
           <div class="form-group">          
             <small>
@@ -116,7 +116,8 @@
             <br/>
 
             <small>
-            <input type="text" class="w-25" id="colorname" placeholder="Sample" required name="colorname">
+            <input type="text" class="w-25" id="colorname" placeholder="Custom" required 
+                   [(ngModel)]="sampleColorName" name="colorname">
             </small>
           </div>
 
@@ -139,8 +140,8 @@
             <input type="color" class="w-50" id="secondarycolor" placeholder="Event's icon secondary color" 
                  [(ngModel)]="sampleColorSecondary" name="secondarycolor">      
           </div>
-        <!-- End Custom color form -->
-        </form>
+        <!-- End div for outline box for custom colors -->
+        </div>
         <!-- End div causing indent -->
         </div>             
 
