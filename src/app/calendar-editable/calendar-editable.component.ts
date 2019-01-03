@@ -235,7 +235,7 @@ export class MyCalendarEditableComponent implements OnInit {
 
   _compareColorSchemes(a: ColorScheme, b: ColorScheme) {
     // Handle compare logic (eg check if unique ids are the same)
-    return a.name === b.name;
+    return a && b ? a.name === b.name : a === b;
   }
   
   private getCalendarEvents(): void {
