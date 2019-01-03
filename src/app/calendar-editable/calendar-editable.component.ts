@@ -289,7 +289,7 @@ export class MyCalendarEditableComponent implements OnInit {
     // make fresh copy of sample color available to templates
     this.sampleColorPrimary = this.sampleColorScheme.primary;
     this.sampleColorSecondary = this.sampleColorScheme.secondary;
-    this.sampleColorName = this.sampleColorScheme.name;
+    this.sampleColorName = "";
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
