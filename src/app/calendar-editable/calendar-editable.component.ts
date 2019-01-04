@@ -226,9 +226,7 @@ export class MyCalendarEditableComponent implements OnInit {
       return result;
   }
   
-  private loadColorSchemes(): void {
-    let nullColorScheme=this.sampleColorScheme;
-    nullColorScheme.name="";
+  private loadColorSchemes(): void {    
     this.colorSchemes=[this.sampleColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
   }
 
