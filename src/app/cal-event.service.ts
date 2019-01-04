@@ -93,11 +93,11 @@ export class CalEventService {
 
   //////// Save methods //////////
 
-  /** POST: add a new calendar event to the server */
-  addCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
-    return this.http.post<CalEvent>(this.calEventsUrl, calEvent, httpOptions).pipe(
-      tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
-      catchError(this.handleError<CalEvent>('addCalendarEvent'))
+   /** POST: add a new color scheme to the server */
+  addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
+    return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
+      tap((colorScheme: ColorScheme) => this.log(`added color Scheme w/ name=${colorScheme.name}`)),
+      catchError(this.handleError<any>('addColorScheme'))
     );
   }
 
@@ -148,7 +148,14 @@ export class CalEventService {
            shareReplay<ColorScheme[]>()
       );
   }
-
+  
+  /** POST: add a new color scheme to the server */
+  addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
+    return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
+      tap((colorScheme: ColorScheme) => this.log('added color Scheme w/ name='+colorScheme.name)),
+      catchError(this.handleError<any>('addColorScheme'))
+    );
+  }
 
   /**
    * Handle Http operation that failed.
