@@ -242,6 +242,13 @@ export class MyCalendarEditableComponent implements OnInit {
     return a && b ? a.name === b.name : a === b;
   }
   
+  private addColorScheme(colorScheme: ColorScheme) : void {
+    let self=this;
+    this.calEventService.addColorScheme(colorScheme)
+      // make color scheme available as a selectable option on the view by pushing it to the colorSchemes array
+      .subscribe(colorScheme => self.colorSchemes.push(colorScheme));
+  }
+  
   private getColorSchemes(): void {
     let self=this;
     this.calEventService.getColorSchemes()
@@ -261,8 +268,10 @@ export class MyCalendarEditableComponent implements OnInit {
     if (this.selectedColorScheme.name)
       event.color=this.selectedColorScheme;
     else if (this.customColorScheme.name) {
-      event.color=this.customColorScheme; 
-      this.colorSchemes.push(this.customColorScheme); // save this scheme so it is available on view
+      event.color=this.customColorScheme;      
+      // Add the custom color scheme to the server
+      // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
+      this.addColorScheme(this.customColorScheme); 
     }
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
