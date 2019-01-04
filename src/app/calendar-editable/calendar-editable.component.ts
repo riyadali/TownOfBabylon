@@ -68,7 +68,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   // Some default color schemes 
   private sampleColorScheme: ColorScheme = {
-    name: 'Sample',
+    name: '',
     primary: '#ff7d04',
     secondary: '#ffcf9b'
   }
@@ -96,11 +96,8 @@ export class MyCalendarEditableComponent implements OnInit {
 
   private colorSchemes: ColorScheme[]; // color schemes to be displayed in view
   private selectedColorScheme: ColorScheme;
+  private customColorScheme: ColorScheme; // used in view for custom color scheme values
 
-  private sampleColorPrimary: string;
-  private sampleColorSecondary: string;
-  private sampleColorName: string;
-  
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
   
@@ -228,7 +225,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private loadColorSchemes(): void {
     let nullColorScheme=this.sampleColorScheme;
     nullColorScheme.name="";
-    this.colorSchemes=[nullColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
+    this.colorSchemes=[this.sampleColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
   }
 
   private compareColorSchemes = (a: ColorScheme, b: ColorScheme) => this._compareColorSchemes(a, b);
@@ -247,10 +244,8 @@ export class MyCalendarEditableComponent implements OnInit {
   private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
     if (this.selectedColorScheme.name)
       event.color=this.selectedColorScheme;
-    else if (this.sampleColorName) {
-      event.color.name=this.sampleColorName;
-      event.color.primary=this.sampleColorPrimary;
-      event.color.secondary=this.sampleColorSecondary;
+    else if (this.customColorScheme.name) {
+      event.color=this.customColorScheme;      
     }
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
@@ -301,9 +296,7 @@ export class MyCalendarEditableComponent implements OnInit {
     // the events array
     this.curEvent={...event}; // make current event available to templates
     // make fresh copy of sample color available to templates
-    this.sampleColorPrimary = this.sampleColorScheme.primary;
-    this.sampleColorSecondary = this.sampleColorScheme.secondary;
-    this.sampleColorName = "";
+    this.customColorScheme = {...this.sampleColorScheme};
     this.selectedColorScheme=event.color; 
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
