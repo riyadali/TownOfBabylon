@@ -244,13 +244,16 @@ export class MyCalendarEditableComponent implements OnInit {
   private getColorSchemes(): void {
     let self=this;
     this.calEventService.getColorSchemes()
-    .subscribe(colorSchemes => self.colorSchemes = colorSchemes);
+    .subscribe(colorSchemes => {
+                                  self.colorSchemes = colorSchemes
+                                  self.colorSchemes.unshift(self.sampleColorScheme)
+                                });
   }
   
   private getCalendarEvents(): void {
     let self=this;
     this.calEventService.getCalendarEvents()
-    .subscribe(calEvents => this.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
+    .subscribe(calEvents => self.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
   }
   
   private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
