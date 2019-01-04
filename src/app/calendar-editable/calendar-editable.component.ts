@@ -227,7 +227,8 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private loadColorSchemes(): void {    
-    this.colorSchemes=[this.sampleColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
+    //this.colorSchemes=[this.sampleColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
+    this.getColorSchemes();
   }
 
   private compareColorSchemes = (a: ColorScheme, b: ColorScheme) => this._compareColorSchemes(a, b);
@@ -235,6 +236,12 @@ export class MyCalendarEditableComponent implements OnInit {
   _compareColorSchemes(a: ColorScheme, b: ColorScheme) {
     // Handle compare logic (eg check if unique ids are the same)
     return a && b ? a.name === b.name : a === b;
+  }
+  
+  private getColorSchemes(): void {
+    let self=this;
+    this.calEventService.getColorSchemes()
+    .subscribe(colorSchemes => self.colorSchemes = colorSchemes);
   }
   
   private getCalendarEvents(): void {
