@@ -93,14 +93,6 @@ export class CalEventService {
 
   //////// Save methods //////////
 
-   /** POST: add a new color scheme to the server */
-  addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
-    return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
-      tap((colorScheme: ColorScheme) => this.log(`added color Scheme w/ name=${colorScheme.name}`)),
-      catchError(this.handleError<any>('addColorScheme'))
-    );
-  }
-
   /** DELETE: delete the calendar event from the server */
   deleteCalendarEvent (calEvent: CalEvent | number): Observable<CalEvent> {
     const id = typeof calEvent === 'number' ? calEvent : calEvent.id;
@@ -149,10 +141,10 @@ export class CalEventService {
       );
   }
   
-  /** POST: add a new color scheme to the server */
+   /** POST: add a new color scheme to the server */
   addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
     return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
-      tap((colorScheme: ColorScheme) => this.log('added color Scheme w/ name='+colorScheme.name)),
+      //tap((colorScheme: ColorScheme) => this.log(`added color Scheme w/ name=${colorScheme.name}`)),
       catchError(this.handleError<any>('addColorScheme'))
     );
   }
