@@ -261,7 +261,8 @@ export class MyCalendarEditableComponent implements OnInit {
     if (this.selectedColorScheme.name)
       event.color=this.selectedColorScheme;
     else if (this.customColorScheme.name) {
-      event.color=this.customColorScheme;      
+      event.color=this.customColorScheme; 
+      this.colorSchemes.push(this.customColorScheme); // save this scheme so it is available on view
     }
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
