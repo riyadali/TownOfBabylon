@@ -66,7 +66,9 @@ export class MyCalendarEditableComponent implements OnInit {
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
   
-  // Some default color schemes 
+  // Some default color schemes -- now setup on server side
+  
+  /*
   private sampleColorScheme: ColorScheme = {
     name: '',
     primary: '#ff7d04',
@@ -93,6 +95,7 @@ export class MyCalendarEditableComponent implements OnInit {
       primary: '#1e90ff',
       secondary: '#D1E8FF'
   };
+  */
 
   private colorSchemes: ColorScheme[]; // color schemes to be displayed in view
   private selectedColorScheme: ColorScheme;
