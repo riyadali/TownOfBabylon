@@ -68,13 +68,14 @@ export class MyCalendarEditableComponent implements OnInit {
   
   // Some default color schemes -- now setup on server side
   
-  /*
+ 
   private sampleColorScheme: ColorScheme = {
     name: '',
     primary: '#ff7d04',
     secondary: '#ffcf9b'
   }
   
+  /*
   redColorScheme : ColorScheme = {
       id: 1,
       name: 'Red',
