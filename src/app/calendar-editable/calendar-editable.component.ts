@@ -188,6 +188,10 @@ export class MyCalendarEditableComponent implements OnInit {
                 ) {
         this.formError = "End date must be after start date";
         return false;
+    } else if (this.selectedColorScheme.name&&this.customColorScheme.name) {
+        this.formError = "Choose an existing color scheme or specify a custom one, but not both";
+    } else if (!this.selectedColorScheme.name&&!this.customColorScheme.name) {
+        this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
     } else {
         this.formError = ""; // reset in case of prior error
         this.updateCalendarEvent(this.curEvent);
