@@ -259,10 +259,13 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private getColorSchemes(): void {
     let self=this;
+    let myId=this.authService.isLoggedIn() ? this.authService.currentUser().user.id : null;
     this.calEventService.getColorSchemes()
     .subscribe(colorSchemes => {
-                                  self.colorSchemes = colorSchemes
-                                  self.colorSchemes.unshift(self.sampleColorScheme)
+                                  self.colorSchemes = colorSchemes.filter(x=>{                                    
+                                      return typeof x.owner === 'undefined' || (x.owner == myId);
+                                  });
+                                  self.colorSchemes.unshift(self.sampleColorScheme);
                                 });
   }
   
