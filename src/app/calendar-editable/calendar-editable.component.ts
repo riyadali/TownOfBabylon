@@ -192,9 +192,9 @@ export class MyCalendarEditableComponent implements OnInit {
                 ) {
         this.formError = "End date must be after start date";
         return false;
-    } else if (this.selectedColorScheme.name&&this.customColorScheme.name) {
+    } else if (this.selectedColorScheme.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
-    } else if (!this.selectedColorScheme.name&&!this.customColorScheme.name) {
+    } else if (!this.selectedColorScheme.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
         return false;
     } else if (this.customColorScheme.name&&this.colorSchemes.some(x=>{
