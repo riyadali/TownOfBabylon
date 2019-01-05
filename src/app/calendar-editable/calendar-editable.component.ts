@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CalEvent } from '../model/CalEvent';
@@ -105,6 +105,9 @@ export class MyCalendarEditableComponent implements OnInit {
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
   
+  // Subscription to loginStatus subject
+  private loginStatusSubscription: Subscription;
+  
   private formError: string = ""; // used in modal forms
   // formInfo: string = ""; // used in modal forms
   
@@ -174,6 +177,22 @@ export class MyCalendarEditableComponent implements OnInit {
     /*this.fetchEvents();*/
     this.loadColorSchemes();
     this.getCalendarEvents();
+    // Schedule a refresh of the display if the user logs in or logs out
+    // Unfortunately can't control logout that happens outside the scope of
+    // the app -- for example when the login token expires
+    let self=this;
+    this.loginStatusSubscription = this.authService.loginStatus.subscribe(() => {
+        self.colorSchemes=[];
+        self.events$=[];
+        self.loadColorSchemes();
+        self.getCalendarEvents();        
+    });
+  }
+  
+  ngOnDestroy(): void {
+    if (this.loginStatusSubscription) {
+      this.loginStatusSubscription.unsubscribe();
+    }
   }
   
   private onSubmit() {
