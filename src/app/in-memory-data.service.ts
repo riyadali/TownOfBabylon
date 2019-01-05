@@ -121,7 +121,8 @@ export class InMemoryDataService implements InMemoryDbService {
   let colorSchemes: ColorScheme[] = [
     this.redColorScheme,
     this.blueColorScheme,
-    this.yellowColorScheme
+    this.yellowColorScheme,
+    this.bogusColorScheme
   ];
   return {transactions, heroes, calEvents, colorSchemes
    /*searchusers: {
