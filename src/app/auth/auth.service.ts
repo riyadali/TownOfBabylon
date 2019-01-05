@@ -63,11 +63,20 @@ export class AuthService {
       var payload = JSON.parse(atob(token.split('.')[1]));
       return {
            user: {
+           /* payload in token is as follows:
+              payload: {
+                        "id": "5be5e40bfb6fc072d466dd09",
+                        "username": "TommyCat",
+                        "exp": 1551896725,
+                        "iat": 1546712725  // issued at time
+                       }
+           */            
            //  email : payload.email, -- email not in payload just username and id
            //  if you need to update payload the server code would need to be updated
            //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
            //  my node-express-realword repository.  I'm not sure if this is the only change needed
-              name : payload.username
+              name : payload.username,
+              id: payload.id
            }
       };
     }
