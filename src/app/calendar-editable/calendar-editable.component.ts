@@ -178,7 +178,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private onSubmit() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (!this.curEvent.start || !this.curEvent.title || !this.curEvent.color) {
+    if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
         return false;
      } else if (this.curEvent.end&&
