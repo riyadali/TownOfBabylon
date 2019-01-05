@@ -134,10 +134,11 @@
 <div *ngIf="events$ | async; else loading; let events">
 -->
 <div *ngIf="events$; else loading; let evnts">
-  <div [ngSwitch]="vwClicked">
+  <div *ngIf="colorSchemes; else loading">
+    <div [ngSwitch]="vwClicked">
       
-    <!-- Month view - the default -->
-    <mwl-calendar-month-view
+      <!-- Month view - the default -->
+      <mwl-calendar-month-view
         *ngSwitchCase="vwMonth"
         [viewDate]="vwDate"
         [activeDayIsOpen]="activeDayIsOpen"
@@ -146,10 +147,10 @@
         [openDayEventsTemplate]="dayEventsTemplate"
         [refresh]="refresh"
         [events]="evnts">
-    </mwl-calendar-month-view>
+      </mwl-calendar-month-view>
       
-    <!-- Week view -->
-    <mwl-calendar-week-view
+      <!-- Week view -->
+      <mwl-calendar-week-view
         *ngSwitchCase="vwWeek"    
         [viewDate]="vwDate"
         [events]="evnts"
@@ -157,20 +158,20 @@
         (eventClicked)="handleEvent('Clicked', $event.event)"
         [excludeDays]="exclDays"
         [weekStartsOn]="wkStartsOn">
-    </mwl-calendar-week-view>
+      </mwl-calendar-week-view>
       
-    <!-- Full day view -->
-    <mwl-calendar-day-view
+      <!-- Full day view -->
+      <mwl-calendar-day-view
         *ngSwitchCase="vwDay"
         [viewDate]="vwDate"
         [events]="evnts"
         [refresh]="refresh"
         (eventClicked)="handleEvent('Clicked', $event.event)"
         [hourSegments]="4">
-    </mwl-calendar-day-view>
+      </mwl-calendar-day-view>
       
-    <!-- Work day view -->
-    <mwl-calendar-day-view
+      <!-- Work day view -->
+      <mwl-calendar-day-view
         *ngSwitchCase="vwWDay"
         [viewDate]="vwDate"
         [events]="evnts"
@@ -178,8 +179,9 @@
         (eventClicked)="handleEvent('Clicked', $event.event)"
         [dayStartHour]="9"
         [dayEndHour]="17">  
-    </mwl-calendar-day-view>
+      </mwl-calendar-day-view>
   
-  <!-- End various views -->
+    <!-- End various views -->
+    </div>
   </div>
 </div>

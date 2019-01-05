@@ -19,8 +19,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ColorScheme } from '../model/ColorScheme';
 
 import {
+  compareAsc,
   isSameMonth,
   isSameDay,
+  isSameHour,
+  isSameMinute,
   startOfMonth,
   endOfMonth,
   startOfWeek,
@@ -63,13 +66,16 @@ export class MyCalendarEditableComponent implements OnInit {
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
   
-  // Some default color schemes 
+  // Some default color schemes -- now setup on server side
+  
+ 
   private sampleColorScheme: ColorScheme = {
-    name: 'Sample',
+    name: '',
     primary: '#ff7d04',
     secondary: '#ffcf9b'
   }
   
+  /*
   redColorScheme : ColorScheme = {
       id: 1,
       name: 'Red',
@@ -90,14 +96,12 @@ export class MyCalendarEditableComponent implements OnInit {
       primary: '#1e90ff',
       secondary: '#D1E8FF'
   };
+  */
 
   private colorSchemes: ColorScheme[]; // color schemes to be displayed in view
   private selectedColorScheme: ColorScheme;
+  private customColorScheme: ColorScheme; // used in view for custom color scheme values
 
-  private sampleColorPrimary: string;
-  private sampleColorSecondary: string;
-  private sampleColorName: string;
-  
   // Controls refresh of display after changes have been made to events
   private refresh: Subject<any> = new Subject();
   
@@ -174,8 +178,30 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private onSubmit() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (!this.curEvent.start || !this.curEvent.title || !this.curEvent.color) {
+    if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
+        return false;
+     } else if (this.curEvent.end&&
+                compareAsc(this.curEvent.start,this.curEvent.end)!==-1
+                // the or condition is for the case where the end datetime is after the start because of the "seconds" portion
+                // but in reality the two times are the same when least significant part of the time being
+                // considered is minutes
+                || (isSameDay(this.curEvent.start,this.curEvent.end)&&
+                    isSameHour(this.curEvent.start,this.curEvent.end)&&
+                    isSameMinute(this.curEvent.start,this.curEvent.end)) 
+                ) {
+        this.formError = "End date must be after start date";
+        return false;
+    } else if (this.selectedColorScheme.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+        this.formError = "Choose an existing color scheme or specify a custom one, but not both";
+    } else if (!this.selectedColorScheme.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
+        this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
+        return false;
+    } else if (this.customColorScheme.name&&this.colorSchemes.some(x=>{
+                  return x.name&&x.name.trim().toLowerCase()==this.customColorScheme.name.trim().toLowerCase();
+                })
+              ){
+        this.formError = "Name of custom color scheme cannot match that of an existing color scheme";
         return false;
     } else {
         this.formError = ""; // reset in case of prior error
@@ -211,19 +237,54 @@ export class MyCalendarEditableComponent implements OnInit {
       return result;
   }
   
-  private loadColorSchemes(): void {
-    let nullColorScheme=this.sampleColorScheme;
-    nullColorScheme.name="";
-    this.colorSchemes=[nullColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
+  private loadColorSchemes(): void {    
+    //this.colorSchemes=[this.sampleColorScheme, this.redColorScheme, this.blueColorScheme, this.yellowColorScheme]
+    this.getColorSchemes();
+  }
+
+  private compareColorSchemes = (a: ColorScheme, b: ColorScheme) => this._compareColorSchemes(a, b);
+
+  _compareColorSchemes(a: ColorScheme, b: ColorScheme) {
+    // Handle compare logic (eg check if unique ids are the same)
+    return a && b ? a.name === b.name : a === b;
+  }
+  
+  private addColorScheme(colorScheme: ColorScheme) : void {
+    let self=this;
+    this.calEventService.addColorScheme(colorScheme)
+      // make color scheme available as a selectable option on the view by pushing it to the colorSchemes array
+      .subscribe(colorScheme => self.colorSchemes.push(colorScheme));
+  }
+  
+  private getColorSchemes(): void {
+    let self=this;
+    this.calEventService.getColorSchemes()
+    .subscribe(colorSchemes => {
+                                  self.colorSchemes = colorSchemes
+                                  self.colorSchemes.unshift(self.sampleColorScheme)
+                                });
   }
   
   private getCalendarEvents(): void {
     let self=this;
     this.calEventService.getCalendarEvents()
-    .subscribe(calEvents => this.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
+    .subscribe(calEvents => self.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
   }
   
   private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    event.title=event.title.trim();
+    if (event.meta.description) {
+       event.meta.description=event.meta.description.trim();
+    }
+    if (this.selectedColorScheme.name)
+      event.color=this.selectedColorScheme;
+    else if (this.customColorScheme.name) {
+      this.customColorScheme.name=this.customColorScheme.name.trim();
+      event.color=this.customColorScheme;      
+      // Add the custom color scheme to the server
+      // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
+      this.addColorScheme(this.customColorScheme); 
+    }
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
@@ -273,9 +334,8 @@ export class MyCalendarEditableComponent implements OnInit {
     // the events array
     this.curEvent={...event}; // make current event available to templates
     // make fresh copy of sample color available to templates
-    this.sampleColorPrimary = this.sampleColorScheme.primary;
-    this.sampleColorSecondary = this.sampleColorScheme.secondary;
-    this.sampleColorName = this.sampleColorScheme.name;
+    this.customColorScheme = {...this.sampleColorScheme};
+    this.selectedColorScheme=event.color; 
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else

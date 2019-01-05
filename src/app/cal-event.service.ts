@@ -6,6 +6,7 @@ import { catchError, map, tap, shareReplay } from 'rxjs/operators';
 
 //import { CalendarEvent } from 'angular-calendar';
 import { CalEvent } from './model/calEvent';
+import { ColorScheme } from './model/ColorScheme';
 import { MessageService } from './message.service';
 
 const httpOptions = {
@@ -16,6 +17,7 @@ const httpOptions = {
 export class CalEventService {
 
   private calEventsUrl = 'api/calEvents';  // URL to web api
+  private colorSchemesUrl = 'api/colorSchemes';  // URL to web api
 
   constructor(
     private http: HttpClient,
@@ -90,7 +92,7 @@ export class CalEventService {
   }
 
   //////// Save methods //////////
-
+  
   /** POST: add a new calendar event to the server */
   addCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
     return this.http.post<CalEvent>(this.calEventsUrl, calEvent, httpOptions).pipe(
@@ -128,6 +130,31 @@ export class CalEventService {
               ),
            shareReplay<CalEvent>()
         );   
+  }
+  
+  /** GET color schemes from the server */
+  getColorSchemes (): Observable<ColorScheme[]> {
+    let self=this;
+    return this.http.get<ColorScheme[]>(this.colorSchemesUrl)
+      .pipe<null,ColorScheme[]>(
+        //map<ColorScheme[],ColorScheme[]>(colorSchemes => colorSchemes.map(x=>self.createColorScheme(x))),
+       // tap(calEvents => this.log(`fetched calendar events`)),
+        tap<null>( // Log the result or error
+               // res => self.saveEvent(res), 
+               //  res => console.log("Calendar Event saved..."),
+                _ => {},     
+                error => self.handleError<any>('getColorSchemes')
+              ),
+           shareReplay<ColorScheme[]>()
+      );
+  }
+  
+   /** POST: add a new color scheme to the server */
+  addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
+    return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
+      //tap((colorScheme: ColorScheme) => this.log(`added color Scheme w/ name=${colorScheme.name}`)),
+      catchError(this.handleError<any>('addColorScheme'))
+    );
   }
 
   /**
