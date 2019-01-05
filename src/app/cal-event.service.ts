@@ -92,6 +92,14 @@ export class CalEventService {
   }
 
   //////// Save methods //////////
+  
+  /** POST: add a new calendar event to the server */
+  addCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
+    return this.http.post<CalEvent>(this.calEventsUrl, calEvent, httpOptions).pipe(
+      tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      catchError(this.handleError<CalEvent>('addCalendarEvent'))
+    );
+  }
 
   /** DELETE: delete the calendar event from the server */
   deleteCalendarEvent (calEvent: CalEvent | number): Observable<CalEvent> {
