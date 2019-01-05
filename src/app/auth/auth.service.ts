@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
 import {LoginResultModel} from '../model/LoginResultModel';
 import {apiURL} from '../config';
@@ -10,6 +10,10 @@ export class AuthService {
   
   // store the URL so we can redirect after logging in
   redirectUrl: string;
+  
+  // Broadcasts changes to login status
+  // Someone may then subscribe to this and then take action as necessary
+  loginStatus: Subject<any> = new Subject();
 
   constructor(private http: HttpClient) {}
    
@@ -91,7 +95,11 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => self.saveToken(res.user.token),       
+                res => {
+                          self.saveToken(res.user.token);
+                          // broadcast change in status
+                          self.loginStatus.next();
+                       },         
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -182,7 +190,11 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => self.saveToken(res.user.token),       
+                res => {
+                          self.saveToken(res.user.token);
+                          // broadcast change in status
+                          self.loginStatus.next();
+                       },        
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -191,6 +203,7 @@ export class AuthService {
   
   logout () {
       localStorage.removeItem("tob_id_token");
+      this.loginStatus.next();
   }
          
 }
