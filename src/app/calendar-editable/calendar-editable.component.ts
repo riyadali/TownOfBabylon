@@ -452,6 +452,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   */
   
+  /*
   // This sample copied from https://stackoverflow.com/questions/44808882/create-a-clone-of-an-array-in-typescript
   private deepCloneArray (inArr:Array<any>[]):  Array<any> {     
     const myClonedArray = [];
@@ -461,5 +462,6 @@ export class MyCalendarEditableComponent implements OnInit {
     inArr.map(val => myClonedArray.push(JSON.parse(JSON.stringify(val))));
     return myClonedArray;
   }
+  */
   
 }
