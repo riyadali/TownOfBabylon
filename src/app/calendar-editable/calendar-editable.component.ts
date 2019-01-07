@@ -98,8 +98,7 @@ export class MyCalendarEditableComponent implements OnInit {
   };
   */
 
-  private colorSchemes: ColorScheme[]; // color schemes to be displayed in view
-  private selectedColorScheme: ColorScheme;
+  private colorSchemes: ColorScheme[]; // color schemes to be displayed in view  
   private customColorScheme: ColorScheme; // used in view for custom color scheme values
 
   // Controls refresh of display after changes have been made to events
@@ -219,9 +218,9 @@ export class MyCalendarEditableComponent implements OnInit {
                 ) {
         this.formError = "End date must be after start date";
         return false;
-    } else if (this.selectedColorScheme.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+    } else if (this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
-    } else if (!this.selectedColorScheme.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
+    } else if (!this.curEvent.color.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
         return false;
     } else if (this.customColorScheme.name&&this.colorSchemes.some(x=>{
@@ -307,9 +306,8 @@ export class MyCalendarEditableComponent implements OnInit {
     if (event.meta.description) {
        event.meta.description=event.meta.description.trim();
     }
-    if (this.selectedColorScheme.name)
-      event.color=this.selectedColorScheme;
-    else if (this.customColorScheme.name) {
+    
+   if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
       event.color=this.customColorScheme;      
       // Add the custom color scheme to the server
@@ -368,7 +366,7 @@ export class MyCalendarEditableComponent implements OnInit {
     
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
-    this.selectedColorScheme=event.color; 
+    
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
