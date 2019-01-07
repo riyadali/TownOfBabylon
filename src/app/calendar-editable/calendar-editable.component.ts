@@ -98,8 +98,7 @@ export class MyCalendarEditableComponent implements OnInit {
   };
   */
 
-  private colorSchemes: ColorScheme[]; // color schemes to be displayed in view
-  private selectedColorScheme: ColorScheme;
+  private colorSchemes: ColorScheme[]; // color schemes to be displayed in view  
   private customColorScheme: ColorScheme; // used in view for custom color scheme values
 
   // Controls refresh of display after changes have been made to events
@@ -219,9 +218,9 @@ export class MyCalendarEditableComponent implements OnInit {
                 ) {
         this.formError = "End date must be after start date";
         return false;
-    } else if (this.selectedColorScheme.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+    } else if (this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
-    } else if (!this.selectedColorScheme.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
+    } else if (!this.curEvent.color.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
         return false;
     } else if (this.customColorScheme.name&&this.colorSchemes.some(x=>{
@@ -307,9 +306,8 @@ export class MyCalendarEditableComponent implements OnInit {
     if (event.meta.description) {
        event.meta.description=event.meta.description.trim();
     }
-    if (this.selectedColorScheme.name)
-      event.color=this.selectedColorScheme;
-    else if (this.customColorScheme.name) {
+    
+   if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
       event.color=this.customColorScheme;      
       // Add the custom color scheme to the server
@@ -359,23 +357,21 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
-    // use ... syntax to ensure that curEvent is distinct from the event stored in the events array -- the
-    // events array always represent the truth (i.e. it is a reflection of the server)
+    
+    // The events array always represent the truth (i.e. it is a reflection of the server)
     // Thus if the view (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e.,
-    // the events array
-    this.curEvent={...event}; // make current event available to templates
+    // the events array    
+    // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
+    this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
+    
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
-    this.selectedColorScheme=event.color; 
+    
     if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
-    this.openModal(this.modalContent);
-    // handleEvents exits before the modal closes. The call to getCalendarEvents below,
-    // gets another version of the events array.  The modal view is bound to the older version
-    // so any changes in the modal is not reflected in the new view.
-    this.getCalendarEvents(); // refresh events after modal in case anything changed
+    this.openModal(this.modalContent);   
   }
   
   /*
@@ -449,6 +445,17 @@ export class MyCalendarEditableComponent implements OnInit {
       `https://www.themoviedb.org/movie/${event.meta.film.id}`,
       '_blank'
     );
+  }
+  */
+  
+  /*
+  // This sample copied from https://stackoverflow.com/questions/44808882/create-a-clone-of-an-array-in-typescript
+  private deepCloneArray (inArr:Array<any>[]):  Array<any> {     
+    const myClonedArray = [];   
+    // refer to link https://googlechrome.github.io/samples/object-assign-es6/ for shallow copy (also {...obj} works as well)
+    // deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
+    inArr.map(val => myClonedArray.push(JSON.parse(JSON.stringify(val))));
+    return myClonedArray;
   }
   */
   
