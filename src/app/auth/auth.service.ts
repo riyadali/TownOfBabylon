@@ -56,7 +56,7 @@ export class AuthService {
       if (payload.exp > Date.now() / 1000) {
         this.logout(); // token has expired so simulate logout
         return false;
-      else {
+      } else {
         return true;
       }      
     } else {
