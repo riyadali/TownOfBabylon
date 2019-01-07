@@ -53,7 +53,12 @@ export class AuthService {
     if(token){
       var payload = JSON.parse(atob(token.split('.')[1]));
 
-      return payload.exp > Date.now() / 1000;
+      if (payload.exp > Date.now() / 1000) {        
+        return true;
+      } else {
+        this.logout(); // token has expired so simulate logout
+        return false;
+      }      
     } else {
       return false;
     }

@@ -180,6 +180,14 @@ export class MyCalendarEditableComponent implements OnInit {
     // Schedule a refresh of the display if the user logs in or logs out
     // Unfortunately can't control logout that happens outside the scope of
     // the app -- for example when the login token expires
+    // Note, however, the authentication service when checking login status
+    // will detect an expired token and would then simulate a logout which
+    // would cause the loginStatus subject to fire an event.
+    // So the  window when the app would have an expired token with the view
+    // reflecting a "logged in" status could be very small since the check 
+    // whether you are logged in is triggered frequently from the templates in the 
+    // view with checks such as the following
+    // <ul class="navbar-nav" [hidden]="authService.isLoggedIn()">
     let self=this;
     this.loginStatusSubscription = this.authService.loginStatus.subscribe(() => {
         self.colorSchemes=[];
