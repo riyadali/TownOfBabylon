@@ -452,4 +452,14 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   */
   
+  // This sample copied from https://stackoverflow.com/questions/44808882/create-a-clone-of-an-array-in-typescript
+  private deepCloneArray (inArr:Array<any>[]):  Array<any> {     
+    const myClonedArray = [];
+    // Object.assign does a deep copy of object
+    // refer to link https://googlechrome.github.io/samples/object-assign-es6/ for shallow copy (also {...obj} works as well)
+    // deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
+    inArr.map(val => myClonedArray.push(JSON.parse(JSON.stringify(val))));
+    return myClonedArray;
+  }
+  
 }
