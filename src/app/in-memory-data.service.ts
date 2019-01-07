@@ -35,6 +35,15 @@ export class InMemoryDataService implements InMemoryDbService {
       primary: '#1e90ff',
       secondary: '#D1E8FF'
   };
+  
+  // Should never see this since it has an owner field
+  bogusColorScheme : ColorScheme = {
+      id: 4,
+      owner: 0,
+      name: 'Bogus',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
     
  createDb() {
    const transactions = [
@@ -112,7 +121,8 @@ export class InMemoryDataService implements InMemoryDbService {
   let colorSchemes: ColorScheme[] = [
     this.redColorScheme,
     this.blueColorScheme,
-    this.yellowColorScheme
+    this.yellowColorScheme,
+    this.bogusColorScheme
   ];
   return {transactions, heroes, calEvents, colorSchemes
    /*searchusers: {
