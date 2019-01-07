@@ -359,11 +359,13 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
-    // use ... syntax to ensure that curEvent is distinct from the event stored in the events array -- the
-    // events array always represent the truth (i.e. it is a reflection of the server)
+    
+    // The events array always represent the truth (i.e. it is a reflection of the server)
     // Thus if the view (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e.,
-    // the events array
-    this.curEvent={...event}; // make current event available to templates
+    // the events array    
+    // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
+    this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
+    
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
     this.selectedColorScheme=event.color; 
@@ -371,11 +373,7 @@ export class MyCalendarEditableComponent implements OnInit {
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
-    this.openModal(this.modalContent);
-    // handleEvents exits before the modal closes. The call to getCalendarEvents below,
-    // gets another version of the events array.  The modal view is bound to the older version
-    // so any changes in the modal is not reflected in the new view.
-    this.getCalendarEvents(); // refresh events after modal in case anything changed
+    this.openModal(this.modalContent);   
   }
   
   /*
@@ -455,8 +453,7 @@ export class MyCalendarEditableComponent implements OnInit {
   /*
   // This sample copied from https://stackoverflow.com/questions/44808882/create-a-clone-of-an-array-in-typescript
   private deepCloneArray (inArr:Array<any>[]):  Array<any> {     
-    const myClonedArray = [];
-    // Object.assign does a deep copy of object
+    const myClonedArray = [];   
     // refer to link https://googlechrome.github.io/samples/object-assign-es6/ for shallow copy (also {...obj} works as well)
     // deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
     inArr.map(val => myClonedArray.push(JSON.parse(JSON.stringify(val))));
