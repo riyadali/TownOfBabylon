@@ -1,0 +1,3 @@
+<ng-template #deleteEventContent>
+  <p>Please confirm that <strong>{{curEvent.title}}</strong> scheduled for {{curEvent.start| date:'fullDate'}} {{!curEvent.allDay? (" at "+(curEvent.start | date:'shortTime')+" ") : ""}}should be deleted.</p>
+</ng-template>
