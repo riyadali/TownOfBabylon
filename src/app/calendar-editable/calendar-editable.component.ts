@@ -317,13 +317,15 @@ export class MyCalendarEditableComponent implements OnInit {
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
-                  next() { /*console.log('data: ', x);*/ 
-                            // update calendar event with latest information
+                  next() { /*console.log('data: ', x);*/                             
                             // self.formInfo= "Event has been updated updated successfully";
-                            // update the events array so that it reflects the latest info on the server
-                            // The views which are dependent on this array will therefore also reflect
-                            // the latest version
-                            self.getCalendarEvents(); // refresh the events array from the server
+                    
+                            // update the events array so that it reflects the latest info 
+                            // since the views are dependent on this array                            
+                            let tgtIndex=self.events$.findIndex(x=>x.id==event.id);                            
+                            if (tgtIndex!==-1) {
+                              self.events$[tgtIndex]=event;
+                            }
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
@@ -363,6 +365,9 @@ export class MyCalendarEditableComponent implements OnInit {
     // the events array    
     // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
     this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
+    this.curEvent.start=new Date(this.curEvent.start); // recast as date field
+    if (this.curEvent.end)
+      this.curEvent.end=new Date(this.curEvent.end); // recast as date field
     
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
