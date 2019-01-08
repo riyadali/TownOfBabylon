@@ -45,12 +45,13 @@ interface ExtraEventData {
 
 import modalTemplate from "../modal-views/modal.template.html";
 import editEventTemplate from "../modal-views/edit-event.template.html";
+import deleteEventTemplate from "../modal-views/delete-event.template.html";
 import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
  // templateUrl: './calendar-editable.component.html',
-  template: modalTemplate+mainTemplate+editEventTemplate,
+  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
@@ -65,6 +66,9 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
+  
+  @ViewChild('deleteEventContent')
+  private deleteEventContent: TemplateRef<any>;
   
   // Some default color schemes -- now setup on server side
   
@@ -157,7 +161,7 @@ export class MyCalendarEditableComponent implements OnInit {
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
-        this.handleEvent('Deleted', event, "Delete an Event", this.editEventContent, "Delete", "Cancel");
+        this.handleEvent('Deleted', event, "Delete an Event", this.deleteEventContent, "Delete", "Cancel");
       }
     }
   ];
