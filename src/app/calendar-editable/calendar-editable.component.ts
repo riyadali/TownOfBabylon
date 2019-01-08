@@ -252,7 +252,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private onSubmitForDelete() {
-     this.updateCalendarEvent(this.curEvent);
+     this.deleteCalendarEvent(this.curEvent);
      this.modalRef.hide();     
   }
   
@@ -348,6 +348,25 @@ export class MyCalendarEditableComponent implements OnInit {
                               self.events$[tgtIndex]=event;
                               self.events$[tgtIndex].actions=tgtActions; //restore actions
                             }
+                            self.refresh.next();
+                  },
+                  error(err) { self.formError = err.message;
+                                console.log('Some error '+err.message); 
+                             }
+              });
+  }
+  
+  private deleteCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    let self=this;
+    this.calEventService.deleteCalendarEvent(this.transformToCalEvent(event))
+    .subscribe({
+                  next() { /*console.log('data: ', x);*/                             
+                            
+                            // update the events array so that it reflects the latest info 
+                            // since the views are dependent on this array                            
+                            console.log('in deleteb4...'+self.events$.length)
+                            self.events$ = self.events$.filter(e => e.id !== event.id)
+                            console.log('in delete...'+self.events$.length)
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
