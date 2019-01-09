@@ -46,12 +46,14 @@ interface ExtraEventData {
 import modalTemplate from "../modal-views/modal.template.html";
 import editEventTemplate from "../modal-views/edit-event.template.html";
 import deleteEventTemplate from "../modal-views/delete-event.template.html";
+import cloneEventTemplate from "../modal-views/clone-event.template.html";
+import clickEventTemplate from "../modal-views/click-event.template.html";
 import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
  // templateUrl: './calendar-editable.component.html',
-  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate,
+  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate+cloneEventTemplate+clickEventTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
@@ -69,6 +71,12 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('deleteEventContent')
   private deleteEventContent: TemplateRef<any>;
+  
+  @ViewChild('cloneEventContent')
+  private cloneEventContent: TemplateRef<any>;
+  
+  @ViewChild('clickEventContent')
+  private clickEventContent: TemplateRef<any>;
   
   // Some default color schemes -- now setup on server side
   
@@ -151,7 +159,7 @@ export class MyCalendarEditableComponent implements OnInit {
   // available actions when logged in
   private actionsLoggedIn: CalendarEventAction[] = [
     {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
+      label: '<i class="fas fa-pencil-alt"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.handleEvent('Edited', event, "Edit an Event", this.editEventContent, "Update", "Cancel");
       }
@@ -163,7 +171,14 @@ export class MyCalendarEditableComponent implements OnInit {
         this.activeDayIsOpen=false; // may have deleted all events for current day
         this.handleEvent('Deleted', event, "Delete an Event", this.deleteEventContent, "Delete", "Cancel");
       }
+    },
+    {
+      label: '<i class="fa fa-clone" aria-hidden="true">',
+      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
+        this.handleEvent('Cloned', event, "Clone an Event", this.cloneEventContent, "Clone", "Cancel");
+      }
     }
+  ];
   ];
   private curAction: string;
     
@@ -212,6 +227,10 @@ export class MyCalendarEditableComponent implements OnInit {
       this.onSubmitForUpdate();
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
+    } else if (this.curAction=="Clicked") {
+      this.onSubmitForClick();    
+    } else if (this.curAction=="Cloned") {
+      this.onSubmitForClone();
     } else {
       // should not get here
     }
@@ -219,10 +238,31 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private onSubmitForUpdate() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    if (this.formInputValid()) {
+        this.formError = ""; // reset in case of prior error
+        this.updateCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    }   
+  }
+
+  private onSubmitForClick() {
+  }
+
+  private onSubmitForClone() {
+     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    if (this.formInputValid()) {
+        this.formError = ""; // reset in case of prior error
+        this.updateCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    }   
+  }
+
+  private formInputValid() : boolean {
+    
     if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
         return false;
-     } else if (this.curEvent.end&&
+    } else if (this.curEvent.end&&
                 compareAsc(this.curEvent.start,this.curEvent.end)!==-1
                 // the or condition is for the case where the end datetime is after the start because of the "seconds" portion
                 // but in reality the two times are the same when least significant part of the time being
@@ -245,10 +285,9 @@ export class MyCalendarEditableComponent implements OnInit {
         this.formError = "Name of custom color scheme cannot match that of an existing color scheme";
         return false;
     } else {
-        this.formError = ""; // reset in case of prior error
-        this.updateCalendarEvent(this.curEvent);
-        this.modalRef.hide();
+      return true;
     }
+
   }
   
   private onSubmitForDelete() {
