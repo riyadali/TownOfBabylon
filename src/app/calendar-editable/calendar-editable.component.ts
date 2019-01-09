@@ -161,7 +161,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fas fa-pencil-alt"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit an Event", this.editEventContent, "Update", "Cancel");
+        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Update", "Cancel");
       }
     },
     {
@@ -169,13 +169,13 @@ export class MyCalendarEditableComponent implements OnInit {
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
        // this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
-        this.handleEvent('Deleted', event, "Delete an Event", this.deleteEventContent, "Delete", "Cancel");
+        this.handleEvent('Deleted', event, "Delete Event", this.deleteEventContent, "Delete", "Cancel");
       }
     },
     {
       label: '<i class="fa fa-clone" aria-hidden="true">',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Cloned', event, "Clone an Event", this.cloneEventContent, "Clone", "Cancel");
+        this.handleEvent('Cloned', event, "Clone Event", this.cloneEventContent, "Clone", "Cancel");
       }
     }
   ];
