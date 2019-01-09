@@ -1,0 +1,155 @@
+<ng-template #cloneEventContent>
+
+<div class="container">
+  
+  <!--Row for form lead in text 
+  <div class="row">
+  -->
+    <!-- Use just "col" for same width column across devices.
+    In this case, there is only one column for the entire row -->   
+    <!-- Comment out lead text
+    <div class="col">
+      <br/>
+      <p class="lead"><strong>Login</strong></p>
+    </div>   
+  </div>
+   -->
+  
+  <!--Row for entire form -->
+  <div class="row">
+    <div class="col">
+      
+      <form>
+         <!--
+          <div role="alert" [hidden]="formInfo==''" class="alert alert-info">{{ formInfo }}</div>
+          -->
+        <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
+        <div class="form-group">          
+          <small>
+          <label for="title">Title</label>
+          </small>         
+          <br/>
+
+          <input type="text" class="form-control" id="title" placeholder="Enter Event Title" required 
+                 [(ngModel)]="curEvent.title" name="title">
+        </div>
+
+        <div class="form-group">
+          <small>
+          <label for="description">Description (optional)</label>
+           </small>         
+          <br/>
+
+          <textarea class="form-control" rows="4" id="description" name="decription" 
+                    [(ngModel)]="curEvent.meta.description" placeholder="Describe the event"></textarea>
+        </div>        
+
+        <div class="form-group">
+          <small>
+          <label for="startDate">Start Date</label>
+          </small>         
+          <br/>
+          
+          <!--
+          <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date and time" required 
+                 [(ngModel)]="curEvent.start" name="startDate">
+          -->
+          <input placeholder="Date and time" name="startDate" id="startDate" required
+               [(ngModel)]="curEvent.start"
+               [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
+          <owl-date-time #dt1></owl-date-time>
+     
+          
+        </div>
+
+        <div class="form-group">
+          <input type="checkbox" name="allday" id="allday" [(ngModel)]="curEvent.allDay"><small> All Day Event?</small>
+        </div>
+
+        <div class="form-group">
+          <small>
+          <label for="endDate">End Date (optional)</label>
+          </small>         
+          <br/>
+
+          <!--
+          <input type="datetime-local" class="form-control" id="endDate" placeholder="End Date and time" 
+                 [(ngModel)]="curEvent.end" name="endDate">
+          -->
+           <input placeholder="Date and time" name="endDate" id="endDate"
+               [(ngModel)]="curEvent.end"
+               [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2">
+            <owl-date-time #dt2></owl-date-time>
+        </div>
+
+        <br/>
+        <small>
+          <p>Specify color scheme for event icon. Use the <strong>Select Color Scheme</strong> control below or create your own <strong>custom color scheme</strong></p> 
+        </small>
+        <!--
+        <select name="colors"></select>
+        -->
+        <div class="myindent">
+        <div class="form-group">
+          <small>
+          <label for="colors">Select Color Scheme</label>
+          </small>         
+          &nbsp;
+
+          <!-- from this site https://stackoverflow.com/questions/35945001/binding-select-element-to-object-in-angular
+                Also, may want to take a deeper look at this issue https://github.com/angular/angular/issues/13268
+          --> 
+          <select [(ngModel)]="curEvent.color" [compareWith]="compareColorSchemes" name="selectedScheme" id="selectedScheme">
+            <option *ngFor="let c of colorSchemes" [ngValue]="c">{{c.name}}</option>
+          </select>
+        </div>
+        
+        <small>          
+          <p class="text-center">-- or define custom scheme --</p>        
+        </small>
+        <div class="myoutline">
+
+          <div class="form-group">          
+            <small>
+            <label for="colorName">Specify color scheme's name</label>
+            </small>         
+            <br/>
+
+            <small>
+            <input type="text" class="w-25" id="colorname" placeholder="Sample" required 
+                   [(ngModel)]="customColorScheme.name" name="colorname">
+            </small>
+          </div>
+
+          <div class="form-group">
+            <small>
+            <label for="primarycolor">Event's icon primary color</label>
+            </small>         
+            <br/>
+
+            <input type="color" class="w-50" id="primarycolor" placeholder="Event's icon primary color"  
+                 [(ngModel)]="customColorScheme.primary" name="primarycolor">       
+          </div>
+
+          <div class="form-group">
+            <small>
+            <label for="secondarycolor">Event's icon secondary color</label>
+            </small>         
+            <br/>
+
+            <input type="color" class="w-50" id="secondarycolor" placeholder="Event's icon secondary color" 
+                 [(ngModel)]="customColorScheme.secondary" name="secondarycolor">      
+          </div>
+        <!-- End div for outline box for custom colors -->
+        </div>
+        <!-- End div causing indent -->
+        </div>             
+
+      </form>
+    </div>
+  </div>
+  
+ 
+<!-- end of container div -->
+</div>
+</ng-template>
