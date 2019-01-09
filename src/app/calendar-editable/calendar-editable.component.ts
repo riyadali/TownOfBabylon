@@ -179,7 +179,7 @@ export class MyCalendarEditableComponent implements OnInit {
       }
     }
   ];
-  ];
+ 
   private curAction: string;
     
   private events$: CalendarEvent[];
