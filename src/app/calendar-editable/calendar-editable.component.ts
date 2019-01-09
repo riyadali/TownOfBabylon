@@ -45,12 +45,13 @@ interface ExtraEventData {
 
 import modalTemplate from "../modal-views/modal.template.html";
 import editEventTemplate from "../modal-views/edit-event.template.html";
+import deleteEventTemplate from "../modal-views/delete-event.template.html";
 import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
  // templateUrl: './calendar-editable.component.html',
-  template: modalTemplate+mainTemplate+editEventTemplate,
+  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
@@ -65,6 +66,9 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('editEventContent')
   private editEventContent: TemplateRef<any>;
+  
+  @ViewChild('deleteEventContent')
+  private deleteEventContent: TemplateRef<any>;
   
   // Some default color schemes -- now setup on server side
   
@@ -155,12 +159,13 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa fa-fw fa-times"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.events$ = this.events$.filter(iEvent => iEvent !== event);
+       // this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
-        this.handleEvent('Deleted', event, "Delete an Event", this.editEventContent, "Delete", "Cancel");
+        this.handleEvent('Deleted', event, "Delete an Event", this.deleteEventContent, "Delete", "Cancel");
       }
     }
   ];
+  private curAction: string;
     
   private events$: CalendarEvent[];
 
@@ -203,6 +208,16 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private onSubmit() {
+    if (this.curAction=="Edited") {
+      this.onSubmitForUpdate();
+    } else if (this.curAction=="Deleted") {
+      this.onSubmitForDelete();
+    } else {
+      // should not get here
+    }
+  }
+  
+  private onSubmitForUpdate() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
     if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
@@ -234,6 +249,11 @@ export class MyCalendarEditableComponent implements OnInit {
         this.updateCalendarEvent(this.curEvent);
         this.modalRef.hide();
     }
+  }
+  
+  private onSubmitForDelete() {
+     this.deleteCalendarEvent(this.curEvent);
+     this.modalRef.hide();     
   }
   
   private createCalendarEvent(cevent : CalEvent) : CalendarEvent<ExtraEventData> {
@@ -324,8 +344,27 @@ export class MyCalendarEditableComponent implements OnInit {
                             // since the views are dependent on this array                            
                             let tgtIndex=self.events$.findIndex(x=>x.id==event.id);                            
                             if (tgtIndex!==-1) {
+                              let tgtActions=self.events$[tgtIndex].actions;
                               self.events$[tgtIndex]=event;
+                              self.events$[tgtIndex].actions=tgtActions; //restore actions
                             }
+                            self.refresh.next();
+                  },
+                  error(err) { self.formError = err.message;
+                                console.log('Some error '+err.message); 
+                             }
+              });
+  }
+  
+  private deleteCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    let self=this;
+    this.calEventService.deleteCalendarEvent(this.transformToCalEvent(event))
+    .subscribe({
+                  next() { /*console.log('data: ', x);*/                             
+                            
+                            // update the events array so that it reflects the latest info 
+                            // since the views are dependent on this array
+                            self.events$ = self.events$.filter(e => e.id !== event.id);                           
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
@@ -359,6 +398,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
+    this.curAction=action; // save action so that you know what to do on submit
     
     // The events array always represent the truth (i.e. it is a reflection of the server)
     // Thus if the view (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e.,

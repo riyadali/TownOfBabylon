@@ -12,8 +12,8 @@
      <ng-container *ngTemplateOutlet="modalData?.bodyTemplate || defaultBodyTemplate"></ng-container> 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="onSubmit()">{{modalData?.button1Text}}</button>
-    <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-default" 
+    <button type="button" class="btn btn-default btn-md" (click)="onSubmit()">{{modalData?.button1Text}}</button>
+    <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-default btn-md" 
             (click)="modalRef.hide()">{{modalData?.button2Text}}</button>
   </div>
 </ng-template>
