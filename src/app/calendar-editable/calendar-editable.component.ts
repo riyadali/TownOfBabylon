@@ -363,10 +363,8 @@ export class MyCalendarEditableComponent implements OnInit {
                   next() { /*console.log('data: ', x);*/                             
                             
                             // update the events array so that it reflects the latest info 
-                            // since the views are dependent on this array                            
-                            console.log('in deleteb4...'+self.events$.length)
-                            self.events$ = self.events$.filter(e => e.id !== event.id)
-                            console.log('in delete...'+self.events$.length)
+                            // since the views are dependent on this array
+                            self.events$ = self.events$.filter(e => e.id !== event.id);                           
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
