@@ -173,7 +173,7 @@ export class MyCalendarEditableComponent implements OnInit {
       }
     },
     {
-      label: '<i class="fa fa-clone" aria-hidden="true">',
+      label: '<i class="fas fa-clone" aria-hidden="true">',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.handleEvent('Cloned', event, "Clone Event", this.cloneEventContent, "Clone", "Cancel");
       }
