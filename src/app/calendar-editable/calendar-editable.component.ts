@@ -159,13 +159,13 @@ export class MyCalendarEditableComponent implements OnInit {
   // available actions when logged in
   private actionsLoggedIn: CalendarEventAction[] = [
     {
-      label: '<i class="fas fa-pencil-alt"></i>',
+      label: '<i class="fa-fw fas fa-pencil-alt"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Update", "Cancel");
       }
     },
     {
-      label: '<i class="fa fa-fw fa-times"></i>',
+      label: '<i class="fa-fw fa fa-times"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
        // this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
@@ -173,7 +173,7 @@ export class MyCalendarEditableComponent implements OnInit {
       }
     },
     {
-      label: '<i class="fas fa-clone" aria-hidden="true">',
+      label: '<i class="fa-fw fas fa-clone" aria-hidden="true">',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
         this.handleEvent('Cloned', event, "Clone Event", this.cloneEventContent, "Clone", "Cancel");
       }
