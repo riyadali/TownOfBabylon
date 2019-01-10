@@ -380,10 +380,8 @@ export class MyCalendarEditableComponent implements OnInit {
                             // update the events array so that it reflects the latest info 
                             // since the views are dependent on this array                            
                             let tgtIndex=self.events$.findIndex(x=>x.id==event.id);                            
-                            if (tgtIndex!==-1) {
-                              let tgtActions=self.events$[tgtIndex].actions;
-                              self.events$[tgtIndex]=event;
-                              self.events$[tgtIndex].actions=tgtActions; //restore actions
+                            if (tgtIndex!==-1) {                              
+                              self.events$[tgtIndex]=event;                              
                             }
                             self.refresh.next();
                   },
@@ -451,10 +449,11 @@ export class MyCalendarEditableComponent implements OnInit {
       }
       if (this.curEvent.end) {
         this.curEvent.end=new Date(this.curEvent.end); // recast as date field
-      }
+      }      
     } else {
       this.curEvent=event; // shallow copy is sufficient
     }
+    this.curEvent.actions=event.actions; // share the actions since they are not modified in the forms
     
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
