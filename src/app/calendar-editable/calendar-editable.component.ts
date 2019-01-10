@@ -238,8 +238,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private onSubmitForUpdate() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formInputValid()) {
-        this.formError = ""; // reset in case of prior error
+    if (this.formInputValid()) {        
         this.updateCalendarEvent(this.curEvent);
         this.modalRef.hide();
     }   
@@ -250,8 +249,7 @@ export class MyCalendarEditableComponent implements OnInit {
 
   private onSubmitForClone() {
      //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formInputValid()) {
-        this.formError = ""; // reset in case of prior error
+    if (this.formInputValid()) {        
         this.updateCalendarEvent(this.curEvent);
         this.modalRef.hide();
     }   
@@ -461,6 +459,7 @@ export class MyCalendarEditableComponent implements OnInit {
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
+    this.formError = ""; // reset in case of prior error
     this.openModal(this.modalContent);   
   }
   
