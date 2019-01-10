@@ -392,6 +392,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private cloneCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    event.id=""; //remove id from event to be added; a new id will be generated
     event.title=event.title.trim();
     if (event.meta.description) {
        event.meta.description=event.meta.description.trim();
@@ -407,11 +408,12 @@ export class MyCalendarEditableComponent implements OnInit {
     let self=this;
     this.calEventService.addCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
-                  next() { /*console.log('data: ', x);*/                             
+                  next(x) { /*console.log('data: ', x);*/                             
                             // self.formInfo= "Event has been updated updated successfully";
                     
                             // update the events array so that it reflects the latest info 
-                            // since the views are dependent on this array                            
+                            // since the views are dependent on this array
+                            event.id=x.id; // set id of added event
                             self.events$.push(event);
                             self.refresh.next();
                   },
@@ -442,11 +444,11 @@ export class MyCalendarEditableComponent implements OnInit {
     let result: CalEvent= {
         start: event.start,
         title: event.title,
-        id: event.id||0,
         color: event.color || this.sampleColorScheme
       };
       
-     
+      if (event.id)
+        result.id=event.id; 
       if (event.meta.description)
         result.description=event.meta.description;
       if (event.end)
