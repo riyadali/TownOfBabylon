@@ -1,7 +1,7 @@
 import { ColorScheme } from './ColorScheme';
 
 export class CalEvent {
-  id: number;
+  id?: number;
   title: string;
   description?: string;
   start: Date;
