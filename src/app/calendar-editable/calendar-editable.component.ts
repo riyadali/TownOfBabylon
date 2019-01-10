@@ -250,7 +250,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private onSubmitForClone() {
      //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
     if (this.formInputValid()) {        
-        this.updateCalendarEvent(this.curEvent);
+        this.cloneCalendarEvent(this.curEvent);
         this.modalRef.hide();
     }   
   }
@@ -383,6 +383,36 @@ export class MyCalendarEditableComponent implements OnInit {
                             if (tgtIndex!==-1) {                              
                               self.events$[tgtIndex]=event;                              
                             }
+                            self.refresh.next();
+                  },
+                  error(err) { self.formError = err.message;
+                                console.log('Some error '+err.message); 
+                             }
+              });
+  }
+  
+  private cloneCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    event.title=event.title.trim();
+    if (event.meta.description) {
+       event.meta.description=event.meta.description.trim();
+    }
+    
+   if (this.customColorScheme.name) {
+      this.customColorScheme.name=this.customColorScheme.name.trim();
+      event.color=this.customColorScheme;      
+      // Add the custom color scheme to the server
+      // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
+      this.addColorScheme(this.customColorScheme); 
+    }
+    let self=this;
+    this.calEventService.addCalendarEvent(this.transformToCalEvent(event))
+    .subscribe({
+                  next() { /*console.log('data: ', x);*/                             
+                            // self.formInfo= "Event has been updated updated successfully";
+                    
+                            // update the events array so that it reflects the latest info 
+                            // since the views are dependent on this array                            
+                            self.events$.push(event);
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
