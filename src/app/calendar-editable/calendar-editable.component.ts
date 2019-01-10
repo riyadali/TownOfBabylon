@@ -439,14 +439,20 @@ export class MyCalendarEditableComponent implements OnInit {
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
     this.curAction=action; // save action so that you know what to do on submit
     
-    // The events array always represent the truth (i.e. it is a reflection of the server)
-    // Thus if the view (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e.,
-    // the events array    
-    // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
-    this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
-    this.curEvent.start=new Date(this.curEvent.start); // recast as date field
-    if (this.curEvent.end)
-      this.curEvent.end=new Date(this.curEvent.end); // recast as date field
+    // The events array always represent the truth (i.e. it is a reflection of the server).  Therefore if
+    // the event (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e. the events array)
+    
+    // A duplicate copy (i.e. deep copy) of the event is needed if the event properties can be updated in the modal view
+    if (this.curAction=="Edited" || this.curAction=="Cloned") {  
+      // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
+      this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
+      this.curEvent.start=new Date(this.curEvent.start); // recast as date field
+      if (this.curEvent.end) {
+        this.curEvent.end=new Date(this.curEvent.end); // recast as date field
+      }
+    } else {
+      this.curEvent=event; // shallow copy is sufficient
+    }
     
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
