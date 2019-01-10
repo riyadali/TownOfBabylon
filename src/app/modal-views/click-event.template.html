@@ -1,6 +1,5 @@
-<ng-template #deleteEventContent>
-  <p>Please confirm the deletion of: </p>
-   <table class="table table-borderless table-sm">
+<ng-template #clickEventContent>
+  <table class="table table-borderless table-sm">
   <!-- no header
   <thead>
     <tr>
@@ -19,11 +18,7 @@
       <td>Otto</td>
       <td>@mdo</td>
       -->      
-      <td><strong>Event</strong></td>
-      <td>{{curEvent.title}}</td>    
-    </tr>
-     <tr>
-     <td><strong>Date</strong></td>
+      <td><strong>Date</strong></td>
       <td>{{curEvent.start| date:'fullDate'}}</td>    
     </tr>
     <tr>

@@ -46,12 +46,14 @@ interface ExtraEventData {
 import modalTemplate from "../modal-views/modal.template.html";
 import editEventTemplate from "../modal-views/edit-event.template.html";
 import deleteEventTemplate from "../modal-views/delete-event.template.html";
+import cloneEventTemplate from "../modal-views/clone-event.template.html";
+import clickEventTemplate from "../modal-views/click-event.template.html";
 import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
  // templateUrl: './calendar-editable.component.html',
-  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate,
+  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate+cloneEventTemplate+clickEventTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
@@ -69,6 +71,12 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('deleteEventContent')
   private deleteEventContent: TemplateRef<any>;
+  
+  @ViewChild('cloneEventContent')
+  private cloneEventContent: TemplateRef<any>;
+  
+  @ViewChild('clickEventContent')
+  private clickEventContent: TemplateRef<any>;
   
   // Some default color schemes -- now setup on server side
   
@@ -151,20 +159,27 @@ export class MyCalendarEditableComponent implements OnInit {
   // available actions when logged in
   private actionsLoggedIn: CalendarEventAction[] = [
     {
-      label: '<i class="fa fa-fw fa-pencil"></i>',
+      label: '<i class="fa-fw fas fa-pencil-alt"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit an Event", this.editEventContent, "Update", "Cancel");
+        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Update", "Cancel");
       }
     },
     {
-      label: '<i class="fa fa-fw fa-times"></i>',
+      label: '<i class="fa-fw fa fa-times"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
        // this.events$ = this.events$.filter(iEvent => iEvent !== event);
         this.activeDayIsOpen=false; // may have deleted all events for current day
-        this.handleEvent('Deleted', event, "Delete an Event", this.deleteEventContent, "Delete", "Cancel");
+        this.handleEvent('Deleted', event, "Delete Event", this.deleteEventContent, "Delete", "Cancel");
+      }
+    },
+    {
+      label: '<i class="fa-fw fas fa-clone" aria-hidden="true">',
+      onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
+        this.handleEvent('Cloned', event, "Clone Event", this.cloneEventContent, "Clone", "Cancel");
       }
     }
   ];
+ 
   private curAction: string;
     
   private events$: CalendarEvent[];
@@ -212,6 +227,10 @@ export class MyCalendarEditableComponent implements OnInit {
       this.onSubmitForUpdate();
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
+    } else if (this.curAction=="Clicked") {
+      this.onSubmitForClick();    
+    } else if (this.curAction=="Cloned") {
+      this.onSubmitForClone();
     } else {
       // should not get here
     }
@@ -219,10 +238,29 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private onSubmitForUpdate() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    if (this.formInputValid()) {        
+        this.updateCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    }   
+  }
+
+  private onSubmitForClick() {
+  }
+
+  private onSubmitForClone() {
+     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    if (this.formInputValid()) {        
+        this.cloneCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    }   
+  }
+
+  private formInputValid() : boolean {
+    
     if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
         return false;
-     } else if (this.curEvent.end&&
+    } else if (this.curEvent.end&&
                 compareAsc(this.curEvent.start,this.curEvent.end)!==-1
                 // the or condition is for the case where the end datetime is after the start because of the "seconds" portion
                 // but in reality the two times are the same when least significant part of the time being
@@ -245,10 +283,9 @@ export class MyCalendarEditableComponent implements OnInit {
         this.formError = "Name of custom color scheme cannot match that of an existing color scheme";
         return false;
     } else {
-        this.formError = ""; // reset in case of prior error
-        this.updateCalendarEvent(this.curEvent);
-        this.modalRef.hide();
+      return true;
     }
+
   }
   
   private onSubmitForDelete() {
@@ -343,11 +380,41 @@ export class MyCalendarEditableComponent implements OnInit {
                             // update the events array so that it reflects the latest info 
                             // since the views are dependent on this array                            
                             let tgtIndex=self.events$.findIndex(x=>x.id==event.id);                            
-                            if (tgtIndex!==-1) {
-                              let tgtActions=self.events$[tgtIndex].actions;
-                              self.events$[tgtIndex]=event;
-                              self.events$[tgtIndex].actions=tgtActions; //restore actions
+                            if (tgtIndex!==-1) {                              
+                              self.events$[tgtIndex]=event;                              
                             }
+                            self.refresh.next();
+                  },
+                  error(err) { self.formError = err.message;
+                                console.log('Some error '+err.message); 
+                             }
+              });
+  }
+  
+  private cloneCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    event.id=""; //remove id from event to be added; a new id will be generated
+    event.title=event.title.trim();
+    if (event.meta.description) {
+       event.meta.description=event.meta.description.trim();
+    }
+    
+   if (this.customColorScheme.name) {
+      this.customColorScheme.name=this.customColorScheme.name.trim();
+      event.color=this.customColorScheme;      
+      // Add the custom color scheme to the server
+      // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
+      this.addColorScheme(this.customColorScheme); 
+    }
+    let self=this;
+    this.calEventService.addCalendarEvent(this.transformToCalEvent(event))
+    .subscribe({
+                  next(x) { /*console.log('data: ', x);*/                             
+                            // self.formInfo= "Event has been updated updated successfully";
+                    
+                            // update the events array so that it reflects the latest info 
+                            // since the views are dependent on this array
+                            event.id=x.id; // set id of added event
+                            self.events$.push(event);
                             self.refresh.next();
                   },
                   error(err) { self.formError = err.message;
@@ -377,11 +444,11 @@ export class MyCalendarEditableComponent implements OnInit {
     let result: CalEvent= {
         start: event.start,
         title: event.title,
-        id: event.id||0,
         color: event.color || this.sampleColorScheme
       };
       
-     
+      if (event.id)
+        result.id=event.id; 
       if (event.meta.description)
         result.description=event.meta.description;
       if (event.end)
@@ -400,14 +467,25 @@ export class MyCalendarEditableComponent implements OnInit {
                bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
     this.curAction=action; // save action so that you know what to do on submit
     
-    // The events array always represent the truth (i.e. it is a reflection of the server)
-    // Thus if the view (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e.,
-    // the events array    
-    // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
-    this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
-    this.curEvent.start=new Date(this.curEvent.start); // recast as date field
-    if (this.curEvent.end)
-      this.curEvent.end=new Date(this.curEvent.end); // recast as date field
+    // The events array always represent the truth (i.e. it is a reflection of the server).  Therefore if
+    // the event (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e. the events array)
+    
+    // A duplicate copy (i.e. deep copy) of the event is needed if the event properties can be updated in the modal view
+    if (this.curAction=="Edited" || this.curAction=="Cloned") {  
+      // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
+      this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
+      if (this.curAction=="Cloned") {
+        this.curEvent.start=""; // clear start date for cloned event
+      } else {
+        this.curEvent.start=new Date(this.curEvent.start); // recast as date field
+      }
+      if (this.curEvent.end) {
+        this.curEvent.end=new Date(this.curEvent.end); // recast as date field
+      }      
+    } else {
+      this.curEvent=event; // shallow copy is sufficient
+    }
+    this.curEvent.actions=event.actions; // share the actions since they are not modified in the forms
     
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
@@ -416,6 +494,7 @@ export class MyCalendarEditableComponent implements OnInit {
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
+    this.formError = ""; // reset in case of prior error
     this.openModal(this.modalContent);   
   }
   
