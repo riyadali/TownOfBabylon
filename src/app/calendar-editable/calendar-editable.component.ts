@@ -444,7 +444,11 @@ export class MyCalendarEditableComponent implements OnInit {
     if (this.curAction=="Edited" || this.curAction=="Cloned") {  
       // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
       this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
-      this.curEvent.start=new Date(this.curEvent.start); // recast as date field
+      if (this.curAction=="Cloned") {
+        this.curEvent.start=""; // clear start date for cloned event
+      } else {
+        this.curEvent.start=new Date(this.curEvent.start); // recast as date field
+      }
       if (this.curEvent.end) {
         this.curEvent.end=new Date(this.curEvent.end); // recast as date field
       }
