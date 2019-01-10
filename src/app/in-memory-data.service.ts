@@ -44,6 +44,15 @@ export class InMemoryDataService implements InMemoryDbService {
       primary: '#1e90ff',
       secondary: '#D1E8FF'
   };
+ 
+  // Overrides the genId method to ensure that an event always has an id.
+  // If the events array is empty,
+  // the method below returns the initial number (5).
+  // if the events array is not empty, the method below returns the highest
+  // events id + 1.
+  genId(calEvents: any[]): number {
+    return calEvents.length > 0 ? Math.max(...calEvents.map(calEvent => calEvent.id)) + 1 : 5;
+  }
     
  createDb() {
    const transactions = [
