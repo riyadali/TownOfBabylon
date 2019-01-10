@@ -1,9 +1,6 @@
 <ng-template #cloneEventContent>
 
-<div class="container">
-  
-  <p>Create a new event similar to the one selected.</p> 
-  <p>Specify when the event is to take place (Start Date) and change any of the other attributes for the event as needed.</p> 
+<div class="container"> 
   
   <!--Row for form lead in text 
   <div class="row">
@@ -27,6 +24,8 @@
           <div role="alert" [hidden]="formInfo==''" class="alert alert-info">{{ formInfo }}</div>
           -->
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
+        <p>Create a new event similar to the one selected.</p> 
+        <p>Specify when the event is to take place (<strong>Start Date</strong>) and change any of the other attributes for the event as needed.</p> 
         <div class="form-group">          
           <small>
           <label for="title">Title</label>
