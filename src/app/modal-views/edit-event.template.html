@@ -101,37 +101,7 @@
          <input type="text" class="form-control" id="address" placeholder="Specify Address"  
                  [(ngModel)]="curEvent.meta.address" name="address">
         </div>
-
-        <div class="form-group">
-          <small>
-          <label for="cost">Cost (optional)</label>
-           </small>         
-          <br/>
-
-         <input type="text" class="form-control" id="cost" placeholder="Cost"  
-                 [(ngModel)]="curEvent.meta.cost" name="cost">
-        </div>
-
-        <div class="form-group">
-          <small>
-          <label for="contact">Contact (optional)</label>
-           </small>         
-          <br/>
-
-         <input type="text" class="form-control" id="contact" placeholder="Contact Information"  
-                 [(ngModel)]="curEvent.meta.contact" name="contact">
-        </div>
-
-        <div class="form-group">
-          <small>
-          <label for="link">Link (optional)</label>
-           </small>         
-          <br/>
-
-         <input type="url" class="form-control" id="link" placeholder="Link to Event"  
-                 [(ngModel)]="curEvent.meta.link" name="link ">
-        </div>
-
+        
         <br/>
         <small>
           <p>Specify color scheme for event icon. Use the <strong>Select Color Scheme</strong> control below or create your own <strong>custom color scheme</strong></p> 
@@ -193,7 +163,39 @@
         <!-- End div for outline box for custom colors -->
         </div>
         <!-- End div causing indent -->
-        </div>             
+        </div> 
+        
+        <br/>
+        <div class="form-group">
+          <small>
+          <label for="cost">Cost (optional)</label>
+           </small>         
+          <br/>
+
+         <input type="text" class="form-control" id="cost" placeholder="Cost"  
+                 [(ngModel)]="curEvent.meta.cost" name="cost">
+        </div>
+
+        <div class="form-group">
+          <small>
+          <label for="contact">Contact (optional)</label>
+           </small>         
+          <br/>
+
+         <input type="text" class="form-control" id="contact" placeholder="Contact Information"  
+                 [(ngModel)]="curEvent.meta.contact" name="contact">
+        </div>
+
+        <div class="form-group">
+          <small>
+          <label for="link">Link (optional)</label>
+           </small>         
+          <br/>
+
+         <input type="url" class="form-control" id="link" placeholder="Link to Event"  
+                 [(ngModel)]="curEvent.meta.link" name="link ">
+        </div>
+
 
       </form>
     </div>
