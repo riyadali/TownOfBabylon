@@ -98,7 +98,13 @@ export class InMemoryDataService implements InMemoryDbService {
         beforeStart: true,
         afterEnd: true
       },
-      draggable: true
+      draggable: true,
+      location: 'Babylon Town Hall',
+      address: `200 East Sunrise Highway
+Lindenhurst, NY 11757`,
+      contact: 'tob@gmail.com or call (631) 957-3000',
+      cost: 'Free',
+      link: 'https://www.townofbabylon.com/DocumentCenter/View/3105'
     },
     {
       id: 2,
