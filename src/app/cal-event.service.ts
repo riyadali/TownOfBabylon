@@ -34,6 +34,16 @@ export class CalEventService {
     
         if (cevent.description)
           result.description=cevent.description;
+        if (cevent.location)
+          result.location = cevent.location;
+        if (cevent.address)
+          result.address = cevent.address;
+        if (cevent.contact)
+          result.contact = cevent.contact;
+        if (cevent.cost)
+          result.cost = cevent.cost;
+        if (cevent.link)
+          result.link = cevent.link;
         if (cevent.draggable) 
           result.draggable = cevent.draggable;
         if (cevent.resizable) 
