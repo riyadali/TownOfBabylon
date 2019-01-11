@@ -19,16 +19,28 @@
       <td>@mdo</td>
       -->      
       <td><strong>Date</strong></td>
-      <td>{{curEvent.start| date:'fullDate'}}</td>    
+      <td>{{curEvent.start | date:'fullDate'}}</td>    
     </tr>
     <tr>
       <td><strong>Time</strong></td>
       <td>{{!curEvent.allDay? (curEvent.start | date:'shortTime'):"All Day"}}</td> 
     </tr>
-     <tr>
+    <tr [hidden]="!curEvent.location">
       <td><strong>Location</strong></td>
       <td></td> 
-    </tr>     
+    </tr>
+    <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.description">
+      <td><strong>Description</strong></td>
+      <td>{{curEvent.meta?.description}}</td> 
+    </tr> 
+    <tr [hidden]="curAction=='Clicked'||!curEvent.end">
+      <td><strong>End Date</strong></td>
+      <td>{{curEvent.end | date:'fullDate'}}</td> 
+    </tr>
+    <tr [hidden]="curAction=='Clicked'||!curEvent.end||curEvent.allDay">
+      <td><strong>End Time</strong></td>
+      <td>{{curEvent.end | date:'shortTime'}}</td> 
+    </tr> 
   </tbody>
 </table>
 </ng-template>
