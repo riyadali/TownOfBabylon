@@ -228,7 +228,9 @@ export class MyCalendarEditableComponent implements OnInit {
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
     } else if (this.curAction=="Clicked") {
-      this.onSubmitForClick();    
+      this.onSubmitForClick();
+    } else if (this.curAction=="ClickedMore") {
+      this.onSubmitForClickMore();  
     } else if (this.curAction=="Cloned") {
       this.onSubmitForClone();
     } else {
@@ -245,6 +247,14 @@ export class MyCalendarEditableComponent implements OnInit {
   }
 
   private onSubmitForClick() {
+    // Simulate the "More" view in the modal window
+    this.curAction='ClickedMore';
+    this.modalData.button1Text="Return";
+    this.modalData.button2Text="";
+  }
+  
+  private onSubmitForClickMore() {
+    this.modalRef.hide(); // just close the modal view since it is handling the "Return" button   
   }
 
   private onSubmitForClone() {
