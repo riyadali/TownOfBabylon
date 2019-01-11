@@ -25,9 +25,9 @@
       <td><strong>Time</strong></td>
       <td>{{!curEvent.allDay? (curEvent.start | date:'shortTime'):"All Day"}}</td> 
     </tr>
-    <tr [hidden]="!curEvent.location">
+    <tr [hidden]="!curEvent.meta?.location">
       <td><strong>Location</strong></td>
-      <td></td> 
+      <td>{{curEvent.meta?.location}}</td>  
     </tr>
     <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.address">
       <td><strong>Address</strong></td>
