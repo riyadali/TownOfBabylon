@@ -25,10 +25,18 @@
       <td><strong>Time</strong></td>
       <td>{{!curEvent.allDay? (curEvent.start | date:'shortTime'):"All Day"}}</td> 
     </tr>
-     <tr>
+    <tr>
       <td><strong>Location</strong></td>
       <td></td> 
-    </tr>     
+    </tr>
+    <tr [hidden]="curAction=='Clicked'">
+      <td><strong>Description</strong></td>
+      <td>{{curEvent.description}}</td> 
+    </tr> 
+    <tr [hidden]="curAction=='Clicked'">
+      <td><strong>End Date</strong></td>
+      <td>{{curEvent.start| date:'fullDate'}}</td> 
+    </tr>   
   </tbody>
 </table>
 </ng-template>
