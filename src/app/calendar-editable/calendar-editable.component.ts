@@ -41,6 +41,11 @@ import {
    https://mattlewis92.github.io/angular-calendar/#/additional-event-properties */
 interface ExtraEventData {  
    description? : string;
+   location?: string;
+   address?: string;
+   contact?: string;
+   link?: URL;
+   cost?: string;
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -319,6 +324,16 @@ export class MyCalendarEditableComponent implements OnInit {
         result.color=cevent.color;
       if (cevent.description)
         result.meta.description = cevent.description;
+      if (cevent.location)
+        result.meta.location = cevent.location;
+      if (cevent.address)
+        result.meta.address = cevent.address;
+      if (cevent.contact)
+        result.meta.contact = cevent.contact;
+      if (cevent.cost)
+        result.meta.cost = cevent.cost;
+      if (cevent.link)
+        result.meta.link = cevent.link;
       if (cevent.end)
         result.end=cevent.end;
       if (cevent.allDay)
@@ -369,12 +384,9 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
-    event.title=event.title.trim();
-    if (event.meta.description) {
-       event.meta.description=event.meta.description.trim();
-    }
+    this.trimFields(event);
     
-   if (this.customColorScheme.name) {
+    if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
       event.color=this.customColorScheme;      
       // Add the custom color scheme to the server
@@ -403,12 +415,9 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private cloneCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
     event.id=""; //remove id from event to be added; a new id will be generated
-    event.title=event.title.trim();
-    if (event.meta.description) {
-       event.meta.description=event.meta.description.trim();
-    }
+    this.trimFields(event);
     
-   if (this.customColorScheme.name) {
+    if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
       event.color=this.customColorScheme;      
       // Add the custom color scheme to the server
@@ -431,6 +440,28 @@ export class MyCalendarEditableComponent implements OnInit {
                                 console.log('Some error '+err.message); 
                              }
               });
+  }
+  
+  private trimFields(event: CalendarEvent<ExtraEventData>): void {
+    event.title=event.title.trim();
+    if (event.meta.description) {
+       event.meta.description=event.meta.description.trim();
+    }
+    if (event.meta.location) {
+       event.meta.location=event.meta.location.trim();
+    }
+    if (event.meta.address) {
+       event.meta.address=event.meta.address.trim();
+    }
+    if (event.meta.contact) {
+       event.meta.contact=event.meta.contact.trim();
+    }
+    if (event.meta.cost) {
+       event.meta.cost=event.meta.cost.trim();
+    }
+   // if (event.meta.link) {
+   //    event.meta.link=event.meta.link.trim();
+   // }
   }
   
   private deleteCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
@@ -461,6 +492,16 @@ export class MyCalendarEditableComponent implements OnInit {
         result.id=event.id; 
       if (event.meta.description)
         result.description=event.meta.description;
+      if (event.meta.location)
+        result.location=event.meta.location;
+      if (event.meta.address)
+        result.address=event.meta.address;
+      if (event.meta.contact)
+        result.contact=event.meta.contact;
+      if (event.meta.cost)
+        result.cost=event.meta.cost;
+      if (event.meta.link)
+        result.link=event.meta.link;
       if (event.end)
         result.end=event.end;
       if (event.allDay)
