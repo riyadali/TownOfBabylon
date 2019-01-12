@@ -15,5 +15,7 @@
     <button type="button" class="btn btn-default btn-md" (click)="onSubmit()">{{modalData?.button1Text}}</button>
     <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-default btn-md" 
             (click)="modalButton2Clicked()">{{modalData?.button2Text}}</button>
+    <button [hidden]="!modalData?.button3Text" type="button" class="btn btn-default btn-md" 
+            (click)="modalButton3Clicked()">{{modalData?.button3Text}}</button>
   </div>
 </ng-template>
