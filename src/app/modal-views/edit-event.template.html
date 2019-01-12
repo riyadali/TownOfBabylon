@@ -24,7 +24,7 @@
           <div role="alert" [hidden]="formInfo==''" class="alert alert-info">{{ formInfo }}</div>
           -->
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
-        <div class="form-group">          
+        <div class="form-group" [hidden]="curAction!=='Edited'">          
           <small>
           <label for="title">Title</label>
           </small>         
@@ -34,7 +34,7 @@
                  [(ngModel)]="curEvent.title" name="title">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='Edited'">
           <small>
           <label for="description">Description (optional)</label>
            </small>         
@@ -44,7 +44,7 @@
                     [(ngModel)]="curEvent.meta.description" placeholder="Describe the event"></textarea>
         </div>        
 
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='Edited'">
           <small>
           <label for="startDate">Start Date</label>
           </small>         
@@ -63,7 +63,7 @@
         </div>
 
         
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='Edited'">
           <small>
           <label for="endDate">End Date (optional)</label>
           </small>         
@@ -79,7 +79,7 @@
             <owl-date-time #dt2></owl-date-time>
         </div>
         
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='Edited'">
           <small>
           <label for="location">Location (optional)</label>
            </small>         
@@ -89,7 +89,7 @@
                  [(ngModel)]="curEvent.meta.location" name="location">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='Edited'">
           <small>
           <label for="address">Address (optional)</label>
            </small>         
@@ -99,14 +99,15 @@
                  [(ngModel)]="curEvent.meta.address" name="address">
         </div>
         
-        <br/>
-        <small>
-          <p>Specify color scheme for event icon. Use the <strong>Select Color Scheme</strong> control below or create your own <strong>custom color scheme</strong></p> 
-        </small>
+        <div [hidden]="curAction!=='EditedNext'">
+          <small>
+            <p>Specify color scheme for event icon. Use the <strong>Select Color Scheme</strong> control below or create your own <strong>custom color scheme</strong></p> 
+          </small>
+        </div>
         <!--
         <select name="colors"></select>
         -->
-        <div class="myindent">
+        <div class="myindent" [hidden]="curAction!=='EditedNext'">
         <div class="form-group">
           <small>
           <label for="colors">Select Color Scheme</label>
@@ -163,7 +164,7 @@
         </div> 
         
         <br/>
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='EditedNextNext'">
           <small>
           <label for="cost">Cost (optional)</label>
            </small>         
@@ -173,7 +174,7 @@
                  [(ngModel)]="curEvent.meta.cost" name="cost">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='EditedNextNext'">
           <small>
           <label for="contact">Contact (optional)</label>
            </small>         
@@ -183,7 +184,7 @@
                  [(ngModel)]="curEvent.meta.contact" name="contact">
         </div>
 
-        <div class="form-group">
+        <div class="form-group" [hidden]="curAction!=='EditedNextNext'">
           <small>
           <label for="link">Link (optional)</label>
            </small>         
