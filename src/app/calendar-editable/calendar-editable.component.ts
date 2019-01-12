@@ -166,7 +166,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa-fw fas fa-pencil-alt"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Update", "Cancel");
+        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Next", "Cancel");
       }
     },
     {
@@ -227,9 +227,21 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
   
+  private modalButton2Clicked() {
+    if (this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext")
+      this.modalRef.hide();
+    else if (this.curAction="EditedNext") {
+      // Simulate the "Prev" edit view in the modal window
+      this.curAction='Edited';
+      this.modalData.button1Text="Next";
+      this.modalData.button2Text="Cancel";
+    }
+  }
+  
+  // button 1 on modal is treated as submit button
   private onSubmit() {
     if (this.curAction=="Edited") {
-      this.onSubmitForUpdate();
+      this.onSubmitForEdit();
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
     } else if (this.curAction=="Clicked") {
@@ -241,6 +253,13 @@ export class MyCalendarEditableComponent implements OnInit {
     } else {
       // should not get here
     }
+  }
+  
+  private onSubmitForEdit() {
+    // Simulate the "Next" edit view in the modal window
+    this.curAction='EditedNext';
+    this.modalData.button1Text="Next";
+    this.modalData.button2Text="Prev";
   }
   
   private onSubmitForUpdate() {
