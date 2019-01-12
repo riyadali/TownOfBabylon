@@ -237,6 +237,7 @@ export class MyCalendarEditableComponent implements OnInit {
       this.modalRef.hide();
     } else if (this.curAction=="EditedNext") {
       // Simulate the "Prev" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
       this.curAction='Edited';
       this.modalData.button1Text="Next";
       this.modalData.button2Text="Cancel";
@@ -270,6 +271,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private onSubmitForEdit() {
     if (this.formFirstInputGroupValid()) {
       // Simulate the "Next" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
       this.curAction='EditedNext';
       this.modalData.button1Text="Next";
       this.modalData.button2Text="Prev";
@@ -280,6 +282,7 @@ export class MyCalendarEditableComponent implements OnInit {
    private onSubmitForEditNext() {
     if (this.formColorInputGroupValid()) {
       // Simulate the "Next" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
       this.curAction='EditedNextNext'; // third and last view in chain
       this.modalData.button1Text="Submit";
       this.modalData.button2Text="Prev";
