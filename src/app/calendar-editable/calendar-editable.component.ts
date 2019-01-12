@@ -228,13 +228,16 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private modalButton2Clicked() {
-    if (this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext")
+    if (this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext") {
       this.modalRef.hide();
-    else if (this.curAction="EditedNext") {
+    } else if (this.curAction=="EditedNext") {
       // Simulate the "Prev" edit view in the modal window
       this.curAction='Edited';
       this.modalData.button1Text="Next";
       this.modalData.button2Text="Cancel";
+    } else if (this.curAction=="EditedNextNext") {
+      // the previous view from the 3rd view is same as the next view on the first
+      this.onSubmitForEdit(); 
     }
   }
   
@@ -261,8 +264,15 @@ export class MyCalendarEditableComponent implements OnInit {
     this.modalData.button1Text="Next";
     this.modalData.button2Text="Prev";
   }
-  
-  private onSubmitForUpdate() {
+
+   private onSubmitForEditNext() {
+    // Simulate the "Next" edit view in the modal window
+    this.curAction='EditedNextNext'; // third and last view in chain
+    this.modalData.button1Text="Next";
+    this.modalData.button2Text="Cancel";
+  }
+
+  private onSubmitForEditNextNext() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
     if (this.formInputValid()) {        
         this.updateCalendarEvent(this.curEvent);
