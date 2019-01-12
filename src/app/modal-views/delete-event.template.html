@@ -30,10 +30,10 @@
       <td><strong>Time</strong></td>
       <td>{{!curEvent.allDay? (curEvent.start | date:'shortTime'):"All Day"}}</td> 
     </tr>
-     <tr>
+    <tr [hidden]="!curEvent.meta?.location">
       <td><strong>Location</strong></td>
-      <td></td> 
-    </tr>     
+      <td>{{curEvent.meta?.location}}</td> 
+    </tr>   
   </tbody>
 </table>
 </ng-template>

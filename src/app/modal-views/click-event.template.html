@@ -25,14 +25,22 @@
       <td><strong>Time</strong></td>
       <td>{{!curEvent.allDay? (curEvent.start | date:'shortTime'):"All Day"}}</td> 
     </tr>
-    <tr [hidden]="!curEvent.location">
+    <tr [hidden]="!curEvent.meta?.location">
       <td><strong>Location</strong></td>
-      <td></td> 
+      <td>{{curEvent.meta?.location}}</td>  
     </tr>
+    <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.address">
+      <td><strong>Address</strong></td>
+      <td>{{curEvent.meta?.address}}</td> 
+    </tr> 
     <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.description">
       <td><strong>Description</strong></td>
       <td>{{curEvent.meta?.description}}</td> 
-    </tr> 
+    </tr>
+    <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.cost">
+      <td><strong>Cost</strong></td>
+      <td>{{curEvent.meta?.cost}}</td> 
+    </tr>
     <tr [hidden]="curAction=='Clicked'||!curEvent.end">
       <td><strong>End Date</strong></td>
       <td>{{curEvent.end | date:'fullDate'}}</td> 
@@ -40,7 +48,15 @@
     <tr [hidden]="curAction=='Clicked'||!curEvent.end||curEvent.allDay">
       <td><strong>End Time</strong></td>
       <td>{{curEvent.end | date:'shortTime'}}</td> 
-    </tr> 
+    </tr>
+    <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.contact">
+      <td><strong>Contact</strong></td>
+      <td>{{curEvent.meta?.contact}}</td> 
+    </tr>
+    <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.link">
+      <td><strong>Link</strong></td>
+      <td>{{curEvent.meta?.link}}</td> 
+    </tr>  
   </tbody>
 </table>
 </ng-template>

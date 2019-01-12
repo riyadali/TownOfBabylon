@@ -14,6 +14,11 @@ export class CalEvent {
         afterEnd: boolean;
   };
   draggable?: boolean;
+  location?: string;
+  address?: string;
+  contact?: string;
+  link?: URL;
+  cost?: string;
 }
 
 
