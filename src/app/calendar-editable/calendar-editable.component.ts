@@ -268,27 +268,33 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private onSubmitForEdit() {
-    // Simulate the "Next" edit view in the modal window
-    this.curAction='EditedNext';
-    this.modalData.button1Text="Next";
-    this.modalData.button2Text="Prev";
-    this.modalData.button3Text="";
+    if (this.formFirstInputGroupValid()) {
+      // Simulate the "Next" edit view in the modal window
+      this.curAction='EditedNext';
+      this.modalData.button1Text="Next";
+      this.modalData.button2Text="Prev";
+      this.modalData.button3Text="";
+    }
   }
 
    private onSubmitForEditNext() {
-    // Simulate the "Next" edit view in the modal window
-    this.curAction='EditedNextNext'; // third and last view in chain
-    this.modalData.button1Text="Submit";
-    this.modalData.button2Text="Prev";
-    this.modalData.button3Text="Cancel";
+    if (this.formColorInputGroupValid()) {
+      // Simulate the "Next" edit view in the modal window
+      this.curAction='EditedNextNext'; // third and last view in chain
+      this.modalData.button1Text="Submit";
+      this.modalData.button2Text="Prev";
+      this.modalData.button3Text="Cancel";
+    }
   }
 
   private onSubmitForEditNextNext() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formInputValid()) {        
+    
+    //  no form fields to validate on third view in the sequence
+    //  if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {        
         this.updateCalendarEvent(this.curEvent);
         this.modalRef.hide();
-    }   
+    //}   
   }
 
   private onSubmitForClick() {
@@ -304,14 +310,13 @@ export class MyCalendarEditableComponent implements OnInit {
 
   private onSubmitForClone() {
      //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formInputValid()) {        
+    if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {      
         this.cloneCalendarEvent(this.curEvent);
         this.modalRef.hide();
     }   
   }
 
-  private formInputValid() : boolean {
-    
+  private formFirstInputGroupValid() : boolean {    
     if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
         return false;
@@ -325,8 +330,15 @@ export class MyCalendarEditableComponent implements OnInit {
                     isSameMinute(this.curEvent.start,this.curEvent.end)) 
                 ) {
         this.formError = "End date must be after start date";
-        return false;
-    } else if (this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+        return false;    
+    } else {
+      return true;
+    }
+
+  }
+
+  private formColorInputGroupValid() : boolean {
+    if (this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
     } else if (!this.curEvent.color.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
@@ -340,7 +352,6 @@ export class MyCalendarEditableComponent implements OnInit {
     } else {
       return true;
     }
-
   }
   
   private onSubmitForDelete() {
