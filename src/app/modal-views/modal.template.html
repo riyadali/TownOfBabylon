@@ -14,6 +14,6 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-default btn-md" (click)="onSubmit()">{{modalData?.button1Text}}</button>
     <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-default btn-md" 
-            (click)="modalRef.hide()">{{modalData?.button2Text}}</button>
+            (click)="modalButton2Clicked()">{{modalData?.button2Text}}</button>
   </div>
 </ng-template>
