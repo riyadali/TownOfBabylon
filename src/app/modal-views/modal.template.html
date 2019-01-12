@@ -12,10 +12,12 @@
      <ng-container *ngTemplateOutlet="modalData?.bodyTemplate || defaultBodyTemplate"></ng-container> 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default btn-md" (click)="onSubmit()">{{modalData?.button1Text}}</button>
-    <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-default btn-md" 
-            (click)="modalButton2Clicked()">{{modalData?.button2Text}}</button>
-    <button [hidden]="!modalData?.button3Text" type="button" class="btn btn-default btn-md" 
-            (click)="modalButton3Clicked()">{{modalData?.button3Text}}</button>
+    <div class="row">
+      <button type="button" class="btn btn-default btn-md" (click)="onSubmit()">{{modalData?.button1Text}}</button>
+      <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-default btn-md" 
+              (click)="modalButton2Clicked()">{{modalData?.button2Text}}</button>
+      <button [hidden]="!modalData?.button3Text" type="button" class="btn btn-default btn-md" 
+              (click)="modalButton3Clicked()">{{modalData?.button3Text}}</button>
+    </div>
   </div>
 </ng-template>
