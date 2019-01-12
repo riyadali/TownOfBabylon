@@ -104,7 +104,7 @@ export class InMemoryDataService implements InMemoryDbService {
 Lindenhurst, NY 11757`,
       contact: 'tob@gmail.com or call (631) 957-3000',
       cost: 'Free',
-      link: 'https://www.townofbabylon.com/DocumentCenter/View/3105'
+      link: new URL('https://www.townofbabylon.com/DocumentCenter/View/3105')
     },
     {
       id: 2,
