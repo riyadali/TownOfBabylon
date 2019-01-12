@@ -155,6 +155,7 @@ export class MyCalendarEditableComponent implements OnInit {
     header: string;
     button1Text: string;
     button2Text?: string;
+    button3Text?: string;
     action: string;
     event: CalendarEvent<ExtraEventData>;
   };
@@ -166,7 +167,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa-fw fas fa-pencil-alt"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Update", "Cancel");
+        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Next", "Cancel");
       }
     },
     {
@@ -227,9 +228,33 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
   
+  private modalButton3Clicked() {
+    this.modalRef.hide();
+  }
+  
+  private modalButton2Clicked() {
+    if (this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext") {
+      this.modalRef.hide();
+    } else if (this.curAction=="EditedNext") {
+      // Simulate the "Prev" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
+      this.curAction='Edited';
+      this.modalData.button1Text="Next";
+      this.modalData.button2Text="Cancel";
+    } else if (this.curAction=="EditedNextNext") {
+      // the previous view from the 3rd view is same as the next view on the first
+      this.onSubmitForEdit(); 
+    }
+  }
+  
+  // button 1 on modal is treated as submit button
   private onSubmit() {
     if (this.curAction=="Edited") {
-      this.onSubmitForUpdate();
+      this.onSubmitForEdit();
+    } else if (this.curAction=="EditedNext") {
+      this.onSubmitForEditNext();
+    } else if (this.curAction=="EditedNextNext") {
+      this.onSubmitForEditNextNext();
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
     } else if (this.curAction=="Clicked") {
@@ -243,12 +268,36 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
   
-  private onSubmitForUpdate() {
+  private onSubmitForEdit() {
+    if (this.formFirstInputGroupValid()) {
+      // Simulate the "Next" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
+      this.curAction='EditedNext';
+      this.modalData.button1Text="Next";
+      this.modalData.button2Text="Prev";
+      this.modalData.button3Text="";
+    }
+  }
+
+   private onSubmitForEditNext() {
+    if (this.formColorInputGroupValid()) {
+      // Simulate the "Next" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
+      this.curAction='EditedNextNext'; // third and last view in chain
+      this.modalData.button1Text="Submit";
+      this.modalData.button2Text="Prev";
+      this.modalData.button3Text="Cancel";
+    }
+  }
+
+  private onSubmitForEditNextNext() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formInputValid()) {        
+    
+    //  no form fields to validate on third view in the sequence
+    //  if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {        
         this.updateCalendarEvent(this.curEvent);
         this.modalRef.hide();
-    }   
+    //}   
   }
 
   private onSubmitForClick() {
@@ -264,14 +313,13 @@ export class MyCalendarEditableComponent implements OnInit {
 
   private onSubmitForClone() {
      //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formInputValid()) {        
+    if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {      
         this.cloneCalendarEvent(this.curEvent);
         this.modalRef.hide();
     }   
   }
 
-  private formInputValid() : boolean {
-    
+  private formFirstInputGroupValid() : boolean {    
     if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
         this.formError = "Start, title and color scheme required";
         return false;
@@ -285,8 +333,15 @@ export class MyCalendarEditableComponent implements OnInit {
                     isSameMinute(this.curEvent.start,this.curEvent.end)) 
                 ) {
         this.formError = "End date must be after start date";
-        return false;
-    } else if (this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+        return false;    
+    } else {
+      return true;
+    }
+
+  }
+
+  private formColorInputGroupValid() : boolean {
+    if (this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
     } else if (!this.curEvent.color.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
@@ -300,7 +355,6 @@ export class MyCalendarEditableComponent implements OnInit {
     } else {
       return true;
     }
-
   }
   
   private onSubmitForDelete() {
@@ -515,7 +569,7 @@ export class MyCalendarEditableComponent implements OnInit {
   } 
   
   private handleEvent(action: string, event: CalendarEvent<ExtraEventData>, header: string, 
-               bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string): void {
+               bodyTemplate: TemplateRef<any>, button1Text: string, button2Text?: string, button3Text?: string): void {
     this.curAction=action; // save action so that you know what to do on submit
     
     // The events array always represent the truth (i.e. it is a reflection of the server).  Therefore if
@@ -541,7 +595,9 @@ export class MyCalendarEditableComponent implements OnInit {
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
     
-    if (button2Text)
+    if (button3Text)
+      this.modalData = { bodyTemplate, header, button1Text, button2Text, button3Text, event, action };
+    else if (button2Text)
       this.modalData = { bodyTemplate, header, button1Text, button2Text, event, action };
     else
        this.modalData = { bodyTemplate, header, button1Text, event, action };
