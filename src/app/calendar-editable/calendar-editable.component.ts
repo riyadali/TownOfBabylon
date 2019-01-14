@@ -245,9 +245,13 @@ export class MyCalendarEditableComponent implements OnInit {
   // button 1 on modal is treated as submit button
   private onSubmit() {
     if (this.curAction=="Edited") {
-      this.onSubmitForEdit();
+      if (this.formFirstInputGroupValid()) {
+        this.onSubmitForEdit();
+      }
     } else if (this.curAction=="Cloned") {
-      this.onSubmitForClone();
+      if (this.formFirstInputGroupValid()) {
+        this.onSubmitForClone();
+      }
     } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
       this.onNextForEditNext();
     } else if (this.curAction=="EditedNextNext") {
