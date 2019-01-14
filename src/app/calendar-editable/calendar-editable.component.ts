@@ -257,16 +257,16 @@ export class MyCalendarEditableComponent implements OnInit {
       this.onSubmitForEdit();
     } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
       this.onSubmitForEditNext();
-    } else if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext") {
+    } else if (this.curAction=="EditedNextNext") {
       this.onSubmitForEditNextNext();
+    } else if (this.curAction=="ClonedNextNext") {
+      this.onSubmitForCloneNextNext();
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
     } else if (this.curAction=="Clicked") {
       this.onSubmitForClick();
     } else if (this.curAction=="ClickedMore") {
-      this.onSubmitForClickMore();  
-    } else if (this.curAction=="Cloned") {
-      this.onSubmitForClone();
+      this.onSubmitForClickMore();     
     } else {
       // should not get here
     }
@@ -309,6 +309,16 @@ export class MyCalendarEditableComponent implements OnInit {
         this.modalRef.hide();
     //}   
   }
+  
+  private onSubmitForCloneNextNext() {
+    //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    
+    //  no form fields to validate on third view in the sequence
+    //  if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {        
+        this.cloneCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    //}   
+  }
 
   private onSubmitForClick() {
     // Simulate the "More" view in the modal window
@@ -319,14 +329,6 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private onSubmitForClickMore() {
     this.modalRef.hide(); // just close the modal view since it is handling the "Return" button   
-  }
-
-  private onSubmitForClone() {
-     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {      
-        this.cloneCalendarEvent(this.curEvent);
-        this.modalRef.hide();
-    }   
   }
 
   private formFirstInputGroupValid() : boolean {    
