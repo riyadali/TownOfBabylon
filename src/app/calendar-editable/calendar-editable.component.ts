@@ -51,14 +51,13 @@ interface ExtraEventData {
 import modalTemplate from "../modal-views/modal.template.html";
 import editEventTemplate from "../modal-views/edit-event.template.html";
 import deleteEventTemplate from "../modal-views/delete-event.template.html";
-import cloneEventTemplate from "../modal-views/clone-event.template.html";
 import clickEventTemplate from "../modal-views/click-event.template.html";
 import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
  // templateUrl: './calendar-editable.component.html',
-  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate+cloneEventTemplate+clickEventTemplate,
+  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate+clickEventTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
@@ -76,9 +75,6 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('deleteEventContent')
   private deleteEventContent: TemplateRef<any>;
-  
-  @ViewChild('cloneEventContent')
-  private cloneEventContent: TemplateRef<any>;
   
   @ViewChild('clickEventContent')
   private clickEventContent: TemplateRef<any>;
@@ -181,7 +177,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa-fw fas fa-clone" aria-hidden="true">',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Cloned', event, "Clone Event", this.cloneEventContent, "Clone", "Cancel");
+        this.handleEvent('Cloned', event, "Clone Event", this.editEventContent, "Clone", "Cancel");
       }
     }
   ];
