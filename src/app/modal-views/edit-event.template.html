@@ -24,11 +24,13 @@
           <div role="alert" [hidden]="formInfo==''" class="alert alert-info">{{ formInfo }}</div>
           -->
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
+        <!--
         <div [hidden]="curAction!=='Cloned'">
           <p>Create a new event similar to the one selected.</p> 
           <p>Specify when the event is to take place (<strong>Start Date</strong>) and change 
              any of the other attributes for the event as needed.</p> 
         </div>
+        -->
         <div class="form-group" [hidden]="curAction!=='Edited'&&curAction!=='Cloned'">          
           <small>
           <label for="title">Title</label>
