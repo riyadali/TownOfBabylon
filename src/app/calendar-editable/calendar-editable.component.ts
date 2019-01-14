@@ -328,8 +328,8 @@ export class MyCalendarEditableComponent implements OnInit {
   }
 
   private formFirstInputGroupValid() : boolean {    
-    if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
-        this.formError = "Start, title and color scheme required";
+    if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "") {
+        this.formError = "Start and title required";
         return false;
     } else if (this.curEvent.end&&
                 compareAsc(this.curEvent.start,this.curEvent.end)!==-1
