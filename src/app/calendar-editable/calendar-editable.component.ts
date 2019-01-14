@@ -235,15 +235,17 @@ export class MyCalendarEditableComponent implements OnInit {
         this.curAction!=="ClonedNext"&&this.curAction!=="ClonedNextNext") {
       this.modalRef.hide();
     } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
-      // Simulate the "Prev" edit view in the modal window
-      this.formError = ""; // reset in case of prior error
-      if (this.curAction=="EditedNext")
-        this.curAction='Edited';
-      else
-        this.curAction='Cloned';
-      this.modalData.button1Text="Submit";
-      this.modalData.button2Text="Next";
-      this.modalData.button3Text="Cancel";
+        if (this.formColorInputGroupValid()) {
+          // Simulate the "Prev" edit view in the modal window
+          this.formError = ""; // reset in case of prior error
+          if (this.curAction=="EditedNext")
+            this.curAction='Edited';
+          else
+            this.curAction='Cloned';
+          this.modalData.button1Text="Submit";
+          this.modalData.button2Text="Next";
+          this.modalData.button3Text="Cancel";
+        }
     } else if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext") {
       // the previous view from the 3rd view is same as the next view on the first
       this.onSubmitForEdit(); 
