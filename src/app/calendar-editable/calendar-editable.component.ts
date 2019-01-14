@@ -51,14 +51,13 @@ interface ExtraEventData {
 import modalTemplate from "../modal-views/modal.template.html";
 import editEventTemplate from "../modal-views/edit-event.template.html";
 import deleteEventTemplate from "../modal-views/delete-event.template.html";
-import cloneEventTemplate from "../modal-views/clone-event.template.html";
 import clickEventTemplate from "../modal-views/click-event.template.html";
 import mainTemplate from "./calendar-editable.component.html";
 
 @Component({
   selector: 'app-calendar-editable',
  // templateUrl: './calendar-editable.component.html',
-  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate+cloneEventTemplate+clickEventTemplate,
+  template: modalTemplate+mainTemplate+editEventTemplate+deleteEventTemplate+clickEventTemplate,
   animations: [collapseAnimation],
   styleUrls: ['./calendar-editable.component.scss']
 })
@@ -76,9 +75,6 @@ export class MyCalendarEditableComponent implements OnInit {
   
   @ViewChild('deleteEventContent')
   private deleteEventContent: TemplateRef<any>;
-  
-  @ViewChild('cloneEventContent')
-  private cloneEventContent: TemplateRef<any>;
   
   @ViewChild('clickEventContent')
   private clickEventContent: TemplateRef<any>;
@@ -167,7 +163,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa-fw fas fa-pencil-alt"></i>',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Next", "Cancel");
+        this.handleEvent('Edited', event, "Edit Event", this.editEventContent, "Submit", "Next", "Cancel");
       }
     },
     {
@@ -181,7 +177,7 @@ export class MyCalendarEditableComponent implements OnInit {
     {
       label: '<i class="fa-fw fas fa-clone" aria-hidden="true">',
       onClick: ({ event }: { event: CalendarEvent<ExtraEventData> }): void => {
-        this.handleEvent('Cloned', event, "Clone Event", this.cloneEventContent, "Clone", "Cancel");
+        this.handleEvent('Cloned', event, "Clone Event", this.editEventContent, "Submit", "Next", "Cancel");
       }
     }
   ];
@@ -233,64 +229,90 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private modalButton2Clicked() {
-    if (this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext") {
+    if (this.curAction=="Edited"||this.curAction=="Cloned") {
+      this.onNextForEdit();
+    } else if (this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext"&&
+        this.curAction!=="ClonedNext"&&this.curAction!=="ClonedNextNext") {
       this.modalRef.hide();
-    } else if (this.curAction=="EditedNext") {
-      // Simulate the "Prev" edit view in the modal window
-      this.formError = ""; // reset in case of prior error
-      this.curAction='Edited';
-      this.modalData.button1Text="Next";
-      this.modalData.button2Text="Cancel";
-    } else if (this.curAction=="EditedNextNext") {
+    } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
+      this.onPrevForEditNext();       
+    } else if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext") {
       // the previous view from the 3rd view is same as the next view on the first
-      this.onSubmitForEdit(); 
+      this.onNextForEdit(); 
     }
   }
   
   // button 1 on modal is treated as submit button
   private onSubmit() {
     if (this.curAction=="Edited") {
-      this.onSubmitForEdit();
-    } else if (this.curAction=="EditedNext") {
-      this.onSubmitForEditNext();
+      if (this.formFirstInputGroupValid()) {
+        this.onSubmitForEdit();
+      }
+    } else if (this.curAction=="Cloned") {
+      if (this.formFirstInputGroupValid()) {
+        this.onSubmitForClone();
+      }
+    } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
+      this.onNextForEditNext();
     } else if (this.curAction=="EditedNextNext") {
-      this.onSubmitForEditNextNext();
+      this.onSubmitForEdit();
+    } else if (this.curAction=="ClonedNextNext") {
+      this.onSubmitForClone();
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
     } else if (this.curAction=="Clicked") {
-      this.onSubmitForClick();
+      this.onMoreForClick();
     } else if (this.curAction=="ClickedMore") {
-      this.onSubmitForClickMore();  
-    } else if (this.curAction=="Cloned") {
-      this.onSubmitForClone();
+      this.onSubmitForClick();     
     } else {
       // should not get here
     }
   }
   
-  private onSubmitForEdit() {
-    if (this.formFirstInputGroupValid()) {
+  private onNextForEdit() {
+    if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext"|| // no verification needed on 3rd modal view
+        this.formFirstInputGroupValid()) {
       // Simulate the "Next" edit view in the modal window
       this.formError = ""; // reset in case of prior error
-      this.curAction='EditedNext';
+      if (this.curAction=="Edited"||this.curAction=="EditedNextNext")
+        this.curAction='EditedNext';
+      else
+        this.curAction='ClonedNext';
       this.modalData.button1Text="Next";
       this.modalData.button2Text="Prev";
       this.modalData.button3Text="";
     }
   }
 
-   private onSubmitForEditNext() {
+   private onNextForEditNext() {
     if (this.formColorInputGroupValid()) {
       // Simulate the "Next" edit view in the modal window
       this.formError = ""; // reset in case of prior error
-      this.curAction='EditedNextNext'; // third and last view in chain
+      if (this.curAction=="EditedNext")
+        this.curAction='EditedNextNext'; // third and last view in chain
+      else
+        this.curAction='ClonedNextNext'; // third and last view in chain
       this.modalData.button1Text="Submit";
       this.modalData.button2Text="Prev";
       this.modalData.button3Text="Cancel";
     }
   }
+  
+  private onPrevForEditNext() {
+    if (this.formColorInputGroupValid()) {
+      // Simulate the "Prev" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
+      if (this.curAction=="EditedNext")
+        this.curAction='Edited';
+      else
+        this.curAction='Cloned';
+      this.modalData.button1Text="Submit";
+      this.modalData.button2Text="Next";
+      this.modalData.button3Text="Cancel";
+    }
+  }
 
-  private onSubmitForEditNextNext() {
+  private onSubmitForEdit() {
     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
     
     //  no form fields to validate on third view in the sequence
@@ -299,29 +321,31 @@ export class MyCalendarEditableComponent implements OnInit {
         this.modalRef.hide();
     //}   
   }
+  
+  private onSubmitForClone() {
+    //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    
+    //  no form fields to validate on third view in the sequence
+    //  if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {        
+        this.cloneCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    //}   
+  }
 
-  private onSubmitForClick() {
+  private onMoreForClick() {
     // Simulate the "More" view in the modal window
     this.curAction='ClickedMore';
     this.modalData.button1Text="Return";
     this.modalData.button2Text="";
   }
   
-  private onSubmitForClickMore() {
+  private onSubmitForClick() {
     this.modalRef.hide(); // just close the modal view since it is handling the "Return" button   
   }
 
-  private onSubmitForClone() {
-     //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
-    if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {      
-        this.cloneCalendarEvent(this.curEvent);
-        this.modalRef.hide();
-    }   
-  }
-
   private formFirstInputGroupValid() : boolean {    
-    if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "" || !this.curEvent.color) {
-        this.formError = "Start, title and color scheme required";
+    if (!this.curEvent.start || !this.curEvent.title || this.curEvent.title.trim() == "") {
+        this.formError = "Start and title required";
         return false;
     } else if (this.curEvent.end&&
                 compareAsc(this.curEvent.start,this.curEvent.end)!==-1
