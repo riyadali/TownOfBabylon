@@ -235,20 +235,10 @@ export class MyCalendarEditableComponent implements OnInit {
         this.curAction!=="ClonedNext"&&this.curAction!=="ClonedNextNext") {
       this.modalRef.hide();
     } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
-        if (this.formColorInputGroupValid()) {
-          // Simulate the "Prev" edit view in the modal window
-          this.formError = ""; // reset in case of prior error
-          if (this.curAction=="EditedNext")
-            this.curAction='Edited';
-          else
-            this.curAction='Cloned';
-          this.modalData.button1Text="Submit";
-          this.modalData.button2Text="Next";
-          this.modalData.button3Text="Cancel";
-        }
+      this.onPrevForEditNext();       
     } else if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext") {
       // the previous view from the 3rd view is same as the next view on the first
-      this.onSubmitForEdit(); 
+      this.onNextForEdit(); 
     }
   }
   
@@ -259,7 +249,7 @@ export class MyCalendarEditableComponent implements OnInit {
     } else if (this.curAction=="Cloned") {
       this.onSubmitForClone();
     } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
-      this.onSubmitForEditNext();
+      this.onNextForEditNext();
     } else if (this.curAction=="EditedNextNext") {
       this.onSubmitForEdit();
     } else if (this.curAction=="ClonedNextNext") {
@@ -267,9 +257,9 @@ export class MyCalendarEditableComponent implements OnInit {
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
     } else if (this.curAction=="Clicked") {
-      this.onSubmitForClick();
+      this.onMoreForClick();
     } else if (this.curAction=="ClickedMore") {
-      this.onSubmitForClickMore();     
+      this.onSubmitForClick();     
     } else {
       // should not get here
     }
@@ -289,7 +279,7 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
 
-   private onSubmitForEditNext() {
+   private onNextForEditNext() {
     if (this.formColorInputGroupValid()) {
       // Simulate the "Next" edit view in the modal window
       this.formError = ""; // reset in case of prior error
@@ -299,6 +289,20 @@ export class MyCalendarEditableComponent implements OnInit {
         this.curAction='ClonedNextNext'; // third and last view in chain
       this.modalData.button1Text="Submit";
       this.modalData.button2Text="Prev";
+      this.modalData.button3Text="Cancel";
+    }
+  }
+  
+  private onPrevForEditNext() {
+    if (this.formColorInputGroupValid()) {
+      // Simulate the "Prev" edit view in the modal window
+      this.formError = ""; // reset in case of prior error
+      if (this.curAction=="EditedNext")
+        this.curAction='Edited';
+      else
+        this.curAction='Cloned';
+      this.modalData.button1Text="Submit";
+      this.modalData.button2Text="Next";
       this.modalData.button3Text="Cancel";
     }
   }
@@ -323,14 +327,14 @@ export class MyCalendarEditableComponent implements OnInit {
     //}   
   }
 
-  private onSubmitForClick() {
+  private onMoreForClick() {
     // Simulate the "More" view in the modal window
     this.curAction='ClickedMore';
     this.modalData.button1Text="Return";
     this.modalData.button2Text="";
   }
   
-  private onSubmitForClickMore() {
+  private onSubmitForClick() {
     this.modalRef.hide(); // just close the modal view since it is handling the "Return" button   
   }
 
