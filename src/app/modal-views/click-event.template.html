@@ -19,7 +19,7 @@
       <td>@mdo</td>
       -->      
       <td><strong>Date</strong></td>
-      <td>{{curEvent.start | date:'fullDate'}}</td>    
+      <td>{{formatDateField(curEvent.start, curEvent.allDay, curEvent.end)}}</td>    
     </tr>
     <tr>
       <td><strong>Time</strong></td>
@@ -40,11 +40,7 @@
     <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.cost">
       <td><strong>Cost</strong></td>
       <td>{{curEvent.meta?.cost}}</td> 
-    </tr>
-    <tr [hidden]="curAction=='Clicked'||!curEvent.end">
-      <td><strong>End Date</strong></td>
-      <td>{{curEvent.end | date:'fullDate'}}</td> 
-    </tr>
+    </tr>    
     <tr [hidden]="curAction=='Clicked'||!curEvent.end||curEvent.allDay">
       <td><strong>End Time</strong></td>
       <td>{{curEvent.end | date:'shortTime'}}</td> 
