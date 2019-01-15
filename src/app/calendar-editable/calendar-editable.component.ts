@@ -1,4 +1,5 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, Inject, LOCALE_ID } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -20,6 +21,7 @@ import { ColorScheme } from '../model/ColorScheme';
 
 import {
   compareAsc,
+  isSameYear,
   isSameMonth,
   isSameDay,
   isSameHour,
@@ -187,7 +189,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private events$: CalendarEvent[];
 
   constructor(private calEventService: CalEventService, private authService: AuthService, 
-               private modalService: BsModalService, private http: HttpClient) {}
+               private modalService: BsModalService, private http: HttpClient, @Inject(LOCALE_ID) private locale: string) {}
 
   private openModal(template: TemplateRef<any>) {
     //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
@@ -713,5 +715,20 @@ export class MyCalendarEditableComponent implements OnInit {
     return myClonedArray;
   }
   */
+  
+  // Refer to https://stackoverflow.com/questions/35144821/angular-use-pipes-in-services-and-components
+  private formatDateField(start: Date, allDay : boolean, end?: Date) : string { 
+    // for usage of formatDate refer to https://angular.io/api/common/formatDate and     https://angular.io/api/common/DatePipe for the various formats
+    if (!end||isSameDay(start, end))   
+      return formatDate(start, 'fullDate', this.locale);
+    else if (isSameMonth(start, end))
+      return formatDate(start, 'EEE, d - ', this.locale)+formatDate(end, 'EEE, d, LLLL, yyyy', this.locale);
+    else if (isSameYear(start, end))
+      return formatDate(start, 'EEE, LLL d - ', this.locale)+formatDate(end, 'EEE, LLL d, yyyy', this.locale);
+    else if (!isSameYear(start, end))
+      return formatDate(start, 'EEE, LLL d, yyyy - ', this.locale)+formatDate(end, 'EEE, LLL d, yyyy', this.locale);
+    else
+      return 'xxxx'; // should not get here
+  }
   
 }
