@@ -41,10 +41,6 @@
       <td><strong>Cost</strong></td>
       <td>{{curEvent.meta?.cost}}</td> 
     </tr>    
-    <tr [hidden]="curAction=='Clicked'||!curEvent.end||curEvent.allDay">
-      <td><strong>End Time</strong></td>
-      <td>{{curEvent.end | date:'shortTime'}}</td> 
-    </tr>
     <tr [hidden]="curAction=='Clicked'||!curEvent.meta?.contact">
       <td><strong>Contact</strong></td>
       <td>{{curEvent.meta?.contact}}</td> 
