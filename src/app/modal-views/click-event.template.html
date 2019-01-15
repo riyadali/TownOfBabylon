@@ -23,7 +23,7 @@
     </tr>
     <tr>
       <td><strong>Time</strong></td>
-      <td>{{!curEvent.allDay? (curEvent.start | date:'shortTime'):"All Day"}}</td> 
+      <td>{{formatTimeField(curEvent.start, curEvent.allDay, curEvent.end)}}</td> 
     </tr>
     <tr [hidden]="!curEvent.meta?.location">
       <td><strong>Location</strong></td>

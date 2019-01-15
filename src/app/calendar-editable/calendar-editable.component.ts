@@ -731,4 +731,27 @@ export class MyCalendarEditableComponent implements OnInit {
       return 'xxxx'; // should not get here
   }
   
+   private formatTimeField(start: Date, allDay : boolean, end?: Date) : string { 
+    // for usage of formatDate refer to https://angular.io/api/common/formatDate and     https://angular.io/api/common/DatePipe for the various formats
+    if (allDay)   
+      return "All Day"
+    else if (!end)
+      return formatDate(start, 'shortTime', this.locale);
+    else {
+      /*
+      let nextDay="";
+
+      if (start.getHours()<=end.getHours()) {
+        if (start.getMinutes()>end.getMinutes())
+          nextDay=" (Next Day)"
+      } else 
+        nextDay=" (Next Day)"
+
+      return formatDate(start, 'shortTime', this.locale) + " - " + formatDate(end, 'shortTime', this.locale) + nextDay;
+      */
+      return formatDate(start, 'shortTime', this.locale) + " - " + formatDate(end, 'shortTime', this.locale);
+    }
+
+  }
+  
 }
