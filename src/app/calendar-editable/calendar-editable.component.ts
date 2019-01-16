@@ -602,21 +602,30 @@ export class MyCalendarEditableComponent implements OnInit {
     // the event (i.e. curEvents) is changed in the modal, this does not corrupt the truth (i.e. the events array)
     
     // A duplicate copy (i.e. deep copy) of the event is needed if the event properties can be updated in the modal view
-    if (this.curAction=="Edited" || this.curAction=="Cloned") {  
+    if (this.curAction=="Edited" || this.curAction=="Cloned" || this.curAction=="Added") { 
       // Note: deep copy gotten from https://stackoverflow.com/questions/47413003/how-can-i-deep-copy-in-typescript  
       this.curEvent=JSON.parse(JSON.stringify(event)); // make deep copy of current event available to templates
-      if (this.curAction=="Cloned") {
-        this.curEvent.start=""; // clear start date for cloned event
-      } else {
-        this.curEvent.start=new Date(this.curEvent.start); // recast as date field
-      }
-      if (this.curEvent.end) {
-        this.curEvent.end=new Date(this.curEvent.end); // recast as date field
-      }      
+      if (this.curAction=="Added") {
+        // Note start and end dates should already be cleared since
+        // we are using the templateEvent which is more or less empty
+        if (this.authService.isLoggedIn()) {
+          this.curEvent.actions=this.actionsLoggedIn;
+        }    
+      } else { // not "Added" action
+        if (this.curAction=="Cloned") {
+          this.curEvent.start=""; // clear start date for cloned event
+        } else {
+          this.curEvent.start=new Date(this.curEvent.start); // recast as date field
+        }
+        if (this.curEvent.end) {
+          this.curEvent.end=new Date(this.curEvent.end); // recast as date field
+        }
+      } // end not "Added" action
     } else {
       this.curEvent=event; // shallow copy is sufficient
     }
-    this.curEvent.actions=event.actions; // share the actions since they are not modified in the forms
+    if (this.curAction!=="Added")
+      this.curEvent.actions=event.actions; // share the actions since they are not modified in the forms
     
     // make fresh copy of sample color available to templates
     this.customColorScheme = {...this.sampleColorScheme};
