@@ -271,6 +271,10 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
   
+  private addEvent() : void {
+    this.handleEvent('Added', this.emptyTemplateEvent, "Add Event", this.editEventContent, "Next", "Cancel");
+  }
+  
   private onNextForEdit() {
     if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext"|| // no verification needed on 3rd modal view
         this.formFirstInputGroupValid()) {
