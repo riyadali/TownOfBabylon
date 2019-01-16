@@ -249,7 +249,9 @@ export class MyCalendarEditableComponent implements OnInit {
   
   // button 1 on modal is treated as submit button
   private onSubmit() {
-    if (this.curAction=="Edited") {
+    if (this.curAction=="Added") {
+      this.onNextForEdit();
+    } else if (this.curAction=="Edited") {
       if (this.formFirstInputGroupValid()) {
         this.onSubmitForEdit();
       }
@@ -374,9 +376,10 @@ export class MyCalendarEditableComponent implements OnInit {
   }
 
   private formColorInputGroupValid() : boolean {
-    if (this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+    if (this.curEvent.color&&this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
-    } else if (!this.curEvent.color.name&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
+        return false;
+    } else if ((!this.curEvent.color||!this.curEvent.color.name)&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
         return false;
     } else if (this.customColorScheme.name&&this.colorSchemes.some(x=>{
