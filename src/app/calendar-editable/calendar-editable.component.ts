@@ -140,6 +140,9 @@ export class MyCalendarEditableComponent implements OnInit {
   private vw: string = this.vwMonth; /* default view */
   private vwDate: Date = new Date();
 
+  // An empty event used when adding a new event
+  private emptyTemplateEvent: CalendarEvent<ExtraEventData> = { meta:{} };
+  
   private curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
   //private evnts: Array<CalendarEvent<ExtraEventData>>;
