@@ -236,12 +236,12 @@ export class MyCalendarEditableComponent implements OnInit {
   private modalButton2Clicked() {
     if (this.curAction=="Edited"||this.curAction=="Cloned") {
       this.onNextForEdit();
-    } else if (this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext"&&
+    } else if (this.curAction!=="AddedNext"&&this.curAction!=="AddedNextNext"&&this.curAction!=="EditedNext"&&this.curAction!=="EditedNextNext"&&
         this.curAction!=="ClonedNext"&&this.curAction!=="ClonedNextNext") {
       this.modalRef.hide();
-    } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
+    } else if (this.curAction=="AddedNext"||this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
       this.onPrevForEditNext();       
-    } else if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext") {
+    } else if (this.curAction=="AddedNextNext"||this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext") {
       // the previous view from the 3rd view is same as the next view on the first
       this.onNextForEdit(); 
     }
@@ -259,12 +259,14 @@ export class MyCalendarEditableComponent implements OnInit {
       if (this.formFirstInputGroupValid()) {
         this.onSubmitForClone();
       }
-    } else if (this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
+    } else if (this.curAction=="AddedNext"||this.curAction=="EditedNext"||this.curAction=="ClonedNext") {
       this.onNextForEditNext();
     } else if (this.curAction=="EditedNextNext") {
       this.onSubmitForEdit();
     } else if (this.curAction=="ClonedNextNext") {
       this.onSubmitForClone();
+    } else if (this.curAction=="AddedNextNext") {
+      this.onSubmitForAdd();
     } else if (this.curAction=="Deleted") {
       this.onSubmitForDelete();
     } else if (this.curAction=="Clicked") {
@@ -303,8 +305,10 @@ export class MyCalendarEditableComponent implements OnInit {
       this.formError = ""; // reset in case of prior error
       if (this.curAction=="EditedNext")
         this.curAction='EditedNextNext'; // third and last view in chain
-      else
+      else if (this.curAction=="ClonedNext")
         this.curAction='ClonedNextNext'; // third and last view in chain
+      else
+        this.curAction='AddedNextNext'; // third and last view in chain
       this.modalData.button1Text="Submit";
       this.modalData.button2Text="Prev";
       this.modalData.button3Text="Cancel";
@@ -317,11 +321,18 @@ export class MyCalendarEditableComponent implements OnInit {
       this.formError = ""; // reset in case of prior error
       if (this.curAction=="EditedNext")
         this.curAction='Edited';
-      else
+      else if (this.curAction=="ClonedNext")
         this.curAction='Cloned';
-      this.modalData.button1Text="Submit";
-      this.modalData.button2Text="Next";
-      this.modalData.button3Text="Cancel";
+      else
+        this.curAction='Added';
+      if (this.curAction=='Added') {
+        this.modalData.button1Text="Next";
+        this.modalData.button2Text="Cancel";
+      } else {
+        this.modalData.button1Text="Submit";
+        this.modalData.button2Text="Next";
+        this.modalData.button3Text="Cancel";
+      }
     }
   }
 
@@ -340,11 +351,21 @@ export class MyCalendarEditableComponent implements OnInit {
     
     //  no form fields to validate on third view in the sequence
     //  if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {        
-        this.cloneCalendarEvent(this.curEvent);
+        this.addCalendarEvent(this.curEvent);
         this.modalRef.hide();
     //}   
   }
-
+  
+  private onSubmitForAdd() {
+    //console.log("submitted..."+this.curEvent.title+" "+this.curEvent.meta.description+" "+this.curEvent.start);
+    
+    //  no form fields to validate on third view in the sequence
+    //  if (this.formFirstInputGroupValid()&&this.formColorInputGroupValid()) {        
+        this.addCalendarEvent(this.curEvent);
+        this.modalRef.hide();
+    //}   
+  }
+  
   private onMoreForClick() {
     // Simulate the "More" view in the modal window
     this.curAction='ClickedMore';
@@ -505,7 +526,8 @@ export class MyCalendarEditableComponent implements OnInit {
               });
   }
   
-  private cloneCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+  // Use for both adding as well as cloning an event
+  private addCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
     event.id=""; //remove id from event to be added; a new id will be generated
     this.trimFields(event);
     
@@ -534,6 +556,7 @@ export class MyCalendarEditableComponent implements OnInit {
               });
   }
   
+    
   private trimFields(event: CalendarEvent<ExtraEventData>): void {
     event.title=event.title.trim();
     if (event.meta.description) {
