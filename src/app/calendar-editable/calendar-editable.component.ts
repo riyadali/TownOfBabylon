@@ -281,14 +281,16 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private onNextForEdit() {
-    if (this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext"|| // no verification needed on 3rd modal view
+    if (this.curAction=="AddedNextNext"||this.curAction=="EditedNextNext"||this.curAction=="ClonedNextNext"|| // no verification needed on 3rd modal view
         this.formFirstInputGroupValid()) {
       // Simulate the "Next" edit view in the modal window
       this.formError = ""; // reset in case of prior error
       if (this.curAction=="Edited"||this.curAction=="EditedNextNext")
         this.curAction='EditedNext';
-      else
+      else if (this.curAction=="Cloned"||this.curAction=="ClonedNextNext")
         this.curAction='ClonedNext';
+      else
+        this.curAction='AddedNext';
       this.modalData.button1Text="Next";
       this.modalData.button2Text="Prev";
       this.modalData.button3Text="";
