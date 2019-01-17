@@ -31,7 +31,7 @@
              any of the other attributes for the event as needed.</p> 
         </div>
         -->
-        <div class="form-group" [hidden]="curAction!=='Edited'&&curAction!=='Cloned'">          
+        <div class="form-group" [hidden]="curAction!=='Added'&&curAction!=='Edited'&&curAction!=='Cloned'">          
           <small>
           <label for="title">Title</label>
           </small>         
@@ -41,7 +41,7 @@
                  [(ngModel)]="curEvent.title" name="title">
         </div>
 
-        <div class="form-group" [hidden]="curAction!=='Edited'&&curAction!=='Cloned'">
+        <div class="form-group" [hidden]="curAction!=='Added'&&curAction!=='Edited'&&curAction!=='Cloned'">
           <small>
           <label for="description">Description (optional)</label>
            </small>         
@@ -51,7 +51,7 @@
                     [(ngModel)]="curEvent.meta.description" placeholder="Describe the event"></textarea>
         </div>        
 
-        <div class="form-group" [hidden]="curAction!=='Edited'&&curAction!=='Cloned'">
+        <div class="form-group" [hidden]="curAction!=='Added'&&curAction!=='Edited'&&curAction!=='Cloned'">
           <small>
           <label for="startDate">Start Date</label>
           </small>         
@@ -70,7 +70,7 @@
         </div>
 
         
-        <div class="form-group" [hidden]="curAction!=='Edited'&&curAction!=='Cloned'">
+        <div class="form-group" [hidden]="curAction!=='Added'&&curAction!=='Edited'&&curAction!=='Cloned'">
           <small>
           <label for="endDate">End Date (optional)</label>
           </small>         
@@ -86,7 +86,7 @@
             <owl-date-time #dt2  [hour12Timer]="true"></owl-date-time>
         </div>
         
-        <div class="form-group" [hidden]="curAction!=='Edited'&&curAction!=='Cloned'">
+        <div class="form-group" [hidden]="curAction!=='Added'&&curAction!=='Edited'&&curAction!=='Cloned'">
           <small>
           <label for="location">Location (optional)</label>
            </small>         
@@ -96,7 +96,7 @@
                  [(ngModel)]="curEvent.meta.location" name="location">
         </div>
 
-        <div class="form-group" [hidden]="curAction!=='Edited'&&curAction!=='Cloned'">
+        <div class="form-group" [hidden]="curAction!=='Added'&&curAction!=='Edited'&&curAction!=='Cloned'">
           <small>
           <label for="address">Address (optional)</label>
            </small>         
@@ -106,7 +106,7 @@
                  [(ngModel)]="curEvent.meta.address" name="address">
         </div>
         
-        <div [hidden]="curAction!=='EditedNext'&&curAction!=='ClonedNext'">
+        <div [hidden]="curAction!=='AddedNext'&&curAction!=='EditedNext'&&curAction!=='ClonedNext'">
           <small>
             <p>Specify color scheme for event icon. Use the <strong>Select Color Scheme</strong> control below or create your own <strong>custom color scheme</strong></p> 
           </small>
@@ -114,7 +114,7 @@
         <!--
         <select name="colors"></select>
         -->
-        <div class="myindent" [hidden]="curAction!=='EditedNext'&&curAction!=='ClonedNext'">
+        <div class="myindent" [hidden]="curAction!=='AddedNext'&&curAction!=='EditedNext'&&curAction!=='ClonedNext'">
         <div class="form-group">
           <small>
           <label for="colors">Select Color Scheme</label>
@@ -170,7 +170,7 @@
         <!-- End div causing indent -->
         </div> 
         
-        <div class="form-group" [hidden]="curAction!=='EditedNextNext'&&curAction!=='ClonedNextNext'">
+        <div class="form-group" [hidden]="curAction!=='AddedNextNext'&&curAction!=='EditedNextNext'&&curAction!=='ClonedNextNext'">
           <small>
           <label for="cost">Cost (optional)</label>
            </small>         
@@ -180,7 +180,7 @@
                  [(ngModel)]="curEvent.meta.cost" name="cost">
         </div>
 
-        <div class="form-group" [hidden]="curAction!=='EditedNextNext'&&curAction!=='ClonedNextNext'">
+        <div class="form-group" [hidden]="curAction!=='AddedNextNext'&&curAction!=='EditedNextNext'&&curAction!=='ClonedNextNext'">
           <small>
           <label for="contact">Contact (optional)</label>
            </small>         
@@ -190,7 +190,7 @@
                  [(ngModel)]="curEvent.meta.contact" name="contact">
         </div>
 
-        <div class="form-group" [hidden]="curAction!=='EditedNextNext'&&curAction!=='ClonedNextNext'">
+        <div class="form-group" [hidden]="curAction!=='AddedNextNext'&&curAction!=='EditedNextNext'&&curAction!=='ClonedNextNext'">
           <small>
           <label for="link">Link (optional)</label>
            </small>         
