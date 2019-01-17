@@ -1,6 +1,59 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
+import { ColorScheme } from './model/ColorScheme';
+
+import {
+  endOfMonth,  
+  startOfDay,
+  subDays,
+  addDays,
+  addHours,
+  format
+} from 'date-fns';
+
+
 export class InMemoryDataService implements InMemoryDbService {
+ 
+  // Some default color schemes
+  redColorScheme : ColorScheme = {
+      id: 1,
+      name: 'Red',
+      primary: '#ad2121',
+      secondary: '#FAE3E3'
+  };
+
+  yellowColorScheme : ColorScheme = {
+      id: 2,
+      name: 'Yellow',
+      primary: '#e3bc08',
+      secondary: '#FDF1BA'
+  };
+ 
+  blueColorScheme : ColorScheme = {
+      id: 3,
+      name: 'Blue',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+  
+  // Should never see this since it has an owner field
+  bogusColorScheme : ColorScheme = {
+      id: 4,
+      owner: 0,
+      name: 'Bogus',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+ 
+  // Overrides the genId method to ensure that an event always has an id.
+  // If the events array is empty,
+  // the method below returns the initial number (5).
+  // if the events array is not empty, the method below returns the highest
+  // events id + 1.
+  genId(calEvents: any[]): number {
+    return calEvents.length > 0 ? Math.max(...calEvents.map(calEvent => calEvent.id)) + 1 : 5;
+  }
+    
  createDb() {
    const transactions = [
      { id: 11, name: 'Mr. Nice', blockHeight: 521795},
@@ -32,7 +85,61 @@ export class InMemoryDataService implements InMemoryDbService {
       { label: '<span class="autocompleteTitle">Babylon Gardens</span><span class="autocompleteModuleName">Page</span>', value: 'Babylon Gardens', link : null },
       { label: '<span class="autocompleteTitle">Can I recycle items found in my garage?</span><span class="autocompleteModuleName">FAQs</span>', value: 'Can I recycle items found in my garage?', link : null }
     ];
-   return {transactions, heroes
+   let calEvents= [
+    {
+      id: 1,
+      start: subDays(startOfDay(new Date()), 1),
+      end: addDays(new Date(), 1),
+      title: 'A 3 day event',
+      description: 'Yabba Dabba Doo',
+      color: this.redColorScheme,
+      allDay: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true,
+      location: 'Babylon Town Hall',
+      address: `200 East Sunrise Highway
+Lindenhurst, NY 11757`,
+      contact: 'tob@gmail.com or call (631) 957-3000',
+      cost: 'Free',
+      link: new URL('https://www.townofbabylon.com/DocumentCenter/View/3105')
+    },
+    {
+      id: 2,
+      start: startOfDay(new Date()),
+      title: 'An event with no end date',
+      color: this.yellowColorScheme
+    },
+    {
+      id: 3,
+      start: subDays(endOfMonth(new Date()), 3),
+      end: addDays(endOfMonth(new Date()), 3),
+      title: 'A long event that spans 2 months',
+      color: this.blueColorScheme,
+      allDay: true
+    },
+    {
+      id: 4,
+      start: addHours(startOfDay(new Date()), 2),
+      end: new Date(),
+      title: 'A draggable and resizable event',
+      color: this.yellowColorScheme,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true
+    }
+  ];
+  let colorSchemes: ColorScheme[] = [
+    this.redColorScheme,
+    this.blueColorScheme,
+    this.yellowColorScheme,
+    this.bogusColorScheme
+  ];
+  return {transactions, heroes, calEvents, colorSchemes
    /*searchusers: {
       total: searchusers.length,
       results: searchusers

@@ -31,6 +31,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
+import { CalEventService } from './cal-event.service';
 import { AuthService } from './auth/auth.service';
 import { ModalService } from './modal.service';
 import { DomService } from './dom.service';
@@ -73,13 +74,17 @@ import { SearchFormComponent } from './search-form/search-form.component';
 import { NavbarBrandComponent } from './navbar-brand/navbar-brand.component';
 
 import {MyCalendarComponent} from './calendar/calendar.component';
+import {MyCalendarEditableComponent} from './calendar-editable/calendar-editable.component';
 import {MyCalendarMoviesComponent} from './calendar-movies/calendar-movies.component';
 
 /* To include Matt Lewis calendar -- refer to site https://github.com/mattlewis92/angular-calendar */
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
-
+/* owldatetime picker -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830 
+                         and also https://daniel-projects.firebaseapp.com/owlng/date-time-picker 
+                         code is here https://github.com/DanielYKPan/owl-examples/tree/date-time-picker*/
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 
 import { PageHomeComponent } from './page-home/page-home.component';
@@ -124,6 +129,12 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
       provide: DateAdapter,
       useFactory: adapterFactory
     }),
+    
+    /* owldatetime picker -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830 
+                         and also https://daniel-projects.firebaseapp.com/owlng/date-time-picker 
+                         code is here https://github.com/DanielYKPan/owl-examples/tree/date-time-picker*/
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
@@ -164,6 +175,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     StandardPageComponent,
     
     MyCalendarComponent,
+    MyCalendarEditableComponent,
     MyCalendarMoviesComponent,
 
     
@@ -180,7 +192,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
   // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
   entryComponents: [PageLoginComponent, PageRegisterComponent],
   bootstrap: [ AppComponent ],
-  providers: [TransactionService, SearchService, AuthService, ModalService, DomService, httpInterceptorProviders]
+  providers: [TransactionService, SearchService, CalEventService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
 export class AppModule {
   

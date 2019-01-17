@@ -1,0 +1,39 @@
+<ng-template #deleteEventContent>
+  <p>Please confirm the deletion of: </p>
+   <table class="table table-borderless table-sm">
+  <!-- no header
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  -->
+  <tbody>
+    <tr>
+      <!-- from their sample
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+      -->      
+      <td><strong>Event</strong></td>
+      <td>{{curEvent.title}}</td>    
+    </tr>
+     <tr>
+     <td><strong>Date</strong></td>
+      <td>{{curEvent.start| date:'fullDate'}}</td>    
+    </tr>
+    <tr>
+      <td><strong>Time</strong></td>
+      <td>{{!curEvent.allDay? (curEvent.start | date:'shortTime'):"All Day"}}</td> 
+    </tr>
+    <tr [hidden]="!curEvent.meta?.location">
+      <td><strong>Location</strong></td>
+      <td>{{curEvent.meta?.location}}</td> 
+    </tr>   
+  </tbody>
+</table>
+</ng-template>

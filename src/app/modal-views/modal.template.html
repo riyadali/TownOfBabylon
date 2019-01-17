@@ -1,0 +1,23 @@
+<ng-template #defaultBodyTemplate>
+  <p>Default body template</p>
+</ng-template>
+<ng-template #modalContent>
+  <div class="modal-header">
+    <h5 class="modal-title">{{modalData?.header}}</h5>
+    <button type="button" class="close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">     
+     <ng-container *ngTemplateOutlet="modalData?.bodyTemplate || defaultBodyTemplate"></ng-container> 
+  </div>
+  <div class="modal-footer">
+    <div class="row">
+      <button type="button" class="btn btn-default btn-md" (click)="onSubmit()">{{modalData?.button1Text}}</button>
+      <button [hidden]="!modalData?.button2Text" type="button" class="btn btn-default btn-md" 
+              (click)="modalButton2Clicked()">{{modalData?.button2Text}}</button>
+      <button [hidden]="!modalData?.button3Text" type="button" class="btn btn-default btn-md" 
+              (click)="modalButton3Clicked()">{{modalData?.button3Text}}</button>
+    </div>
+  </div>
+</ng-template>

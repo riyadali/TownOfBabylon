@@ -7,6 +7,33 @@
 /*"~@angular/material/prebuilt-themes/purple-green.css";*/
 /*"~@angular/material/prebuilt-themes/deeppurple-amber.css";*/
 
+/* styles for owldatetime -- see http://www.lib4dev.com/info/DanielYKPan/date-time-picker/74739830
+and here https://daniel-projects.firebaseapp.com/owlng/date-time-picker */
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+/* Note the following is needed if owlDateTIme is used in modal window.
+   Without this setting the popup for owlDateTime gets hidden behind the modal window.
+   Reference https://stackoverflow.com/questions/50578354/ng-pick-datetimer-calendar-shows-behind-dialog-box */
+.cdk-overlay-container {    
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+ /*   position: absolute; */
+    z-index: 9999999 !important;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+/*    position: absolute; */
+    z-index: 9999999 !important;
+}
+
 @import "modal";
 
 //-- Custom theming from site https://alligator.io/angular/angular-material-custom-theme/
@@ -84,7 +111,7 @@ $theme: map_merge($theme, (background: $background));
 
 
 
-
+/* Instructions for version 5 of font-awesome found here https://fontawesome.com/how-to-use/on-the-web/using-with/sass */
 /*This instruction is from web site https://github.com/angular/angular-cli/blob/master/docs/documentation/stories/include-font-awesome.md*/
 /* commenting out imports for bootstrap, font-awesome etc since they are already in angular.json.  If this causes a problem under stackblitz
 just remove comment */
@@ -164,3 +191,4 @@ Copyright 2017-2018 Google Inc. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at http://angular.io/license
 */
+

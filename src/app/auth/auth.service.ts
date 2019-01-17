@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
 import {LoginResultModel} from '../model/LoginResultModel';
 import {apiURL} from '../config';
@@ -10,6 +10,10 @@ export class AuthService {
   
   // store the URL so we can redirect after logging in
   redirectUrl: string;
+  
+  // Broadcasts changes to login status
+  // Someone may then subscribe to this and then take action as necessary
+  loginStatus: Subject<any> = new Subject();
 
   constructor(private http: HttpClient) {}
    
@@ -49,7 +53,12 @@ export class AuthService {
     if(token){
       var payload = JSON.parse(atob(token.split('.')[1]));
 
-      return payload.exp > Date.now() / 1000;
+      if (payload.exp > Date.now() / 1000) {        
+        return true;
+      } else {
+        this.logout(); // token has expired so simulate logout
+        return false;
+      }      
     } else {
       return false;
     }
@@ -63,11 +72,20 @@ export class AuthService {
       var payload = JSON.parse(atob(token.split('.')[1]));
       return {
            user: {
+           /* payload in token is as follows:
+              payload: {
+                        "id": "5be5e40bfb6fc072d466dd09",
+                        "username": "TommyCat",
+                        "exp": 1551896725,
+                        "iat": 1546712725  // issued at time
+                       }
+           */            
            //  email : payload.email, -- email not in payload just username and id
            //  if you need to update payload the server code would need to be updated
            //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
            //  my node-express-realword repository.  I'm not sure if this is the only change needed
-              name : payload.username
+              name : payload.username,
+              id: payload.id
            }
       };
     }
@@ -82,7 +100,11 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => self.saveToken(res.user.token),       
+                res => {
+                          self.saveToken(res.user.token);
+                          // broadcast change in status
+                          self.loginStatus.next();
+                       },         
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -173,7 +195,11 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => self.saveToken(res.user.token),       
+                res => {
+                          self.saveToken(res.user.token);
+                          // broadcast change in status
+                          self.loginStatus.next();
+                       },        
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -182,6 +208,7 @@ export class AuthService {
   
   logout () {
       localStorage.removeItem("tob_id_token");
+      this.loginStatus.next();
   }
          
 }
