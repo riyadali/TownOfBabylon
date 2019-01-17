@@ -129,7 +129,7 @@
 </div>
 
 <!-- Add Event button row -->
-<div class="row text-right">
+<div [hidden]="!authService.isLoggedIn()" class="row text-right">
   <div class="col">
  <button mdbBtn type="button" 
     class="waves-light btn-md btn-primary pull-right myrounded"
