@@ -782,18 +782,16 @@ export class MyCalendarEditableComponent implements OnInit {
     else if (!end)
       return formatDate(start, 'shortTime', this.locale);
     else {
-      /*
-      let nextDay="";
+      let endTimeQualifier="";    
+      if (isSameDay(start,end)) {
+        // same day -- no special qualifier
+      } else if (isSameDay(addDays(start,1),end)) {
+          endTimeQualifier=" (Next day)";
+      } else {
+          endTimeQualifier=" (Across days)";
+      } 
 
-      if (start.getHours()<=end.getHours()) {
-        if (start.getMinutes()>end.getMinutes())
-          nextDay=" (Next Day)"
-      } else 
-        nextDay=" (Next Day)"
-
-      return formatDate(start, 'shortTime', this.locale) + " - " + formatDate(end, 'shortTime', this.locale) + nextDay;
-      */
-      return formatDate(start, 'shortTime', this.locale) + " - " + formatDate(end, 'shortTime', this.locale);
+      return formatDate(start, 'shortTime', this.locale) + " - " + formatDate(end, 'shortTime', this.locale) + endTimeQualifier;
     }
 
   }
