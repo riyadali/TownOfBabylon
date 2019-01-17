@@ -725,7 +725,7 @@ export class MyCalendarEditableComponent implements OnInit {
     events
   }: {
     date: Date;
-    events: Array<CalendarEvent<{ film: Film }>>;
+    events: Array<CalendarEvent<ExtraEventData>>;
   }): void {
     this.dateClicked=date;
     if (isSameMonth(date, this.vwDate)) {
