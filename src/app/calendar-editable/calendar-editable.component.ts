@@ -278,6 +278,7 @@ export class MyCalendarEditableComponent implements OnInit {
     }
   }
   
+  // set up first view in the sequence of modal views when adding a new event
   private addEvent() : void {
     this.handleEvent('Added', this.emptyTemplateEvent, "Add Event", this.editEventContent, "Next", "Cancel");
   }
@@ -383,10 +384,10 @@ export class MyCalendarEditableComponent implements OnInit {
         return false;
     } else if (this.curEvent.end&&
                 compareAsc(this.curEvent.start,this.curEvent.end)!==-1
-                // the or condition is for the case where the end datetime is after the start because of the "seconds" portion
+                // the and condition is for the case where the end datetime is after the start because of the "seconds" portion
                 // but in reality the two times are the same when least significant part of the time being
                 // considered is minutes
-                || (isSameDay(this.curEvent.start,this.curEvent.end)&&
+                && !(isSameDay(this.curEvent.start,this.curEvent.end)&&
                     isSameHour(this.curEvent.start,this.curEvent.end)&&
                     isSameMinute(this.curEvent.start,this.curEvent.end)) 
                 ) {
