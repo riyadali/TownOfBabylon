@@ -649,7 +649,7 @@ export class MyCalendarEditableComponent implements OnInit {
         }    
       } else { // not "Added" action
         if (this.curAction=="Cloned") {
-          this.curEvent.start=""; // clear start date for cloned event
+          this.curEvent.start=undefined; // clear start date for cloned event
         } else {
           this.curEvent.start=new Date(this.curEvent.start); // recast as date field
         }
