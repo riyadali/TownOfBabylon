@@ -523,6 +523,11 @@ export class MyCalendarEditableComponent implements OnInit {
       // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
       this.addColorScheme(this.customColorScheme); 
     }
+    // keep the events color field up to date
+    event.color = {
+                    primary: event.meta.colorScheme.primary,
+                    secondary: event.meta.colorScheme.secondary
+                  };
     let self=this;
     this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
@@ -557,6 +562,11 @@ export class MyCalendarEditableComponent implements OnInit {
       // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
       this.addColorScheme(this.customColorScheme); 
     }
+    // keep the events color field up to date
+    event.color = {
+                    primary: event.meta.colorScheme.primary,
+                    secondary: event.meta.colorScheme.secondary
+                  };
     let self=this;
     this.calEventService.addCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
@@ -623,7 +633,7 @@ export class MyCalendarEditableComponent implements OnInit {
       };
       
       if (event.meta.colorScheme) {
-        result.colorScheme=event.meta.colorScheme;       
+        result.color=event.meta.colorScheme;       
       }
       if (event.id)
         result.id=event.id; 
