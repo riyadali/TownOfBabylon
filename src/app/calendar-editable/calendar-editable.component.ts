@@ -441,8 +441,14 @@ export class MyCalendarEditableComponent implements OnInit {
       
       if (cevent.id)
         result.id=cevent.id;
-      if (cevent.color)
-        result.color=cevent.color;
+      if (cevent.color) {
+        //result.color=cevent.color;
+        result.color = {
+                         primary: cevent.color.primary,
+                         secondary: cevent.color.secondary
+                       };
+        result.meta.colorScheme=cevent.color.name;
+      }
       if (cevent.description)
         result.meta.description = cevent.description;
       if (cevent.location)
@@ -509,7 +515,12 @@ export class MyCalendarEditableComponent implements OnInit {
     
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
-      event.color=this.customColorScheme;      
+      //event.color=this.customColorScheme;
+      event.color = {
+                     primary: this.customColorScheme.primary,
+                     secondary: this.customColorScheme.secondary
+                    };
+      event.meta.colorScheme = this.customColorScheme.name;
       // Add the custom color scheme to the server
       // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
       this.addColorScheme(this.customColorScheme); 
@@ -614,9 +625,16 @@ export class MyCalendarEditableComponent implements OnInit {
     let result: CalEvent= {
         start: event.start,
         title: event.title,
-        color: event.color || this.sampleColorScheme
+        color: this.sampleColorScheme
       };
       
+      if (event.meta.colorScheme) {
+        result.color = {
+                        name: event.meta.colorScheme,
+                        primary: event.color.primary,
+                        secondary: event.color.secondary
+                       };
+      }
       if (event.id)
         result.id=event.id; 
       if (event.meta.description)
