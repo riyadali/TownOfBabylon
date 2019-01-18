@@ -143,7 +143,7 @@ export class MyCalendarEditableComponent implements OnInit {
 
   // An empty event used when adding a new event
   private emptyTemplateEvent: CalendarEvent<ExtraEventData> = { 
-                                                                start: "",
+                                                                start: undefined,
                                                                 title: "",
                                                                 meta: {} 
                                                               };
