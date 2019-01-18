@@ -48,6 +48,7 @@ interface ExtraEventData {
    contact?: string;
    link?: URL;
    cost?: string;
+   colorScheme?: string;
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -141,7 +142,11 @@ export class MyCalendarEditableComponent implements OnInit {
   private vwDate: Date = new Date();
 
   // An empty event used when adding a new event
-  private emptyTemplateEvent: CalendarEvent<ExtraEventData> = { meta:{} };
+  private emptyTemplateEvent: CalendarEvent<ExtraEventData> = { 
+                                                                start: "",
+                                                                title: "",
+                                                                meta: {} 
+                                                              };
   
   private curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
@@ -400,10 +405,12 @@ export class MyCalendarEditableComponent implements OnInit {
   }
 
   private formColorInputGroupValid() : boolean {
-    if (this.curEvent.color&&this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+    if (this.curEvent.meta.colorScheme&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+    //if (this.curEvent.color&&this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
         return false;
-    } else if ((!this.curEvent.color||!this.curEvent.color.name)&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
+    } else if ((!this.curEvent.meta.colorScheme)&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
+    //} else if ((!this.curEvent.color||!this.curEvent.color.name)&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
         return false;
     } else if (this.customColorScheme.name&&this.colorSchemes.some(x=>{
@@ -534,7 +541,13 @@ export class MyCalendarEditableComponent implements OnInit {
     
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
-      event.color=this.customColorScheme;      
+      //event.color = this.customColorScheme;
+      event.meta.colorScheme=this.customColorScheme.name,
+      event.color = {                      
+                      primary: this.customColorScheme.primary,
+                      secondary: this.customColorScheme.secondary
+                    }; 
+          
       // Add the custom color scheme to the server
       // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
       this.addColorScheme(this.customColorScheme); 
