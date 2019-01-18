@@ -10,8 +10,8 @@ export class CalEvent {
   color: ColorScheme;
   //actions: string[];
   resizable?: {
-        beforeStart: boolean;
-        afterEnd: boolean;
+        beforeStart?: boolean;
+        afterEnd?: boolean;
   };
   draggable?: boolean;
   location?: string;
