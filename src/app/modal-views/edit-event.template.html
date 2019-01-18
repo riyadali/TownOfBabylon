@@ -124,7 +124,7 @@
           <!-- from this site https://stackoverflow.com/questions/35945001/binding-select-element-to-object-in-angular
                 Also, may want to take a deeper look at this issue https://github.com/angular/angular/issues/13268
           --> 
-          <select [(ngModel)]="curEvent.color" [compareWith]="compareColorSchemes" name="selectedScheme" id="selectedScheme">
+          <select [(ngModel)]="curEvent.meta.colorScheme" [compareWith]="compareColorSchemes" name="selectedScheme" id="selectedScheme">
             <option *ngFor="let c of colorSchemes" [ngValue]="c">{{c.name}}</option>
           </select>
         </div>
