@@ -48,7 +48,7 @@ interface ExtraEventData {
    contact?: string;
    link?: URL;
    cost?: string;
-   colorScheme?: string;
+   colorScheme?: ColorScheme;
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -405,11 +405,11 @@ export class MyCalendarEditableComponent implements OnInit {
   }
 
   private formColorInputGroupValid() : boolean {
-    if (this.curEvent.meta.colorScheme&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
+    if (this.curEvent.meta.colorScheme&&this.curEvent.meta.colorScheme.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
     //if (this.curEvent.color&&this.curEvent.color.name&&this.customColorScheme.name&&this.customColorScheme.name.trim()!=="") {
         this.formError = "Choose an existing color scheme or specify a custom one, but not both";
         return false;
-    } else if ((!this.curEvent.meta.colorScheme)&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
+    } else if ((!this.curEvent.meta.colorScheme||!this.curEvent.meta.colorScheme.name)&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
     //} else if ((!this.curEvent.color||!this.curEvent.color.name)&&(!this.customColorScheme.name||this.customColorScheme.name.trim()=="")) {
         this.formError = "A color scheme is required. Choose an existing color scheme or specify a custom one";
         return false;
@@ -442,12 +442,14 @@ export class MyCalendarEditableComponent implements OnInit {
       if (cevent.id)
         result.id=cevent.id;
       if (cevent.color) {
-        //result.color=cevent.color;
+        //result.color=cevent.color;       
+        result.meta.colorScheme=cevent.color;
+        // set result.color so that he calendar utility works
+        // note: this information is duplicated in result.meta.colorScheme which is set for the UI
         result.color = {
                          primary: cevent.color.primary,
                          secondary: cevent.color.secondary
                        };
-        result.meta.colorScheme=cevent.color.name;
       }
       if (cevent.description)
         result.meta.description = cevent.description;
@@ -515,12 +517,8 @@ export class MyCalendarEditableComponent implements OnInit {
     
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
-      //event.color=this.customColorScheme;
-      event.color = {
-                     primary: this.customColorScheme.primary,
-                     secondary: this.customColorScheme.secondary
-                    };
-      event.meta.colorScheme = this.customColorScheme.name;
+      //event.color=this.customColorScheme;      
+      event.meta.colorScheme = this.customColorScheme;
       // Add the custom color scheme to the server
       // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
       this.addColorScheme(this.customColorScheme); 
@@ -553,12 +551,8 @@ export class MyCalendarEditableComponent implements OnInit {
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
       //event.color = this.customColorScheme;
-      event.meta.colorScheme=this.customColorScheme.name,
-      event.color = {                      
-                      primary: this.customColorScheme.primary,
-                      secondary: this.customColorScheme.secondary
-                    }; 
-          
+      event.meta.colorScheme=this.customColorScheme,
+      
       // Add the custom color scheme to the server
       // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
       this.addColorScheme(this.customColorScheme); 
@@ -629,11 +623,7 @@ export class MyCalendarEditableComponent implements OnInit {
       };
       
       if (event.meta.colorScheme) {
-        result.color = {
-                        name: event.meta.colorScheme,
-                        primary: event.color.primary,
-                        secondary: event.color.secondary
-                       };
+        result.colorScheme=event.meta.colorScheme;       
       }
       if (event.id)
         result.id=event.id; 
