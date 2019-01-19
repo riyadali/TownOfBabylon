@@ -1,6 +1,7 @@
 import { ColorScheme } from './ColorScheme';
 
 export class CalEvent {
+
   id?: string | number;
   title: string;
   description?: string;

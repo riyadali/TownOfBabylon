@@ -147,6 +147,7 @@ export class MyCalendarEditableComponent implements OnInit {
                                                                 title: "",
                                                                 meta: {} 
                                                               };
+
   
   private curEvent: CalendarEvent<ExtraEventData>; // currently selected event
   //events$: Observable<Array<CalendarEvent<ExtraEventData>>>;
@@ -517,6 +518,7 @@ export class MyCalendarEditableComponent implements OnInit {
     
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
+
       //event.color=this.customColorScheme;      
       event.meta.colorScheme = this.customColorScheme;
       // Add the custom color scheme to the server
@@ -556,8 +558,7 @@ export class MyCalendarEditableComponent implements OnInit {
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
       //event.color = this.customColorScheme;
-      event.meta.colorScheme=this.customColorScheme,
-      
+      event.meta.colorScheme=this.customColorScheme,  
       // Add the custom color scheme to the server
       // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
       this.addColorScheme(this.customColorScheme); 
