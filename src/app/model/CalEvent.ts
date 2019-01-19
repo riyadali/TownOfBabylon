@@ -1,7 +1,8 @@
 import { ColorScheme } from './ColorScheme';
 
 export class CalEvent {
-  id?: number;
+
+  id?: string | number;
   title: string;
   description?: string;
   start: Date;
@@ -10,8 +11,8 @@ export class CalEvent {
   color: ColorScheme;
   //actions: string[];
   resizable?: {
-        beforeStart: boolean;
-        afterEnd: boolean;
+        beforeStart?: boolean;
+        afterEnd?: boolean;
   };
   draggable?: boolean;
   location?: string;

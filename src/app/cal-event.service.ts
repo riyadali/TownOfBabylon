@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap, shareReplay } from 'rxjs/operators';
 
 //import { CalendarEvent } from 'angular-calendar';
-import { CalEvent } from './model/calEvent';
+import { CalEvent } from './model/CalEvent';
 import { ColorScheme } from './model/ColorScheme';
 import { MessageService } from './message.service';
 
