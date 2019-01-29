@@ -2,6 +2,7 @@
 
 // refer to this link for code -- https://github.com/angular/in-memory-web-api/blob/master/src/app/hero-in-mem-data-override.service.ts
 import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { ParsedRequestUrl, RequestInfo, RequestInfoUtilities, ResponseOptions } from 'angular-in-memory-web-api';
 
 import { ColorScheme } from './model/ColorScheme';
 
@@ -16,6 +17,43 @@ import {
 
 
 export class InMemoryDataService implements InMemoryDbService {
+  
+  // from site https://github.com/angular/in-memory-web-api/blob/master/src/app/hero-in-mem-data-override.service.ts
+  // intercept ResponseOptions from default HTTP method handlers
+  // add a response header and report interception to console.log
+  // -- change name by removing my and you should get hte reponse logged
+  myresponseInterceptor(resOptions: ResponseOptions, reqInfo: RequestInfo) {
+
+   // resOptions.headers = resOptions.headers.set('x-test', 'test-header');
+    const method = reqInfo.method.toUpperCase();
+    const body = JSON.stringify(resOptions);
+    console.log(`responseInterceptor: ${method} ${reqInfo.req.url}: \n${body}`);
+
+    return resOptions;
+  }
+  
+  // parseRequestUrl override
+  // Do this to manipulate the request URL or the parsed result
+  // into something your data store can handle.
+  // This example turns a request for `/foo/heroes` into just `/heroes`.
+  // It leaves other URLs untouched and forwards to the default parser.
+  // It also logs the result of the default parser.
+  exampleParseRequestUrl(url: string, utils: RequestInfoUtilities): ParsedRequestUrl {
+    const newUrl = url.replace(/\/foo\/heroes/, '/heroes');
+    // console.log('newUrl', newUrl);
+    const parsed = utils.parseRequestUrl(newUrl);
+    console.log(`parseRequestUrl override of '${url}':`, parsed);
+    return parsed;
+  }
+  
+  // override request for colorschemes?owner=xxxx with colorschemes?owner=4
+  parseRequestUrl(url: string, utils: RequestInfoUtilities): ParsedRequestUrl {
+    const newUrl = url.replace(/colorSchemes\?owner=[0-9A-F]+/, '/colorSchemes?owner=2');
+    // console.log('newUrl', newUrl);
+    const parsed = utils.parseRequestUrl(newUrl);
+    console.log(`parseRequestUrl override of '${url}':`, parsed);
+    return parsed;
+  }
  
   // Some default color schemes
   redColorScheme : ColorScheme = {
@@ -51,7 +89,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // TommyCat colorscheme
   TommyColorScheme : ColorScheme = {
       id: 5,
-      owner: 0x5be5e40bfb6fc072d466dd09,
+      owner: 2,
       name: 'TommyCat',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
