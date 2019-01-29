@@ -1,3 +1,6 @@
+// refer to this link for detailed instructions on usage -- http://www.istruction.nl/blog/2018/1/26/using-the-angular-inmemorywebapi
+
+// refer to this link for code -- https://github.com/angular/in-memory-web-api/blob/master/src/app/hero-in-mem-data-override.service.ts
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 
 import { ColorScheme } from './model/ColorScheme';
