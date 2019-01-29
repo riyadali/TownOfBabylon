@@ -143,9 +143,10 @@ export class CalEventService {
   }
   
   /** GET color schemes from the server */
-  getColorSchemes (): Observable<ColorScheme[]> {
+  getColorSchemes (user?: number|string): Observable<ColorScheme[]> {
     let self=this;
-    return this.http.get<ColorScheme[]>(this.colorSchemesUrl)
+    let queryParms="";
+    return this.http.get<ColorScheme[]>(this.colorSchemesUrl+queryParms)
       .pipe<null,ColorScheme[]>(
         //map<ColorScheme[],ColorScheme[]>(colorSchemes => colorSchemes.map(x=>self.createColorScheme(x))),
        // tap(calEvents => this.log(`fetched calendar events`)),
