@@ -143,6 +143,11 @@ export class CalEventService {
   }
   
   /** GET color schemes from the server */
+  
+  /* The userid of current user is passed as an optional parameter.  When
+     set the default color schemes (i.e. those with no owners) along with
+     any colorschemes owned by the passed user is returned.  When user is
+     not set, all colorschemes are returned irrespective of owner */
   getColorSchemes (user?: number|string): Observable<ColorScheme[]> {
     let self=this;
     let queryParms="";
