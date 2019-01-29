@@ -488,8 +488,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   private addColorScheme(colorScheme: ColorScheme) : void {
-    let self=this;
-    colorScheme.owner=this.authService.currentUser().user.id; // associate an owner with color scheme 
+    let self=this;    
     this.calEventService.addColorScheme(colorScheme)
       // make color scheme available as a selectable option on the view by pushing it to the colorSchemes array
       .subscribe(colorScheme => self.colorSchemes.push(colorScheme));
@@ -498,7 +497,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private getColorSchemes(): void {
     let self=this;
     let myId=this.authService.isLoggedIn() ? this.authService.currentUser().user.id : null;
-    this.calEventService.getColorSchemes()
+    this.calEventService.getColorSchemes(myId)
     .subscribe(colorSchemes => {
                                   self.colorSchemes = colorSchemes.filter(x=>{                                    
                                       return typeof x.owner === 'undefined' || (x.owner == myId);
