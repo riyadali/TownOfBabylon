@@ -152,7 +152,7 @@ export class CalEventService {
     let self=this;
     let queryParms="";
     if (user) {
-      queryParms="/?owner="+user;      
+      queryParms="?owner="+user;      
     }
     return this.http.get<ColorScheme[]>(this.colorSchemesUrl+queryParms)
       .pipe<null,ColorScheme[]>(
