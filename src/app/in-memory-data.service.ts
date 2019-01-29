@@ -48,7 +48,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // TommyCat colorscheme
   TommyColorScheme : ColorScheme = {
       id: 5,
-      owner: 5be5e40bfb6fc072d466dd09,
+      owner: '5be5e40bfb6fc072d466dd09',
       name: 'TommyCat',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
@@ -57,7 +57,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // Tom2 colorscheme
   Tom2SomeCatColorScheme : ColorScheme = {
       id: 6,
-      owner: 5beb31df5ca37814009938b7,
+      owner: '5beb31df5ca37814009938b7',
       name: 'Tom2SomeCat',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
@@ -66,7 +66,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // Tom3 colorscheme
   Tom3SomeCat2ColorScheme : ColorScheme = {
       id: 7,
-      owner: 5beb360f5ca37814009938bb,
+      owner: '5beb360f5ca37814009938bb',
       name: 'Tom3SomeCat2',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
@@ -165,7 +165,10 @@ Lindenhurst, NY 11757`,
     this.redColorScheme,
     this.blueColorScheme,
     this.yellowColorScheme,
-    this.bogusColorScheme
+    this.bogusColorScheme,
+    this.TommyColorScheme,
+    this.Tom2SomeCatColorScheme,
+    this.Tom3SomeCat2ColorScheme
   ];
   return {transactions, heroes, calEvents, colorSchemes
    /*searchusers: {
