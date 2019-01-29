@@ -44,6 +44,34 @@ export class InMemoryDataService implements InMemoryDbService {
       primary: '#1e90ff',
       secondary: '#D1E8FF'
   };
+  
+  // TommyCat colorscheme
+  TommyColorScheme : ColorScheme = {
+      id: 5,
+      owner: 5be5e40bfb6fc072d466dd09,
+      name: 'TommyCat',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+  
+  // Tom2 colorscheme
+  Tom2SomeCatColorScheme : ColorScheme = {
+      id: 6,
+      owner: 5beb31df5ca37814009938b7,
+      name: 'Tom2SomeCat',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+  
+  // Tom3 colorscheme
+  Tom3SomeCat2ColorScheme : ColorScheme = {
+      id: 7,
+      owner: 5beb360f5ca37814009938bb,
+      name: 'Tom3SomeCat2',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+    
  
   // Overrides the genId method to ensure that an event always has an id.
   // If the events array is empty,
@@ -51,7 +79,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // if the events array is not empty, the method below returns the highest
   // events id + 1.
   genId(calEvents: any[]): number {
-    return calEvents.length > 0 ? Math.max(...calEvents.map(calEvent => calEvent.id)) + 1 : 5;
+    return calEvents.length > 0 ? Math.max(...calEvents.map(calEvent => calEvent.id)) + 1 : 8;
   }
     
  createDb() {
