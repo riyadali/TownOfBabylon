@@ -48,11 +48,14 @@ export class InMemoryDataService implements InMemoryDbService {
   
   // override request for colorschemes?owner=xxxx with colorschemes?owner=4
   parseRequestUrl(url: string, utils: RequestInfoUtilities): ParsedRequestUrl {
-    const newUrl = url.replace(/colorSchemes\?owner=[0-9A-F]+/, '/colorSchemes?owner=2');
-    // console.log('newUrl', newUrl);
-    const parsed = utils.parseRequestUrl(newUrl);
-    console.log(`parseRequestUrl override of '${url}':`, parsed);
-    return parsed;
+    if (url.startsWith("api/colorSchemes?owner=")) {
+      //const newUrl = url.replace(/colorSchemes\?owner=[0-9A-F]+/, '/colorSchemes?owner=2');
+      const newUrl="colorSchemes?owner=2";
+      // console.log('newUrl', newUrl);
+      const parsed = utils.parseRequestUrl(newUrl);
+      console.log(`parseRequestUrl override of '${url}':`, parsed);
+      return parsed;
+    }
   }
  
   // Some default color schemes
