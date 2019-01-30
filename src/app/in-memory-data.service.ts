@@ -50,7 +50,9 @@ export class InMemoryDataService implements InMemoryDbService {
   parseRequestUrl(url: string, utils: RequestInfoUtilities): ParsedRequestUrl {
     if (url.startsWith("api/colorSchemes?owner=")) {
       //const newUrl = url.replace(/colorSchemes\?owner=[0-9A-F]+/, '/colorSchemes?owner=2');
-      const newUrl="colorSchemes?owner=2";
+       // note tommycats id is translated to 2.844105682702434e+28
+      // not sure how you get it to be tried and compared as a hex string but for now this should work
+      const newUrl="api/colorSchemes?owner=^undefined|^2.8441";
       // console.log('newUrl', newUrl);
       const parsed = utils.parseRequestUrl(newUrl);
       console.log(`parseRequestUrl override of '${url}':`, parsed);
@@ -92,7 +94,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // TommyCat colorscheme
   TommyColorScheme : ColorScheme = {
       id: 5,
-      owner: 2,
+      owner: 0x5be5e40bfb6fc072d466dd09,
       name: 'TommyCat',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
