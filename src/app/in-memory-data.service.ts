@@ -92,7 +92,7 @@ export class InMemoryDataService implements InMemoryDbService {
   };
   
   // TommyCat colorscheme
-  TommyColorScheme : ColorScheme = {
+  TommyColorScheme = {
       id: 5,
       owner: 0x5be5e40bfb6fc072d466dd09,
       name: 'TommyCat',
@@ -101,7 +101,7 @@ export class InMemoryDataService implements InMemoryDbService {
   };
   
   // Tom2 colorscheme
-  Tom2SomeCatColorScheme : ColorScheme = {
+  Tom2SomeCatColorScheme = {
       id: 6,
       owner: 0x5beb31df5ca37814009938b7,
       name: 'Tom2SomeCat',
@@ -110,7 +110,7 @@ export class InMemoryDataService implements InMemoryDbService {
   };
   
   // Tom3 colorscheme
-  Tom3SomeCat2ColorScheme : ColorScheme = {
+  Tom3SomeCat2ColorScheme = {
       id: 7,
       owner: 0x5beb360f5ca37814009938bb,
       name: 'Tom3SomeCat2',
@@ -207,7 +207,7 @@ Lindenhurst, NY 11757`,
       draggable: true
     }
   ];
-  let colorSchemes: ColorScheme[] = [
+  let colorSchemes = [
     this.redColorScheme,
     this.blueColorScheme,
     this.yellowColorScheme,
