@@ -23,44 +23,51 @@ export class CalEventService {
     private http: HttpClient,
     private messageService: MessageService) { }
   
-  private createCalendarEvent(cevent : CalEvent) : CalEvent {
+  private createCalendarEvent(parsedEvent : any) : CalEvent {
        let result : CalEvent = {
-             id: cevent.id,
-             title: cevent.title,
-             start: new Date(cevent.start),
-             color: cevent.color,
-             //actions: cevent.actions             
+             id: parsedEvent.id,
+             title: parsedEvent.title,
+             slug: parsedEvent.slug,
+             start: new Date(parsedEvent.start),
+             color: {
+                      id: parsedEvent.color.id,
+                      name: parsedEvent.color.name,
+                      slug: parsedEvent.color.slug,
+                      primary: parsedEvent.color.primary,
+                      secondary: parsedEvent.color.secondary
+                    }
+             //actions: parsedEvent.actions             
             };
     
-        if (cevent.description)
-          result.description=cevent.description;
-        if (cevent.location)
-          result.location = cevent.location;
-        if (cevent.address)
-          result.address = cevent.address;
-        if (cevent.contact)
-          result.contact = cevent.contact;
-        if (cevent.cost)
-          result.cost = cevent.cost;
-        if (cevent.link)
-          result.link = cevent.link;
-        if (cevent.draggable) 
-          result.draggable = cevent.draggable;
-        if (cevent.resizable) 
-          result.resizable = cevent.resizable;
-        if (cevent.allDay) 
-          result.allDay = cevent.allDay;
-        if (cevent.end) 
-          result.end = new Date(cevent.end);
+        if (parsedEvent.description)
+          result.description=parsedEvent.description;
+        if (parsedEvent.location)
+          result.location = parsedEvent.location;
+        if (parsedEvent.address)
+          result.address = parsedEvent.address;
+        if (parsedEvent.contact)
+          result.contact = parsedEvent.contact;
+        if (parsedEvent.cost)
+          result.cost = parsedEvent.cost;
+        if (parsedEvent.link)
+          result.link = parsedEvent.link;
+        if (parsedEvent.draggable) 
+          result.draggable = parsedEvent.draggable;
+        if (parsedEvent.resizable) 
+          result.resizable = parsedEvent.resizable;
+        if (parsedEvent.allDay) 
+          result.allDay = parsedEvent.allDay;
+        if (parsedEvent.end) 
+          result.end = new Date(parsedEvent.end);
       return result;  
   }
 
   /** GET calendar events from the server */
   getCalendarEvents (): Observable<CalEvent[]> {
     let self=this;
-    return this.http.get<CalEvent[]>(this.calEventsUrl)
+    return this.http.get<any[]>(this.calEventsUrl)
       .pipe(
-        map<CalEvent[],CalEvent[]>(calEvents => calEvents.map(x=>self.createCalendarEvent(x))),
+        map<any[],CalEvent[]>(parsedEvents => parsedEvents.map(x=>self.createCalendarEvent(x))),
        // tap(calEvents => this.log(`fetched calendar events`)),
         catchError(this.handleError('getCalendarEvents', []))
       );
@@ -123,7 +130,7 @@ export class CalEventService {
   }
 
   /** PUT: update the calendar event on the server */  
-  updateCalendarEvent (calEvent: CalEvent): Observable<any> {
+  updateCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
      // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple PUT requests due to multiple subscriptions.
       let self=this; 
@@ -136,7 +143,7 @@ export class CalEventService {
                // res => self.saveEvent(res), 
                //  res => console.log("Calendar Event saved..."),
                 _ => {},                                
-                error => self.handleError<any>('updateCalendarEvent')
+                error => self.handleError<CalEvent>('updateCalendarEvent')
               ),
            shareReplay<CalEvent>()
         );   
@@ -162,7 +169,7 @@ export class CalEventService {
                // res => self.saveEvent(res), 
                //  res => console.log("Calendar Event saved..."),
                 _ => {},     
-                error => self.handleError<any>('getColorSchemes')
+                error => self.handleError<ColorScheme>('getColorSchemes')
               ),
            shareReplay<ColorScheme[]>()
       );
@@ -172,7 +179,18 @@ export class CalEventService {
   addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
     return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
       //tap((colorScheme: ColorScheme) => this.log(`added color Scheme w/ name=${colorScheme.name}`)),
-      catchError(this.handleError<any>('addColorScheme'))
+      catchError(this.handleError<ColorScheme>('addColorScheme'))
+    );
+  }
+  
+  /** DELETE: delete the color scheme from the server */
+  deleteColorScheme (colorScheme: ColorScheme | number): Observable<ColorScheme> {
+    const id = typeof colorScheme === 'number' ? ColorScheme : colorScheme.id;
+    const url = `${this.colorSchemesUrl}/${id}`;
+
+    return this.http.delete<ColorScheme>(url, httpOptions).pipe(
+      tap(_ => this.log(`deleted ccolor scheme id=${id}`)),
+      catchError(this.handleError<ColorScheme>('deleteColorScheme'))
     );
   }
 
