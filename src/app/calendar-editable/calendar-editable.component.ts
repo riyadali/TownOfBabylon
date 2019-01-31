@@ -638,6 +638,8 @@ export class MyCalendarEditableComponent implements OnInit {
       }
       if (event.id)
         result.id=event.id; 
+      if (event.meta.slug)
+        result.slug=event.meta.slug;
       if (event.meta.description)
         result.description=event.meta.description;
       if (event.meta.location)
