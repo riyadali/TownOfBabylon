@@ -15,6 +15,11 @@ const httpOptions = {
 
 import {apiURL} from './config';
 
+interface GetEventsResponse {
+   calendarEvents: CalEvent[];
+   calendarEventsCount: number
+}
+
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
@@ -67,11 +72,14 @@ export class CalEventService {
   /** GET calendar events from the server */
   getCalendarEvents (): Observable<CalEvent[]> {
     let self=this;
-    return this.http.get<any[]>(this.calEventsUrl)
+    return this.http.get<GetEventsResponse>(this.calEventsUrl)
       .pipe(
-        map<any[],CalEvent[]>(parsedEvents => parsedEvents.map(x=>self.createCalendarEvent(x))),
+        map<GetEventsResponse,CalEvent[]>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+          return response.calendarEvents.map(x=>self.createCalendarEvent(x))
+        }),
        // tap(calEvents => this.log(`fetched calendar events`)),
-        catchError(this.handleError('getCalendarEvents', []))
+        catchError(this.handleError<CalEvent[]>('getCalendarEvents', []))
       );
   }
 
