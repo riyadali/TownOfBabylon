@@ -49,6 +49,7 @@ interface ExtraEventData {
    link?: URL;
    cost?: string;
    colorScheme?: ColorScheme;
+   slug?: string;
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -452,6 +453,8 @@ export class MyCalendarEditableComponent implements OnInit {
                          secondary: cevent.color.secondary
                        };
       }
+      if (cevent.slug)
+        result.meta.slug = cevent.slug;
       if (cevent.description)
         result.meta.description = cevent.description;
       if (cevent.location)
