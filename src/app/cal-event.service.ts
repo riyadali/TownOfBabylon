@@ -13,11 +13,13 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
+import {apiURL} from './config';
+
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
-  private calEventsUrl = 'api/calEvents';  // URL to web api
-  private colorSchemesUrl = 'api/colorSchemes';  // URL to web api
+  private calEventsUrl = apiURL+'/calEvents';  // URL to web api
+  private colorSchemesUrl = apiURL+'/colorSchemes';  // URL to web api
 
   constructor(
     private http: HttpClient,
