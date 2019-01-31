@@ -20,6 +20,11 @@ interface GetEventsResponse {
    calendarEventsCount: number
 }
 
+interface GetColorsResponse {
+   colorSchemes: ColorScheme[];
+   colorSchemesCount: number
+}
+
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
@@ -171,17 +176,14 @@ export class CalEventService {
     if (user) {
       queryParms="?owner="+user;      
     }
-    return this.http.get<ColorScheme[]>(this.colorSchemesUrl+queryParms)
-      .pipe<null,ColorScheme[]>(
-        //map<ColorScheme[],ColorScheme[]>(colorSchemes => colorSchemes.map(x=>self.createColorScheme(x))),
-       // tap(calEvents => this.log(`fetched calendar events`)),
-        tap<null>( // Log the result or error
-               // res => self.saveEvent(res), 
-               //  res => console.log("Calendar Event saved..."),
-                _ => {},     
-                error => self.handleError<ColorScheme>('getColorSchemes')
-              ),
-           shareReplay<ColorScheme[]>()
+    return this.http.get<GetColorsResponse>(this.colorSchemesUrl+queryParms)
+      .pipe(        
+        map<GetColorsResponse,ColorScheme[]>(response => { 
+            // console.log("response..."+JSON.stringify(response))
+            return response.colorSchemes;
+        }),
+        // tap(colorSchemes => this.log(`fetched color Schemes`)),
+        catchError(this.handleError<ColorScheme[]>('getCalendarEvents', []))       
       );
   }
   
@@ -195,7 +197,7 @@ export class CalEventService {
   
   /** DELETE: delete the color scheme from the server */
   deleteColorScheme (colorScheme: ColorScheme | number): Observable<ColorScheme> {
-    const id = typeof colorScheme === 'number' ? ColorScheme : colorScheme.id;
+    const id = typeof colorScheme === 'number' ? colorScheme : colorScheme.id;
     const url = `${this.colorSchemesUrl}/${id}`;
 
     return this.http.delete<ColorScheme>(url, httpOptions).pipe(
