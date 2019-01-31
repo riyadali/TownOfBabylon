@@ -150,7 +150,7 @@ export class CalEventService {
      // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple PUT requests due to multiple subscriptions.
       let self=this; 
-      return this.http.put<CalEvent>(this.calEventsUrl+"/"+calEvent.slug, calEvent) 
+      return this.http.put<CalEvent>(this.calEventsUrl+"/"+calEvent.slug, {calendarEvent: calEvent}) 
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<null,CalEvent>(
