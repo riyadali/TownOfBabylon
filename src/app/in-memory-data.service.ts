@@ -83,7 +83,7 @@ export class InMemoryDataService implements InMemoryDbService {
   };
   
   // Should never see this since it has an owner field
-  bogusColorScheme : ColorScheme = {
+  bogusColorScheme = {
       id: 4,
       owner: 0,
       name: 'Bogus',
@@ -216,8 +216,9 @@ Lindenhurst, NY 11757`,
     this.Tom2SomeCatColorScheme,
     this.Tom3SomeCat2ColorScheme
   ];
-  return {transactions, heroes, calEvents, colorSchemes
-   /*searchusers: {
+  return {transactions, heroes 
+   /*calEvents, colorSchemes,
+     searchusers: {
       total: searchusers.length,
       results: searchusers
     }*/};
