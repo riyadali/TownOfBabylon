@@ -436,7 +436,7 @@ export class MyCalendarEditableComponent implements OnInit {
         title: cevent.title,
         meta: {}
       };
-      if (this.authService.isLoggedIn()) {
+      if if (this.authService.isLoggedIn()&&cevent.owner==this.authService.currentUser().user.id) {
         result.actions=this.actionsLoggedIn;
       }     
       
