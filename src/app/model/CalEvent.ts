@@ -21,6 +21,7 @@ export class CalEvent {
   contact?: string;
   link?: URL;
   cost?: string;
+  owner?: number;
 }
 
 
