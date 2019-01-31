@@ -41,6 +41,7 @@ export class CalEventService {
              title: parsedEvent.title,
              slug: parsedEvent.slug,
              start: new Date(parsedEvent.start),
+             owner: parsedEvent.owner.id,
              color: {
                       id: parsedEvent.color.id,
                       name: parsedEvent.color.name,
