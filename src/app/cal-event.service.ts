@@ -28,8 +28,8 @@ interface GetColorsResponse {
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
-  private calEventsUrl = apiURL+'/calEvents';  // URL to web api
-  private colorSchemesUrl = apiURL+'/colorSchemes';  // URL to web api
+  private calEventsUrl = apiURL+'calEvents';  // URL to web api
+  private colorSchemesUrl = apiURL+'colorSchemes';  // URL to web api
 
   constructor(
     private http: HttpClient,
