@@ -184,7 +184,7 @@ export class CalEventService {
             return response.colorSchemes;
         }),
         // tap(colorSchemes => this.log(`fetched color Schemes`)),
-        catchError(this.handleError<ColorScheme[]>('getCalendarEvents', []))       
+        catchError(this.handleError<ColorScheme[]>('getColorSchemes', []))       
       );
   }
   
