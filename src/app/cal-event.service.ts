@@ -39,6 +39,10 @@ interface GetColorsResponse {
    colorSchemesCount: number
 }
 
+interface PostColorResponse {
+   colorScheme: ColorScheme   
+}
+
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
@@ -214,9 +218,13 @@ export class CalEventService {
   
    /** POST: add a new color scheme to the server */
   addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
-    return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
+    return this.http.post<PostColorResponse>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
+      map<PostColorResponse,ColorScheme>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+          return response.colorScheme;
+        }), 
       //tap((colorScheme: ColorScheme) => this.log(`added color Scheme w/ name=${colorScheme.name}`)),
-      catchError(this.handleError<ColorScheme>('addColorScheme'))
+      catchError(this.handleError<ColorScheme>('addColorScheme', dummyColorScheme))
     );
   }
   
