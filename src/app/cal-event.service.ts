@@ -226,7 +226,7 @@ export class CalEventService {
   
    /** POST: add a new color scheme to the server */
   addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
-    return this.http.post<PostColorResponse>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
+    return this.http.post<PostColorResponse>(this.colorSchemesUrl, {colorScheme: colScheme}, httpOptions).pipe(
       map<PostColorResponse,ColorScheme>(response => { 
           // console.log("response..."+JSON.stringify(response))
           return response.colorScheme;
