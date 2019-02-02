@@ -15,14 +15,16 @@ const httpOptions = {
 
 import {apiURL} from './config';
 
+const dummyColorScheme : ColorScheme = {
+      name: '',
+      primary: '#ff7d04',
+      secondary: '#ffcf9b'      
+    }
+
 const dummyEvent : CalEvent = {
       title: '',
       start: new Date(),
-      color: {
-        name: '',
-        primary: '#ff7d04',
-        secondary: '#ffcf9b'
-      }
+      color: dummyColorScheme
     }
 
 interface GetEventsResponse {
@@ -31,6 +33,10 @@ interface GetEventsResponse {
 }
 
 interface PostEventResponse {
+   calendarEvent: CalEvent   
+}
+
+interface PutEventResponse {
    calendarEvent: CalEvent   
 }
 
@@ -178,18 +184,20 @@ export class CalEventService {
      // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple PUT requests due to multiple subscriptions.
       let self=this; 
-      return this.http.put<CalEvent>(this.calEventsUrl+"/"+calEvent.slug, {calendarEvent: calEvent}) 
+      return this.http.put<PutEventResponse>(this.calEventsUrl+"/"+calEvent.slug, {calendarEvent: calEvent}) 
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
-        .pipe<null,CalEvent>(
-           // Put returns null response
-           tap<null>( // Log the result or error
+       .pipe(
+            map<PutEventResponse,CalEvent>(response => { 
+            // console.log("response..."+JSON.stringify(response))
+            return response.calendarEvent;
+            }),
+           tap<CalEvent>( // Log the result or error
                // res => self.saveEvent(res), 
                //  res => console.log("Calendar Event saved..."),
                 _ => {},                                
-                error => self.handleError<CalEvent>('updateCalendarEvent')
-              ),
-           shareReplay<CalEvent>()
+                error => self.handleError<CalEvent>('updateCalendarEvent', dummyEvent)
+              )
         );   
   }
   
