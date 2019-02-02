@@ -15,9 +15,23 @@ const httpOptions = {
 
 import {apiURL} from './config';
 
+const dummyEvent : CalEvent = {
+      title: '',
+      start: new Date(),
+      color: {
+        name: '',
+        primary: '#ff7d04',
+        secondary: '#ffcf9b'
+      }
+    }
+
 interface GetEventsResponse {
    calendarEvents: CalEvent[];
    calendarEventsCount: number
+}
+
+interface PostEventResponse {
+   calendarEvent: CalEvent   
 }
 
 interface GetColorsResponse {
@@ -128,19 +142,23 @@ export class CalEventService {
   
   /** POST: add a new calendar event to the server */
   addCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
-    return this.http.post<CalEvent>(this.calEventsUrl, {calendarEvent : calEvent}, httpOptions).pipe(
+    return this.http.post<PostEventResponse>(this.calEventsUrl, {calendarEvent : calEvent}, httpOptions).pipe(
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+          return response.calendarEvent;
+        }), 
       tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
-      catchError(this.handleError<CalEvent>('addCalendarEvent'))
+      catchError(this.handleError<CalEvent>('addCalendarEvent',dummyEvent))
     );
   }
 
   /** DELETE: delete the calendar event from the server */
-  deleteCalendarEvent (calEvent: CalEvent | number): Observable<CalEvent> {
-    const id = typeof calEvent === 'number' ? calEvent : calEvent.id;
-    const url = `${this.calEventsUrl}/${id}`;
+  deleteCalendarEvent (calEvent: CalEvent | string): Observable<CalEvent> {
+    const slug = typeof calEvent === 'string' ? calEvent : calEvent.slug;
+    const url = `${this.calEventsUrl}/${slug}`;
 
     return this.http.delete<CalEvent>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted calendar event id=${id}`)),
+      tap(_ => this.log(`deleted calendar event slug=${slug}`)),
       catchError(this.handleError<CalEvent>('deleteCalendarEvent'))
     );
   }
@@ -202,7 +220,7 @@ export class CalEventService {
     const url = `${this.colorSchemesUrl}/${id}`;
 
     return this.http.delete<ColorScheme>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted ccolor scheme id=${id}`)),
+      tap(_ => this.log(`deleted color scheme id=${id}`)),
       catchError(this.handleError<ColorScheme>('deleteColorScheme'))
     );
   }
