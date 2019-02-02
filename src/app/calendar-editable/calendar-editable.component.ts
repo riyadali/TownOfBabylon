@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+// not sure about the import below for map ... but I needed to add it to get the map in processColorScheme to work
 import 'rxjs/add/operator/map';
 
 import { CalEvent } from '../model/CalEvent';
