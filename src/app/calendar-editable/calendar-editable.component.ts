@@ -613,12 +613,14 @@ export class MyCalendarEditableComponent implements OnInit {
     let self=this;
     this.calEventService.deleteCalendarEvent(this.transformToCalEvent(event))
     .subscribe({
-                  next() { /*console.log('data: ', x);*/                             
+                  next(x) { //console.log(x)
+                            if(x&&x.slug) {  // ensure no errors -- the deleted event is returned on success                           
                             
-                            // update the events array so that it reflects the latest info 
-                            // since the views are dependent on this array
-                            self.events$ = self.events$.filter(e => e.id !== event.id);                           
-                            self.refresh.next();
+                              // update the events array so that it reflects the latest info 
+                              // since the views are dependent on this array
+                              self.events$ = self.events$.filter(e => e.id !== event.id);                           
+                              self.refresh.next();
+                            }
                   },
                   error(err) { self.formError = err.message;
                                 console.log('Some error '+err.message); 
