@@ -158,8 +158,14 @@ export class CalEventService {
     const url = `${this.calEventsUrl}/${slug}`;
 
     return this.http.delete<CalEvent>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted calendar event slug=${slug}`)),
-      catchError(this.handleError<CalEvent>('deleteCalendarEvent'))
+      // not good post return empty response... so just return the input o caller to indicate all was well
+      map<CalEvent,CalEvent>(nullresponse => { 
+          // console.log("response..."+JSON.stringify(response))
+          // return event that was passed in or dummyEvent with slug set if input (calEvent) was a string
+          return typeof calEvent === 'string' ? {...dummyEvent, slug: calEvent} : calEvent;
+        }), 
+     // tap(_ => this.log(`deleted calendar event slug=${slug}`)),
+      catchError(this.handleError<CalEvent>('deleteCalendarEvent', dummyEvent))
     );
   }
 
