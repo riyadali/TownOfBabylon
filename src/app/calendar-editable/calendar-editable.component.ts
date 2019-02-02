@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import 'rxjs/add/operator/map';
 
 import { CalEvent } from '../model/CalEvent';
 import { CalEventService } from '../cal-event.service';
@@ -513,26 +514,44 @@ export class MyCalendarEditableComponent implements OnInit {
     .subscribe(calEvents => self.events$ = calEvents.map(x=>self.createCalendarEvent(x)));
   }
   
-  private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
-    this.trimFields(event);
-    
+  private processColorScheme(event: CalendarEvent<ExtraEventData>): Observable<ColorScheme> {
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
 
-      //event.color=this.customColorScheme;      
-      event.meta.colorScheme = this.customColorScheme;
-      // Add the custom color scheme to the server
-      // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
-      this.addColorScheme(this.customColorScheme); 
-    }
+      
+           
+      let self=this;
+      return this.calEventService.addColorScheme(this.customColorScheme)
+      // make color scheme available as a selectable option on the view by pushing it to the colorSchemes array
+      .map(colorScheme => { 
+                           if (colorScheme&&colorScheme.slug) { // add was ok
+                              self.colorSchemes.push(colorScheme)
+                              // save current color scheme in calendarEvent   
+                              event.meta.colorScheme = colorScheme;
+                           }                           
+                           return colorScheme;
+                          }); 
+    } else
+      return of(event.meta.colorScheme);
+  }
+  
+  private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
+    this.trimFields(event);
+    let self=this;
+     
     // keep the events color field up to date
-    event.color = {
+    this.processColorScheme(event).subscribe({
+        next(colorScheme) {
+          if (colorScheme&&colorScheme.slug) { // ensure no errors -- the colorScheme is returned on success 
+            // keep the events color field up to date
+            event.color = {
                     primary: event.meta.colorScheme.primary,
                     secondary: event.meta.colorScheme.secondary
-                  };
-    let self=this;
-    this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
-    .subscribe({
+            };
+
+            // now update the calendar event           
+            this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
+            .subscribe({
                   next() { /*console.log('data: ', x);*/                             
                             // self.formInfo= "Event has been updated updated successfully";
                     
@@ -548,30 +567,35 @@ export class MyCalendarEditableComponent implements OnInit {
                                 console.log('Some error '+err.message); 
                              }
               });
+          }
+        },
+        error(err) { self.formError = err.message;
+                      console.log('Some error '+err.message); 
+                   }
+    });
+    
   }
   
   // Use for both adding as well as cloning an event
   private addCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
     event.id=""; //remove id from event to be added; a new id will be generated
-    this.trimFields(event);
-    
-    if (this.customColorScheme.name) {
-      this.customColorScheme.name=this.customColorScheme.name.trim();
-      //event.color = this.customColorScheme;
-      event.meta.colorScheme=this.customColorScheme,  
-      // Add the custom color scheme to the server
-      // Also make it available as a selectable option on the view by pushing it to the colorSchemes array
-      this.addColorScheme(this.customColorScheme); 
-    }
+    this.trimFields(event);    
+    let self=this;
+     
     // keep the events color field up to date
-    event.color = {
+    this.processColorScheme(event).subscribe({
+        next(colorScheme) {
+          if (colorScheme&&colorScheme.slug) { // ensure no errors -- the colorScheme is returned on success 
+            // keep the events color field up to date
+            event.color = {
                     primary: event.meta.colorScheme.primary,
                     secondary: event.meta.colorScheme.secondary
-                  };
-    let self=this;
-    this.calEventService.addCalendarEvent(this.transformToCalEvent(event))
-    .subscribe({
-                  next(x) { /*console.log('data: ', x);*/                             
+            };
+
+            // now update the calendar event           
+            this.calEventService.addCalendarEvent(this.transformToCalEvent(event))
+            .subscribe({
+                  next() { /*console.log('data: ', x);*/                             
                             // self.formInfo= "Event has been updated updated successfully";
                     
                             // update the events array so that it reflects the latest info 
@@ -584,6 +608,13 @@ export class MyCalendarEditableComponent implements OnInit {
                                 console.log('Some error '+err.message); 
                              }
               });
+          }
+        },
+        error(err) { self.formError = err.message;
+                      console.log('Some error '+err.message); 
+                   }
+    });
+   
   }
   
     
