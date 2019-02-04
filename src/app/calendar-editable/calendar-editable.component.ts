@@ -603,8 +603,10 @@ export class MyCalendarEditableComponent implements OnInit {
                             // self.formInfo= "Event has been updated updated successfully";
                     
                             // update the events array so that it reflects the latest info 
-                            // since the views are dependent on this array                            
-                            self.events$.push(self.createCalendarEvent(calEvent));
+                            // since the views are dependent on this array 
+                            event.id=calEvent.id;
+                            event.slug=calEvent.slug;
+                            self.events$.push(self.createCalendarEvent(event));
                             self.refresh.next();
                         }
                   },
