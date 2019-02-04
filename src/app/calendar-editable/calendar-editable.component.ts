@@ -582,7 +582,7 @@ export class MyCalendarEditableComponent implements OnInit {
   // Use for both adding as well as cloning an event
   private addCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
     event.id=""; //remove id from event to be added; a new id will be generated
-    event.slug=""; //remove slug from event to be added; a new slug will be generated
+    event.meta.slug=""; //remove slug from event to be added; a new slug will be generated
     this.trimFields(event);    
     let self=this;
      
