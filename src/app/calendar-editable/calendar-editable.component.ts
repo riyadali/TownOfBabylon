@@ -581,7 +581,8 @@ export class MyCalendarEditableComponent implements OnInit {
   
   // Use for both adding as well as cloning an event
   private addCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
-    event.id=""; //remove id from event to be added; a new id will be generated    
+    event.id=""; //remove id from event to be added; a new id will be generated
+    event.slug=""; //remove slug from event to be added; a new slug will be generated
     this.trimFields(event);    
     let self=this;
      
@@ -722,8 +723,7 @@ export class MyCalendarEditableComponent implements OnInit {
         }    
       } else { // not "Added" action
         if (this.curAction=="Cloned") {
-          this.curEvent.start=undefined; // clear start date for cloned event
-          this.curEvent.slug=undefined; // a new slug is needed for the cloned event
+          this.curEvent.start=undefined; // clear start date for cloned event          
         } else {
           this.curEvent.start=new Date(this.curEvent.start); // recast as date field
         }
