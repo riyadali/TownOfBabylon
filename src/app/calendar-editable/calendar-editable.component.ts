@@ -583,6 +583,7 @@ export class MyCalendarEditableComponent implements OnInit {
   private addCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
     event.id=""; //remove id from event to be added; a new id will be generated
     event.meta.slug=""; //remove slug from event to be added; a new slug will be generated
+    event.actions=this.actionsLoggedIn; // give the new event the update actions
     this.trimFields(event);    
     let self=this;
      
