@@ -524,14 +524,14 @@ export class MyCalendarEditableComponent implements OnInit {
       let self=this;
       return this.calEventService.addColorScheme(this.customColorScheme)
       // make color scheme available as a selectable option on the view by pushing it to the colorSchemes array
-      .map(colorScheme => { 
+      .pipe(map(colorScheme => { 
                            if (colorScheme&&colorScheme.slug) { // add was ok
                               self.colorSchemes.push(colorScheme)
                               // save current color scheme in calendarEvent   
                               event.meta.colorScheme = colorScheme;
                            }                           
                            return colorScheme;
-                          }); 
+                          })); 
     } else
       return of<ColorScheme>(event.meta.colorScheme);
   }
