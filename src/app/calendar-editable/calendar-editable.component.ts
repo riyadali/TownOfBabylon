@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild, Inject, LOCALE_ID } from '@a
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 // not sure about the import below for map ... but I needed to add it to get the map in processColorScheme to work
 import 'rxjs/add/operator/map';
@@ -533,7 +533,7 @@ export class MyCalendarEditableComponent implements OnInit {
                            return colorScheme;
                           }); 
     } else
-      return of(event.meta.colorScheme);
+      return of<ColorScheme>(event.meta.colorScheme);
   }
   
   private updateCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
@@ -551,9 +551,10 @@ export class MyCalendarEditableComponent implements OnInit {
             };
 
             // now update the calendar event           
-            this.calEventService.updateCalendarEvent(this.transformToCalEvent(event))
+            self.calEventService.updateCalendarEvent(self.transformToCalEvent(event))
             .subscribe({
-                  next() { /*console.log('data: ', x);*/                             
+                  next(calEvent) { /*console.log('data: ', x);*/   
+                       if(calEvent&&calEvent.slug) {  // ensure no errors -- the event is returned on success
                             // self.formInfo= "Event has been updated updated successfully";
                     
                             // update the events array so that it reflects the latest info 
@@ -563,6 +564,7 @@ export class MyCalendarEditableComponent implements OnInit {
                               self.events$[tgtIndex]=event;                              
                             }
                             self.refresh.next();
+                       }
                   },
                   error(err) { self.formError = err.message;
                                 console.log('Some error '+err.message); 
@@ -579,7 +581,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   // Use for both adding as well as cloning an event
   private addCalendarEvent(event: CalendarEvent<ExtraEventData>): void {
-    event.id=""; //remove id from event to be added; a new id will be generated
+    event.id=""; //remove id from event to be added; a new id will be generated    
     this.trimFields(event);    
     let self=this;
      
@@ -594,16 +596,17 @@ export class MyCalendarEditableComponent implements OnInit {
             };
 
             // now update the calendar event           
-            this.calEventService.addCalendarEvent(this.transformToCalEvent(event))
+            self.calEventService.addCalendarEvent(self.transformToCalEvent(event))
             .subscribe({
-                  next() { /*console.log('data: ', x);*/                             
+                  next(calEvent) { /*console.log('data: ', x);*/
+                        if(calEvent&&calEvent.slug) {  // ensure no errors -- the event is returned on success
                             // self.formInfo= "Event has been updated updated successfully";
                     
                             // update the events array so that it reflects the latest info 
-                            // since the views are dependent on this array
-                            event.id=x.id; // set id of added event
-                            self.events$.push(event);
+                            // since the views are dependent on this array                            
+                            self.events$.push(self.createCalendarEvent(calEvent));
                             self.refresh.next();
+                        }
                   },
                   error(err) { self.formError = err.message;
                                 console.log('Some error '+err.message); 
