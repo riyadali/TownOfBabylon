@@ -607,8 +607,8 @@ export class MyCalendarEditableComponent implements OnInit {
                             // update the events array so that it reflects the latest info 
                             // since the views are dependent on this array 
                             event.id=calEvent.id;
-                            event.slug=calEvent.slug;
-                            self.events$.push(self.createCalendarEvent(event));
+                            event.meta.slug=calEvent.slug;
+                            self.events$.push(event);
                             self.refresh.next();
                         }
                   },
