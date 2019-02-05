@@ -1,4 +1,8 @@
+// refer to this link for detailed instructions on usage -- http://www.istruction.nl/blog/2018/1/26/using-the-angular-inmemorywebapi
+
+// refer to this link for code -- https://github.com/angular/in-memory-web-api/blob/master/src/app/hero-in-mem-data-override.service.ts
 import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { ParsedRequestUrl, RequestInfo, RequestInfoUtilities, ResponseOptions } from 'angular-in-memory-web-api';
 
 import { ColorScheme } from './model/ColorScheme';
 
@@ -13,6 +17,48 @@ import {
 
 
 export class InMemoryDataService implements InMemoryDbService {
+  
+  // from site https://github.com/angular/in-memory-web-api/blob/master/src/app/hero-in-mem-data-override.service.ts
+  // intercept ResponseOptions from default HTTP method handlers
+  // add a response header and report interception to console.log
+  // -- change name by removing my and you should get hte reponse logged
+  myresponseInterceptor(resOptions: ResponseOptions, reqInfo: RequestInfo) {
+
+   // resOptions.headers = resOptions.headers.set('x-test', 'test-header');
+    const method = reqInfo.method.toUpperCase();
+    const body = JSON.stringify(resOptions);
+    console.log(`responseInterceptor: ${method} ${reqInfo.req.url}: \n${body}`);
+
+    return resOptions;
+  }
+  
+  // parseRequestUrl override
+  // Do this to manipulate the request URL or the parsed result
+  // into something your data store can handle.
+  // This example turns a request for `/foo/heroes` into just `/heroes`.
+  // It leaves other URLs untouched and forwards to the default parser.
+  // It also logs the result of the default parser.
+  exampleParseRequestUrl(url: string, utils: RequestInfoUtilities): ParsedRequestUrl {
+    const newUrl = url.replace(/\/foo\/heroes/, '/heroes');
+    // console.log('newUrl', newUrl);
+    const parsed = utils.parseRequestUrl(newUrl);
+    console.log(`parseRequestUrl override of '${url}':`, parsed);
+    return parsed;
+  }
+  
+  // override request for colorschemes?owner=xxxx with colorschemes?owner=4
+  parseRequestUrl(url: string, utils: RequestInfoUtilities): ParsedRequestUrl {
+    if (url.startsWith("api/colorSchemes?owner=")) {
+      //const newUrl = url.replace(/colorSchemes\?owner=[0-9A-F]+/, '/colorSchemes?owner=2');
+       // note tommycats id is translated to 2.844105682702434e+28
+      // not sure how you get it to be tried and compared as a hex string but for now this should work
+      const newUrl="api/colorSchemes?owner=^undefined|^2.8441";
+      // console.log('newUrl', newUrl);
+      const parsed = utils.parseRequestUrl(newUrl);
+      console.log(`parseRequestUrl override of '${url}':`, parsed);
+      return parsed;
+    }
+  }
  
   // Some default color schemes
   redColorScheme : ColorScheme = {
@@ -37,13 +83,41 @@ export class InMemoryDataService implements InMemoryDbService {
   };
   
   // Should never see this since it has an owner field
-  bogusColorScheme : ColorScheme = {
+  bogusColorScheme = {
       id: 4,
       owner: 0,
       name: 'Bogus',
       primary: '#1e90ff',
       secondary: '#D1E8FF'
   };
+  
+  // TommyCat colorscheme
+  TommyColorScheme = {
+      id: 5,
+      owner: 0x5be5e40bfb6fc072d466dd09,
+      name: 'TommyCat',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+  
+  // Tom2 colorscheme
+  Tom2SomeCatColorScheme = {
+      id: 6,
+      owner: 0x5beb31df5ca37814009938b7,
+      name: 'Tom2SomeCat',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+  
+  // Tom3 colorscheme
+  Tom3SomeCat2ColorScheme = {
+      id: 7,
+      owner: 0x5beb360f5ca37814009938bb,
+      name: 'Tom3SomeCat2',
+      primary: '#1e90ff',
+      secondary: '#D1E8FF'
+  };
+    
  
   // Overrides the genId method to ensure that an event always has an id.
   // If the events array is empty,
@@ -51,7 +125,7 @@ export class InMemoryDataService implements InMemoryDbService {
   // if the events array is not empty, the method below returns the highest
   // events id + 1.
   genId(calEvents: any[]): number {
-    return calEvents.length > 0 ? Math.max(...calEvents.map(calEvent => calEvent.id)) + 1 : 5;
+    return calEvents.length > 0 ? Math.max(...calEvents.map(calEvent => calEvent.id)) + 1 : 8;
   }
     
  createDb() {
@@ -133,14 +207,18 @@ Lindenhurst, NY 11757`,
       draggable: true
     }
   ];
-  let colorSchemes: ColorScheme[] = [
+  let colorSchemes = [
     this.redColorScheme,
     this.blueColorScheme,
     this.yellowColorScheme,
-    this.bogusColorScheme
+    this.bogusColorScheme,
+    this.TommyColorScheme,
+    this.Tom2SomeCatColorScheme,
+    this.Tom3SomeCat2ColorScheme
   ];
-  return {transactions, heroes, calEvents, colorSchemes
-   /*searchusers: {
+  return {transactions, heroes 
+   /*calEvents, colorSchemes,
+     searchusers: {
       total: searchusers.length,
       results: searchusers
     }*/};
