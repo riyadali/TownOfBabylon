@@ -152,10 +152,11 @@ export class CalEventService {
   
   /** POST: add a new calendar event to the server */
   addCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
+    let self=this;
     return this.http.post<PostEventResponse>(this.calEventsUrl, {calendarEvent : calEvent}, httpOptions).pipe(
       map<PostEventResponse,CalEvent>(response => { 
           // console.log("response..."+JSON.stringify(response))
-          return response.calendarEvent;
+         return self.createCalendarEvent(response.calendarEvent);
         }), 
       tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
       catchError(this.handleError<CalEvent>('addCalendarEvent',dummyEvent))
