@@ -518,7 +518,6 @@ export class MyCalendarEditableComponent implements OnInit {
   private processColorScheme(event: CalendarEvent<ExtraEventData>): Observable<ColorScheme> {
     if (this.customColorScheme.name) {
       this.customColorScheme.name=this.customColorScheme.name.trim();
-
       
            
       let self=this;
@@ -584,7 +583,7 @@ export class MyCalendarEditableComponent implements OnInit {
     event.id=""; //remove id from event to be added; a new id will be generated
     event.meta.slug=""; //remove slug from event to be added; a new slug will be generated
     event.actions=this.actionsLoggedIn; // give the new event the update actions
-    this.trimFields(event);    
+    this.trimFields(event);  
     let self=this;
      
     // keep the events color field up to date
@@ -724,7 +723,7 @@ export class MyCalendarEditableComponent implements OnInit {
         }    
       } else { // not "Added" action
         if (this.curAction=="Cloned") {
-          this.curEvent.start=undefined; // clear start date for cloned event          
+          this.curEvent.start=undefined; // clear start date for cloned event 
         } else {
           this.curEvent.start=new Date(this.curEvent.start); // recast as date field
         }
