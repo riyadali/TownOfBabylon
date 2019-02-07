@@ -586,7 +586,7 @@ export class MyCalendarEditableComponent implements OnInit {
     event.meta.slug=""; //remove slug from event to be added; a new slug will be generated
     event.actions=this.actionsLoggedIn; // give the new event the update actions
     
-    // for now there is no UI support for draggable and resiszable so
+    // for now there is no UI support for draggable and resizable so
     // just set draggable and resizable to true for any added events
     event.draggable=true;
     event.resizable = {
