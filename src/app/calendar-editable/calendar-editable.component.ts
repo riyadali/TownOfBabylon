@@ -52,6 +52,11 @@ interface ExtraEventData {
    cost?: string;
    colorScheme?: ColorScheme;
    slug?: string;
+   draggable?: boolean;
+   resizable?: {
+     beforeStart?: boolean;
+     afterEnd?: boolean;
+   }
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -441,6 +446,12 @@ export class MyCalendarEditableComponent implements OnInit {
       };
       if (this.authService.isLoggedIn()&&cevent.owner==this.authService.currentUser().user.id) {
         result.actions=this.actionsLoggedIn;
+        // Only allow the event to be dragged or resized if the currently loggen in user
+        // owns the event
+        if (cevent.draggable) 
+          result.draggable=cevent.draggable;        
+        if (cevent.resizable)
+          result.resizable=cevent.resizable;
       }     
       
       if (cevent.id)
@@ -473,10 +484,15 @@ export class MyCalendarEditableComponent implements OnInit {
         result.end=cevent.end;
       if (cevent.allDay)
         result.allDay=cevent.allDay;
+    
+      // Save the true value of the draggable and resiable field in the meta data
+      // event.draggable and event.resizable may not reflect the true value
+      // because these are only set if the event is displayed for the user that owns the event and
+      // that user is logged in
       if (cevent.resizable)
-        result.resizable=cevent.resizable;
+        result.meta.resizable=cevent.resizable;
       if (cevent.draggable)
-        result.draggable=cevent.draggable;
+        result.meta.draggable=cevent.draggable; 
       return result;
   }
   
@@ -696,10 +712,12 @@ export class MyCalendarEditableComponent implements OnInit {
         result.end=event.end;
       if (event.allDay)
         result.allDay=event.allDay;
-      if (event.resizable)
-        result.resizable=event.resizable;
-      if (event.draggable)
-        result.draggable=event.draggable;
+    
+      // copy the draggable and resisbale fields from the true values for the event
+      if (event.meta.resizable)
+        result.resizable=event.meta.resizable;
+      if (event.meta.draggable)
+        result.draggable=event.meta.draggable;
       return result;
 
   } 
