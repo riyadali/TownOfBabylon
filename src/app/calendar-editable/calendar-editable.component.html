@@ -153,6 +153,7 @@
         [viewDate]="vwDate"
         [activeDayIsOpen]="activeDayIsOpen"
         (dayClicked)="dayClicked($event.day)"
+        (eventTimesChanged)="eventTimesChanged($event)"
         (eventClicked)="handleEvent('Clicked', $event.event, $event.event.title, clickEventContent, 'More', 'Return')"
         [openDayEventsTemplate]="dayEventsTemplate"
         [refresh]="refresh"
@@ -165,6 +166,7 @@
         [viewDate]="vwDate"
         [events]="evnts"
         [refresh]="refresh"
+        (eventTimesChanged)="eventTimesChanged($event)"
         (eventClicked)="handleEvent('Clicked', $event.event, $event.event.title, clickEventContent, 'More', 'Return')"
         [excludeDays]="exclDays"
         [weekStartsOn]="wkStartsOn">
@@ -176,6 +178,7 @@
         [viewDate]="vwDate"
         [events]="evnts"
         [refresh]="refresh"
+        (eventTimesChanged)="eventTimesChanged($event)"
         (eventClicked)="handleEvent('Clicked', $event.event, $event.event.title, clickEventContent, 'More', 'Return')"
         [hourSegments]="4">
       </mwl-calendar-day-view>
@@ -186,6 +189,7 @@
         [viewDate]="vwDate"
         [events]="evnts"
         [refresh]="refresh"
+        (eventTimesChanged)="eventTimesChanged($event)"
         (eventClicked)="handleEvent('Clicked', $event.event, $event.event.title, clickEventContent, 'More', 'Return')"
         [dayStartHour]="9"
         [dayEndHour]="17">  
