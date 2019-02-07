@@ -12,7 +12,7 @@ import { CalEventService } from '../cal-event.service';
 
 import { AuthService } from '../auth/auth.service';
 
-import { CalendarEvent, CalendarEventAction, CalendarView } from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, CalendarView, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { collapseAnimation } from 'angular-calendar'; /* refer to 
     https://github.com/mattlewis92/angular-calendar/issues/747 */
 
@@ -793,6 +793,17 @@ export class MyCalendarEditableComponent implements OnInit {
       );
   }
   */
+  
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd
+  }: CalendarEventTimesChangedEvent): void {
+    event.start = newStart;
+    event.end = newEnd;
+    //this.handleEvent('Dropped or resized', event);
+    this.refresh.next();
+  }
   
   private dayClicked({
     date,
