@@ -4,6 +4,7 @@ export class CalEvent {
 
   id?: string | number;
   title: string;
+  slug?: string;
   description?: string;
   start: Date;
   allDay?: boolean;
@@ -20,6 +21,7 @@ export class CalEvent {
   contact?: string;
   link?: URL;
   cost?: string;
+  owner?: number;
 }
 
 

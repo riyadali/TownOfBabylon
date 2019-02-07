@@ -13,56 +13,103 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
+import {apiURL} from './config';
+
+const dummyColorScheme : ColorScheme = {
+      name: '',
+      primary: '#ff7d04',
+      secondary: '#ffcf9b'      
+    }
+
+const dummyEvent : CalEvent = {
+      title: '',
+      start: new Date(),
+      color: dummyColorScheme
+    }
+
+interface GetEventsResponse {
+   calendarEvents: CalEvent[];
+   calendarEventsCount: number
+}
+
+interface PostEventResponse {
+   calendarEvent: CalEvent   
+}
+
+interface PutEventResponse {
+   calendarEvent: CalEvent   
+}
+
+interface GetColorsResponse {
+   colorSchemes: ColorScheme[];
+   colorSchemesCount: number
+}
+
+interface PostColorResponse {
+   colorScheme: ColorScheme   
+}
+
 @Injectable({ providedIn: 'root' })
 export class CalEventService {
 
-  private calEventsUrl = 'api/calEvents';  // URL to web api
-  private colorSchemesUrl = 'api/colorSchemes';  // URL to web api
+  private calEventsUrl = apiURL+'calEvents';  // URL to web api
+  private colorSchemesUrl = apiURL+'colorSchemes';  // URL to web api
 
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
   
-  private createCalendarEvent(cevent : CalEvent) : CalEvent {
+  private createCalendarEvent(parsedEvent : any) : CalEvent {
        let result : CalEvent = {
-             id: cevent.id,
-             title: cevent.title,
-             start: new Date(cevent.start),
-             color: cevent.color,
-             //actions: cevent.actions             
+             id: parsedEvent.id,
+             title: parsedEvent.title,
+             slug: parsedEvent.slug,
+             start: new Date(parsedEvent.start),
+             owner: parsedEvent.owner.id,
+             color: {
+                      id: parsedEvent.color.id,
+                      name: parsedEvent.color.name,
+                      slug: parsedEvent.color.slug,
+                      primary: parsedEvent.color.primary,
+                      secondary: parsedEvent.color.secondary
+                    }
+             //actions: parsedEvent.actions             
             };
     
-        if (cevent.description)
-          result.description=cevent.description;
-        if (cevent.location)
-          result.location = cevent.location;
-        if (cevent.address)
-          result.address = cevent.address;
-        if (cevent.contact)
-          result.contact = cevent.contact;
-        if (cevent.cost)
-          result.cost = cevent.cost;
-        if (cevent.link)
-          result.link = cevent.link;
-        if (cevent.draggable) 
-          result.draggable = cevent.draggable;
-        if (cevent.resizable) 
-          result.resizable = cevent.resizable;
-        if (cevent.allDay) 
-          result.allDay = cevent.allDay;
-        if (cevent.end) 
-          result.end = new Date(cevent.end);
+        if (parsedEvent.description)
+          result.description=parsedEvent.description;
+        if (parsedEvent.location)
+          result.location = parsedEvent.location;
+        if (parsedEvent.address)
+          result.address = parsedEvent.address;
+        if (parsedEvent.contact)
+          result.contact = parsedEvent.contact;
+        if (parsedEvent.cost)
+          result.cost = parsedEvent.cost;
+        if (parsedEvent.link)
+          result.link = parsedEvent.link;
+        if (parsedEvent.draggable) 
+          result.draggable = parsedEvent.draggable;
+        if (parsedEvent.resizable) 
+          result.resizable = parsedEvent.resizable;
+        if (parsedEvent.allDay) 
+          result.allDay = parsedEvent.allDay;
+        if (parsedEvent.end) 
+          result.end = new Date(parsedEvent.end);
       return result;  
   }
 
   /** GET calendar events from the server */
   getCalendarEvents (): Observable<CalEvent[]> {
     let self=this;
-    return this.http.get<CalEvent[]>(this.calEventsUrl)
+    return this.http.get<GetEventsResponse>(this.calEventsUrl)
       .pipe(
-        map<CalEvent[],CalEvent[]>(calEvents => calEvents.map(x=>self.createCalendarEvent(x))),
+        map<GetEventsResponse,CalEvent[]>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+          return response.calendarEvents.map(x=>self.createCalendarEvent(x))
+        }),
        // tap(calEvents => this.log(`fetched calendar events`)),
-        catchError(this.handleError('getCalendarEvents', []))
+        catchError(this.handleError<CalEvent[]>('getCalendarEvents', []))
       );
   }
 
@@ -105,65 +152,99 @@ export class CalEventService {
   
   /** POST: add a new calendar event to the server */
   addCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
-    return this.http.post<CalEvent>(this.calEventsUrl, calEvent, httpOptions).pipe(
+    let self=this;
+    return this.http.post<PostEventResponse>(this.calEventsUrl, {calendarEvent : calEvent}, httpOptions).pipe(
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
       tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
-      catchError(this.handleError<CalEvent>('addCalendarEvent'))
+      catchError(this.handleError<CalEvent>('addCalendarEvent',dummyEvent))
     );
   }
 
   /** DELETE: delete the calendar event from the server */
-  deleteCalendarEvent (calEvent: CalEvent | number): Observable<CalEvent> {
-    const id = typeof calEvent === 'number' ? calEvent : calEvent.id;
-    const url = `${this.calEventsUrl}/${id}`;
+  deleteCalendarEvent (calEvent: CalEvent | string): Observable<CalEvent> {
+    const slug = typeof calEvent === 'string' ? calEvent : calEvent.slug;
+    const url = `${this.calEventsUrl}/${slug}`;
 
     return this.http.delete<CalEvent>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted calendar event id=${id}`)),
-      catchError(this.handleError<CalEvent>('deleteCalendarEvent'))
+      // not good post return empty response... so just return the input o caller to indicate all was well
+      map<CalEvent,CalEvent>(nullresponse => { 
+          // console.log("response..."+JSON.stringify(response))
+          // return event that was passed in or dummyEvent with slug set if input (calEvent) was a string
+          return typeof calEvent === 'string' ? {...dummyEvent, slug: calEvent} : calEvent;
+        }), 
+     // tap(_ => this.log(`deleted calendar event slug=${slug}`)),
+      catchError(this.handleError<CalEvent>('deleteCalendarEvent', dummyEvent))
     );
   }
 
   /** PUT: update the calendar event on the server */  
-  updateCalendarEvent (calEvent: CalEvent): Observable<any> {
+  updateCalendarEvent (calEvent: CalEvent): Observable<CalEvent> {
      // We are calling shareReplay to prevent the receiver of this Observable from accidentally 
       // triggering multiple PUT requests due to multiple subscriptions.
       let self=this; 
-      return this.http.put<CalEvent>(this.calEventsUrl, calEvent) 
+      return this.http.put<PutEventResponse>(this.calEventsUrl+"/"+calEvent.slug, {calendarEvent: calEvent}) 
         // see this link on why pipe needs to be typed
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
-        .pipe<null,CalEvent>(
-           // Put returns null response
-           tap<null>( // Log the result or error
+       .pipe(
+            map<PutEventResponse,CalEvent>(response => { 
+            // console.log("response..."+JSON.stringify(response))
+            return response.calendarEvent;
+            }),
+           tap<CalEvent>( // Log the result or error
                // res => self.saveEvent(res), 
                //  res => console.log("Calendar Event saved..."),
                 _ => {},                                
-                error => self.handleError<any>('updateCalendarEvent')
-              ),
-           shareReplay<CalEvent>()
+                error => self.handleError<CalEvent>('updateCalendarEvent', dummyEvent)
+              )
         );   
   }
   
   /** GET color schemes from the server */
-  getColorSchemes (): Observable<ColorScheme[]> {
+  
+  /* The userid of current user is passed as an optional parameter.  When
+     set the default color schemes (i.e. those with no owners) along with
+     any colorschemes owned by the passed user is returned.  When user is
+     not set, all colorschemes are returned irrespective of owner */
+  getColorSchemes (user?: number|string): Observable<ColorScheme[]> {
     let self=this;
-    return this.http.get<ColorScheme[]>(this.colorSchemesUrl)
-      .pipe<null,ColorScheme[]>(
-        //map<ColorScheme[],ColorScheme[]>(colorSchemes => colorSchemes.map(x=>self.createColorScheme(x))),
-       // tap(calEvents => this.log(`fetched calendar events`)),
-        tap<null>( // Log the result or error
-               // res => self.saveEvent(res), 
-               //  res => console.log("Calendar Event saved..."),
-                _ => {},     
-                error => self.handleError<any>('getColorSchemes')
-              ),
-           shareReplay<ColorScheme[]>()
+    let queryParms="";
+    if (user) {
+      queryParms="?owner="+user;      
+    }
+    return this.http.get<GetColorsResponse>(this.colorSchemesUrl+queryParms)
+      .pipe(        
+        map<GetColorsResponse,ColorScheme[]>(response => { 
+            // console.log("response..."+JSON.stringify(response))
+            return response.colorSchemes;
+        }),
+        // tap(colorSchemes => this.log(`fetched color Schemes`)),
+        catchError(this.handleError<ColorScheme[]>('getColorSchemes', []))       
       );
   }
   
    /** POST: add a new color scheme to the server */
   addColorScheme (colScheme: ColorScheme): Observable<ColorScheme> {
-    return this.http.post<ColorScheme>(this.colorSchemesUrl, colScheme, httpOptions).pipe(
+    return this.http.post<PostColorResponse>(this.colorSchemesUrl, {colorScheme: colScheme}, httpOptions).pipe(
+      map<PostColorResponse,ColorScheme>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+          return response.colorScheme;
+        }), 
       //tap((colorScheme: ColorScheme) => this.log(`added color Scheme w/ name=${colorScheme.name}`)),
-      catchError(this.handleError<any>('addColorScheme'))
+      catchError(this.handleError<ColorScheme>('addColorScheme', dummyColorScheme))
+    );
+  }
+  
+  /** DELETE: delete the color scheme from the server */
+  deleteColorScheme (colorScheme: ColorScheme | number): Observable<ColorScheme> {
+    const id = typeof colorScheme === 'number' ? colorScheme : colorScheme.id;
+    const url = `${this.colorSchemesUrl}/${id}`;
+
+    return this.http.delete<ColorScheme>(url, httpOptions).pipe(
+      tap(_ => this.log(`deleted color scheme id=${id}`)),
+      catchError(this.handleError<ColorScheme>('deleteColorScheme'))
     );
   }
 
