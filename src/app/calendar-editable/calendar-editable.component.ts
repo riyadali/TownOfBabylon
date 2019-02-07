@@ -441,7 +441,7 @@ export class MyCalendarEditableComponent implements OnInit {
       };
       if (this.authService.isLoggedIn()&&cevent.owner==this.authService.currentUser().user.id) {
         result.actions=this.actionsLoggedIn;
-        // Only allow the event to be dragged or resized if the currently loggen in user
+        // Only allow the event to be dragged or resized if the currently logged in user
         // owns the event
         if (cevent.draggable) 
           result.draggable=cevent.draggable;        
