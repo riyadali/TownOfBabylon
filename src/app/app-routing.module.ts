@@ -20,7 +20,7 @@ import { PageDoingBusinessInBabylonComponent }   from './page-doing-business-in-
 // import { PageLoginComponent }   from './page-login/page-login.component';
 // register route moved to auth routing module
 // import { PageRegisterComponent } from './page-register/page-register.component';
-import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
+// import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
 
 
@@ -104,6 +104,8 @@ const routes: Routes = [
  // { path: 'sign_in', component: PageLoginComponent, pathMatch: 'full' },
  // register route moved to auth routing module
  // { path: 'register', component: PageRegisterComponent, pathMatch: 'full' },
+ 
+ /*  -- update_profile removed as a route.  This functionality is now supported via a modal dialog
  { 
    path: 'update_profile', 
    component: PageUpdateProfileComponent,
@@ -115,6 +117,8 @@ const routes: Routes = [
    canActivate: [AuthGuard],
    pathMatch: 'full' 
  },
+ -- end update_profile route removed */
+  
  { path: 'standard-page/:id', component: StandardPageComponent },
  { path: 'dashboard', component: DashboardComponent },
   { path: 'static_pages', loadChildren: './static-pages/static-pages.module#StaticPagesModule' },

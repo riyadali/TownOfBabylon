@@ -1,10 +1,21 @@
+<!--
 <app-page-header [content]="updateProfileHeader"></app-page-header>
+-->
+
+<!--Header row with close button -->
+<div class="modal-header">
+  <h5 class="modal-title">Update Account Profile</h5>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+  </button>    
+</div>
 
    <!-- Rows need to be wrapped by container. Refer to
        https://uxplanet.org/how-the-bootstrap-4-grid-works-a1b04703a3b7 -->
   <div class="container">
   <div class="row">
-    <div class="col-md-6 col-sm-8">      
+    <div class="col">
+      <br/>
       <form (ngSubmit)="onSubmit()">
         <div role="alert" [hidden]="formError==''" class="alert alert-danger">{{ formError }}</div>
         <div role="alert" [hidden]="formInfo==''" class="alert alert-info">{{ formInfo }}</div>
@@ -15,7 +26,7 @@
         </div>
         <div class="form-group">
           <label for="bio">Bio</label>
-          <textarea class="form-control" rows="4" id="bio" name="bio" 
+          <textarea class="form-control" rows="3" id="bio" name="bio" 
                     [(ngModel)]="credentials.user.bio" placeholder="Add a bio (optional)"></textarea>
         </div>        
         <div class="form-group">
@@ -30,8 +41,12 @@
                  [(ngModel)]="credentials.user.password" name="password">
         </div>
         -->
-        <button type="submit" class="btn btn-default">Update Profile!</button>
+        <br/><br/>
+        <button type="submit" class="btn btn-default">Update</button>
+
+        <button type="button" class="btn btn-default" (click)="close()">Cancel</button>
       </form>
+      <br/>
     </div>
   </div>
   </div>
