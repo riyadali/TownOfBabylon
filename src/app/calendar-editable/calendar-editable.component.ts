@@ -12,7 +12,7 @@ import { CalEventService } from '../cal-event.service';
 
 import { AuthService } from '../auth/auth.service';
 
-import { CalendarEvent, CalendarEventAction, CalendarView } from 'angular-calendar';
+import { CalendarEvent, CalendarEventAction, CalendarView, CalendarEventTimesChangedEvent } from 'angular-calendar';
 import { collapseAnimation } from 'angular-calendar'; /* refer to 
     https://github.com/mattlewis92/angular-calendar/issues/747 */
 
@@ -51,7 +51,7 @@ interface ExtraEventData {
    link?: URL;
    cost?: string;
    colorScheme?: ColorScheme;
-   slug?: string;
+   slug?: string; 
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -441,6 +441,12 @@ export class MyCalendarEditableComponent implements OnInit {
       };
       if (this.authService.isLoggedIn()&&cevent.owner==this.authService.currentUser().user.id) {
         result.actions=this.actionsLoggedIn;
+        // Only allow the event to be dragged or resized if the currently logged in user
+        // owns the event
+        if (cevent.draggable) 
+          result.draggable=cevent.draggable;        
+        if (cevent.resizable)
+          result.resizable=cevent.resizable;
       }     
       
       if (cevent.id)
@@ -473,10 +479,6 @@ export class MyCalendarEditableComponent implements OnInit {
         result.end=cevent.end;
       if (cevent.allDay)
         result.allDay=cevent.allDay;
-      if (cevent.resizable)
-        result.resizable=cevent.resizable;
-      if (cevent.draggable)
-        result.draggable=cevent.draggable;
       return result;
   }
   
@@ -583,6 +585,15 @@ export class MyCalendarEditableComponent implements OnInit {
     event.id=""; //remove id from event to be added; a new id will be generated
     event.meta.slug=""; //remove slug from event to be added; a new slug will be generated
     event.actions=this.actionsLoggedIn; // give the new event the update actions
+    
+    // for now there is no UI support for draggable and resizable so
+    // just set draggable and resizable to true for any added events
+    event.draggable=true;
+    event.resizable = {
+      "beforeStart" : true,
+      "afterEnd" : true
+    };
+
     this.trimFields(event);  
     let self=this;
      
@@ -793,6 +804,25 @@ export class MyCalendarEditableComponent implements OnInit {
       );
   }
   */
+  
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd
+  }: CalendarEventTimesChangedEvent): void {
+    event.start = newStart;
+    event.end = newEnd;
+    // updateCalendarEvent needs customColorScheme to be set.
+    // Nothing would be done in this case for the custom "fake" color scheme because
+    // the name field is not set in the sampleColorScheme.  Typically when the name
+    // is defined in the custom color scheme, a new color scheme would be added with that
+    // name before the event is updated to reference the custom color scheme.  But in this
+    // case, we are only updating the start and end times of the event so nothing needs to
+    // be done for the color scheme.
+    this.customColorScheme = {...this.sampleColorScheme};
+    this.updateCalendarEvent(event);
+    this.refresh.next();
+  }
   
   private dayClicked({
     date,
