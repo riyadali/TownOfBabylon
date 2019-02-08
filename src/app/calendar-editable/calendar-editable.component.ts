@@ -51,7 +51,7 @@ interface ExtraEventData {
    link?: URL;
    cost?: string;
    colorScheme?: ColorScheme;
-   slug?: string;   
+   slug?: string; 
 }
 
 import modalTemplate from "../modal-views/modal.template.html";
@@ -593,6 +593,7 @@ export class MyCalendarEditableComponent implements OnInit {
       "beforeStart" : true,
       "afterEnd" : true
     };
+
     this.trimFields(event);  
     let self=this;
      
