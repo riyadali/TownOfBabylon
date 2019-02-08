@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ModalService} from '../modal.service';
 import {AuthService} from '../auth/auth.service';
 
 interface HeaderContent {  
@@ -34,14 +35,21 @@ export class PageUpdateProfileComponent implements OnInit {
   //returnPage = $location.search().page || '/'; 
   // returnPage='/'; // for now just redirect to home page
   
+  /*
   updateProfileHeader : HeaderContent = {
     title: "Update account profile",
     strapline: ""
   }
-  constructor(private authService: AuthService) { }
+  */
+  
+  constructor(private authService: AuthService, private modalService: ModalService) { }
 
   ngOnInit() {
     this.getProfile();
+  }
+  
+  close() {
+    this.modalService.destroy();
   }
   
   onSubmit () {
