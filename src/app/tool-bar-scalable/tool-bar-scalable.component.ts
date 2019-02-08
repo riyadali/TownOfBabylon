@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { ModalService } from '../modal.service';
 
 import { PageLoginComponent } from '../page-login/page-login.component';
+import { PageUpdateProfileComponent } from '../page-update-profile/page-update-profile.component';
 
 @Component({
   selector: 'app-tool-bar-scalable',
@@ -23,6 +24,13 @@ export class ToolBarScalableComponent implements OnInit {
       isMobile: false
     }
     this.modalService.init(PageLoginComponent, inputs, {});
+  }
+  
+  initUpdateProfileModal() {
+    let inputs = {
+      isMobile: false
+    }
+    this.modalService.init(PageUpdateProfileComponent, inputs, {});
   }
   
   logout() {
