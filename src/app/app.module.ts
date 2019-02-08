@@ -190,7 +190,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
   // Because PageLoginComponent and PageRegisterComponent are loaded dynamically into the modal dialog,
   // they are imported and defined as entryComponent in app.module.ts.
   // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
-  entryComponents: [PageLoginComponent, PageRegisterComponent],
+  entryComponents: [PageLoginComponent, PageRegisterComponent, PageUpdateProfileComponent],
   bootstrap: [ AppComponent ],
   providers: [TransactionService, SearchService, CalEventService, AuthService, ModalService, DomService, httpInterceptorProviders]
 })
