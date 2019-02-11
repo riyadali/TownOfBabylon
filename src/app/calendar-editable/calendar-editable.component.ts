@@ -210,10 +210,12 @@ export class MyCalendarEditableComponent implements OnInit {
   }
 
   private logoutHandler = this.authService.handleLogoutEvent(this.authService);
+  private loginHandler = this.authService.handleLoginEvent(this.authService);
   
   ngOnInit() {
     /*this.fetchEvents();*/
     window.addEventListener('storage', this.logoutHandler);
+    window.addEventListener('storage', this.loginHandler);
     this.loadColorSchemes();
     this.getCalendarEvents();
     // Schedule a refresh of the display if the user logs in or logs out
@@ -238,6 +240,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   ngOnDestroy(): void {
     window.removeEventListener('storage', this.logoutHandler);
+    window.removeEventListener('storage', this.loginHandler);
     if (this.loginStatusSubscription) {
       this.loginStatusSubscription.unsubscribe();
     }
