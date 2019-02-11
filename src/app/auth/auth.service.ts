@@ -208,7 +208,22 @@ export class AuthService {
   
   logout () {
       localStorage.removeItem("tob_id_token");
-      this.loginStatus.next();
+      localStorage.setItem('logout-event', 'logout' + Math.random());
+  }
+  
+  // the handler is self contained and is passed in the authentication service ... i.e, this object
+  // as authService
+  
+  // the primary purpose of this handler is to detect logouts across tabs.  So if a user logs out on any
+  // active tab, the display on all other tabs will be refreshed to indicate this new status.
+  handleLogoutEvent = function(authService) {
+     // return a function that would actually handle the logout event
+     return function curried_func(event) {        
+        if (event.key == 'logout-event') { 
+          // console.log("hit logout handler")
+          authService.loginStatus.next();
+        }
+     }      
   }
          
 }
