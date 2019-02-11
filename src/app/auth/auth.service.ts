@@ -102,8 +102,10 @@ export class AuthService {
            tap<LoginResultModel>( // Log the result or error
                 res => {
                           self.saveToken(res.user.token);
-                          // broadcast change in status
+                          // broadcast change in status to current tab
                           self.loginStatus.next();
+                          // broadcast change in status to other tabs
+                          localStorage.setItem('login-event', 'login' + Math.random());
                        },         
                 error => console.log("failure after post "+ error.message)
               ),
@@ -197,8 +199,10 @@ export class AuthService {
            tap<LoginResultModel>( // Log the result or error
                 res => {
                           self.saveToken(res.user.token);
-                          // broadcast change in status
+                          // broadcast change in status to current tab
                           self.loginStatus.next();
+                          // broadcast change in status to other tabs
+                          localStorage.setItem('login-event', 'login' + Math.random());
                        },        
                 error => console.log("failure after post "+ error.message)
               ),
@@ -221,6 +225,18 @@ export class AuthService {
      return function curried_func(event) {        
         if (event.key == 'logout-event') { 
           // console.log("hit logout handler")
+          authService.loginStatus.next();
+        }
+     }      
+  }
+  
+  // the primary purpose of this handler is to detect logins across tabs.  So if a user logs in on any
+  // active tab, the display on all other tabs will be refreshed to indicate this new status.
+  handleLoginEvent = function(authService) {
+     // return a function that would actually handle the login event
+     return function curried_func(event) {        
+        if (event.key == 'login-event') { 
+          // console.log("hit login handler")
           authService.loginStatus.next();
         }
      }      
