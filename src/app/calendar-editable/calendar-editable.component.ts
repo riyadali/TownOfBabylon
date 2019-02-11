@@ -1,3 +1,4 @@
+// import { EventManager } from '@angular/platform-browser'; -- investigate using eventManager to manage changes to login status
 import { Component, OnInit, TemplateRef, ViewChild, Inject, LOCALE_ID } from '@angular/core';
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -200,7 +201,7 @@ export class MyCalendarEditableComponent implements OnInit {
     
   private events$: CalendarEvent[];
 
-  constructor(private calEventService: CalEventService, private authService: AuthService, 
+  constructor(private calEventService: CalEventService, private authService: AuthService, @Inject('Window') private window: Window,
                private modalService: BsModalService, private http: HttpClient, @Inject(LOCALE_ID) private locale: string) {}
 
   private openModal(template: TemplateRef<any>) {
@@ -208,8 +209,11 @@ export class MyCalendarEditableComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
+  private logoutHandler = this.authService.handleLogoutEvent(this.authService);
+  
   ngOnInit() {
     /*this.fetchEvents();*/
+    window.addEventListener('storage', this.logoutHandler);
     this.loadColorSchemes();
     this.getCalendarEvents();
     // Schedule a refresh of the display if the user logs in or logs out
@@ -233,6 +237,7 @@ export class MyCalendarEditableComponent implements OnInit {
   }
   
   ngOnDestroy(): void {
+    window.removeEventListener('storage', this.logoutHandler);
     if (this.loginStatusSubscription) {
       this.loginStatusSubscription.unsubscribe();
     }
