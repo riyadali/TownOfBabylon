@@ -248,7 +248,7 @@ export class AuthService {
       localStorage.setItem('logout-event', 'logout' + Math.random());
 
       // broadcast change in status to current tab
-      self.loginStatus.next();
+      this.loginStatus.next();
   }
   
   // the handler is self contained and is passed in the authentication service ... i.e, this object
