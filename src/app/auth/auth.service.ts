@@ -11,8 +11,6 @@ export class AuthService {
   // store the URL so we can redirect after logging in
   redirectUrl: string;
   
-  authToken; // current authentication token or null if logged out
-
   /* payload in token is as follows:
         payload: {
                   "id": "5be5e40bfb6fc072d466dd09",
@@ -25,7 +23,7 @@ export class AuthService {
   //  if you need to update payload the server code would need to be updated
   //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
   //  my node-express-realword repository.  I'm not sure if this is the only change needed
-  authPayload; // parsed payload from current authToken.  Null if logged out.
+  authPayload; // parsed payload from current token.  Null if logged out.
   
   // Broadcasts changes to login status
   // Someone may then subscribe to this and then take action as necessary
@@ -227,7 +225,11 @@ export class AuthService {
            tap<LoginResultModel>( // Log the result or error
                 res => {
                         self.saveToken(res.user.token);
+                  
                         // broadcast change in status to other tabs
+                        // treat as login-event since change in profile, particularly
+                        // username, should be reflected in new token.  So it is as
+                        // if you are logging in with a potential new identity.
                         localStorage.setItem('login-event', 'login' + Math.random());
                         },       
                 error => console.log("failure after post "+ error.message)
@@ -311,8 +313,16 @@ export class AuthService {
      // return a function that would actually handle the login event
      return function curried_func(event) {        
         if (event.key == 'login-event') { 
+          // ensure that current version of token is saved locally
+          // This is specifically for the use case where someone
+          // updated their username in one tab.  Any other open tabs 
+          // should reflect that updated username
+          let token = authService.getToken();
+          if (token) {
+            authService.savePayload (token);
+          }
           // console.log("hit login handler")
-          authService.loginStatus.next();
+          authService.loginStatus.next(); // force refresh of current display by emitting event on loginStatus
         }
      }      
   }
