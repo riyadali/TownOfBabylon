@@ -225,7 +225,11 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => self.saveToken(res.user.token),       
+                res => {
+                        self.saveToken(res.user.token);
+                        // broadcast change in status to other tabs
+                        localStorage.setItem('login-event', 'login' + Math.random());
+                        },       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -267,6 +271,8 @@ export class AuthService {
   
   logout () {
       localStorage.removeItem("tob_id_token");
+      this.authToken=null;
+      this.authPayload=null;
     
       // The following was noted at this link 
       // https://stackoverflow.com/questions/5370784/localstorage-eventlistener-is-not-called
