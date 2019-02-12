@@ -11,6 +11,22 @@ export class AuthService {
   // store the URL so we can redirect after logging in
   redirectUrl: string;
   
+  authToken; // current authentication token or null if logged out
+
+  /* payload in token is as follows:
+        payload: {
+                  "id": "5be5e40bfb6fc072d466dd09",
+                  "username": "TommyCat",
+                  "exp": 1551896725,
+                  "iat": 1546712725  // issued at time
+                }
+  */            
+  //  email : payload.email, -- email not in payload just username and id
+  //  if you need to update payload the server code would need to be updated
+  //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
+  //  my node-express-realword repository.  I'm not sure if this is the only change needed
+  authPayload; // parsed payload from current authToken.  Null if logged out.
+  
   // Broadcasts changes to login status
   // Someone may then subscribe to this and then take action as necessary
   loginStatus: Subject<any> = new Subject();
@@ -34,10 +50,25 @@ export class AuthService {
   saveToken (token) {
       localStorage.setItem('tob_id_token', token);
       // console.log('saveToken token is....'+token);
+    
+      // Save an updated token in case the user updated his/her profile
+      this.savePayload(token);
   }
   
   getToken () {
-      return localStorage.getItem("tob_id_token");
+      let token = localStorage.getItem("tob_id_token");
+    
+      // token found but not saved yet ... 
+      // parse and save it locally for future reference.  A little more efficient in
+      // that you would only need to reparse the token if it changes.
+      if (token&&!this.authPayload) {
+        this.savePayload(token);
+      }
+      return token;
+  }
+  
+  savePayload (token) {
+    this.authPayload = JSON.parse(atob(token.split('.')[1]));
   }
   
   isLoggedIn () {
@@ -46,14 +77,15 @@ export class AuthService {
        The template for tool-bar-scalable checks isLoggedIn before displaying the sigin button.
        Maybe there is no way around this because you need to check regularly in case some action
        causes the user to be logged out.  But this means that this routine will need to be super
-       efficient.  Let's hope so since it reparses the token every single time. */
+       efficient.  */
     
     //console.log('isloggedIn token is....'+token)
 
     if(token){
-      var payload = JSON.parse(atob(token.split('.')[1]));
+      // parse of token now handled by getToken if necessary
+      // var payload = JSON.parse(atob(token.split('.')[1]));
 
-      if (payload.exp > Date.now() / 1000) {        
+      if (this.authPayload.exp > Date.now() / 1000) {        
         return true;
       } else {
         this.logout(); // token has expired so simulate logout
@@ -69,7 +101,8 @@ export class AuthService {
        isLoggedIn() also apply */
     if(this.isLoggedIn()){
       var token = this.getToken();
-      var payload = JSON.parse(atob(token.split('.')[1]));
+      // parse of token now handled by getToken if necessary
+      // var payload = JSON.parse(atob(token.split('.')[1]));
       return {
            user: {
            /* payload in token is as follows:
@@ -84,8 +117,8 @@ export class AuthService {
            //  if you need to update payload the server code would need to be updated
            //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
            //  my node-express-realword repository.  I'm not sure if this is the only change needed
-              name : payload.username,
-              id: payload.id
+              name : this.authPayload.username,
+              id: this.authPayload.id
            }
       };
     }
