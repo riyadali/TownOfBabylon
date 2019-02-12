@@ -98,7 +98,7 @@ export class AuthService {
     /* since currentUser() is also referenced in template, comments regarding efficiency from
        isLoggedIn() also apply */
     if(this.isLoggedIn()){
-      var token = this.getToken();
+      // var token = this.getToken();
       // parse of token now handled by getToken if necessary
       // var payload = JSON.parse(atob(token.split('.')[1]));
       return {
