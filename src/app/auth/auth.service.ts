@@ -273,7 +273,6 @@ export class AuthService {
   
   logout () {
       localStorage.removeItem("tob_id_token");
-      this.authToken=null;
       this.authPayload=null;
     
       // The following was noted at this link 
