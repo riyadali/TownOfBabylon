@@ -447,7 +447,7 @@ export class MyCalendarEditableComponent implements OnInit {
         title: cevent.title,
         meta: {}
       };
-      if (this.authService.isLoggedIn()&&cevent.owner==this.authService.currentUser().user.id) {
+      if (this.authService.isLoggedIn()&&cevent.owner==this.authService.authPayload.id) {
         result.actions=this.actionsLoggedIn;
         // Only allow the event to be dragged or resized if the currently logged in user
         // owns the event
@@ -511,7 +511,7 @@ export class MyCalendarEditableComponent implements OnInit {
   
   private getColorSchemes(): void {
     let self=this;
-    let myId=this.authService.isLoggedIn() ? this.authService.currentUser().user.id : null;
+    let myId=this.authService.isLoggedIn() ? this.authService.authPayload.id : null;
     this.calEventService.getColorSchemes(myId)
     .subscribe(colorSchemes => {
                                   self.colorSchemes = colorSchemes;
