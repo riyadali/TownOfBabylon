@@ -102,10 +102,21 @@ export class AuthService {
            tap<LoginResultModel>( // Log the result or error
                 res => {
                           self.saveToken(res.user.token);
-                          // broadcast change in status to current tab
-                          self.loginStatus.next();
+                  
+                          // The following was noted at this link 
+                          // https://stackoverflow.com/questions/5370784/localstorage-eventlistener-is-not-called
+                          // The storage event handler will only affect other windows. Whenever something changes in 
+                          // one window inside localStorage all the other windows are notified about it and if any action
+                          // needs to be taken it can be achieved by a handler function listening to the storage event.
+                          //
+                          // For the same window you have to manually call the storageEventHandler function after 
+                          // localStorage.setItem() is called to achieve the same behaviour in the same window.
+                          
                           // broadcast change in status to other tabs
                           localStorage.setItem('login-event', 'login' + Math.random());
+
+                          // broadcast change in status to current tab
+                          self.loginStatus.next();
                        },         
                 error => console.log("failure after post "+ error.message)
               ),
@@ -199,10 +210,21 @@ export class AuthService {
            tap<LoginResultModel>( // Log the result or error
                 res => {
                           self.saveToken(res.user.token);
-                          // broadcast change in status to current tab
-                          self.loginStatus.next();
+                  
+                          // The following was noted at this link 
+                          // https://stackoverflow.com/questions/5370784/localstorage-eventlistener-is-not-called
+                          // The storage event handler will only affect other windows. Whenever something changes in 
+                          // one window inside localStorage all the other windows are notified about it and if any action
+                          // needs to be taken it can be achieved by a handler function listening to the storage event.
+                          //
+                          // For the same window you have to manually call the storageEventHandler function after 
+                          // localStorage.setItem() is called to achieve the same behaviour in the same window.
+                          
                           // broadcast change in status to other tabs
                           localStorage.setItem('login-event', 'login' + Math.random());
+
+                          // broadcast change in status to current tab
+                          self.loginStatus.next();
                        },        
                 error => console.log("failure after post "+ error.message)
               ),
@@ -212,7 +234,21 @@ export class AuthService {
   
   logout () {
       localStorage.removeItem("tob_id_token");
+    
+      // The following was noted at this link 
+      // https://stackoverflow.com/questions/5370784/localstorage-eventlistener-is-not-called
+      // The storage event handler will only affect other windows. Whenever something changes in 
+      // one window inside localStorage all the other windows are notified about it and if any action
+      // needs to be taken it can be achieved by a handler function listening to the storage event.
+      //
+      // For the same window you have to manually call the storageEventHandler function after 
+      // localStorage.setItem() is called to achieve the same behaviour in the same window.
+                          
+      // broadcast change in status to other tabs
       localStorage.setItem('logout-event', 'logout' + Math.random());
+
+      // broadcast change in status to current tab
+      self.loginStatus.next();
   }
   
   // the handler is self contained and is passed in the authentication service ... i.e, this object
