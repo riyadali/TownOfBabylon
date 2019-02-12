@@ -288,7 +288,7 @@ export class AuthService {
       // localStorage.setItem() is called to achieve the same behaviour in the same window.
                           
       // broadcast change in status to other tabs
-      localStorage.setItem('logout-event', 'logout' + Math.random());
+      localStorage.removeItem('logout-event');
 
       // broadcast change in status to current tab
       this.loginStatus.next();
