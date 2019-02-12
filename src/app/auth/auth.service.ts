@@ -94,23 +94,25 @@ export class AuthService {
     }
   }
   
+  // function no longer needed.  Current user's information referenced directly using authService.authPayload.xxx
+  /*
   currentUser () {
-    /* since currentUser() is also referenced in template, comments regarding efficiency from
-       isLoggedIn() also apply */
+    // since currentUser() is also referenced in template, comments regarding efficiency from
+    //   isLoggedIn() also apply 
     if(this.isLoggedIn()){
-      // var token = this.getToken();
+     // var token = this.getToken();
       // parse of token now handled by getToken if necessary
       // var payload = JSON.parse(atob(token.split('.')[1]));
       return {
            user: {
-           /* payload in token is as follows:
-              payload: {
-                        "id": "5be5e40bfb6fc072d466dd09",
-                        "username": "TommyCat",
-                        "exp": 1551896725,
-                        "iat": 1546712725  // issued at time
-                       }
-           */            
+           // payload in token is as follows:
+           //   payload: {
+           //             "id": "5be5e40bfb6fc072d466dd09",
+           //             "username": "TommyCat",
+           //             "exp": 1551896725,
+           //             "iat": 1546712725  // issued at time
+           //            }
+                    
            //  email : payload.email, -- email not in payload just username and id
            //  if you need to update payload the server code would need to be updated
            //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
@@ -121,6 +123,7 @@ export class AuthService {
       };
     }
   }
+  */
   
   register (user) { 
       let self=this;
