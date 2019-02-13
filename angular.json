@@ -39,17 +39,20 @@
                 "output": "/assets/static_web_pages"
               }
             ],
-          "styles": [                
+          "styles": [  
+              {
+                "input": "node_modules/bootstrap/scss/bootstrap.scss"
+              },  
               {
                 "input": "src/styles.scss"
               }
             ],
             "scripts": [
                {
-                "input": "~chart.js/dist/Chart.js"
+                "input": "node_modules/chart.js/dist/Chart.js"
               },
               {
-                "input": "~hammerjs/hammer.min.js"
+                "input": "node_modules/hammerjs/hammer.min.js"
               }    
             ]
           },
