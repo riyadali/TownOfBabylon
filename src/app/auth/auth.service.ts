@@ -11,6 +11,20 @@ export class AuthService {
   // store the URL so we can redirect after logging in
   redirectUrl: string;
   
+  /* payload in token is as follows:
+        payload: {
+                  "id": "5be5e40bfb6fc072d466dd09",
+                  "username": "TommyCat",
+                  "exp": 1551896725,
+                  "iat": 1546712725  // issued at time
+                }
+  */            
+  //  email : payload.email, -- email not in payload just username and id
+  //  if you need to update payload the server code would need to be updated
+  //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
+  //  my node-express-realword repository.  I'm not sure if this is the only change needed
+  authPayload; // parsed payload from current token.  Null if logged out.
+  
   // Broadcasts changes to login status
   // Someone may then subscribe to this and then take action as necessary
   loginStatus: Subject<any> = new Subject();
@@ -34,10 +48,25 @@ export class AuthService {
   saveToken (token) {
       localStorage.setItem('tob_id_token', token);
       // console.log('saveToken token is....'+token);
+    
+      // Save an updated token in case the user updated his/her profile
+      this.savePayload(token);
   }
   
   getToken () {
-      return localStorage.getItem("tob_id_token");
+      let token = localStorage.getItem("tob_id_token");
+    
+      // token found but not saved yet ... 
+      // parse and save it locally for future reference.  A little more efficient in
+      // that you would only need to reparse the token if it changes.
+      if (token&&!this.authPayload) {
+        this.savePayload(token);
+      }
+      return token;
+  }
+  
+  savePayload (token) {
+    this.authPayload = JSON.parse(atob(token.split('.')[1]));
   }
   
   isLoggedIn () {
@@ -46,14 +75,15 @@ export class AuthService {
        The template for tool-bar-scalable checks isLoggedIn before displaying the sigin button.
        Maybe there is no way around this because you need to check regularly in case some action
        causes the user to be logged out.  But this means that this routine will need to be super
-       efficient.  Let's hope so since it reparses the token every single time. */
+       efficient.  */
     
     //console.log('isloggedIn token is....'+token)
 
     if(token){
-      var payload = JSON.parse(atob(token.split('.')[1]));
+      // parse of token now handled by getToken if necessary
+      // var payload = JSON.parse(atob(token.split('.')[1]));
 
-      if (payload.exp > Date.now() / 1000) {        
+      if (this.authPayload.exp > Date.now() / 1000) {        
         return true;
       } else {
         this.logout(); // token has expired so simulate logout
@@ -64,32 +94,36 @@ export class AuthService {
     }
   }
   
+  // function no longer needed.  Current user's information referenced directly using authService.authPayload.xxx
+  /*
   currentUser () {
-    /* since currentUser() is also referenced in template, comments regarding efficiency from
-       isLoggedIn() also apply */
+    // since currentUser() is also referenced in template, comments regarding efficiency from
+    //   isLoggedIn() also apply 
     if(this.isLoggedIn()){
-      var token = this.getToken();
-      var payload = JSON.parse(atob(token.split('.')[1]));
+     // var token = this.getToken();
+      // parse of token now handled by getToken if necessary
+      // var payload = JSON.parse(atob(token.split('.')[1]));
       return {
            user: {
-           /* payload in token is as follows:
-              payload: {
-                        "id": "5be5e40bfb6fc072d466dd09",
-                        "username": "TommyCat",
-                        "exp": 1551896725,
-                        "iat": 1546712725  // issued at time
-                       }
-           */            
+           // payload in token is as follows:
+           //   payload: {
+           //             "id": "5be5e40bfb6fc072d466dd09",
+           //             "username": "TommyCat",
+           //             "exp": 1551896725,
+           //             "iat": 1546712725  // issued at time
+           //            }
+                    
            //  email : payload.email, -- email not in payload just username and id
            //  if you need to update payload the server code would need to be updated
            //  you can find it here node-express-realworld-example-app/blob/master/models/User.js in
            //  my node-express-realword repository.  I'm not sure if this is the only change needed
-              name : payload.username,
-              id: payload.id
+              name : this.authPayload.username,
+              id: this.authPayload.id
            }
       };
     }
   }
+  */
   
   register (user) { 
       let self=this;
@@ -102,7 +136,20 @@ export class AuthService {
            tap<LoginResultModel>( // Log the result or error
                 res => {
                           self.saveToken(res.user.token);
-                          // broadcast change in status
+                  
+                          // The following was noted at this link 
+                          // https://stackoverflow.com/questions/5370784/localstorage-eventlistener-is-not-called
+                          // The storage event handler will only affect other windows. Whenever something changes in 
+                          // one window inside localStorage all the other windows are notified about it and if any action
+                          // needs to be taken it can be achieved by a handler function listening to the storage event.
+                          //
+                          // For the same window you have to manually call the storageEventHandler function after 
+                          // localStorage.setItem() is called to achieve the same behaviour in the same window.
+                          
+                          // broadcast change in status to other tabs
+                          localStorage.setItem('login-event', 'login' + Math.random());
+
+                          // broadcast change in status to current tab
                           self.loginStatus.next();
                        },         
                 error => console.log("failure after post "+ error.message)
@@ -179,7 +226,15 @@ export class AuthService {
         // https://stackoverflow.com/questions/52189638/rxjs-v6-3-pipe-how-to-use-it       
         .pipe<LoginResultModel,LoginResultModel>(          
            tap<LoginResultModel>( // Log the result or error
-                res => self.saveToken(res.user.token),       
+                res => {
+                        self.saveToken(res.user.token);
+                  
+                        // broadcast change in status to other tabs
+                        // treat as login-event since change in profile, particularly
+                        // username, should be reflected in new token.  So it is as
+                        // if you are logging in with a potential new identity.
+                        localStorage.setItem('login-event', 'login' + Math.random());
+                        },       
                 error => console.log("failure after post "+ error.message)
               ),
            shareReplay<LoginResultModel>()
@@ -197,7 +252,20 @@ export class AuthService {
            tap<LoginResultModel>( // Log the result or error
                 res => {
                           self.saveToken(res.user.token);
-                          // broadcast change in status
+                  
+                          // The following was noted at this link 
+                          // https://stackoverflow.com/questions/5370784/localstorage-eventlistener-is-not-called
+                          // The storage event handler will only affect other windows. Whenever something changes in 
+                          // one window inside localStorage all the other windows are notified about it and if any action
+                          // needs to be taken it can be achieved by a handler function listening to the storage event.
+                          //
+                          // For the same window you have to manually call the storageEventHandler function after 
+                          // localStorage.setItem() is called to achieve the same behaviour in the same window.
+                          
+                          // broadcast change in status to other tabs
+                          localStorage.setItem('login-event', 'login' + Math.random());
+
+                          // broadcast change in status to current tab
                           self.loginStatus.next();
                        },        
                 error => console.log("failure after post "+ error.message)
@@ -208,7 +276,57 @@ export class AuthService {
   
   logout () {
       localStorage.removeItem("tob_id_token");
+      this.authPayload=null;
+    
+      // The following was noted at this link 
+      // https://stackoverflow.com/questions/5370784/localstorage-eventlistener-is-not-called
+      // The storage event handler will only affect other windows. Whenever something changes in 
+      // one window inside localStorage all the other windows are notified about it and if any action
+      // needs to be taken it can be achieved by a handler function listening to the storage event.
+      //
+      // For the same window you have to manually call the storageEventHandler function after 
+      // localStorage.setItem() is called to achieve the same behaviour in the same window.
+                          
+      // broadcast change in status to other tabs
+      localStorage.setItem('logout-event', 'logout' + Math.random());
+
+      // broadcast change in status to current tab
       this.loginStatus.next();
+  }
+  
+  // the handler is self contained and is passed in the authentication service ... i.e, this object
+  // as authService
+  
+  // the primary purpose of this handler is to detect logouts across tabs.  So if a user logs out on any
+  // active tab, the display on all other tabs will be refreshed to indicate this new status.
+  handleLogoutEvent = function(authService) {
+     // return a function that would actually handle the logout event
+     return function curried_func(event) {        
+        if (event.key == 'logout-event') { 
+          // console.log("hit logout handler")
+          authService.loginStatus.next();
+        }
+     }      
+  }
+  
+  // the primary purpose of this handler is to detect logins across tabs.  So if a user logs in on any
+  // active tab, the display on all other tabs will be refreshed to indicate this new status.
+  handleLoginEvent = function(authService) {
+     // return a function that would actually handle the login event
+     return function curried_func(event) {        
+        if (event.key == 'login-event') { 
+          // ensure that current version of token is saved locally
+          // This is specifically for the use case where someone
+          // updated their username in one tab.  Any other open tabs 
+          // should reflect that updated username
+          let token = authService.getToken();
+          if (token) {
+            authService.savePayload (token);
+          }
+          // console.log("hit login handler")
+          authService.loginStatus.next(); // force refresh of current display by emitting event on loginStatus
+        }
+     }      
   }
          
 }
