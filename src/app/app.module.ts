@@ -98,6 +98,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
 
 // various payment processors
 import { NgxPayPalModule } from 'ngx-paypal';
+import { PayPalComponent } from './payment/paypal/paypal.component';
 
 @NgModule({
   imports: [
@@ -190,7 +191,10 @@ import { NgxPayPalModule } from 'ngx-paypal';
     // LoginComponent moved to AuthModule
     // PageLoginComponent, (now defined in entryComponent)
     // PageRegisterComponent, (now defined in entryComponent)
-    PageUpdateProfileComponent
+    PageUpdateProfileComponent,
+    
+    // various payment component
+    PayPalComponent
   ],
   // Because PageLoginComponent and PageRegisterComponent are loaded dynamically into the modal dialog,
   // they are imported and defined as entryComponent in app.module.ts.
