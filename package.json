@@ -32,6 +32,7 @@
     "angular-calendar": "^0.26.1",
     "date-fns": "^1.29.0", 
     "ng-pick-datetime": "^7.0.0",
+    "ngx-paypal": "^4.0.0",
     "ics-to-json": "^1.0.0"
   },
   "version": "0.0.0",
