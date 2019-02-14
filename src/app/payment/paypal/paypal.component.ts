@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PayPalConfig, PayPalEnvironment, PayPalIntegrationType } from 'ngx-paypal';
  
 @Component({
-  selector: 'paypal',
+  selector: 'app-paypal',
   templateUrl: './paypal.component.html',
   styleUrls: ['./paypal.component.scss']
 })
