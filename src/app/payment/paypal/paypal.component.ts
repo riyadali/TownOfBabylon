@@ -4,7 +4,12 @@ import { PayPalConfig, PayPalEnvironment, PayPalIntegrationType } from 'ngx-payp
 @Component({
   templateUrl: './your.component.html',
 })
-export class MainComponent implements OnInit {
+@Component({
+  selector: 'paypal',
+  templateUrl: './paypal.component.html',
+  styleUrls: ['./paypal.component.scss']
+})
+export class PayPalComponent implements OnInit {
  
 public payPalConfig?: PayPalConfig;
  
