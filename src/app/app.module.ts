@@ -96,6 +96,8 @@ import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
+// various payment processors
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @NgModule({
   imports: [
@@ -141,7 +143,10 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     // Remove it when a real server is ready to receive requests.
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true }
-    )
+    ),
+    
+    // various payment processors
+    NgxPayPalModule
   ],
   /* schemas: [ NO_ERRORS_SCHEMA ], */
   schemas: [ ],
