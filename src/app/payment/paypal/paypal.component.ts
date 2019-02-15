@@ -43,6 +43,12 @@ public payPalConfig?: PayPalConfig;
       onError: (err) => {
         console.log('OnError');
       },
+      /* sample customization to limitf funding sources
+      funding: {
+        allowed: [PayPalFunding.Credit],  // allow payapal credit button
+        disallowed:  [PayPalFunding.Card]  // disallow credit cards     
+      },
+      */
       transactions: [{
         amount: {
           currency: 'USD',
