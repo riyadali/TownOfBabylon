@@ -24,7 +24,14 @@ public payPalConfig?: PayPalConfig;
     this.payPalConfig = new PayPalConfig(PayPalIntegrationType.ClientSideREST, PayPalEnvironment.Sandbox, {
       commit: true,
       client: {
-        sandbox: 'yourSandboxKey'
+        /* steps for generating credentials ...
+           1) go to "My Apps & Credentials" at https://developer.paypal.com/developer/applications/
+           2) under "REST API Apps" click "Create App" button
+           3) click on that app to get "Client ID" Credentials
+           4) by default you are under the sandbox tab so you'll get the sandbox Credentials
+           5) You may also get the live credentials -- you may want to ensure that you are not using the live credentials
+        */
+        sandbox: 'AbTZKC4LxWEIDnwkWUCAL8mpsIovzdGrOZanf5Klr76BNfgnJCd1novcQOT1t7rMOAL7qoVdqx7CtpZB' // from test1 app
       },
       // refer to this site for button customization https://developer.paypal.com/docs/checkout/integration-features/customize-button/
       button: {
