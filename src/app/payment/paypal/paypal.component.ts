@@ -15,13 +15,18 @@ public payPalConfig?: PayPalConfig;
   }
  
   private initConfig(): void {
+    // For PayPal customization refer to this link https://developer.paypal.com/docs/checkout/reference/customize-sdk/#
+    
     // refer to this link https://github.com/Enngage/ngx-paypal/blob/master/projects/ngx-paypal-lib/src/lib/models/paypal-models.ts
     // for a definition of all the interfaces
+    
+    // To disable certain cards refer to this link https://developer.paypal.com/docs/checkout/reference/customize-sdk/#disable-funding
     this.payPalConfig = new PayPalConfig(PayPalIntegrationType.ClientSideREST, PayPalEnvironment.Sandbox, {
       commit: true,
       client: {
         sandbox: 'yourSandboxKey'
       },
+      // refer to this site for button customization https://developer.paypal.com/docs/checkout/integration-features/customize-button/
       button: {
         label: 'paypal',
         size: 'responsive', // small, medium, large, or responsive (small does not appear to work)
