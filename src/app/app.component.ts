@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ModalService } from './modal.service';
 import {Globals} from  './shared/app.global';  // for shared variables
 
+import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, RoutesRecognized } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,7 +16,20 @@ export class AppComponent {
     this.modalService.destroy();
   }
   
-  constructor(private modalService: ModalService, private globals: Globals) { }
+  constructor(private modalService: ModalService, private globals: Globals, router: Router) { 
+   
+    router.events.forEach((event) => {
+      if(event instanceof NavigationStart) {
+        // clear message whenever you navigate to new page
+        globals.msgInfo='';
+      }
+      // NavigationEnd
+      // NavigationCancel
+      // NavigationError
+      // RoutesRecognized  
+    });
+    
+  }
 }
 
 
