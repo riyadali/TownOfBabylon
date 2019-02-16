@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 // is being shared by app.module as well as auth.module
 import { AppCommonModule } from './common.module';
 
+import {Globals} from  './shared/app.global';  // for shared variables
+
 /* Because interceptors are (optional) dependencies of the HttpClient service, you 
    must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
    Interceptors provided after DI creates the HttpClient are ignored.
@@ -96,6 +98,9 @@ import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageUpdateProfileComponent } from './page-update-profile/page-update-profile.component';
 
+// various payment processors
+import { NgxPayPalModule } from 'ngx-paypal';
+import { PayPalComponent } from './payment/paypal/paypal.component';
 
 @NgModule({
   imports: [
@@ -141,7 +146,10 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     // Remove it when a real server is ready to receive requests.
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true }
-    )
+    ),
+    
+    // various payment processors
+    NgxPayPalModule
   ],
   /* schemas: [ NO_ERRORS_SCHEMA ], */
   schemas: [ ],
@@ -185,7 +193,10 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
     // LoginComponent moved to AuthModule
     // PageLoginComponent, (now defined in entryComponent)
     // PageRegisterComponent, (now defined in entryComponent)
-    PageUpdateProfileComponent
+    PageUpdateProfileComponent,
+    
+    // various payment component
+    PayPalComponent
   ],
   // Because PageLoginComponent and PageRegisterComponent are loaded dynamically into the modal dialog,
   // they are imported and defined as entryComponent in app.module.ts.
@@ -193,7 +204,7 @@ import { PageUpdateProfileComponent } from './page-update-profile/page-update-pr
   entryComponents: [PageLoginComponent, PageRegisterComponent, PageUpdateProfileComponent],
   bootstrap: [ AppComponent ],
   providers: [ TransactionService, { provide: 'Window', useValue: window }, SearchService, CalEventService, AuthService, 
-                ModalService, DomService, httpInterceptorProviders]
+                ModalService, DomService, httpInterceptorProviders, Globals]
 })
 export class AppModule {
   

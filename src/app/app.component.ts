@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { ModalService } from './modal.service';
+import {Globals} from  './shared/app.global';  // for shared variables
+
+import { Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, RoutesRecognized } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +16,21 @@ export class AppComponent {
     this.modalService.destroy();
   }
   
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private globals: Globals, router: Router) { 
+   
+    // refer to this link https://stackoverflow.com/questions/33520043/how-to-detect-a-route-change-in-angular
+    router.events.forEach((event) => {
+      if(event instanceof NavigationStart) {
+        // clear message whenever you navigate to new page
+        globals.msgInfo='';
+      }
+      // NavigationEnd
+      // NavigationCancel
+      // NavigationError
+      // RoutesRecognized  
+    });
+    
+  }
 }
 
 
