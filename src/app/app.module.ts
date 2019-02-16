@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 // is being shared by app.module as well as auth.module
 import { AppCommonModule } from './common.module';
 
-import { AppGlobal } from '../shared/app.global';  // for shared variables
+import { AppGlobal } from './shared/app.global';  // for shared variables
 
 /* Because interceptors are (optional) dependencies of the HttpClient service, you 
    must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
