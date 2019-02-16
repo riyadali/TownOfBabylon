@@ -18,6 +18,7 @@ export class AppComponent {
   
   constructor(private modalService: ModalService, private globals: Globals, router: Router) { 
    
+    // refer to this link https://stackoverflow.com/questions/33520043/how-to-detect-a-route-change-in-angular
     router.events.forEach((event) => {
       if(event instanceof NavigationStart) {
         // clear message whenever you navigate to new page
