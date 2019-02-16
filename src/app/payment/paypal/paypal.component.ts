@@ -43,7 +43,8 @@ public payPalConfig?: PayPalConfig;
         shape: 'pill'       // could also be 'rect'
       },
       onPaymentComplete: (data, actions) => {
-        console.log('OnPaymentComplete');
+        console.log("Transaction completed by "+JSON.stringify(data)+"====="+JSON.stringify(actions));
+        alert("Transaction completed by "+JSON.stringify(data)+"====="+JSON.stringify(actions))
       },
       onCancel: (data, actions) => {
         console.log('OnCancel');
