@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 // is being shared by app.module as well as auth.module
 import { AppCommonModule } from './common.module';
 
+import { AppGlobal } from '../shared/app.global';  // for shared variables
+
 /* Because interceptors are (optional) dependencies of the HttpClient service, you 
    must provide them in the same injector (or a parent of the injector) that provides HttpClient. 
    Interceptors provided after DI creates the HttpClient are ignored.
@@ -121,6 +123,7 @@ import { PayPalComponent } from './payment/paypal/paypal.component';
 // *** But for now leaving header component in AppCommonModule 
 // *** because may want to use appcommon for other shared components
     AppCommonModule,
+    AppGlobal, // for variables sharted across app
     AuthModule,
     AppRoutingModule,
     HttpClientModule,
