@@ -5,7 +5,7 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 @Component({
   selector: 'app-payment-square',
   templateUrl: './payment-square.component.html',
-  styleUrls: ['./payment-square.component.css']
+  styleUrls: ['./payment-square.component.scss']
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
