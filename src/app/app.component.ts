@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalService } from './modal.service';
+import {Globals} from  './shared/app.global';  // for shared variables
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
     this.modalService.destroy();
   }
   
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private globals: Globals) { }
 }
 
 
