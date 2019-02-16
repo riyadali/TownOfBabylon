@@ -7,7 +7,8 @@ import { PayPalConfig, PayPalEnvironment, PayPalIntegrationType } from 'ngx-payp
   styleUrls: ['./paypal.component.scss']
 })
 export class PayPalComponent implements OnInit {
- 
+
+// Refer to these links https://github.com/Enngage/ngx-paypal (angular 6 paypal) and also https://www.npmjs.com/package/ngx-paypal 
 public payPalConfig?: PayPalConfig;
  
   ngOnInit(): void {
