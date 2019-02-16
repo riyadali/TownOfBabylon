@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PayPalConfig, PayPalEnvironment, PayPalIntegrationType } from 'ngx-paypal';
+import {Globals} from  '../../shared/app.global';  // for shared variables
  
 @Component({
   selector: 'app-paypal',
@@ -7,10 +8,14 @@ import { PayPalConfig, PayPalEnvironment, PayPalIntegrationType } from 'ngx-payp
   styleUrls: ['./paypal.component.scss']
 })
 export class PayPalComponent implements OnInit {
+  
 
 // Refer to these links https://github.com/Enngage/ngx-paypal (angular 6 paypal) and also https://www.npmjs.com/package/ngx-paypal 
 public payPalConfig?: PayPalConfig;
- 
+  
+  constructor(private globals: Globals) {
+  }
+  
   ngOnInit(): void {
     this.initConfig();
   }
@@ -43,8 +48,9 @@ public payPalConfig?: PayPalConfig;
         shape: 'pill'       // could also be 'rect'
       },
       onPaymentComplete: (data, actions) => {
-        console.log("Transaction completed by "+JSON.stringify(data)+"====="+JSON.stringify(actions));
-        alert("Transaction completed by "+JSON.stringify(data)+"====="+JSON.stringify(actions))
+        //console.log("Transaction completed by "+JSON.stringify(data)+"====="+JSON.stringify(actions));
+        // alert("Transaction completed by "+JSON.stringify(data)+"====="+JSON.stringify(actions))
+        this.globals.msgInfo="Transaction completed";
       },
       onCancel: (data, actions) => {
         console.log('OnCancel');
