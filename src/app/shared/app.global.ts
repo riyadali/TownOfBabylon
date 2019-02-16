@@ -1,16 +1,12 @@
 // This module is for variables shared across the app
 
-import { NgModule }       from '@angular/core';
+import { Injectable } from '@angular/core';
 
-
-@NgModule({  
-  declarations: [ AppGlobal ],
-  exports: [ AppGlobal ]
-})
-export class AppGlobal {
-  msgInfo = '';
+@Injectable()
+export class Globals {
+  msgInfo: string = '';
+  
 }
-
 
 /*
 Copyright 2017-2018 Google Inc. All Rights Reserved.
