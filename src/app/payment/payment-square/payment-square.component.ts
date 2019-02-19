@@ -29,9 +29,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       // Customize the CSS for SqPaymentForm iframe elements
       inputStyles: [{
           /* fontSize: '.9em' */        
-          mediaMaxWidth: '520px',
-          fontSize: '.9em',
-          lineHeight: '50px' 
+          mediaMaxWidth: '520px', // keep in sync with mediawidth in external styles
+          fontSize: '18px',
+          fontFamily: 'Helvetica Neue',
+          padding: '15px',
+          color: '#373F4A',
+          lineHeight: '24px',
+          placeholderColor: '#BDBFBF'
       }],
     
     
