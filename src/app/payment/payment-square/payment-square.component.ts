@@ -15,10 +15,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Set the application ID
-    var applicationId = "sandbox-sq0idp-_5eUpZ_kZLEpEAlOJOa8-w";
+    var applicationId = "sandbox-sq0idp-C6tuS5thsbqmjqa9LGiUyA";
 
     // Set the location ID
-    var locationId = "CBASELjav8kAOzgP4SZlbX46e_IgAQ";
+    var locationId = "CBASEFbzlRgZ_4BMSnfPml8y7rQgAQ";
     this.paymentForm = new SqPaymentForm({
 
       // Initialize the payment form elements
@@ -92,23 +92,23 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             countryCode: "US",
             total: {
               label: "Hakuna",
-              amount: "{{REPLACE_ME}}",
+              amount: 1000,
               pending: false,
             },
             lineItems: [
               {
                 label: "Subtotal",
-                amount: "{{REPLACE_ME}}",
+                amount: 1000,
                 pending: false,
               },
               {
                 label: "Shipping",
-                amount: "{{REPLACE_ME}}",
+                amount: 5.75,
                 pending: true,
               },
               {
                 label: "Tax",
-                amount: "{{REPLACE_ME}}",
+                amount: 6.09,
                 pending: false,
               }
             ]
@@ -199,6 +199,11 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.paymentForm.requestCardNonce();
   }
 
-  ngAfterViewInit(){}
+  ngAfterViewInit() {
+    if (SqPaymentForm.isSupportedBrowser()) {
+      this.paymentForm.build();
+      this.paymentForm.recalculateSize();
+    }
+  }
 
 }
