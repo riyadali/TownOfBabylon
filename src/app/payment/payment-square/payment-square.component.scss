@@ -6,6 +6,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+// custom button for all media types
+.button-credit-card {
+      display: block;
+      width: 100%;
+      height: 56px;
+      padding: 15px;
+      margin-top: 10px;
+      background: #0EB00E;
+      box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 2px 2px 0 rgba(0,0,0,0.10);
+      border-radius: 4px;
+      cursor:pointer;
+      color: #FFFFFF;
+      font-size: 16px;
+      line-height: 24px;
+      text-align: center;
+      outline: none;
+}
+
 @media only screen and (max-width:520px)  {
     #paymentDetails {
       width: 300px;
@@ -79,52 +97,18 @@
     #sq-postal-code {
       width: 121px; /* minus left/right padding from .sq-input */
     }
-    /* Customize the "Pay with Credit Card" button */
-    /* from square doc
+      
+    // button tailored for small media type
     .button-credit-card {
-      min-width: 100px;
-      min-height: 14px;
-      padding: 0;
-      margin: 5px;
-      line-height: 12px;
-      font-weight: bold;
-      width: calc(100% - 53px); // minus left/right padding from .sq-input 
-    }
-    */
-    // custom button
-    .button-credit-card {
-      display: block;
-      width: 100%;
-      height: 56px;
-      padding: 15px;
-      margin-top: 10px;
-      background: #0EB00E;
-      box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 2px 2px 0 rgba(0,0,0,0.10);
-      border-radius: 4px;
-      cursor:pointer;
-      color: #FFFFFF;
-      font-size: 16px;
-      line-height: 24px;
-      text-align: center;
-      outline: none;
+      // min-width: 100px; // from square
+      // min-height: 14px; // from square
+      width: calc(100% - 53px); // from square -- width previously set to 100%      
+      height: 45px; // custom was 56px
+      padding: 0px; // custom was 15px
+      // margin-top: 10px; -- not sure if this is needed      
+      font-size: 13px;   // custom was 16 px
+      line-height: 18px; // custom was set at 24 px      
     }
 
 }  
 
-// custom button
-    .button-credit-card {
-      display: block;
-      width: 100%;
-      height: 56px;
-      padding: 15px;
-      margin-top: 10px;
-      background: #0EB00E;
-      box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 2px 2px 0 rgba(0,0,0,0.10);
-      border-radius: 4px;
-      cursor:pointer;
-      color: #FFFFFF;
-      font-size: 16px;
-      line-height: 24px;
-      text-align: center;
-      outline: none;
-    }
