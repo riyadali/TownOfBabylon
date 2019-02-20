@@ -32,7 +32,9 @@
       padding-right: 16px;
     }
 
-/* custom -- eventually may want to resize based on screen size */
+/* custom -- eventually may want to resize based on screen size 
+   this controls the styling for the entire square form including
+   address information */
  #sq-ccbox {
       float:left;
       margin:5px;
@@ -43,45 +45,14 @@
       font-weight: bold;
     }
 
-@media only screen and (max-width:520px)  {
-    #paymentDetails {
-      width: 300px;
-    }
-    /* from square doc 
-    #sq-ccbox {
-      padding:5px;
-      font-weight: bold;
-      font-size: 12px;
-      width: calc(100% - 63px);
-      text-align: left;
-    }
-    */
-    #sq-ccbox {
-      float:left;
-      margin:5px;
-      padding:10px;
-      vertical-align: top;
-      font-weight: bold;
-    }
-    /* from square doc 
-    .sq-input {
-      height: calc(26px - 10px); // 36 minus 10px top/bottom padding 
-      padding: 1px 2px;  // top, right 
-    }
-
-    /* custom */
+  /* custom */
     .sq-input {
       display: inline-block;
       border: 1px solid #E0E2E3;
       border-radius: 4px;
     }
 
-    /* custom */
-    .sq-input--focus {
-      border: 1px solid #4A90E2;
-      box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 2px 2px 0 rgba(0,0,0,0.10);
-    }
-
+    
     /* custom */
     .sq-input--error {
       border: 1px solid red;
@@ -92,7 +63,11 @@
       width: calc(100% - 3px); // minus left/right padding from .sq-input 
     }
 
-       
+@media only screen and (max-width:520px)  {
+    #paymentDetails {
+      width: 300px;
+    }
+          
     /* card field lockup */
     #sq-card-number {
       width: 121px; /* minus left/right padding from .sq-input */
