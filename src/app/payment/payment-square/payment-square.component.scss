@@ -58,7 +58,13 @@
       border: 1px solid red;
     }
 
-    /* custom */
+     /* custom */
+    .sq-input--focus {
+      border: 1px solid #4A90E2;
+      box-shadow: 0 0 2px 0 rgba(0,0,0,0.10), 0 2px 2px 0 rgba(0,0,0,0.10);
+    }
+
+    /* square */
     .sq-input.full {
       width: calc(100% - 3px); // minus left/right padding from .sq-input 
     }
