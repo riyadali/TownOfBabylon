@@ -111,7 +111,7 @@
       
     // button tailored for small media type
     .button-credit-card {
-      // min-width: 100px; // from square
+      min-width: 100px; // from square
       // min-height: 14px; // from square
       width: calc(100% - 53px); // from square -- width previously set to 100%      
       height: 45px; // custom was 56px
