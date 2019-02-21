@@ -29,13 +29,19 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     
       // Customize the CSS for SqPaymentForm iframe elements
       inputStyles: [{
-          /* fontSize: '.9em' */    
-          fontSize: '18px',
-          fontFamily: 'Helvetica Neue',
-          padding: '15px',
-          color: '#373F4A',
-          lineHeight: '24px',
-          placeholderColor: '#BDBFBF'
+          // from --
+          // https://github.com/square/connect-api-examples/blob/master/templates/web-ui/payment-form/custom/sq-payment-form.js
+        
+          // backgroundColor: 'transparent',
+          color: '#333333',
+          fontFamily: '"Helvetica Neue", "Helvetica", sans-serif',
+          fontSize: '16px',
+          fontWeight: '400',
+          placeholderColor: '#8594A7',
+          placeholderFontWeight: '400',
+          padding: '16px',
+          _webkitFontSmoothing: 'antialiased',
+          _mozOsxFontSmoothing: 'grayscale'
       }],
       
        // Initialize Google Pay button ID -- from 
