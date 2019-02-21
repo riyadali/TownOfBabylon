@@ -37,6 +37,24 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
           lineHeight: '24px',
           placeholderColor: '#BDBFBF'
       }],
+      
+       // Initialize Google Pay button ID -- from 
+       // https://github.com/square/connect-api-examples/blob/master/templates/web-ui/payment-form/custom/sq-payment-form.js
+      googlePay: {
+        elementId: 'sq-google-pay'
+      },
+
+      // Initialize Apple Pay placeholder ID -- from
+      // https://github.com/square/connect-api-examples/blob/master/templates/web-ui/payment-form/custom/sq-payment-form.js
+      applePay: {
+        elementId: 'sq-apple-pay'
+      },
+
+      // Initialize Masterpass placeholder ID -- from
+      // https://github.com/square/connect-api-examples/blob/master/templates/web-ui/payment-form/custom/sq-payment-form.js
+      masterpass: {
+        elementId: 'sq-masterpass'
+      },
     
     
     
@@ -66,22 +84,32 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
          */
         methodsSupported: function (methods) {
     
-          var applePayBtn = document.getElementById('sq-apple-pay');
-          var applePayLabel = document.getElementById('sq-apple-pay-label');
-          var masterpassBtn = document.getElementById('sq-masterpass');
-          var masterpassLabel = document.getElementById('sq-masterpass-label');
-    
-          // Only show the button if Apple Pay for Web is enabled
-          // Otherwise, display the wallet not enabled message.
-          if (methods.applePay === true) {
-            applePayBtn.style.display = 'inline-block';
-            applePayLabel.style.display = 'none' ;
+           // from https://github.com/square/connect-api-examples/blob/master/templates/web-ui/payment-form/custom/sq-payment-form.js
+          
+           if (!methods.masterpass && !methods.applePay && !methods.googlePay) {
+              var walletBox = document.getElementById('sq-walletbox');
+              walletBox.style.display = 'none';
+           } else {
+              var walletBox = document.getElementById('sq-walletbox');
+              walletBox.style.display = 'block';
+           }
+
+          // Only show the button if Google Pay is enabled
+          if (methods.googlePay === true) {
+            var googlePayBtn = document.getElementById('sq-google-pay');
+            googlePayBtn.style.display = 'inline-block';
           }
+
+          // Only show the button if Apple Pay for Web is enabled
+          if (methods.applePay === true) {
+            var applePayBtn = document.getElementById('sq-apple-pay');
+            applePayBtn.style.display = 'inline-block';
+          }
+
           // Only show the button if Masterpass is enabled
-          // Otherwise, display the wallet not enabled message.
           if (methods.masterpass === true) {
+            var masterpassBtn = document.getElementById('sq-masterpass');
             masterpassBtn.style.display = 'inline-block';
-            masterpassLabel.style.display = 'none';
           }
         },
     
