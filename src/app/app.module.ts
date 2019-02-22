@@ -34,6 +34,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './in-memory-data.service';
 import { SearchService } from './search.service';
 import { CalEventService } from './cal-event.service';
+import { SquarePaymentService } from './payment-square.service';
 import { AuthService } from './auth/auth.service';
 import { ModalService } from './modal.service';
 import { DomService } from './dom.service';
@@ -206,8 +207,8 @@ import { PaymentSquareComponent } from './payment/payment-square/payment-square.
   // Refer to example in https://itnext.io/angular-create-your-own-modal-boxes-20bb663084a1
   entryComponents: [PageLoginComponent, PageRegisterComponent, PageUpdateProfileComponent],
   bootstrap: [ AppComponent ],
-  providers: [ TransactionService, { provide: 'Window', useValue: window }, SearchService, CalEventService, AuthService, 
-                ModalService, DomService, httpInterceptorProviders, Globals]
+  providers: [ TransactionService, { provide: 'Window', useValue: window }, SearchService, CalEventService, SquarePaymentService,
+               AuthService, ModalService, DomService, httpInterceptorProviders, Globals]
 })
 export class AppModule {
   
