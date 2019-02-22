@@ -40,7 +40,7 @@ export class SquarePaymentService {
       */
       //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
       tap(x => this.log(`Processed payment. Response is `+ JSON.stringify(x))),
-      catchError(this.handleError<any>('addCalendarEvent',{}))
+      catchError(this.handleError<any>('processPayment',{}))
     );
   }
 
