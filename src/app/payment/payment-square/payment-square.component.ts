@@ -29,7 +29,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       applicationId: applicationId,
       locationId: locationId,
       inputClass: 'sq-input',
-      mediaMaxWidth: '520px', // keep in sync with mediawidth in external styles
+      // mediaMaxWidth: '520px', // keep in sync with mediawidth in external styles
     
       // Customize the CSS for SqPaymentForm iframe elements
       inputStyles: [{
