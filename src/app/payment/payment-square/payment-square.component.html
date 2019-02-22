@@ -1,12 +1,22 @@
      <!-- link to the SqPaymentForm library -->
 
    <!-- link to the local SqPaymentForm initialization -->
+<!-- most of this from https://github.com/square/connect-api-examples/blob/master/connect-examples/v2/node_payment/views/index.pug -->
 
- <div class="row no-gutters create-account">
-      <div class="col-3"></div>
-      <div class="col-6 card-box" id="card_1">  
-        <div class="middle"> 
-        <div id="sq-ccbox">
+ <div class="sq-payment-form ">
+
+       <div id="sq-walletbox">
+         <button id="sq-google-pay" class="button-google-pay"></button>
+         <button id="sq-apple-pay" class="sq-apple-pay"></button>
+        <button id="sq-masterpass" class="sq-masterpass"></button>
+        <div class="sq-wallet-divider">
+          <span class="sq-wallet-divider__text"> Or</span>
+        </div>
+     
+      </div>
+
+       <div id="sq-ccbox">
+        
         <h2>Payment Information</h2>
  
         <form id="nonce-form" novalidate action="/v1/square/customer/createCard" method="post">
@@ -25,17 +35,31 @@
             <input type="text" name="country" id="country"  size="35" required><br>
           </div>
 
+       
           <h2>Pay with a Credit Card</h2>
-          <label for="sq-card-number">Card Number:</label>
-          <div id="sq-card-number"></div>
-          <label for="sq-cvv">CVV:</label>
-          <div id="sq-cvv"></div>
-          <label for="sq-expiration-date">Expiration Date:</label>
-          <div id="sq-expiration-date"></div>
-          <label for="sq-postal-code">Postal Code:</label>
-          <div id="sq-postal-code"></div>
+          <div class="sq-field">
+            <label for="sq-card-number" class="sq-label">Card Number:</label>
+            <div id="sq-card-number"></div>
+          </div>
+          <div class="sq-field-wrapper">
+            <div class="sq-field sq-field--in-wrapper">
+              <label for="sq-cvv" class="sq-label">CVV:                
+              </label>
+              <div id="sq-cvv"></div>
+            </div>
+            <div class="sq-field sq-field--in-wrapper">
+              <label for="sq-expiration-date" class="sq-label">Expiration </label>
+              <div id="sq-expiration-date"></div>
+            </div>
+            <div class="sq-field sq-field--in-wrapper">
+              <label for="sq-postal-code" class="sq-label">Postal Code </label>
+              <div id="sq-postal-code"></div>
+            </div>
+          </div>
 
-          <button id="sq-creditcard" class="btn-main button-credit-card" (click)="this.requestCardNonce($event)">Pay with card</button>
+          <div class="sq-field">
+          <button id="sq-creditcard" class="sq-button btn-main button-credit-card" (click)="this.requestCardNonce($event)">Pay with card</button>
+          </div>
         
           <input type="hidden" id="sq-id" name="sq-id">
           <input type="hidden" id="card-nonce" name="nonce">
@@ -43,8 +67,7 @@
 
         </form>
       </div>
-      </div>
-
-    </div>
+     
+    
   </div>
   
