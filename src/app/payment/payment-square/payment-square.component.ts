@@ -1,5 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 
+import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
+
+import { SquarePaymentService } from '../../payment-square.service';
+
 declare var SqPaymentForm : any; //magic to allow us to access the SquarePaymentForm lib
 
 @Component({
@@ -9,7 +13,7 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
-  constructor() { }
+  constructor(private squarePaymentService: SquarePaymentService) { }
 
   paymentForm; //this is our payment form object
 
