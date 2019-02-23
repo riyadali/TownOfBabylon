@@ -18,6 +18,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   paymentForm; //this is our payment form object
 
   ngOnInit() {
+    let self=this;
     // Set the application ID
     var applicationId = "sandbox-sq0idp-C6tuS5thsbqmjqa9LGiUyA";
 
@@ -185,7 +186,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
           (<HTMLInputElement>document.getElementById('sq-id')).value = "CBASEC8F-Phq5_pV7UNi64_kX_4gAQ";
     
           // POST the nonce form to the payment processing page
-          (<HTMLFormElement>document.getElementById('nonce-form')).submit();
+          // (<HTMLFormElement>document.getElementById('nonce-form')).submit();
+          self.processCardPayment();
     
         },
     
@@ -249,6 +251,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       this.paymentForm.build();
       this.paymentForm.recalculateSize();
     }
+  }
+  
+  private processCardPayment() {   
+    let nonce = (<HTMLInputElement>document.getElementById('card-nonce')).value
+    this.squarePaymentService.processPayment({"nonce": nonce} as SquareProcessPaymentRequest)      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
   }
 
 }
