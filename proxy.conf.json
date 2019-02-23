@@ -17,11 +17,11 @@
     "changeOrigin": true 
    , "logLevel": "debug"
   },
-   "/paymentSquare": {
+   "/paymentSquare/*": {
     "target": "https://riystest.herokuapp.com",
     "secure": true,
     "pathRewrite": {
-    "^/paymentSquare": "/"
+    "^/paymentSquare": ""
   },
     "changeOrigin": true 
    , "logLevel": "debug"
