@@ -39,7 +39,8 @@ export class SquarePaymentService {
         }), 
       */
       //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
-      tap(x => this.log(`Processed payment. Response is `+ JSON.stringify(x))),
+      // tap(x => this.log(`Processed payment. Response is `+ JSON.stringify(x))),
+      tap(x => this.log(`Processed payment.)),
       catchError(this.handleError<any>('processPayment',{}))
     );
   }
@@ -69,7 +70,7 @@ export class SquarePaymentService {
 
   /** Log a CalendarEventService message with the MessageService */
   private log(message: string) {
-    this.messageService.add('CalendarEventService: ' + message);
+    this.messageService.add('SquarePaymentService: ' + message);
   }
 }
 
