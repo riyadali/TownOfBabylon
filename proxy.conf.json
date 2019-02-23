@@ -16,5 +16,14 @@
   },
     "changeOrigin": true 
    , "logLevel": "debug"
+  },
+   "/paymentSquare": {
+    "target": "https://riystest.herokuapp.com",
+    "secure": true,
+    "pathRewrite": {
+    "^/paymentSquare": "/"
+  },
+    "changeOrigin": true 
+   , "logLevel": "debug"
   }
 }
