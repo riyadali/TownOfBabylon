@@ -19,7 +19,7 @@ import { SquareProcessPaymentRequest } from './model/SquareProcessPaymentRequest
 @Injectable({ providedIn: 'root' })
 export class SquarePaymentService {
 
-  private squarePaymentUrl = apiSquarePaymentURL+"process-Payment";  // URL to web api that will interface with square's payment processor
+  private squarePaymentUrl = apiSquarePaymentURL+"process-payment";  // URL to web api that will interface with square's payment processor
   
   constructor(
     private http: HttpClient,
