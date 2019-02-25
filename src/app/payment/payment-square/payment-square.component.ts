@@ -129,36 +129,39 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
          * Triggered when: a digital wallet payment button is clicked.
          */
         createPaymentRequest: function () {
-          // The payment request below is provided as
-          // guidance. You should add code to create the object
-          // programmatically.
-          return {
-            requestShippingAddress: true,
-            currencyCode: "USD",
-            countryCode: "US",
-            total: {
-              label: "Hakuna",
-              amount: 1000,
-              pending: false,
-            },
-            lineItems: [
+          var paymentRequestJson = {
+            requestShippingAddress: false,
+            requestBillingInfo: true,
+            shippingContact: {
+              familyName: "CUSTOMER LAST NAME",
+              givenName: "CUSTOMER FIRST NAME",
+              email: "mycustomer@example.com",
+              country: "USA",
+              region: "CA",
+              city: "San Francisco",
+              addressLines: [
+                "1455 Market St #600"
+              ],
+              postalCode: "94103",
+              phone:"14255551212"
+           },
+           currencyCode: "USD",
+           countryCode: "US",
+           total: {
+              label: "MERCHANT NAME",
+              amount: "1.00",
+              pending: false
+           },
+           lineItems: [
               {
                 label: "Subtotal",
-                amount: 1000,
-                pending: false,
-              },
-              {
-                label: "Shipping",
-                amount: 5.75,
-                pending: true,
-              },
-              {
-                label: "Tax",
-                amount: 6.09,
-                pending: false,
+                amount: "1.00",
+                pending: false
               }
-            ]
+           ]
           };
+
+          return paymentRequestJson;
         },
     
         /*
