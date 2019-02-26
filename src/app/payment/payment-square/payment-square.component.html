@@ -6,6 +6,9 @@
  <div class="sq-payment-form ">
 
        <div id="sq-walletbox">
+         <div class="sq-wallet-divider">
+          <span class="sq-wallet-divider__text"> Or</span>
+         </div>
          <button id="sq-google-pay" class="button-google-pay"></button>
          <button id="sq-apple-pay" class="sq-apple-pay"></button>
         <button id="sq-masterpass" class="sq-masterpass"></button>
@@ -17,9 +20,10 @@
 
        <div id="sq-ccbox">
         
-        <h2>Payment Information</h2>
- 
-        <form id="nonce-form" novalidate action="/v1/square/customer/createCard" method="post">
+        <form id="nonce-form" novalidate action="https://riystest.herokuapp.com/process-payment" method="post">
+          
+          <!--
+          <h2>Payment Information</h2>
           <div class="" id="billing">
             <label for="address1">Address</label>
             <input type="text" name="address1" id="address1" size="35" required><br>
@@ -34,6 +38,7 @@
             <label for="country">Country</label>
             <input type="text" name="country" id="country"  size="35" required><br>
           </div>
+          -->
 
        
           <h2>Pay with a Credit Card</h2>

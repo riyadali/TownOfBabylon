@@ -1,2 +1,3 @@
 const apiURL = "http://angular6-tour-heroes.herokuapp.com/api/";
-export { apiURL };
+const apiSquarePaymentURL = " http://riystest.herokuapp.com/";
+export { apiURL, apiSquarePaymentURL };

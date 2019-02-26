@@ -1,5 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 
+import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
+
+import { SquarePaymentService } from '../../payment-square.service';
+
 declare var SqPaymentForm : any; //magic to allow us to access the SquarePaymentForm lib
 
 @Component({
@@ -9,11 +13,12 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
-  constructor() { }
+  constructor(private squarePaymentService: SquarePaymentService) { }
 
   paymentForm; //this is our payment form object
 
   ngOnInit() {
+    let self=this;
     // Set the application ID
     var applicationId = "sandbox-sq0idp-C6tuS5thsbqmjqa9LGiUyA";
 
@@ -25,7 +30,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       applicationId: applicationId,
       locationId: locationId,
       inputClass: 'sq-input',
-      mediaMaxWidth: '520px', // keep in sync with mediawidth in external styles
+      // mediaMaxWidth: '520px', // keep in sync with mediawidth in external styles
     
       // Customize the CSS for SqPaymentForm iframe elements
       inputStyles: [{
@@ -124,36 +129,39 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
          * Triggered when: a digital wallet payment button is clicked.
          */
         createPaymentRequest: function () {
-          // The payment request below is provided as
-          // guidance. You should add code to create the object
-          // programmatically.
-          return {
-            requestShippingAddress: true,
-            currencyCode: "USD",
-            countryCode: "US",
-            total: {
-              label: "Hakuna",
-              amount: 1000,
-              pending: false,
-            },
-            lineItems: [
+          var paymentRequestJson = {
+            requestShippingAddress: false,
+            requestBillingInfo: true,
+            shippingContact: {
+              familyName: "CUSTOMER LAST NAME",
+              givenName: "CUSTOMER FIRST NAME",
+              email: "mycustomer@example.com",
+              country: "USA",
+              region: "CA",
+              city: "San Francisco",
+              addressLines: [
+                "1455 Market St #600"
+              ],
+              postalCode: "94103",
+              phone:"14255551212"
+           },
+           currencyCode: "USD",
+           countryCode: "US",
+           total: {
+              label: "MERCHANT NAME",
+              amount: "1.00",
+              pending: false
+           },
+           lineItems: [
               {
                 label: "Subtotal",
-                amount: 1000,
-                pending: false,
-              },
-              {
-                label: "Shipping",
-                amount: 5.75,
-                pending: true,
-              },
-              {
-                label: "Tax",
-                amount: 6.09,
-                pending: false,
+                amount: "1.00",
+                pending: false
               }
-            ]
+           ]
           };
+
+          return paymentRequestJson;
         },
     
         /*
@@ -181,7 +189,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
           (<HTMLInputElement>document.getElementById('sq-id')).value = "CBASEC8F-Phq5_pV7UNi64_kX_4gAQ";
     
           // POST the nonce form to the payment processing page
-          (<HTMLFormElement>document.getElementById('nonce-form')).submit();
+          // (<HTMLFormElement>document.getElementById('nonce-form')).submit();
+          self.processCardPayment();
     
         },
     
@@ -245,6 +254,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       this.paymentForm.build();
       this.paymentForm.recalculateSize();
     }
+  }
+  
+  private processCardPayment() {   
+    let nonce = (<HTMLInputElement>document.getElementById('card-nonce')).value
+    this.squarePaymentService.processPayment({"nonce": nonce} as SquareProcessPaymentRequest)      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
   }
 
 }
