@@ -14,7 +14,7 @@ const httpOptions = {
 import { apiSquarePaymentURL } from './config';
 
 import { SquareProcessPaymentRequest } from './model/SquareProcessPaymentRequest';
-import { CheckoutResponse } from './model/CheckoutResponse';
+import { SquareCheckoutResponse } from './model/SquareCheckoutResponse';
 
 
 @Injectable({ providedIn: 'root' })
