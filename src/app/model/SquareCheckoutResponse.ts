@@ -1,5 +1,6 @@
 import { Address } from './Address';
 import { Order } from './Order';
+import { AdditionalRecipient } from './AdditionalRecipient';
 
 export interface SquareCheckoutResponse {
   id : string;
