@@ -14,12 +14,14 @@ const httpOptions = {
 import { apiSquarePaymentURL } from './config';
 
 import { SquareProcessPaymentRequest } from './model/SquareProcessPaymentRequest';
+import { CheckoutResponse } from './model/CheckoutResponse';
 
 
 @Injectable({ providedIn: 'root' })
 export class SquarePaymentService {
 
-  private squarePaymentUrl = apiSquarePaymentURL+"process-payment";  // URL to web api that will interface with square's payment processor
+  private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"process-payment";  // URL to web api that will interface with square's payment processor
+  private squareCheckoutUrl = apiSquarePaymentURL+"process-checkout";  // URL to web api that will interface with square's chout order flow
   
   constructor(
     private http: HttpClient,
@@ -28,10 +30,10 @@ export class SquarePaymentService {
   
   //////// Save methods //////////
   
-  /** POST: Process a payment reques */
+  /** POST: Process a payment request */
   processPayment (payment: SquareProcessPaymentRequest): Observable<any> {
     let self=this;
-    return this.http.post(this.squarePaymentUrl, payment, httpOptions).pipe(
+    return this.http.post(this.squarePaymentProcessPaymentUrl, payment, httpOptions).pipe(
       /*
       map<PostEventResponse,CalEvent>(response => { 
           // console.log("response..."+JSON.stringify(response))
@@ -45,7 +47,23 @@ export class SquarePaymentService {
     );
   }
 
-   
+  /** POST: Process a checkout request */
+  // note may want to type order more definitively at some point
+  processCheckout (order: any): Observable<SquareCheckoutResponse> {
+    let self=this;
+    return this.http.post<SquareCheckoutResponse>(this.squareCheckoutUrl, order, httpOptions).pipe(
+      /*
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
+      */
+      //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      // tap(x => this.log(`Processed payment. Response is `+ JSON.stringify(x))),
+      
+      catchError(this.handleError<any>('processPayment',{}))
+    );
+  } 
   
 
   /**
