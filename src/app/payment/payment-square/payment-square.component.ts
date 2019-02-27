@@ -190,7 +190,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     
           // POST the nonce form to the payment processing page
           // (<HTMLFormElement>document.getElementById('nonce-form')).submit();
-          self.processCardPayment();
+          // self.processCardPayment(); 
+          self.processCheckout();
     
         },
     
@@ -256,6 +257,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
+  // to handle a payment trasaction through Payment form
+  // this is for the case where you are providing the client UI to capture credit card details
   private processCardPayment() {   
     let nonce = (<HTMLInputElement>document.getElementById('card-nonce')).value
     this.squarePaymentService.processPayment({"nonce": nonce} as SquareProcessPaymentRequest)      
@@ -267,5 +270,22 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             }
       });
   }
+  
+  // to handle a payment trasaction using Square's checkout interface
+  // Basically you'll capture the order details and pass it to Square's checkout and let it handle the
+  // UI interaction for billing 
+  private processCheckout() {   
+    // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
+    let dummyOrder = { }; // dummy order
+    this.squarePaymentService.processCheckout(dummyOrder)      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
+  }
+
 
 }
