@@ -1,3 +1,5 @@
+import { Money } from './Money';
+
 export interface AdditionalRecipient {
   location_id : string;
   description : string;
