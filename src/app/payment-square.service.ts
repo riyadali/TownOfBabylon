@@ -16,6 +16,9 @@ import { apiSquarePaymentURL } from './config';
 import { SquareProcessPaymentRequest } from './model/SquareProcessPaymentRequest';
 import { SquareCheckoutResponse } from './model/SquareCheckoutResponse';
 
+interface CheckoutResponse {
+  checkout:  SquareCheckoutResponse;  
+}
 
 @Injectable({ providedIn: 'root' })
 export class SquarePaymentService {
@@ -51,7 +54,7 @@ export class SquarePaymentService {
   // note may want to type order more definitively at some point
   processCheckout (order: any): Observable<SquareCheckoutResponse> {
     let self=this;
-    return this.http.post<SquareCheckoutResponse>(this.squareCheckoutUrl, order, httpOptions).pipe(
+    return this.http.post<CheckoutResponse>(this.squareCheckoutUrl, order, httpOptions).pipe(
       /*
       map<PostEventResponse,CalEvent>(response => { 
           // console.log("response..."+JSON.stringify(response))
@@ -60,8 +63,9 @@ export class SquarePaymentService {
       */
       //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
       // tap(x => this.log(`Processed payment. Response is `+ JSON.stringify(x))),
+      // tap(x => this.log(`Processed checkout. Checkout URL is `+ x.checkout.checkout_page_url)),
       
-      catchError(this.handleError<any>('processPayment',{}))
+      catchError(this.handleError<any>('processCheckout',{}))
     );
   } 
   
