@@ -4,9 +4,9 @@ import { OrderLineItemTax } from './OrderLineItemTax';
 import { OrderLineItemDiscount } from './OrderLineItemDiscount';
 
 export interface Order {
-  id : string; // The order's unique ID. This value is only present for Order objects created by 
+  id? : string; // The order's unique ID. This value is only present for Order objects created by 
                // the Orders API through the CreateOrder endpoint.
-  location_id : string; // The ID of the merchant location this order is associated with.
+  location_id? : string; // The ID of the merchant location this order is associated with.
   reference_id? : string; // A client specified identifier to associate an entity in another system with this order.
   line_items : OrderLineItem [];
   taxes? : OrderLineItemTax []; // A list of taxes applied to this order. On read or retrieve, this list includes
