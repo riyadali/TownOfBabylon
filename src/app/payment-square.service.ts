@@ -64,6 +64,10 @@ export class SquarePaymentService {
       //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
       // tap(x => this.log(`Processed payment. Response is `+ JSON.stringify(x))),
       // tap(x => this.log(`Processed checkout. Checkout URL is `+ x.checkout.checkout_page_url)),
+      map<CheckoutResponse,string>(x => { 
+          // console.log("response..."+JSON.stringify(response))
+         return x.checkout.checkout_page_url;
+      }),
       
       catchError(this.handleError<any>('processCheckout',{}))
     );
