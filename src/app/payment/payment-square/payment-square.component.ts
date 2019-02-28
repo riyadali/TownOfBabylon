@@ -340,7 +340,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
     // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
     //let dummyOrder = { }; // dummy order
-    this.squarePaymentService.processCheckout(order)      
+    this.squarePaymentService.processCheckout(checkout)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
             },
