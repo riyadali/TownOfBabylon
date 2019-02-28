@@ -1,6 +1,6 @@
 import { Money } from './Money';
 
-// Definition from https://docs.connect.squareup.com/api/connect/v2#type-
+// Definition from https://docs.connect.squareup.com/api/connect/v2#type-orderlineitemdiscount
 export interface OrderLineItemDiscount {
   catalog_object_id? : string; // The catalog object id referencing CatalogDiscount.
   name : string; // the discount's name
