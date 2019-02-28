@@ -2,7 +2,7 @@
 export interface Address {
   address_line_1 : string;
   address_line_2? : string;
-  address_line_3 : string;
+  address_line_3? : string;
   locality : string;  // city or town
   sublocality? : string;
   sublocality_2? : string;
