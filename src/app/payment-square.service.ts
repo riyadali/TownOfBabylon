@@ -52,9 +52,9 @@ export class SquarePaymentService {
 
   /** POST: Process a checkout request */
   // note may want to type order more definitively at some point
-  processCheckout (order: any): Observable<SquareCheckout> {
+  processCheckout (checkout: SquareCheckout): Observable<SquareCheckout> {
     let self=this;
-    return this.http.post<CheckoutResponse>(this.squareCheckoutUrl, order, httpOptions).pipe(
+    return this.http.post<CheckoutResponse>(this.squareCheckoutUrl, checkout, httpOptions).pipe(
       /*
       map<PostEventResponse,CalEvent>(response => { 
           // console.log("response..."+JSON.stringify(response))
