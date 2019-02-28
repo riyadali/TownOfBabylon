@@ -3,7 +3,7 @@ import { Money } from './Money';
 export interface OrderLineItemDiscount {
   catalog_object_id? : string; // The catalog object id referencing CatalogDiscount.
   name : string; // the discount's name
-  type : string; // The type of the discount. If it is created by API, it would be either FIXED_PERCENTAGE or FIXED_AMOUNT.
+  type? : string; // The type of the discount. If it is created by API, it would be either FIXED_PERCENTAGE or FIXED_AMOUNT.
                  // VARIABLE_* is not supported in API because the order is created at the time of sale and either percentage 
                  // or amount has to be specified.
                  // See OrderLineItemDiscountType -- currently FIXED_PERCENTAGE, FIXED_AMOUNT, VARIABLE_PERCENTAGE or 
@@ -18,7 +18,7 @@ export interface OrderLineItemDiscount {
                           // from amount_money because the discount is distributed across the line items.
                         // of the order level discount. If it is at line item level, it is the value of the line item level 
                         // discount. The amount_money won't be set for a percentage-based discount.
-  scope : string; // Indicates the level at which the discount applies. This field is set by the server. If set in a CreateOrder request, 
+  scope? : string; // Indicates the level at which the discount applies. This field is set by the server. If set in a CreateOrder request, 
                   // it will be ignored on write. See OrderLineItemDiscountScope -- currently LINE_ITEM or ORDER -- for possible values.
   
 }
