@@ -1,5 +1,6 @@
 import { Money } from './Money';
 
+// Definition from https://docs.connect.squareup.com/api/connect/v2#type-
 export interface OrderLineItemModifier { // is classified as a CatalogModifier
   catalog_object_id? : string; // The catalog object id referencing CatalogModifier.
   name : string; // The name of the item modifier.  
