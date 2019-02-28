@@ -336,7 +336,21 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       };
     
     let checkout: SquareCheckout = {
-      order : order
+      order : order,
+      ask_for_shipping_address: true,
+      merchant_support_email: 'merchant+support@website.com',
+      pre_populate_buyer_email: 'example@email.com',
+      pre_populate_shipping_address: {
+        address_line_1: '1455 Market St',
+        address_line_2: 'Suite 600',
+        locality: 'San Francisco',
+        administrative_district_level_1: 'CA',
+        postal_code: '94103',
+        country: 'US',
+        first_name: 'Jane',
+        last_name: 'Doe'
+      }
+      // redirect_url: 'https://www.example.com/checkout-order-confirm'
     }
     // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
     //let dummyOrder = { }; // dummy order
