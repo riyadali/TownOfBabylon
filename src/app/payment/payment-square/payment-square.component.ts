@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 
 import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
 import { Order } from '../../model/Order';
+import { SquareCheckout } from '../../model/SquareCheckout';
 
 import { SquarePaymentService } from '../../payment-square.service';
 
@@ -333,6 +334,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
           }
         ]
       };
+    
+    let checkout: SquareCheckout = {
+      order : order
+    }
     // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
     //let dummyOrder = { }; // dummy order
     this.squarePaymentService.processCheckout(order)      
