@@ -52,7 +52,7 @@ export class SquarePaymentService {
 
   /** POST: Process a checkout request */
   // note may want to type order more definitively at some point
-  processCheckout (checkout: SquareCheckout): Observable<SquareCheckout> {
+  processCheckout (checkout: SquareCheckout): Observable<string> {
     let self=this;
     return this.http.post<CheckoutResponse>(this.squareCheckoutUrl, checkout, httpOptions).pipe(
       /*
