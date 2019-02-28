@@ -23,7 +23,7 @@ export interface SquareCheckout {
                           // behalf; however Square strongly recommends that you provide a redirect URL so you can verify the transaction 
                           // results and finalize the order through your existing/normal confirmation workflow.
   order : Order;
-  created_at : string;  // The time when the checkout was created, in RFC 3339 format.
-  additional_recipients : AdditionalRecipient []; // Additional recipients (other than the merchant) receiving a portion of this checkout. 
+  created_at? : string;  // The time when the checkout was created, in RFC 3339 format.
+  additional_recipients? : AdditionalRecipient []; // Additional recipients (other than the merchant) receiving a portion of this checkout. 
                                                   // For example, fees assessed on the purchase by a third party integration.
 }
