@@ -7,7 +7,7 @@ export interface OrderLineItemDiscount {
                  // VARIABLE_* is not supported in API because the order is created at the time of sale and either percentage 
                  // or amount has to be specified.
                  // See OrderLineItemDiscountType -- currently FIXED_PERCENTAGE, FIXED_AMOUNT, VARIABLE_PERCENTAGE or 
-                 /  VARIABLE_AMOUNT -- for possible values.
+                 //  VARIABLE_AMOUNT -- for possible values.
   percentage? : string; // The percentage of the discount, as a string representation of a decimal number. A value of 7.25 
                        // corresponds to a percentage of 7.25%. The percentage won't be set for an amount-based discount.
   amount_money? : Money; // The total monetary amount of the applicable discount. If it is at order level, it is the value 
