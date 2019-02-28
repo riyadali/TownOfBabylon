@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 
+import {Location} from '@angular/common';
+
 import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
 import { Order } from '../../model/Order';
 import { SquareCheckout } from '../../model/SquareCheckout';
@@ -15,7 +17,7 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
-  constructor(private squarePaymentService: SquarePaymentService) { }
+  constructor(private squarePaymentService: SquarePaymentService, private location: Location) { }
 
   paymentForm; //this is our payment form object
 
@@ -354,9 +356,11 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
     // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
     //let dummyOrder = { }; // dummy order
+    let self=this;
     this.squarePaymentService.processCheckout(checkout)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
+              self.location.replaceState(response);
             },
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
