@@ -14,10 +14,10 @@ const httpOptions = {
 import { apiSquarePaymentURL } from './config';
 
 import { SquareProcessPaymentRequest } from './model/SquareProcessPaymentRequest';
-import { SquareCheckoutResponse } from './model/SquareCheckoutResponse';
+import { SquareCheckout } from './model/SquareCheckout';
 
 interface CheckoutResponse {
-  checkout:  SquareCheckoutResponse;  
+  checkout:  SquareCheckout;  
 }
 
 @Injectable({ providedIn: 'root' })
@@ -52,7 +52,7 @@ export class SquarePaymentService {
 
   /** POST: Process a checkout request */
   // note may want to type order more definitively at some point
-  processCheckout (order: any): Observable<SquareCheckoutResponse> {
+  processCheckout (order: any): Observable<SquareCheckout> {
     let self=this;
     return this.http.post<CheckoutResponse>(this.squareCheckoutUrl, order, httpOptions).pipe(
       /*
