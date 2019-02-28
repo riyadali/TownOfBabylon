@@ -3,6 +3,7 @@ import { OrderLineItem } from './OrderLineItem';
 import { OrderLineItemTax } from './OrderLineItemTax';
 import { OrderLineItemDiscount } from './OrderLineItemDiscount';
 
+// Definition from https://docs.connect.squareup.com/api/connect/v2#type-order
 export interface Order {
   id? : string; // The order's unique ID. This value is only present for Order objects created by 
                // the Orders API through the CreateOrder endpoint.
