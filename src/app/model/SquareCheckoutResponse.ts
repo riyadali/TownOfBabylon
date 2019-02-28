@@ -2,6 +2,7 @@ import { Address } from './Address';
 import { Order } from './Order';
 import { AdditionalRecipient } from './AdditionalRecipient';
 
+// Definition from https://docs.connect.squareup.com/api/connect/v2#type-
 export interface SquareCheckoutResponse {
   id : string;
   checkout_page_url : string;
