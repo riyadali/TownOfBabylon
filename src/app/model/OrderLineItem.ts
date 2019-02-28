@@ -19,8 +19,8 @@ export interface OrderLineItem {
                                 // both item-level discounts and any order-level discounts apportioned to this item. When creating an Order, 
                                 // set your item-level discounts in this list.
   base_price_money : Money; // The base price for a single unit of the line item.
-  gross_sales_money : Money; // The gross sales amount of money calculated as (item base price + modifiers price) * quantity.
-  total_tax_money : Money; // The total tax amount of money to collect for the line item.
-  total_discount_money : Money; // The total discount amount of money to collect for the line item.
-  total_money : Money; // The total amount of money to collect for this line item.
+  gross_sales_money? : Money; // The gross sales amount of money calculated as (item base price + modifiers price) * quantity.
+  total_tax_money? : Money; // The total tax amount of money to collect for the line item.
+  total_discount_money? : Money; // The total discount amount of money to collect for the line item.
+  total_money? : Money; // The total amount of money to collect for this line item.
 }
