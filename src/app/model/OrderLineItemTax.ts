@@ -1,5 +1,6 @@
 import { Money } from './Money';
 
+// Definition from https://docs.connect.squareup.com/api/connect/v2#type-
 export interface OrderLineItemTax {
   catalog_object_id? : string; // The catalog object id referencing CatalogTax.
   name : string; // the tax's name
