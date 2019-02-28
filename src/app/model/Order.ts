@@ -19,7 +19,7 @@ export interface Order {
   fulfillments? : any []; // this is a beta field. The actual type is OrderFulfillment[]. Details on order fulfillment.
                          // Orders can only be created with at most one fulfillment. However, orders returned by the 
                          // API may contain multiple fulfillments.
-  total_money : Money;
+  total_money? : Money;
   total_tax_money? : Money;
   total_discount_money? : Money; 
 }
