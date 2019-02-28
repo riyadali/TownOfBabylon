@@ -1,3 +1,4 @@
+// Definition from https://docs.connect.squareup.com/api/connect/v2#type-
 export interface Address {
   address_line_1 : string;
   address_line_2? : string;
