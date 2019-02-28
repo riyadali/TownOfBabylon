@@ -8,7 +8,7 @@ export interface Address {
   sublocality_2? : string;
   sublocality_3? : string;
   administrative_district_level_1 : string; // in US this is the state
-  administrative_district_level_2 : string; // in US this is the county
+  administrative_district_level_2? : string; // in US this is the county
   administrative_district_level_3? : string;
   postal_code : string;
   country : string; // The address's country, in ISO 3166-1-alpha-2 format.
