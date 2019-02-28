@@ -4,7 +4,7 @@ import { OrderLineItemTax } from './OrderLineItemTax';
 import { OrderLineItemDiscount } from './OrderLineItemDiscount';
 
 
-// Definition from https://docs.connect.squareup.com/api/connect/v2#type-
+// Definition from https://docs.connect.squareup.com/api/connect/v2#type-orderlineitem
 export interface OrderLineItem {
   name : string;
   quantity : string; // The quantity purchased, as a string representation of a number. This string must have a positive integer value
