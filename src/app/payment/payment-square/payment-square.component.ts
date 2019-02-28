@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 
 import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
+import { Order } from '../../model/Order';
 
 import { SquarePaymentService } from '../../payment-square.service';
 
@@ -274,10 +275,67 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   // to handle a payment trasaction using Square's checkout interface
   // Basically you'll capture the order details and pass it to Square's checkout and let it handle the
   // UI interaction for billing 
-  private processCheckout() {   
+  private processCheckout() { 
+    let order : Order = {
+        reference_id: 'reference_id',
+        line_items: [
+          {
+            name: 'Printed T Shirt',
+            quantity: '2',
+            base_price_money: {amount: 1500, currency: 'USD'},
+            discounts: [
+              {
+                name: '7% off previous season item',
+                percentage: '7'
+              },
+              {
+                name: '$3 off Customer Discount',
+                amount_money: {amount: 300, currency: 'USD'}
+              }
+            ]
+          },
+          {
+            name: 'Slim Jeans',
+            quantity: '1',
+            base_price_money: {amount: 2500, currency: 'USD'}
+          },
+          {
+            name: 'Woven Sweater',
+            quantity: '3',
+            base_price_money: {amount: 3500, currency: 'USD'},
+            discounts: [
+              {
+                name: '$11 off Customer Discount',
+                amount_money: {amount: 1100, currency: 'USD'}
+              },
+              {
+                name: 'Fair Trade Tax',
+                percentage: '5'
+              }
+            ]
+          },
+        ],
+        discounts: [
+          {
+            name: "Father's day 12% OFF",
+            percentage: '12'
+          },
+          {
+            name: 'Global Sales $55 OFF',
+            amount_money: {amount: 5500, currency: 'USD'}
+          }
+        ],
+        taxes: [
+          {
+            name: 'Sales Tax',
+            type: 'ADDITIVE',
+            percentage: '8.5'
+          }
+        ]
+      };
     // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
-    let dummyOrder = { }; // dummy order
-    this.squarePaymentService.processCheckout(dummyOrder)      
+    //let dummyOrder = { }; // dummy order
+    this.squarePaymentService.processCheckout(order)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
             },
