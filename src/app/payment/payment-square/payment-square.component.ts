@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Inject } from '@angular/core';
+
+//import { DOCUMENT } from '@angular/common';
 
 import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
 import { Order } from '../../model/Order';
@@ -15,7 +17,9 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
-  constructor(private squarePaymentService: SquarePaymentService) { }
+  constructor(private squarePaymentService: SquarePaymentService, @Inject('Window') private window: Window
+              //, @Inject(DOCUMENT) private document: any
+    ) { }
 
   paymentForm; //this is our payment form object
 
@@ -181,7 +185,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             return;
           }
     
-          alert('Nonce received: ' + nonce); /* FOR TESTING ONLY */
+          // alert('Nonce received: ' + nonce); /* FOR TESTING ONLY */
     
           // Assign the nonce value to the hidden form field
           // document.getElementById('card-nonce').value = nonce;
@@ -354,9 +358,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
     // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
     //let dummyOrder = { }; // dummy order
+    let self=this;
     this.squarePaymentService.processCheckout(checkout)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
+              //self.document.location.href = response;  // to open in same tab
+              self.window.open(response, '_blank'); // open in a new window or tab (disadvantage is that individual 
+                                                    // may need to disable popup blocker to view site
             },
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
