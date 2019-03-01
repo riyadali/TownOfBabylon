@@ -359,12 +359,16 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
     //let dummyOrder = { }; // dummy order
     let self=this;
+    // opened the window in two steps as recommended here https://stackoverflow.com/questions/2587677/avoid-browser-popup-blockers
+    // however it doesn't seem to prevent it from being blocked by the pop up blocker
+    let newTab = window.open();
     this.squarePaymentService.processCheckout(checkout)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
               //self.document.location.href = response;  // to open in same tab
-              self.window.open(response, '_blank'); // open in a new window or tab (disadvantage is that individual 
+             // self.window.open(response, '_blank'); // open in a new window or tab (disadvantage is that individual 
                                                     // may need to disable popup blocker to view site
+              newTab.location.href = response; // an attempt at getting past the pop up blocker
             },
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
