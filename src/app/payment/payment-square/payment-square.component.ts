@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, Inject } from '@angular/core';
 
-//import { DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 
 import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
 import { Order } from '../../model/Order';
@@ -18,7 +18,7 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
   constructor(private squarePaymentService: SquarePaymentService, @Inject('Window') private window: Window
-              //, @Inject(DOCUMENT) private document: any
+              , @Inject(DOCUMENT) private document: any
     ) { }
 
   paymentForm; //this is our payment form object
@@ -361,14 +361,14 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     let self=this;
     // opened the window in two steps as recommended here https://stackoverflow.com/questions/2587677/avoid-browser-popup-blockers
     // however it doesn't seem to prevent it from being blocked by the pop up blocker
-    let newTab = window.open();
+    //let newTab = window.open();
     this.squarePaymentService.processCheckout(checkout)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
-              //self.document.location.href = response;  // to open in same tab
+              self.document.location.href = response;  // to open in same tab
              // self.window.open(response, '_blank'); // open in a new window or tab (disadvantage is that individual 
                                                     // may need to disable popup blocker to view site
-              newTab.location.href = response; // an attempt at getting past the pop up blocker
+              //newTab.location.href = response; // an attempt at getting past the pop up blocker -- don't work all of the time
             },
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
