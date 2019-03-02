@@ -1,6 +1,10 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Inject } from '@angular/core';
+
+import { DOCUMENT } from '@angular/common';
 
 import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
+import { Order } from '../../model/Order';
+import { SquareCheckout } from '../../model/SquareCheckout';
 
 import { SquarePaymentService } from '../../payment-square.service';
 
@@ -13,7 +17,9 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
-  constructor(private squarePaymentService: SquarePaymentService) { }
+  constructor(private squarePaymentService: SquarePaymentService, @Inject('Window') private window: Window
+              , @Inject(DOCUMENT) private document: any
+    ) { }
 
   paymentForm; //this is our payment form object
 
@@ -179,7 +185,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             return;
           }
     
-          alert('Nonce received: ' + nonce); /* FOR TESTING ONLY */
+          // alert('Nonce received: ' + nonce); /* FOR TESTING ONLY */
     
           // Assign the nonce value to the hidden form field
           // document.getElementById('card-nonce').value = nonce;
@@ -190,7 +196,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     
           // POST the nonce form to the payment processing page
           // (<HTMLFormElement>document.getElementById('nonce-form')).submit();
-          self.processCardPayment();
+          // self.processCardPayment(); 
+          self.processCheckout();
     
         },
     
@@ -256,6 +263,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
+  // to handle a payment trasaction through Payment form
+  // this is for the case where you are providing the client UI to capture credit card details
   private processCardPayment() {   
     let nonce = (<HTMLInputElement>document.getElementById('card-nonce')).value
     this.squarePaymentService.processPayment({"nonce": nonce} as SquareProcessPaymentRequest)      
@@ -267,5 +276,105 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             }
       });
   }
+  
+  // to handle a payment trasaction using Square's checkout interface
+  // Basically you'll capture the order details and pass it to Square's checkout and let it handle the
+  // UI interaction for billing 
+  private processCheckout() { 
+    let order : Order = {
+        reference_id: 'reference_id',
+        line_items: [
+          {
+            name: 'Printed T Shirt',
+            quantity: '2',
+            base_price_money: {amount: 1500, currency: 'USD'},
+            discounts: [
+              {
+                name: '7% off previous season item',
+                percentage: '7'
+              },
+              {
+                name: '$3 off Customer Discount',
+                amount_money: {amount: 300, currency: 'USD'}
+              }
+            ]
+          },
+          {
+            name: 'Slim Jeans',
+            quantity: '1',
+            base_price_money: {amount: 2500, currency: 'USD'}
+          },
+          {
+            name: 'Woven Sweater',
+            quantity: '3',
+            base_price_money: {amount: 3500, currency: 'USD'},
+            discounts: [
+              {
+                name: '$11 off Customer Discount',
+                amount_money: {amount: 1100, currency: 'USD'}
+              },
+              {
+                name: 'Fair Trade Tax',
+                percentage: '5'
+              }
+            ]
+          },
+        ],
+        discounts: [
+          {
+            name: "Father's day 12% OFF",
+            percentage: '12'
+          },
+          {
+            name: 'Global Sales $55 OFF',
+            amount_money: {amount: 5500, currency: 'USD'}
+          }
+        ],
+        taxes: [
+          {
+            name: 'Sales Tax',
+            type: 'ADDITIVE',
+            percentage: '8.5'
+          }
+        ]
+      };
+    
+    let checkout: SquareCheckout = {
+      order : order,
+      ask_for_shipping_address: true,
+      merchant_support_email: 'merchant+support@website.com',
+      pre_populate_buyer_email: 'example@email.com',
+      pre_populate_shipping_address: {
+        address_line_1: '1455 Market St',
+        address_line_2: 'Suite 600',
+        locality: 'San Francisco',
+        administrative_district_level_1: 'CA',
+        postal_code: '94103',
+        country: 'US',
+        first_name: 'Jane',
+        last_name: 'Doe'
+      }
+      // redirect_url: 'https://www.example.com/checkout-order-confirm'
+    }
+    // ... to do ... capture order details and pass it to process checkout.  For now just pass a placeholder
+    //let dummyOrder = { }; // dummy order
+    let self=this;
+    // opened the window in two steps as recommended here https://stackoverflow.com/questions/2587677/avoid-browser-popup-blockers
+    // however it doesn't seem to prevent it from being blocked by the pop up blocker
+    //let newTab = window.open();
+    this.squarePaymentService.processCheckout(checkout)      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+              self.document.location.href = response;  // to open in same tab
+             // self.window.open(response, '_blank'); // open in a new window or tab (disadvantage is that individual 
+                                                    // may need to disable popup blocker to view site
+              //newTab.location.href = response; // an attempt at getting past the pop up blocker -- don't work all of the time
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
+  }
+
 
 }
