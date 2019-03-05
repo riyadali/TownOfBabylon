@@ -263,6 +263,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
+  // Get list of Catalog items
+  private listCatalog(types) {     
+    this.squarePaymentService.listCatalog(types)      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
+  }
+  
   // to handle a payment trasaction through Payment form
   // this is for the case where you are providing the client UI to capture credit card details
   private processCardPayment() {   
