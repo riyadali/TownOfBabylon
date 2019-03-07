@@ -277,6 +277,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // to handle a payment trasaction through Payment form
   // this is for the case where you are providing the client UI to capture credit card details
+  // In order for this to work you need to ensure that the sandbox token is being used on the node back end server
+  // Check gmail and follow the instructions and update the access token variable so it uses the sandbox
   private processCardPayment() {   
     let nonce = (<HTMLInputElement>document.getElementById('card-nonce')).value
     this.squarePaymentService.processPayment({"nonce": nonce} as SquareProcessPaymentRequest)      
