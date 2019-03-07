@@ -23,9 +23,9 @@ interface CheckoutResponse {
 @Injectable({ providedIn: 'root' })
 export class SquarePaymentService {
 
-  private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"process-payment";  // URL to web api that will interface with square's payment processor
-  private squareCheckoutUrl = apiSquarePaymentURL+"process-checkout";  // URL to web api that will interface with square's chout order flow
-  private squareListCatalogUrl = apiSquarePaymentURL+"list-catalog";  // URL to web api that will interface with square's chout order flow
+  private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"transactions/process-payment";  // URL to web api that will interface with square's payment processor
+  private squareCheckoutUrl = apiSquarePaymentURL+"checkout/process-checkout";  // URL to web api that will interface with square's chout order flow
+  private squareListCatalogUrl = apiSquarePaymentURL+"catalog/list-catalog";  // URL to web api that will interface with square's chout order flow
   
   constructor(
     private http: HttpClient,
