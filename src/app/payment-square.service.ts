@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap, shareReplay } from 'rxjs/operators';
@@ -23,13 +23,37 @@ interface CheckoutResponse {
 @Injectable({ providedIn: 'root' })
 export class SquarePaymentService {
 
-  private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"process-payment";  // URL to web api that will interface with square's payment processor
-  private squareCheckoutUrl = apiSquarePaymentURL+"process-checkout";  // URL to web api that will interface with square's chout order flow
+  private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"transactions/process-payment";  // URL to web api that will interface with square's payment processor
+  private squareCheckoutUrl = apiSquarePaymentURL+"checkout/process-checkout";  // URL to web api that will interface with square's chout order flow
+  private squareListCatalogUrl = apiSquarePaymentURL+"catalog/list-catalog";  // URL to web api that will interface with square's chout order flow
   
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
   
+  //////// Read methods //////////
+
+  /** GET: List items from the catalog */
+  listCatalog (catalogTypes: string): Observable<any> {
+    let self=this;
+    console.log('In listCatalog')
+    const params = new HttpParams()
+      .set('types', catalogTypes);
+      //.set('limitToFirst', "1");
+    return this.http.get(this.squareListCatalogUrl, {params}).pipe(
+      /*
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
+      */
+      //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+       tap(x => self.log(`Catalog List completed. Response is `+ JSON.stringify(x))),
+      
+      catchError(this.handleError<any>('listCatalog',{}))
+    );
+  }
+
   
   //////// Save methods //////////
   
