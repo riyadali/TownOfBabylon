@@ -40,7 +40,7 @@ export class SquarePaymentService {
     const params = new HttpParams()
       .set('types', catalogTypes);
       //.set('limitToFirst', "1");
-    return this.http.get(this.squareListCatalogUrl+"list-catalog", {params}).pipe(
+    return this.http.get(this.squareCatalogUrl+"list-catalog", {params}).pipe(
       /*
       map<PostEventResponse,CalEvent>(response => { 
           // console.log("response..."+JSON.stringify(response))
