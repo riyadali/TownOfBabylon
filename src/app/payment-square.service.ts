@@ -25,7 +25,7 @@ export class SquarePaymentService {
 
   private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"transactions/process-payment";  // URL to web api that will interface with square's payment processor
   private squareCheckoutUrl = apiSquarePaymentURL+"checkout/process-checkout";  // URL to web api that will interface with square's chout order flow
-  private squareListCatalogUrl = apiSquarePaymentURL+"catalog/list-catalog";  // URL to web api that will interface with square's chout order flow
+  private squareCatalogUrl = apiSquarePaymentURL+"catalog/";  // URL to web api that will interface with square's catalog
   
   constructor(
     private http: HttpClient,
@@ -36,11 +36,11 @@ export class SquarePaymentService {
   /** GET: List items from the catalog */
   listCatalog (catalogTypes: string): Observable<any> {
     let self=this;
-    console.log('In listCatalog')
+    //console.log('In listCatalog')
     const params = new HttpParams()
       .set('types', catalogTypes);
       //.set('limitToFirst', "1");
-    return this.http.get(this.squareListCatalogUrl, {params}).pipe(
+    return this.http.get(this.squareListCatalogUrl+"list-catalog", {params}).pipe(
       /*
       map<PostEventResponse,CalEvent>(response => { 
           // console.log("response..."+JSON.stringify(response))
@@ -48,7 +48,7 @@ export class SquarePaymentService {
         }), 
       */
       //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
-       tap(x => self.log(`Catalog List completed. Response is `+ JSON.stringify(x))),
+      // tap(x => self.log(`Catalog List completed. Response is `+ JSON.stringify(x))),
       
       catchError(this.handleError<any>('listCatalog',{}))
     );
