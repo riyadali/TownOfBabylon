@@ -61,17 +61,26 @@ export class SquarePaymentService {
   // You can find documentation of how to set up the query by starting here 
   // https://docs.connect.squareup.com/api/connect/v2#type-catalogquery
   // For example a prefix query is documented here https://docs.connect.squareup.com/api/connect/v2#type-catalogqueryprefix
-  //
-  // Search field if specified limits the search to just the specified fields. If not specified, the search is done 
-  // against all eligible fields.
-  // ---- need to go throught the fields and builkd the query may also need to pass object types
-  queryCatalogExact (searchText: string, searchFields?: string[]): Observable<any> {
+ 
+  // The following catalog search functions are basically variations of the catalog search api using one of the query types 
+  // identified above.  The catalog search api is documented here
+  // https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-searchcatalogobjects
+  
+  findCatalogObjectByName (searchName: string, searchTypes: string[]): Observable<any> {
     let self=this;
-    //console.log('In listCatalog')
-    const params = new HttpParams()
-      .set('types', catalogTypes);
-      //.set('limitToFirst', "1");
-    return this.http.get(this.squareCatalogUrl+"list-catalog", {params}).pipe(
+    //console.log("in find catalog")
+    let searchRequest = {
+      object_types: searchTypes,
+      query: {
+  	    exact_query: {
+          attribute_name: "name",
+          attribute_value: searchName
+        }
+      },
+      limit: 100
+    };
+    
+    return this.http.post(this.squareCatalogUrl+"search", searchRequest, httpOptions).pipe(    
       /*
       map<PostEventResponse,CalEvent>(response => { 
           // console.log("response..."+JSON.stringify(response))
@@ -79,9 +88,9 @@ export class SquarePaymentService {
         }), 
       */
       //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
-      // tap(x => self.log(`Catalog List completed. Response is `+ JSON.stringify(x))),
+      // tap(x => self.log(`Catalog search completed. Response is `+ JSON.stringify(x))),
       
-      catchError(this.handleError<any>('listCatalog',{}))
+      catchError(this.handleError<any>('findCatalogObjectByName',{}))
     );
   }
 
