@@ -275,6 +275,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       });
   }
   
+  // Search Catalog
+  private searchCatalog(srch, types) {     
+    this.squarePaymentService.findCatalogObjectByName(srch, types)      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
+  }
+  
   // to handle a payment trasaction through Payment form
   // this is for the case where you are providing the client UI to capture credit card details
   // In order for this to work you need to ensure that the sandbox token is being used on the node back end server
