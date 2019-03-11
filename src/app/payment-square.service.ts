@@ -67,7 +67,7 @@ export class SquarePaymentService {
   // https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-searchcatalogobjects
   
   /* Find objects whose name matches with passed search string  */
-  findCatalogObjectByName (searchName: string, searchTypes: string[]): Observable<any> {
+  findCatalogObjectsByName (searchName: string, searchTypes: string[]): Observable<any> {
     let self=this;
     //console.log("in find catalog")
     let searchRequest = {
@@ -96,7 +96,7 @@ export class SquarePaymentService {
   }
   
   /* Find objects whose name starts with passed prefix  */
-  findCatalogObjectByPrefix (searchPrefix: string, searchTypes: string[]): Observable<any> {
+  findCatalogObjectsByPrefix (searchPrefix: string, searchTypes: string[]): Observable<any> {
     let self=this;
     //console.log("in find catalog")
     let searchRequest = {
@@ -132,7 +132,7 @@ export class SquarePaymentService {
      Note: the name field is searched.  Description and abbreviation also searched if it is an ITEM.
            SKU, UPC and user-data (metadata) also searched if description is an ITEM_VARIATION.
   */
-  findCatalogObjectByKeywords(searchKeywords: string[], searchTypes: string[]): Observable<any> {
+  findCatalogObjectsByKeywords(searchKeywords: string[], searchTypes: string[]): Observable<any> {
     let self=this;
     //console.log("in find catalog")
     let searchRequest = {
