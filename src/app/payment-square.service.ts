@@ -66,6 +66,7 @@ export class SquarePaymentService {
   // identified above.  The catalog search api is documented here
   // https://docs.connect.squareup.com/api/connect/v2#endpoint-catalog-searchcatalogobjects
   
+  /* Find objects whose name matches with passed search string  */
   findCatalogObjectByName (searchName: string, searchTypes: string[]): Observable<any> {
     let self=this;
     //console.log("in find catalog")
@@ -91,6 +92,35 @@ export class SquarePaymentService {
       // tap(x => self.log(`Catalog search completed. Response is `+ JSON.stringify(x))),
       
       catchError(this.handleError<any>('findCatalogObjectByName',{}))
+    );
+  }
+  
+  /* Find objects whose name starts with passed prefix  */
+  findCatalogObjectByPrefix (searchPrefix: string, searchTypes: string[]): Observable<any> {
+    let self=this;
+    //console.log("in find catalog")
+    let searchRequest = {
+      object_types: searchTypes,
+      query: {
+  	    prefix_query: {
+          attribute_name: "name",
+          attribute_prefix: searchPrefix
+        }
+      },
+      limit: 100
+    };
+    
+    return this.http.post(this.squareCatalogUrl+"search", searchRequest, httpOptions).pipe(    
+      /*
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
+      */
+      //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      //tap(x => self.log(`Catalog search completed. Response is `+ JSON.stringify(x))),
+      
+      catchError(this.handleError<any>('findCatalogObjectByPrefix',{}))
     );
   }
 
