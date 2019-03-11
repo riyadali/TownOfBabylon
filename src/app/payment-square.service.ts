@@ -194,7 +194,7 @@ export class SquarePaymentService {
         }), 
       */
       //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
-      tap(x => self.log(`Catalog search completed. Response is `+ JSON.stringify(x))),
+      //tap(x => self.log(`Catalog search completed. Response is `+ JSON.stringify(x))),
       
       catchError(this.handleError<any>('findCatalogObjectByPrefix',{}))
     );
