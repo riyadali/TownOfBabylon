@@ -159,6 +159,47 @@ export class SquarePaymentService {
     );
   }
   
+  /* Get sorted list of objects from the catalog.
+     sortOrder can either be "ASC" or "DESC". It defaults to "ASC".
+     If initialValue is specified, ascending sorts will return only objects with this value or greater, 
+     while descending sorts will return only objects with this value or less. 
+  */
+  getCatalogObjectsSortedByName(getTypes: string[], initialValue?: string, sortOrder?: string): Observable<any> {
+    let self=this;    
+    let searchRequest = {
+      object_types: getTypes,
+      query: {
+  	    sorted_attribute_query: {
+          attribute_name: "name",
+          initial_attribute_value: "", // default is no initial value
+          sort_order: "ASC" // default order is ascending
+        }
+      },
+      limit: 100
+    };
+
+    if (sortOrder&&sortOrder.toLowerCase()!="ASC".toLowerCase()) {
+       searchRequest.query.sorted_attribute_query.sort_order=sortOrder.toUpperCase();
+    }
+
+    if (initialValue) {
+       searchRequest.query.sorted_attribute_query.initial_attribute_value=initialValue;
+    }
+    
+    return this.http.post(this.squareCatalogUrl+"search", searchRequest, httpOptions).pipe(    
+      /*
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
+      */
+      //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      tap(x => self.log(`Catalog search completed. Response is `+ JSON.stringify(x))),
+      
+      catchError(this.handleError<any>('findCatalogObjectByPrefix',{}))
+    );
+  }
+  
   //////// Save methods //////////
   
   /** POST: Process a payment request */
