@@ -123,7 +123,41 @@ export class SquarePaymentService {
       catchError(this.handleError<any>('findCatalogObjectByPrefix',{}))
     );
   }
-
+  
+  /* Find objects that has all of the passed keywords as prefixes in its searchable fields  
+     For example, if a CatalogItem contains attributes {"name": "t-shirt"} and {"description": "Small, Purple"}, 
+     it will be matched by the query {"keywords": ["shirt", "sma", "purp"]}.
+     Keywords with fewer than 3 chars are ignored -- in practice it appears that fewer than 2 chars ignored.
+     Note: 1 to 3 keywords allowed.
+     Note: the name field is searched.  Description and abbreviation also searched if it is an ITEM.
+           SKU, UPC and user-data (metadata) also searched if description is an ITEM_VARIATION.
+  */
+  findCatalogObjectByKeywords(searchKeywords: string[], searchTypes: string[]): Observable<any> {
+    let self=this;
+    //console.log("in find catalog")
+    let searchRequest = {
+      object_types: searchTypes,
+      query: {
+  	    text_query: {
+          keywords: searchKeywords
+        }
+      },
+      limit: 100
+    };
+    
+    return this.http.post(this.squareCatalogUrl+"search", searchRequest, httpOptions).pipe(    
+      /*
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
+      */
+      //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      //tap(x => self.log(`Catalog search completed. Response is `+ JSON.stringify(x))),
+      
+      catchError(this.handleError<any>('findCatalogObjectByPrefix',{}))
+    );
+  }
   
   //////// Save methods //////////
   
