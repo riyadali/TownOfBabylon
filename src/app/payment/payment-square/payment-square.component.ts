@@ -277,7 +277,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // Search Catalog
   private searchCatalog(srch, types) {     
-    this.squarePaymentService.findCatalogObjectByName(srch, types)      
+    this.squarePaymentService.findCatalogObjectsByName(srch, types)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
             },
