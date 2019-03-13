@@ -22,6 +22,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     ) { }
 
   paymentForm; //this is our payment form object
+  private testButtonClicked: boolean;
 
   ngOnInit() {
     let self=this;
@@ -261,6 +262,27 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       this.paymentForm.build();
       this.paymentForm.recalculateSize();
     }
+  }
+  
+   // handle click of testButtonClicked
+  private testButtonClickHandler() {
+    if(this.testButtonClicked) {
+      this.testButtonClicked = false;
+    } else {
+      this.testButtonClicked = true;
+    }
+  }
+  
+  // build table oif items from catalog
+  private buildCatalogTable() {     
+    this.squarePaymentService.listCatalog(["ITEMS"])      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
   }
   
   // Get list of Catalog items
