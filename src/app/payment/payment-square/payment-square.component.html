@@ -2,8 +2,48 @@
 
    <!-- link to the local SqPaymentForm initialization -->
 <!-- most of this from https://github.com/square/connect-api-examples/blob/master/connect-examples/v2/node_payment/views/index.pug -->
+<!--
 <button type="button" class="btn btn-default btn-md" 
               (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
+-->
+<button type="button" class="btn btn-default btn-md" 
+              (click)="testButtonClickHandler()">Test InterFace</button>
+
+<div class="catalogTable" [hidden]="!testButtonClicked"> 
+  <h2>Shop till you drop</h2>
+     
+  <table class="table table-sm table-hover">
+ 
+    <thead class="blue-grey lighten-2 text-light">
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Category</th>
+        <th scope="col">Locations</th>
+      </tr>
+    </thead>
+ 
+    <tbody>
+      <tr>
+        <td class="text-primary"><strong>Coffee</strong></td>
+        <td >Some Text</td> 
+        <td >Some Text</td>    
+      </tr>
+      
+      <tr>
+        <td class="text-primary"><strong>Tea</strong></td>
+        <td>Some text</td> 
+        <td>Some Text</td> 
+      </tr>
+      
+      <tr>
+        <td class="text-primary"><strong>Cocoa</strong></td>
+        <td>Some text</td> 
+        <td>Some Text</td> 
+      </tr>
+    </tbody>
+    
+  </table>
+</div>
 
  <div class="sq-payment-form ">
 
