@@ -1,21 +1,20 @@
+// from this site https://mdbootstrap.com/support/jquery/cant-change-font-awesome-size-when-inside-a-button/
 .btn .fa {
      font-size: 25px;
-     box-shadow: none !important;
+}
 
-}
-i::before{
-    background:transparent;
-}
+// from this site https://stackoverflow.com/questions/2460100/remove-the-complete-styling-of-an-html-button-submit
 #plusBtn {
-	background: transparent;
+	background: none;
   background-color: inherit !important;
 	color: inherit;
-	border: none !important;
+	border: none;
 	padding: 0;	
-  font-size: 3rem !important;
+  font: inherit;
 	cursor: pointer;
-	outline: inherit !important;
+	outline: inherit;
 }
+
 .my-plus-circle {
  color: rgb(22, 25, 206);
  
