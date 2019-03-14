@@ -1,3 +1,21 @@
+.btn .fa {
+     font-size: 25px;
+     box-shadow: none !important;
+
+}
+i::before{
+    background:transparent;
+}
+#plusBtn {
+	background: transparent;
+  background-color: inherit !important;
+	color: inherit;
+	border: none !important;
+	padding: 0;	
+  font-size: 3rem !important;
+	cursor: pointer;
+	outline: inherit !important;
+}
 .my-plus-circle {
  color: rgb(22, 25, 206);
  
