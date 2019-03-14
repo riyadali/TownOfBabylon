@@ -11,6 +11,13 @@
  -webkit-text-stroke: 2px rgb(22, 25, 206);
 }
 
+// this is to add color to the center portion (i.e the transparent portion) of
+// the font awesome cirle with plus sign font
+// from the site https://stackoverflow.com/questions/44692692/how-to-add-color-to-transparent-area-of-font-awesome-icons
+.fa {
+  background-image: radial-gradient(at center, rgb(207, 207, 207) 40%, transparent 40%);
+}
+
 // styling from https://github.com/square/connect-api-examples/blob/master/templates/web-ui/payment-form/custom/sq-payment-form.css
 .sq-field-wrapper {
   display: flex;
