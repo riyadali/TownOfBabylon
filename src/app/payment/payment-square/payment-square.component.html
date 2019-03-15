@@ -46,9 +46,11 @@
     
     </table>
     
+    <!-- use triggers="focus" attribute to close popover on next click.  Could not use it here
+      because any selection click within popover closes it with triggers set -->
     <button id="plusBtn" type="button" mdbBtn color="default" class="waves-light z-depth-0" #pop2="bs-mdbPopover"
       mdbPopover="And here some amazing content. It's very engaging. Right?"
-      placement="left" triggers="focus"
+      placement="left" 
       mdbPopoverHeader="Popover on bottom" mdbWavesEffect >
       <div class="my-plus-circle" >
         <i class="fas fa-plus-circle fa float-right"></i>
