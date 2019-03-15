@@ -7,6 +7,35 @@
               (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
 -->
 
+<div [innerHtml]="html"></div>
+  <!--
+  <h2>Hello</h2>
+  -->
+  <div class="col-sm-12 mypopover">
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox"  class="mycheckbox" value="">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Option one</span>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox" class="mycheckbox" value="" checked>
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Option two</span>
+          </label>
+        </div>
+        <div class="checkbox disabled">
+          <label class="bigger-font">
+            <input type="checkbox" class="mycheckbox" value="" disabled>
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Option three</span>
+          </label>
+        </div>
+    </div>
+</ng-template>
+
 <button type="button" class="btn btn-default btn-md" 
               (click)="testButtonClickHandler()">Test InterFace</button>
 
@@ -48,10 +77,9 @@
     
     <!-- use triggers="focus" attribute to close popover on next click.  Could not use it here
       because any selection click within popover closes it with triggers set -->
-    <button id="plusBtn" type="button" mdbBtn color="default" class="waves-light z-depth-0" #pop2="bs-mdbPopover"
-      mdbPopover="And here some amazing content. It's very engaging. Right?"
+    <button id="plusBtn" type="button" mdbBtn color="default" class="waves-light z-depth-0" [mdbPopover]="popTemplate"
       placement="left" 
-      mdbPopoverHeader="Popover on bottom" mdbWavesEffect >
+      mdbWavesEffect >
       <div class="my-plus-circle" >
         <i class="fas fa-plus-circle fa float-right"></i>
       </div>
