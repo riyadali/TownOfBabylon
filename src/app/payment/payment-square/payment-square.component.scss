@@ -1,7 +1,7 @@
 // from this site https://mdbootstrap.com/support/jquery/cant-change-font-awesome-size-when-inside-a-button/
 .btn .fa {
      font-size: 25px;
-     //margin: 0em !important;
+     margin: 0em !important;
      //z-index: 1;
 }
 
@@ -23,7 +23,7 @@
  color: rgb(22, 25, 206); 
  font-size: 25px;
  margin-top: -3.28em;
- margin-left: -0.25em;
+ //margin-left: -0.25em;
  /* from this site https://stackoverflow.com/questions/28560118/want-to-make-font-awesome-icons-thinner */
  -webkit-text-stroke: 2px rgb(22, 25, 206);
 }
