@@ -6,11 +6,14 @@
 <button type="button" class="btn btn-default btn-md" 
               (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
 -->
+<!-- from this link https://mdbootstrap.com/support/angular/html-popover-problem/ -->
+<ng-template #popTemplate>
 
-<div [innerHtml]="html"></div>
-  <!--
-  <h2>Hello</h2>
-  -->
+  <div [innerHtml]="html"></div>
+    <!--
+    <h2>Hello</h2>
+    -->
+  <!-- popover layout from https://bootsnipp.com/snippets/oPgeG -->
   <div class="col-sm-12 mypopover">
         <div class="checkbox">
           <label class="bigger-font">
@@ -33,7 +36,7 @@
             <span class="text-muted">Option three</span>
           </label>
         </div>
-    </div>
+  </div>
 </ng-template>
 
 <button type="button" class="btn btn-default btn-md" 
