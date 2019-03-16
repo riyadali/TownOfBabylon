@@ -80,32 +80,14 @@
       </thead>
  
       <tbody>
-        <tr>
-          <td class="text-primary"><strong>Coffee</strong></td>
-          <td [hidden]="!skuCheckbox">Some Text</td> 
-          <td [hidden]="!categoryCheckbox">Some Text</td>
-          <td [hidden]="!locationsCheckbox">Some Text</td> 
-          <td [hidden]="!inStockCheckbox">Some Text</td>
-          <td [hidden]="!priceCheckbox">Some Text</td>    
-        </tr>
-      
-        <tr>
-          <td class="text-primary"><strong>Tea</strong></td>
-          <td [hidden]="!skuCheckbox">Some Text</td> 
-          <td [hidden]="!categoryCheckbox">Some Text</td>
-          <td [hidden]="!locationsCheckbox">Some Text</td> 
-          <td [hidden]="!inStockCheckbox">Some Text</td>
-          <td [hidden]="!priceCheckbox">Some Text</td>   
-        </tr>
-      
-        <tr>
-          <td class="text-primary"><strong>Cocoa</strong></td>
-          <td [hidden]="!skuCheckbox">Some Text</td> 
-          <td [hidden]="!categoryCheckbox">Some Text</td>
-          <td [hidden]="!locationsCheckbox">Some Text</td> 
-          <td [hidden]="!inStockCheckbox">Some Text</td>
-          <td [hidden]="!priceCheckbox">Some Text</td>   
-        </tr>
+          <tr *ngFor="let shoppingItem of shoppingItems">
+            <td class="text-primary"><strong>{{shoppingItem.name}}</strong></td>
+            <td [hidden]="!skuCheckbox">{{shoppingItem.sku}}</td>
+            <td [hidden]="!categoryCheckbox">{{shoppingItem.category}}</td>
+            <td [hidden]="!locationsCheckbox">{{shoppingItem.locations}}</td> 
+            <td [hidden]="!inStockCheckbox">{{shoppingItem.inStock}}</td>
+            <td [hidden]="!priceCheckbox">{{shoppingItem.price}}</td>    
+          </tr>          
       </tbody>
     
     </table>
