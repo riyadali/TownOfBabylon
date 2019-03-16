@@ -6,6 +6,59 @@
 <button type="button" class="btn btn-default btn-md" 
               (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
 -->
+<!-- from this link https://mdbootstrap.com/support/angular/html-popover-problem/ -->
+<ng-template #popTemplate>
+
+  <div [innerHtml]="html"></div>
+    <!--
+    <h2>Hello</h2>
+    -->
+  <!-- popover layout from https://bootsnipp.com/snippets/oPgeG -->
+  <div class="col-sm-12 mypopover">
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox"  class="mycheckbox" [(ngModel)]="skuCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">SKU</span>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox" class="mycheckbox" [(ngModel)]="categoryCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Category</span>
+          </label>
+        </div>
+        <!--
+        <div class="checkbox disabled">
+        -->
+        <div class="checkbox">
+          <label class="bigger-font">
+            <!--
+            <input type="checkbox" class="mycheckbox" value="" disabled>
+            -->
+            <input type="checkbox" class="mycheckbox" [(ngModel)]="locationsCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Locations</span>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox"  class="mycheckbox" [(ngModel)]="inStockCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">In Stock</span>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox"  class="mycheckbox" [(ngModel)]="priceCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Price</span>
+          </label>
+        </div>
+  </div>
+</ng-template>
+
 <button type="button" class="btn btn-default btn-md" 
               (click)="testButtonClickHandler()">Test InterFace</button>
 
@@ -18,36 +71,54 @@
       <thead class="blue-grey lighten-2 text-light">
         <tr>
           <th scope="col">Item</th>
-          <th scope="col">Category</th>
-          <th scope="col">Locations</th>
+          <th scope="col" [hidden]="!skuCheckbox">SKU</th>
+          <th scope="col" [hidden]="!categoryCheckbox">Category</th>
+          <th scope="col" [hidden]="!locationsCheckbox">Locations</th>
+          <th scope="col" [hidden]="!inStockCheckbox">In Stock</th>
+          <th scope="col" [hidden]="!priceCheckbox">Price</th>
         </tr>
       </thead>
  
       <tbody>
         <tr>
           <td class="text-primary"><strong>Coffee</strong></td>
-          <td >Some Text</td> 
-          <td >Some Text</td>    
+          <td [hidden]="!skuCheckbox">Some Text</td> 
+          <td [hidden]="!categoryCheckbox">Some Text</td>
+          <td [hidden]="!locationsCheckbox">Some Text</td> 
+          <td [hidden]="!inStockCheckbox">Some Text</td>
+          <td [hidden]="!priceCheckbox">Some Text</td>    
         </tr>
       
         <tr>
           <td class="text-primary"><strong>Tea</strong></td>
-          <td>Some text</td> 
-          <td>Some Text</td> 
+          <td [hidden]="!skuCheckbox">Some Text</td> 
+          <td [hidden]="!categoryCheckbox">Some Text</td>
+          <td [hidden]="!locationsCheckbox">Some Text</td> 
+          <td [hidden]="!inStockCheckbox">Some Text</td>
+          <td [hidden]="!priceCheckbox">Some Text</td>   
         </tr>
       
         <tr>
           <td class="text-primary"><strong>Cocoa</strong></td>
-          <td>Some text</td> 
-          <td>Some Text</td> 
+          <td [hidden]="!skuCheckbox">Some Text</td> 
+          <td [hidden]="!categoryCheckbox">Some Text</td>
+          <td [hidden]="!locationsCheckbox">Some Text</td> 
+          <td [hidden]="!inStockCheckbox">Some Text</td>
+          <td [hidden]="!priceCheckbox">Some Text</td>   
         </tr>
       </tbody>
     
     </table>
     
-    <div class="my-plus-circle">
-      <i class="fas fa-plus-circle fa float-right"></i>
-    </div>
+    <!-- use triggers="focus" attribute to close popover on next click.  Could not use it here
+      because any selection click within popover closes it with triggers set -->
+    <button id="plusBtn" type="button" mdbBtn color="default" class="waves-light z-depth-0" [mdbPopover]="popTemplate"
+      placement="left" 
+      mdbWavesEffect >
+      <div class="my-plus-circle" >
+        <i class="fas fa-plus-circle fa float-right"></i>
+      </div>
+    </button>
     
   </div>
 </div>

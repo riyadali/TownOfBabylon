@@ -1,9 +1,76 @@
+// for popover
+.mypopover {
+  margin-top: 5px !important;
+  padding-left: .1em !important;
+  min-width: 200px;
+  line-height: 2.5em !important;
+  //box-shadow: 0 4px 8px 0 rgba(0,0,0,.1), 0 1px 16px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1);
+}
+.bigger-font {
+    font-size: 1.1em;
+}
+.mycheckbox {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d5d9dc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+/* this animation does not work on mine 
+// animated checkbox from this site https://bootsnipp.com/snippets/oPgeG
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+// Note > indicates child so we are selecting cr-icon child elements within a cr element
+// + indicates an element that follows so in this case cr-icon must follow a checked checkbox element
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+*/
+
+
+// from this site https://mdbootstrap.com/support/jquery/cant-change-font-awesome-size-when-inside-a-button/
+.btn .fa {
+     font-size: 25px;
+     margin: 0em !important;
+     //z-index: 1;
+}
+
+// from this site https://stackoverflow.com/questions/2460100/remove-the-complete-styling-of-an-html-button-submit
+#plusBtn {
+	background: none;
+  background-color: inherit !important;
+	color: inherit;
+	border: none;
+  border-image-width: 0;
+  margin: 0;
+	padding: 0;	
+  font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
 .my-plus-circle {
- color: rgb(22, 25, 206);
- 
- padding: 0.32em 0 0 0; 
+ color: rgb(22, 25, 206); 
  font-size: 25px;
- margin-left: -0.50em;
+ margin-top: -3.28em;
+ //margin-left: -0.25em;
  /* from this site https://stackoverflow.com/questions/28560118/want-to-make-font-awesome-icons-thinner */
  -webkit-text-stroke: 2px rgb(22, 25, 206);
 }
