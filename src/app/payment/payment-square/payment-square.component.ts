@@ -22,6 +22,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     ) { }
 
   paymentForm; //this is our payment form object
+  private testButtonClicked: boolean;
+  
+  private skuCheckbox = false;
+  private categoryCheckbox = true;
+  private locationsCheckbox = true;
+  private inStockCheckbox = true;
+  private priceCheckbox = true;
 
   ngOnInit() {
     let self=this;
@@ -263,9 +270,42 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
+   // handle click of testButtonClicked
+  private testButtonClickHandler() {
+    if(this.testButtonClicked) {
+      this.testButtonClicked = false;
+    } else {
+      this.testButtonClicked = true;
+    }
+  }
+  
+  // build table of items from catalog
+  private buildCatalogTable() {     
+    this.squarePaymentService.listCatalog("ITEMS")      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
+  }
+  
   // Get list of Catalog items
   private listCatalog(types) {     
     this.squarePaymentService.listCatalog(types)      
+      .subscribe({
+            next(response) { /*console.log('data: ', response);*/ 
+            },
+            error(err) { //self.formError = err.message;
+                        console.log('Some error '+err.message); 
+            }
+      });
+  }
+  
+  // Search Catalog
+  private searchCatalog(srch, types) {     
+    this.squarePaymentService.findCatalogObjectsByName(srch, types)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
             },
