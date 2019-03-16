@@ -25,10 +25,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private testButtonClicked: boolean;
   
   private skuCheckbox = false;
-  private categoryCheckbox = false;
-  private locationsCheckbox = false;
-  private inStockCheckbox = false;
-  private priceCheckbox = false;
+  private categoryCheckbox = true;
+  private locationsCheckbox = true;
+  private inStockCheckbox = true;
+  private priceCheckbox = true;
 
   ngOnInit() {
     let self=this;
