@@ -19,6 +19,31 @@
     border-radius: 4px;
     margin-right: 10px;
 }
+
+// animated checkbox from this site https://bootsnipp.com/snippets/oPgeG
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg) !important;
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+// Note > indicates child so we are selecting cr-icon child elements within a cr element
+// + indicates an element that follows so in this case cr-icon must follow a checked checkbox element
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg) !important;
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+
+
+
 // from this site https://mdbootstrap.com/support/jquery/cant-change-font-awesome-size-when-inside-a-button/
 .btn .fa {
      font-size: 25px;
