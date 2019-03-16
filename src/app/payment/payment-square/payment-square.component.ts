@@ -279,7 +279,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
-  // build table oif items from catalog
+  // build table of items from catalog
   private buildCatalogTable() {     
     this.squarePaymentService.listCatalog(["ITEMS"])      
       .subscribe({
