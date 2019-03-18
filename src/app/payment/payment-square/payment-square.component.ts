@@ -29,6 +29,33 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private locationsCheckbox = true;
   private inStockCheckbox = true;
   private priceCheckbox = true;
+  
+  private shoppingItems = [
+    {
+      name: "Coffee",
+      sku: "111111",
+      category: "Hot Beverage",
+      locations: "All locations",
+      inStock: "3",
+      price: "$2.00"
+    },
+    {
+      name: "Tea",
+      sku: "222222",
+      category: "Hot Beverage",
+      locations: "All locations",
+      inStock: "8",
+      price: "$1.00"
+    },
+    {
+      name: "Cocoa",
+      sku: "333333",
+      category: "Hot Beverage",
+      locations: "All locations",
+      inStock: "20",
+      price: "$1.50"
+    }
+  ];
 
   ngOnInit() {
     let self=this;
