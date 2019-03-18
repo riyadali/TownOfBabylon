@@ -305,19 +305,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       this.testButtonClicked = true;
     }
   }
-  
-  // build table of items from catalog
-  private buildCatalogTable() {     
-    this.squarePaymentService.listCatalog("ITEMS")      
-      .subscribe({
-            next(response) { /*console.log('data: ', response);*/ 
-            },
-            error(err) { //self.formError = err.message;
-                        console.log('Some error '+err.message); 
-            }
-      });
-  }
-  
+    
   // Get list of Catalog items
   private listCatalog(types) {     
     this.squarePaymentService.listCatalog(types)      
@@ -332,7 +320,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // Search Catalog
   private searchCatalog(srch, types) {     
-    this.squarePaymentService.findCatalogObjectsByName(srch, types)      
+    //this.squarePaymentService.findCatalogObjectsByName(srch, types) 
+    this.squarePaymentService.findCatalogObjectsByPrefix(srch, types)  
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
             },
