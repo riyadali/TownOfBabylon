@@ -312,7 +312,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.squarePaymentService.listCatalog(types)      
       .subscribe({
             next(response) { /*console.log('data: ', response);*/             
-               self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM").map(elem=>{                             
+               self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && elem.item_data.category_id!=null).map(elem=>{                             
                     return { name: elem.item_data.name,
                              sku: "sku",
                              price: "price",
