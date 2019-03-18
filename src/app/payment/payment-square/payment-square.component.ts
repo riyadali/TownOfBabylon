@@ -307,15 +307,30 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
     
   // Get list of Catalog items
-  private listCatalog(types) {     
+  private listCatalog(types) {  
+    let self=this;   
     this.squarePaymentService.listCatalog(types)      
       .subscribe({
-            next(response) { /*console.log('data: ', response);*/ 
+            next(response) { /*console.log('data: ', response);*/             
+               self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM").map(elem=>{                             
+                    return { name: elem.item_data.name,
+                             sku: "sku",
+                             price: "price",
+                             category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
+                             locations: "locations",
+                             inStock: "inStock"
+                      };
+                  });
             },
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
             }
       });
+  }
+  
+  // Determine the name of the category
+  private determineCategory(elem, categoryList) { 
+   return categoryList.find(catg=>catg.id==elem.item_data.category_id).category_data.name; 
   }
   
   // Search Catalog
