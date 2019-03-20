@@ -311,16 +311,24 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     let self=this;   
     this.squarePaymentService.listCatalog(types)      
       .subscribe({
-            next(response) { /*console.log('data: ', response);*/             
-               self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && elem.item_data.category_id!=null).map(elem=>{                             
-                    return { name: elem.item_data.name,
+            next(response) { /*console.log('data: ', response);*/  
+               self.squarePaymentService.listLocations()
+                .subscribe({
+                    next(locations) { /*console.log('data: ', locations);*/                       
+                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && elem.item_data.category_id!=null).map(elem=>{  
+                        return { name: elem.item_data.name,
                              sku: "sku",
                              price: "price",
                              category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
-                             locations: "locations",
+                             locations: self.determineLocations(elem,locations),
                              inStock: "inStock"
-                      };
-                  });
+                        };
+                      });
+                    },
+                    error(err) { //self.formError = err.message;
+                      console.log('Some error '+err.message); 
+                    }
+                }); 
             },
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
@@ -331,6 +339,22 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   // Determine the name of the category
   private determineCategory(elem, categoryList) { 
    return categoryList.find(catg=>catg.id==elem.item_data.category_id).category_data.name; 
+  }
+  
+  // Determine the locations that the item is available
+  private determineLocations(elem, locations) { 
+   if (elem.present_at_all_locations) {
+     return "All locations";
+   } else if (elem.present_at_location_ids&&elem.present_at_location_ids.length>0) {
+     if (elem.present_at_location_ids.length>1) {
+       return elem.present_at_location_ids.length+" locations";
+     } else {
+       return locations.find(location=>location.id==elem.present_at_location_ids[0]).name; 
+     }
+
+   } else {
+     return "";
+   } 
   }
   
   // Search Catalog
