@@ -32,6 +32,23 @@ export class SquarePaymentService {
     private messageService: MessageService) { }
   
   //////// Read methods //////////
+  
+  /** GET: List of locations */
+  listLocations (): Observable<any> {
+    let self=this;
+    return this.http.get(this.squareLocationsUrl).pipe(
+      /*
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
+      */
+      //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      // tap(x => self.log(`Catalog List completed. Response is `+ JSON.stringify(x))),
+      
+      catchError(this.handleError<any>('listLocations',{}))
+    );
+  }
 
   /** GET: List items from the catalog */
   listCatalog (catalogTypes: string): Observable<any> {
