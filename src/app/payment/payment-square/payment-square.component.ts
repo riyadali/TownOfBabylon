@@ -323,11 +323,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                             // The final result is all of these indivdual elements merged together in a single array
                             // It is a usefuil way to "map" a single value to multiple values.
                             // Alternatives are reduce and concat, so arr1.flatMap(x => [x * 2]); is equivalent to 
-                            // arr1.reduce((acc, x) => acc.concat([x * 2]), []); 
-                          
-                            return elem.item_data.variations.map(variation=>{
-                              return {...elem, variation: variation};
-                            });                           
+                            // arr1.reduce((acc, x) => acc.concat([x * 2]), []);
+                        
+                            self.addVariations;                         
                           }).map(elem=>{  
                               return { name: elem.item_data.name,
                                 sku: elem.variation.item_variation_data.sku,
@@ -347,6 +345,21 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                         console.log('Some error '+err.message); 
             }
       });
+  }
+  
+  // Add variations as individual rows as well as a category header
+  private addVariations(elem): Array<any> {
+    if (elem.item_data.variations.length==1) // a single variation
+      // return a single row just for the category
+      return elem.item_data.variations.map(variation=>{                             
+        return {...elem, is_category_row: true, variation: variation};
+      });
+    else {      
+      let variations = elem.item_data.variations.map(variation=>{
+        return {...elem, is_category_row: false, variation: variation};
+      });     
+      return [{...elem, is_category_row: true, variation: elem.item_data.variations[0]}, ...variations];      
+    }
   }
   
   // Determine the name of the category
