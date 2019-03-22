@@ -325,7 +325,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                             // Alternatives are reduce and concat, so arr1.flatMap(x => [x * 2]); is equivalent to 
                             // arr1.reduce((acc, x) => acc.concat([x * 2]), []);
                         
-                            self.addVariations;                         
+                            self.addVariations(elem);                         
                           }).map(elem=>{  
                               return { name: elem.item_data.name,
                                 sku: elem.variation.item_variation_data.sku,
