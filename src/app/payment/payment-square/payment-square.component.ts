@@ -330,7 +330,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                             });                           
                           }).map(elem=>{  
                               return { name: elem.item_data.name,
-                                sku: "sku",
+                                sku: elem.variation.item_variation_data.sku,
                                 price: "$"+(elem.variation.item_variation_data.price_money.amount/100).toFixed(2),
                                 category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
                                 locations: self.determineLocations(elem,locations),
