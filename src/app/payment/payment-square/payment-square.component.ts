@@ -345,10 +345,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   // Determine the locations that the item is available
   private determineLocations(elem, locations) { 
    if (elem.present_at_all_locations) {
-     return "All locations";
+     return "All Locations";
    } else if (elem.present_at_location_ids&&elem.present_at_location_ids.length>0) {
      if (elem.present_at_location_ids.length>1) {
-       return elem.present_at_location_ids.length+" locations";
+       return elem.present_at_location_ids.length+" Locations";
      } else {
        return locations.find(location=>location.id==elem.present_at_location_ids[0]).name; 
      }
