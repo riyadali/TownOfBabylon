@@ -26,6 +26,7 @@ export class SquarePaymentService {
   private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"transactions/process-payment";  // URL to web api that will interface with square's payment processor
   private squareCheckoutUrl = apiSquarePaymentURL+"checkout/process-checkout";  // URL to web api that will interface with square's chout order flow
   private squareCatalogUrl = apiSquarePaymentURL+"catalog/";  // URL to web api that will interface with square's catalog
+  private squareLocationsUrl = apiSquarePaymentURL+"locations/";  // URL to web api that will interface with square's catalog
   
   constructor(
     private http: HttpClient,
