@@ -1,11 +1,4 @@
-     <!-- link to the SqPaymentForm library -->
-
-   <!-- link to the local SqPaymentForm initialization -->
-<!-- most of this from https://github.com/square/connect-api-examples/blob/master/connect-examples/v2/node_payment/views/index.pug -->
-<!--
-<button type="button" class="btn btn-default btn-md" 
-              (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
--->
+  
 <!-- from this link https://mdbootstrap.com/support/angular/html-popover-problem/ -->
 <ng-template #popTemplate>
 
@@ -59,8 +52,14 @@
   </div>
 </ng-template>
 
+<!--
 <button type="button" class="btn btn-default btn-md" 
-              (click)="testButtonClickHandler()">Test InterFace</button>
+              (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
+-->
+<button type="button" class="btn btn-default btn-md" 
+              (click)="listCatalog('CATEGORY,ITEM')">Test InterFace</button>
+<button type="button" class="btn btn-default btn-md" 
+              (click)="testButtonClickHandler()">Shop</button>
 
 <div class="catalogTable" [hidden]="!testButtonClicked"> 
   <h2>Shop till you drop</h2>
@@ -108,6 +107,12 @@
     
   </div>
 </div>
+
+   <!-- link to the SqPaymentForm library -->
+
+   <!-- link to the local SqPaymentForm initialization -->
+<!-- most of this from https://github.com/square/connect-api-examples/blob/master/connect-examples/v2/node_payment/views/index.pug -->
+
 
  <div class="sq-payment-form ">
 

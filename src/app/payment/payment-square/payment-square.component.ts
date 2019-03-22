@@ -305,12 +305,31 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       this.testButtonClicked = true;
     }
   }
-  
-  // build table of items from catalog
-  private buildCatalogTable() {     
-    this.squarePaymentService.listCatalog("ITEMS")      
+    
+  // Get list of Catalog items
+  private listCatalog(types) {  
+    let self=this;   
+    this.squarePaymentService.listCatalog(types)      
       .subscribe({
-            next(response) { /*console.log('data: ', response);*/ 
+            next(response) { /*console.log('data: ', response);*/  
+               self.squarePaymentService.listLocations()
+                .subscribe({
+                    next(resp) { /*console.log('data: ', resp);*/
+                      let locations=resp.locations;
+                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && elem.item_data.category_id!=null).map(elem=>{  
+                        return { name: elem.item_data.name,
+                             sku: "sku",
+                             price: "price",
+                             category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
+                             locations: self.determineLocations(elem,locations),
+                             inStock: "inStock"
+                        };
+                      });
+                    },
+                    error(err) { //self.formError = err.message;
+                      console.log('Some error '+err.message); 
+                    }
+                }); 
             },
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
@@ -318,21 +337,31 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       });
   }
   
-  // Get list of Catalog items
-  private listCatalog(types) {     
-    this.squarePaymentService.listCatalog(types)      
-      .subscribe({
-            next(response) { /*console.log('data: ', response);*/ 
-            },
-            error(err) { //self.formError = err.message;
-                        console.log('Some error '+err.message); 
-            }
-      });
+  // Determine the name of the category
+  private determineCategory(elem, categoryList) { 
+   return categoryList.find(catg=>catg.id==elem.item_data.category_id).category_data.name; 
+  }
+  
+  // Determine the locations that the item is available
+  private determineLocations(elem, locations) { 
+   if (elem.present_at_all_locations) {
+     return "All Locations";
+   } else if (elem.present_at_location_ids&&elem.present_at_location_ids.length>0) {
+     if (elem.present_at_location_ids.length>1) {
+       return elem.present_at_location_ids.length+" Locations";
+     } else {
+       return locations.find(location=>location.id==elem.present_at_location_ids[0]).name; 
+     }
+
+   } else {
+     return "";
+   } 
   }
   
   // Search Catalog
   private searchCatalog(srch, types) {     
-    this.squarePaymentService.findCatalogObjectsByName(srch, types)      
+    //this.squarePaymentService.findCatalogObjectsByName(srch, types) 
+    this.squarePaymentService.findCatalogObjectsByPrefix(srch, types)  
       .subscribe({
             next(response) { /*console.log('data: ', response);*/ 
             },

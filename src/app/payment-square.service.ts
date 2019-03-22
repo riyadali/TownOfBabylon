@@ -26,12 +26,30 @@ export class SquarePaymentService {
   private squarePaymentProcessPaymentUrl = apiSquarePaymentURL+"transactions/process-payment";  // URL to web api that will interface with square's payment processor
   private squareCheckoutUrl = apiSquarePaymentURL+"checkout/process-checkout";  // URL to web api that will interface with square's chout order flow
   private squareCatalogUrl = apiSquarePaymentURL+"catalog/";  // URL to web api that will interface with square's catalog
+  private squareLocationsUrl = apiSquarePaymentURL+"locations/";  // URL to web api that will interface with square's catalog
   
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
   
   //////// Read methods //////////
+  
+  /** GET: List of locations */
+  listLocations (): Observable<any> {
+    let self=this;
+    return this.http.get(this.squareLocationsUrl).pipe(
+      /*
+      map<PostEventResponse,CalEvent>(response => { 
+          // console.log("response..."+JSON.stringify(response))
+         return self.createCalendarEvent(response.calendarEvent);
+        }), 
+      */
+      //tap((calEvent: CalEvent) => this.log(`added calendar event w/ id=${calEvent.id}`)),
+      // tap(x => self.log(`Catalog List completed. Response is `+ JSON.stringify(x))),
+      
+      catchError(this.handleError<any>('listLocations',{}))
+    );
+  }
 
   /** GET: List items from the catalog */
   listCatalog (catalogTypes: string): Observable<any> {
