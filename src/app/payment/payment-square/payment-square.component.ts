@@ -316,15 +316,27 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 .subscribe({
                     next(resp) { /*console.log('data: ', resp);*/
                       let locations=resp.locations;
-                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && elem.item_data.category_id!=null).map(elem=>{  
-                        return { name: elem.item_data.name,
-                             sku: "sku",
-                             price: "price",
-                             category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
-                             locations: self.determineLocations(elem,locations),
-                             inStock: "inStock"
-                        };
-                      });
+                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && elem.item_data.category_id!=null     
+                          && elem.item_data.variations!=null).flatMap(elem=>{
+                            // Note flatMap takes a function that maps an element to an array
+                            // it then flattens that resulting array back to individual elements. 
+                            // The final result is all of these indivdual elements merged together in a single array
+                            // It is a usefuil way to "map" a single value to multiple values.
+                            // Alternatives are reduce and concat, so arr1.flatMap(x => [x * 2]); is equivalent to 
+                            // arr1.reduce((acc, x) => acc.concat([x * 2]), []); 
+                          
+                            return elem.item_data.variations.map(variation=>{
+                              return {...elem, variation: variation};
+                            });                           
+                          }).map(elem=>{  
+                              return { name: elem.item_data.name,
+                                sku: "sku",
+                                price: "$"+(elem.variation.item_variation_data.price_money.amount/100).toFixed(2),
+                                category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
+                                locations: self.determineLocations(elem,locations),
+                                inStock: "inStock"
+                            };
+                      }); // end filter
                     },
                     error(err) { //self.formError = err.message;
                       console.log('Some error '+err.message); 
