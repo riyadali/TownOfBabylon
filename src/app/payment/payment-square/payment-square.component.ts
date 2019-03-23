@@ -316,8 +316,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 .subscribe({
                     next(resp) { /*console.log('data: ', resp);*/
                       let locations=resp.locations;
-                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && elem.item_data.category_id!=null     
-                          && elem.item_data.variations!=null).flatMap(
+                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && !elem.is_deleted
+                          && elem.item_data).flatMap(
                             // Note flatMap takes a function that maps an element to an array
                             // it then flattens that resulting array back to individual elements. 
                             // The final result is all of these indivdual elements merged together in a single array
