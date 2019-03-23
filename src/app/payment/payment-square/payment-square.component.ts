@@ -358,7 +358,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
                 absent_at_location_ids: elem.absent_at_location_ids, sku: "",
                 in_stock: "-",
-                price: ""}];
+                price: "-"}];
     else if (elem.item_data.variations.length==1) // a single valid variation     
       // return a single row just for the category
       return elem.item_data.variations.map(variation=>{
@@ -441,6 +441,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private determinePrice(price) { 
    if (!price) 
      return "";
+   else if (price==="-")
+     return price;
    else
     return "$"+(price/100).toFixed(2); 
   }
