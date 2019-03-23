@@ -327,14 +327,14 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                         
                             self.addVariations                         
                           ).map(elem=>{  
-                              return { name: elem.item_data.name,
-                                sku: elem.variation.item_variation_data.sku,
-                                price: "$"+(elem.variation.item_variation_data.price_money.amount/100).toFixed(2),
+                               return { name: elem.name,
+                                sku: elem.sku,
+                                price: self.determineElemPrice(elem),
                                 category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
                                 locations: self.determineLocations(elem,locations),
-                                inStock: "inStock"
-                            };
-                      }); // end filter
+                                inStock: elem.in_stock
+                              };
+                            }); 
                     },
                     error(err) { //self.formError = err.message;
                       console.log('Some error '+err.message); 
@@ -349,28 +349,109 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // Add variations as individual rows as well as a category header
   private addVariations(elem): Array<any> {
-    if (elem.item_data.variations.length==1) // a single variation
+    if (elem.item_data.variations==null||elem.item_data.variations.length==0 ||
+        (elem.item_data.variations.length==1&&
+          (elem.item_data.variations[0].is_deleted || elem.item_data.variations[0].item_variation_data==null))
+        )
+      // no variations -- return a single row with the category information
+      return [{is_category_row: true, name: elem.item_data.name, category_id: elem.item_data.category_id,
+                present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
+                absent_at_location_ids: elem.absent_at_location_ids, sku: "",
+                in_stock: "-",
+                price: ""}];
+    else if (elem.item_data.variations.length==1) // a single valid variation     
       // return a single row just for the category
-      return elem.item_data.variations.map(variation=>{                             
-        return {...elem, is_category_row: true, variation: variation};
+      return elem.item_data.variations.map(variation=>{
+        let price="";
+        if (elem.item_data.variations[0].item_variation_data.price_money) {
+          price=elem.item_data.variations[0].item_variation_data.price_money.amount; 
+        }                           
+        return {is_category_row: true, name: elem.item_data.name, category_id: elem.item_data.category_id,
+                present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
+                absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku,
+                in_stock: "tbd use inv api",
+                price: price};
+      }); // end outer return with map
+     
+    else { 
+      // many variations     
+      let variations = elem.item_data.variations.filter(variation=>!variation.is_deleted && variation.item_variation_data!=null     
+                          );
+      let variationsList=variations.map(variation=>{
+        let price="";
+        if (variation.item_variation_data.price_money) {
+          price=variation.item_variation_data.price_money.amount; 
+        } 
+        return {is_category_row: false, name: "   "+variation.item_variation_data.name, category_id: elem.item_data.category_id,
+                present_at_all_locations: variation.present_at_all_locations, present_at_location_ids: variation.present_at_location_ids,
+                absent_at_location_ids: variation.absent_at_location_ids, sku: variation.item_variation_data.sku,
+                in_stock: "tbd use inv api",
+                price: price};
       });
-    else {      
-      let variations = elem.item_data.variations.map(variation=>{
-        return {...elem, is_category_row: false, variation: variation};
-      });     
-      return [{...elem, is_category_row: true, variation: elem.item_data.variations[0]}, ...variations];      
+
+      /* -- Explanation of how the apply function works (I'm using it to find max/min values)
+
+      from this link https://stackoverflow.com/questions/4020796/finding-the-max-value-of-an-attribute-in-an-array-of-objects
+      Math.max.apply(Math, array.map(function(o) { return o.y; }))
+      apply function explained here https://stackoverflow.com/questions/21255138/how-does-the-math-max-apply-work
+      Basically first parm is your own context or the "this" object, in our case the Math object -- actually for max function
+      it could be anything since Max does not depend on the context.
+      The second parameter is the values against which the function (max) should be applied
+      */
+
+      // return a category header row prepended to all of the variations      
+      return [{is_category_row: true, name: elem.item_data.name, category_id: elem.item_data.category_id,
+                present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
+                absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations.length+" Variations",
+                in_stock: "tbd use inv api",
+                max_price: Math.max.apply(Math, variations.filter(variation=>variation.item_variation_data.price_money).map(
+                  variation=>variation.item_variation_data.price_money.amount)
+                ),
+                min_price: Math.min.apply(Math, variations.filter(variation=>variation.item_variation_data.price_money).map(
+                  variation=>variation.item_variation_data.price_money.amount)
+                ),
+              }, 
+              ...variationsList];      
     }
   }
   
   // Determine the name of the category
-  private determineCategory(elem, categoryList) { 
-   return categoryList.find(catg=>catg.id==elem.item_data.category_id).category_data.name; 
+  private determineCategory(elem, categoryList) {
+   if (elem.is_category_row)
+      if (elem.category_id) 
+        return categoryList.find(catg=>catg.id==elem.category_id).category_data.name; 
+      else
+        return "-"
+   else 
+      return "";
+  }
+
+  // Determine price
+  private determineElemPrice(elem) { 
+   if (elem.max_price && elem.min_price) { 
+     if (elem.max_price == elem.min_price) 
+        return this.determinePrice(elem.min_price);
+     else // min different from max_price
+       return this.determinePrice(elem.min_price) + " - " + this.determinePrice(elem.max_price);
+   } else // not a price range
+    return this.determinePrice(elem.price);
+  }
+
+  // Determine price
+  private determinePrice(price) { 
+   if (!price) 
+     return "";
+   else
+    return "$"+(price/100).toFixed(2); 
   }
   
   // Determine the locations that the item is available
   private determineLocations(elem, locations) { 
    if (elem.present_at_all_locations) {
-     return "All Locations";
+     if (!elem.absent_at_location_ids || elem.absent_at_location_ids.length==0)
+        return "All Locations";
+     else
+        return locations.length-elem.absent_at_location_ids.length+" Locations"  
    } else if (elem.present_at_location_ids&&elem.present_at_location_ids.length>0) {
      if (elem.present_at_location_ids.length>1) {
        return elem.present_at_location_ids.length+" Locations";
@@ -378,10 +459,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
        return locations.find(location=>location.id==elem.present_at_location_ids[0]).name; 
      }
 
-   } else {
+  } else {
      return "";
-   } 
-  }
+  } 
+ }
   
   // Search Catalog
   private searchCatalog(srch, types) {     
