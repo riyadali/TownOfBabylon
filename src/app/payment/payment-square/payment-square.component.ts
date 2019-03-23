@@ -382,7 +382,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
         if (variation.item_variation_data.price_money) {
           price=variation.item_variation_data.price_money.amount; 
         } 
-        return {is_category_row: false, name: "   "+variation.item_variation_data.name, category_id: elem.item_data.category_id,
+        return {is_category_row: false, name: variation.item_variation_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: variation.present_at_all_locations, present_at_location_ids: variation.present_at_location_ids,
                 absent_at_location_ids: variation.absent_at_location_ids, sku: variation.item_variation_data.sku,
                 in_stock: "tbd use inv api",
