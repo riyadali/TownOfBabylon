@@ -360,7 +360,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 absent_at_location_ids: elem.absent_at_location_ids, sku: "",
                 in_stock: "-",
                 price: "-"}];
-    else if (elem.item_data.variations.length==1) // a single valid variation     
+    else if (elem.item_data.variations.length==1) { // a single valid variation     
       // return a single row with the generic header information     
       let price="";
       if (elem.item_data.variations[0].item_variation_data.price_money) {
@@ -373,7 +373,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
               price: price}];
       
      
-    else { 
+    } else { 
       // many variations     
       let variations = elem.item_data.variations.filter(variation=>!variation.is_deleted && variation.item_variation_data!=null     
                           );
