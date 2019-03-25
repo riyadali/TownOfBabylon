@@ -332,7 +332,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                 price: self.determineElemPrice(elem),
                                 category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
                                 locations: self.determineLocations(elem,locations),
-                                inStock: elem.in_stock
+                                inStock: elem.in_stock,
+                                is_variation_row: elem.is_variation_row
                               };
                             }); 
                     },
@@ -347,31 +348,30 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       });
   }
   
-  // Add variations as individual rows as well as a category header
+  // Add variations as individual rows as well as a header row for generic version of item
   private addVariations(elem): Array<any> {
     if (elem.item_data.variations==null||elem.item_data.variations.length==0 ||
         (elem.item_data.variations.length==1&&
           (elem.item_data.variations[0].is_deleted || elem.item_data.variations[0].item_variation_data==null))
         )
-      // no variations -- return a single row with the category information
-      return [{is_category_row: true, name: elem.item_data.name, category_id: elem.item_data.category_id,
+      // no variations -- return a single row with the generic header information
+      return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
                 absent_at_location_ids: elem.absent_at_location_ids, sku: "",
                 in_stock: "-",
                 price: "-"}];
     else if (elem.item_data.variations.length==1) // a single valid variation     
-      // return a single row just for the category
-      return elem.item_data.variations.map(variation=>{
-        let price="";
-        if (elem.item_data.variations[0].item_variation_data.price_money) {
-          price=elem.item_data.variations[0].item_variation_data.price_money.amount; 
-        }                           
-        return {is_category_row: true, name: elem.item_data.name, category_id: elem.item_data.category_id,
-                present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
-                absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku,
-                in_stock: "tbd use inv api",
-                price: price};
-      }); // end outer return with map
+      // return a single row with the generic header information     
+      let price="";
+      if (elem.item_data.variations[0].item_variation_data.price_money) {
+        price=elem.item_data.variations[0].item_variation_data.price_money.amount; 
+      }                           
+      return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
+              present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
+              absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku,
+              in_stock: "tbd use inv api",
+              price: price}];
+      
      
     else { 
       // many variations     
@@ -382,7 +382,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
         if (variation.item_variation_data.price_money) {
           price=variation.item_variation_data.price_money.amount; 
         } 
-        return {is_category_row: false, name: variation.item_variation_data.name, category_id: elem.item_data.category_id,
+        return {is_variation_row: true, name: variation.item_variation_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: variation.present_at_all_locations, present_at_location_ids: variation.present_at_location_ids,
                 absent_at_location_ids: variation.absent_at_location_ids, sku: variation.item_variation_data.sku,
                 in_stock: "tbd use inv api",
@@ -399,8 +399,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       The second parameter is the values against which the function (max) should be applied
       */
 
-      // return a category header row prepended to all of the variations      
-      return [{is_category_row: true, name: elem.item_data.name, category_id: elem.item_data.category_id,
+      // return a header row with the generic information prepended to all of the variations      
+      return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
                 absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations.length+" Variations",
                 in_stock: "tbd use inv api",
@@ -417,7 +417,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // Determine the name of the category
   private determineCategory(elem, categoryList) {
-   if (elem.is_category_row)
+   if (!elem.is_variation_row)
       if (elem.category_id) 
         return categoryList.find(catg=>catg.id==elem.category_id).category_data.name; 
       else
