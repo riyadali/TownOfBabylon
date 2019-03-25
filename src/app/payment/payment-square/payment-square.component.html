@@ -83,7 +83,7 @@
             A very easy option(works with Angular ng-click too):
             <tr onclick="myFunction(this)">
           -->
-          <tr *ngFor="let shoppingItem of shoppingItems">
+          <tr class="my-row" *ngFor="let shoppingItem of shoppingItems; let i = index" (click)="shoppingTableRowClickHandler(i, shoppingItem)">
             <!-- Dynamic styles from this site https://malcoded.com/posts/angular-ngclass -->
             <td class="text-primary"><div [class.my-indent]="shoppingItem.is_variation_row">
               <strong>{{shoppingItem.name}}</strong></div></td>
