@@ -361,7 +361,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 in_stock: "-",
                 price: "-"}];
     else if (elem.item_data.variations.length==1) { // a single valid variation     
-      // return a single row with the generic header information     
+      // return a single row with information about the only variation     
       let price="";
       if (elem.item_data.variations[0].item_variation_data.price_money) {
         price=elem.item_data.variations[0].item_variation_data.price_money.amount; 
