@@ -1,3 +1,7 @@
+// to show pointer to indicate row is clickable
+.my-row:hover {
+  cursor: pointer;
+}
 // for indentation
 .my-indent {
   padding-left: 1.5em;
