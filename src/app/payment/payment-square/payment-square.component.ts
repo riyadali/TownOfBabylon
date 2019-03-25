@@ -353,7 +353,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     if (elem.item_data.variations==null||elem.item_data.variations.length==0 ||
         (elem.item_data.variations.length==1&&
           (elem.item_data.variations[0].is_deleted || elem.item_data.variations[0].item_variation_data==null))
-        )
+        )      
       // no variations -- return a single row with the generic header information
       return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
