@@ -29,6 +29,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private locationsCheckbox = true;
   private inStockCheckbox = true;
   private priceCheckbox = true;
+  // Any expanded group will be added as a boolean property to this object and it will be set to true.  The property
+  // would be named using the group_id field and can referenced as follows: groupExpanded[group_id]
+  private groupExpanded = {};  
   
   private shoppingItems = [
     {
@@ -313,7 +316,15 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // handle click of dropdown button in shopping table row
   private shoppingTableRowDropdownClickHandler(i, elem) {
-    console.log("dropdown clicked is "+i+" "+JSON.stringify(elem))
+    console.log("dropdown clicked is "+i+" "+JSON.stringify(elem));
+    
+    if (this.groupExpanded[elem.group_id]) {
+       // group currently expanded
+       this.groupExpanded[elem.group_id]=false;
+     } else {
+       // group currently collapsed
+       this.groupExpanded[elem.group_id]=true;
+     }
   }
     
   // Get list of Catalog items
