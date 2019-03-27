@@ -338,7 +338,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                 category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
                                 locations: self.determineLocations(elem,locations),
                                 inStock: elem.in_stock,
-                                is_variation_row: elem.is_variation_row
+                                is_variation_row: elem.is_variation_row,
+                                group_id: elem.group_id
                               };
                             }); 
                     },
@@ -389,7 +390,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
         } 
         return {is_variation_row: true, name: variation.item_variation_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: variation.present_at_all_locations, present_at_location_ids: variation.present_at_location_ids,
-                absent_at_location_ids: variation.absent_at_location_ids, sku: variation.item_variation_data.sku,
+                absent_at_location_ids: variation.absent_at_location_ids, sku: variation.item_variation_data.sku, 
+                group_id: elem.id,
                 in_stock: "tbd use inv api",
                 price: price};
       });
@@ -408,6 +410,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
                 absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations.length+" Variations",
+                group_id: elem.id,
                 in_stock: "tbd use inv api",
                 max_price: Math.max.apply(Math, variations.filter(variation=>variation.item_variation_data.price_money).map(
                   variation=>variation.item_variation_data.price_money.amount)
