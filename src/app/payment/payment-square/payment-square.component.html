@@ -88,7 +88,7 @@
               <!-- Dynamic styles from this site https://malcoded.com/posts/angular-ngclass -->
               <div [class.my-indent]="shoppingItem.is_variation_row">
                 <strong>
-                  <span class="my-v" *ngIf="!shoppingItem.is_variation_row">V</span>
+                  <span *ngIf="!shoppingItem.is_variation_row"><i class="fas fa-angle-right"></i></span>
                   {{shoppingItem.name}}
                 </strong>
               </div>
