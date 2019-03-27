@@ -310,6 +310,11 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private shoppingTableRowClickHandler(i, elem) {
     console.log("row clicked is "+i+" "+JSON.stringify(elem))
   }
+  
+  // handle click of dropdown button in shopping table row
+  private shoppingTableRowDropdownClickHandler(i, elem) {
+    console.log("dropdown clicked is "+i+" "+JSON.stringify(elem))
+  }
     
   // Get list of Catalog items
   private listCatalog(types) {  
