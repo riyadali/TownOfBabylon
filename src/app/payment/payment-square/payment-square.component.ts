@@ -383,7 +383,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 in_stock: "-",
                 price: "-"}];
     else if (elem.item_data.variations.length==1) { // a single valid variation     
-      // return a single row with information about the only variation     
+      // return a single row with information about the only variation as well as a header row for generic version of item    
       let price="";
       if (elem.item_data.variations[0].item_variation_data.price_money) {
         price=elem.item_data.variations[0].item_variation_data.price_money.amount; 
@@ -391,8 +391,16 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
               present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
               absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku,
+              group_id: elem.id,
               in_stock: "tbd use inv api",
-              price: price}];
+              price: price},
+              {is_variation_row: true, name: elem.item_data.variations[0].item_variation_data.name, category_id: elem.item_data.category_id,
+                present_at_all_locations: elem.item_data.variations[0].present_at_all_locations, present_at_location_ids: elem.item_data.variations[0].present_at_location_ids,
+                absent_at_location_ids: elem.item_data.variations[0].absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku, 
+                group_id: elem.id,
+                in_stock: "tbd use inv api",
+                price: price}
+              ];
       
      
     } else { 
