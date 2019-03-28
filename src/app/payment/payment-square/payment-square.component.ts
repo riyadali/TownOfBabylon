@@ -62,7 +62,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private priceCheckbox = true;
   // Any expanded group will be added as a boolean property to this object and it will be set to true.  The property
   // would be named using the group_id field and can referenced as follows: groupExpanded[group_id]
-  private groupExpanded = {};  
+  private groupExpanded = {}; 
+  
+  private currentShoppingItem;
   
   private shoppingItems = [
     {
