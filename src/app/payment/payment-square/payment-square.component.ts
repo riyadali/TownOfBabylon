@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Inject, TemplateRef, ViewChild } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
 
@@ -7,6 +7,12 @@ import { Order } from '../../model/Order';
 import { SquareCheckout } from '../../model/SquareCheckout';
 
 import { SquarePaymentService } from '../../payment-square.service';
+
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+import modalTemplate from "../../modal-views/modal.template.html";
+import clickShoppingItemTemplate from "../../modal-views/click-shopping-item.template.html";
 
 declare var SqPaymentForm : any; //magic to allow us to access the SquarePaymentForm lib
 
@@ -17,9 +23,33 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
-  constructor(private squarePaymentService: SquarePaymentService, @Inject('Window') private window: Window
-              , @Inject(DOCUMENT) private document: any
+  constructor(private squarePaymentService: SquarePaymentService, private modalService: BsModalService,
+               @Inject('Window') private window: Window, @Inject(DOCUMENT) private document: any
     ) { }
+  
+  private modalRef: BsModalRef;
+  
+  private openModal(template: TemplateRef<any>) {
+    //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.modalService.show(template);
+  }
+  
+  
+  @ViewChild('modalContent')
+  private modalContent: TemplateRef<any>;
+  
+  @ViewChild('clickShoppingItemContent')
+  private clickShoppingItemContent: TemplateRef<any>;  
+  
+  private modalData: {
+    bodyTemplate: TemplateRef<any>;
+    header: string;
+    button1Text: string;
+    button2Text?: string;
+    button3Text?: string;
+    action: string;
+    //event: CalendarEvent<ExtraEventData>;
+  };
 
   paymentForm; //this is our payment form object
   private testButtonClicked: boolean;
