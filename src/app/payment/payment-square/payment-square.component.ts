@@ -13,12 +13,13 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import modalTemplate from "../../modal-views/modal.template.html";
 import clickShoppingItemTemplate from "../../modal-views/click-shopping-item.template.html";
+import mainTemplate from "./payment-square.component.html";
 
 declare var SqPaymentForm : any; //magic to allow us to access the SquarePaymentForm lib
 
 @Component({
   selector: 'app-payment-square',
-  templateUrl: './payment-square.component.html',
+  template: modalTemplate+mainTemplate+clickShoppingItemTemplate,
   styleUrls: ['./payment-square.component.scss']
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
@@ -47,7 +48,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     button1Text: string;
     button2Text?: string;
     button3Text?: string;
-    action: string;
+   // action: string;
     //event: CalendarEvent<ExtraEventData>;
   };
 
@@ -341,12 +342,20 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // handle click of shopping table row
   private shoppingTableRowClickHandler(i, elem) {
-    console.log("row clicked is "+i+" "+JSON.stringify(elem))
+    //console.log("row clicked is "+i+" "+JSON.stringify(elem))
+    this.currentShoppingItem = elem;
+    this.modalData = {                      
+                      bodyTemplate:  this.clickShoppingItemContent, 
+                      header: "Details", 
+                      button1Text: "More", 
+                      button2Text: "Return" 
+                    };
+    this.openModal(this.modalContent);
   }
   
   // handle click of dropdown button in shopping table row
   private shoppingTableRowDropdownClickHandler(i, elem) {
-    console.log("dropdown clicked is "+i+" "+JSON.stringify(elem));
+    //console.log("dropdown clicked is "+i+" "+JSON.stringify(elem));
     
     if (this.groupExpanded[elem.group_id]) {
        // group currently expanded
