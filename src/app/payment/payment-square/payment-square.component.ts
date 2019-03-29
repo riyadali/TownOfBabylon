@@ -410,7 +410,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                   inStock: elem.in_stock,
                                   is_variation_row: elem.is_variation_row,
                                   group_id: elem.group_id,
-                                  description: elem.description
+                                  description: elem.description,
+                                  taxes: self.determineTaxes(elem, taxes)
                                 };
                               }); 
                           }, // end next for listTaxes
@@ -442,6 +443,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
                 absent_at_location_ids: elem.absent_at_location_ids, sku: "",
                 description: elem.item_data.description,
+                tax_ids: elem.item_data.tax_ids,
                 in_stock: "-",
                 price: "-"}];
     else if (elem.item_data.variations.length==1) { // a single valid variation     
@@ -454,6 +456,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
               present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
               absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku,
               description: elem.item_data.description,
+              tax_ids: elem.item_data.tax_ids,
               group_id: elem.id,
               in_stock: "tbd use inv api",
               price: price},
@@ -504,6 +507,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations.length+" Variations",
                 group_id: elem.id,
                 description: elem.item_data.description,
+                tax_ids: elem.item_data.tax_ids,
                 in_stock: "tbd use inv api",
                 max_price: Math.max.apply(Math, variations.filter(variation=>variation.item_variation_data.price_money).map(
                   variation=>variation.item_variation_data.price_money.amount)
@@ -564,6 +568,27 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
   } else {
      return "";
+  } 
+ }
+  
+  // Determine the taxes for the item
+  private determineTaxes(elem, availableTaxes) {
+   if (!elem.tax_ids||elem.tax_ids.length==0){
+     // no Taxes     
+     return "";
+   } else if (elem.tax_ids.length>2) { 
+     // More than two taxes
+     if (elem.tax_ids.length==availableTaxes.length)
+        return "All Taxes";
+     else
+        //return locations.length-elem.absent_at_location_ids.length+" Locations"
+        return elem.tax_ids.length+" Taxes"  
+   } else if (elem.tax_ids.length==2) {
+      // two taxes
+      return availableTaxes.find(tax=>tax.id==elem.tax_ids[0]).tax_data.name+" and "+availableTaxes.find(tax=>tax.id==elem.tax_ids[1]).tax_data.name; 
+   } else {
+      // a single tax
+      return availableTaxes.find(tax=>tax.id==elem.tax_ids[0]).tax_data.name;
   } 
  }
   
