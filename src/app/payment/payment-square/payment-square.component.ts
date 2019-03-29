@@ -387,38 +387,48 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 .subscribe({
                     next(resp) { /*console.log('data: ', resp);*/
                       let locations=resp.locations;
-                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && !elem.is_deleted
-                          && elem.item_data).flatMap(
-                            // Note flatMap takes a function that maps an element to an array
-                            // it then flattens that resulting array back to individual elements. 
-                            // The final result is all of these indivdual elements merged together in a single array
-                            // It is a usefuil way to "map" a single value to multiple values.
-                            // Alternatives are reduce and concat, so arr1.flatMap(x => [x * 2]); is equivalent to 
-                            // arr1.reduce((acc, x) => acc.concat([x * 2]), []);
+                      let locations=resp.locations;
+                      self.squarePaymentService.listTaxes()
+                       .subscribe({
+                         next(resp) {
+                           let taxes=resp.objects;
+                           self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && !elem.is_deleted
+                              && elem.item_data).flatMap(
+                              // Note flatMap takes a function that maps an element to an array
+                              // it then flattens that resulting array back to individual elements. 
+                              // The final result is all of these indivdual elements merged together in a single array
+                              // It is a usefuil way to "map" a single value to multiple values.
+                              // Alternatives are reduce and concat, so arr1.flatMap(x => [x * 2]); is equivalent to 
+                              // arr1.reduce((acc, x) => acc.concat([x * 2]), []);
                         
-                            self.addVariations                         
-                          ).map(elem=>{  
-                               return { name: elem.name,
-                                sku: elem.sku,
-                                price: self.determineElemPrice(elem),
-                                category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
-                                locations: self.determineLocations(elem,locations),
-                                inStock: elem.in_stock,
-                                is_variation_row: elem.is_variation_row,
-                                group_id: elem.group_id,
-                                description: elem.description
-                              };
-                            }); 
-                    },
+                              self.addVariations                         
+                            ).map(elem=>{  
+                                return { name: elem.name,
+                                  sku: elem.sku,
+                                  price: self.determineElemPrice(elem),
+                                  category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
+                                  locations: self.determineLocations(elem,locations),
+                                  inStock: elem.in_stock,
+                                  is_variation_row: elem.is_variation_row,
+                                  group_id: elem.group_id,
+                                  description: elem.description
+                                };
+                              }); 
+                          }, // end next for listTaxes
+                          error(err) { //self.formError = err.message;
+                            console.log('Some error '+err.message); 
+                          }
+                       }); // end subscribe for listTaxes
+                    }, // end next aftter locations lookup
                     error(err) { //self.formError = err.message;
                       console.log('Some error '+err.message); 
                     }
-                }); 
-            },
+                }); // end subscribe for listLocations
+            }, // end next for listCatalog
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
             }
-      });
+      }); // end subscribe for listCatalog
   }
   
   // Add variations as individual rows as well as a header row for generic version of item
