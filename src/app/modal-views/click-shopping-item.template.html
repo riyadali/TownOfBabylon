@@ -1,0 +1,42 @@
+<ng-template #clickShoppingItemContent>
+  <table class="table table-borderless table-sm">
+  <!-- no header
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  -->
+  <tbody>
+    <tr>
+      <!-- from their sample
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+      -->      
+      <td><strong>Name</strong></td>
+      <td>{{currentShoppingItem.name}}</td>    
+    </tr>
+    <tr>
+      <td><strong>Category</strong></td>
+      <td>{{currentShoppingItem.category}}</td> 
+    </tr>
+    <tr>
+      <td><strong>Description</strong></td>
+      <td>{{currentShoppingItem.category}}</td> 
+    </tr>
+    <tr>
+      <td><strong>Locations</strong></td>
+      <td>{{currentShoppingItem.locations}}</td> 
+    </tr>
+    <tr>
+      <td><strong>Taxes</strong></td>
+      <td>{{currentShoppingItem.category}}</td> 
+    </tr>   
+  </tbody>
+</table>
+</ng-template>

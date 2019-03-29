@@ -93,7 +93,7 @@
                     <!-- Need to stop the click event from propagating to the click handler for the entire row by
                       using $event.stopPropagation().  Solution was found at this site
                       https://stackoverflow.com/questions/43883552/angular-4-stoppropagation-works-but-also-stops-any-further-dom-update -->
-                    <span *ngIf="shoppingItem.group_id&&!shoppingItem.is_variation_row" 
+                    <span class="my-dropdown" *ngIf="shoppingItem.group_id&&!shoppingItem.is_variation_row" 
                           (click)="shoppingTableRowDropdownClickHandler(i, shoppingItem); $event.stopPropagation();">
                       <span *ngIf="!groupExpanded[shoppingItem.group_id]">
                         <i class="fas fa-angle-right"></i>

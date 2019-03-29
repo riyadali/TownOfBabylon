@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Inject, TemplateRef, ViewChild } from '@angular/core';
 
 import { DOCUMENT } from '@angular/common';
 
@@ -8,18 +8,49 @@ import { SquareCheckout } from '../../model/SquareCheckout';
 
 import { SquarePaymentService } from '../../payment-square.service';
 
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+import modalTemplate from "../../modal-views/modal.template.html";
+import clickShoppingItemTemplate from "../../modal-views/click-shopping-item.template.html";
+import mainTemplate from "./payment-square.component.html";
+
 declare var SqPaymentForm : any; //magic to allow us to access the SquarePaymentForm lib
 
 @Component({
   selector: 'app-payment-square',
-  templateUrl: './payment-square.component.html',
+  template: modalTemplate+mainTemplate+clickShoppingItemTemplate,
   styleUrls: ['./payment-square.component.scss']
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
-  constructor(private squarePaymentService: SquarePaymentService, @Inject('Window') private window: Window
-              , @Inject(DOCUMENT) private document: any
+  constructor(private squarePaymentService: SquarePaymentService, private modalService: BsModalService,
+               @Inject('Window') private window: Window, @Inject(DOCUMENT) private document: any
     ) { }
+  
+  private modalRef: BsModalRef;
+  
+  private openModal(template: TemplateRef<any>) {
+    //this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.modalService.show(template);
+  }
+  
+  
+  @ViewChild('modalContent')
+  private modalContent: TemplateRef<any>;
+  
+  @ViewChild('clickShoppingItemContent')
+  private clickShoppingItemContent: TemplateRef<any>;  
+  
+  private modalData: {
+    bodyTemplate: TemplateRef<any>;
+    header: string;
+    button1Text: string;
+    button2Text?: string;
+    button3Text?: string;
+   // action: string;
+    //event: CalendarEvent<ExtraEventData>;
+  };
 
   paymentForm; //this is our payment form object
   private testButtonClicked: boolean;
@@ -31,7 +62,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private priceCheckbox = true;
   // Any expanded group will be added as a boolean property to this object and it will be set to true.  The property
   // would be named using the group_id field and can referenced as follows: groupExpanded[group_id]
-  private groupExpanded = {};  
+  private groupExpanded = {}; 
+  
+  private currentShoppingItem;
   
   private shoppingItems = [
     {
@@ -311,12 +344,20 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // handle click of shopping table row
   private shoppingTableRowClickHandler(i, elem) {
-    console.log("row clicked is "+i+" "+JSON.stringify(elem))
+    //console.log("row clicked is "+i+" "+JSON.stringify(elem))
+    this.currentShoppingItem = elem;
+    this.modalData = {                      
+                      bodyTemplate:  this.clickShoppingItemContent, 
+                      header: "Details", 
+                      button1Text: "More", 
+                      button2Text: "Return" 
+                    };
+    this.openModal(this.modalContent);
   }
   
   // handle click of dropdown button in shopping table row
   private shoppingTableRowDropdownClickHandler(i, elem) {
-    console.log("dropdown clicked is "+i+" "+JSON.stringify(elem));
+    //console.log("dropdown clicked is "+i+" "+JSON.stringify(elem));
     
     if (this.groupExpanded[elem.group_id]) {
        // group currently expanded
@@ -383,7 +424,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 in_stock: "-",
                 price: "-"}];
     else if (elem.item_data.variations.length==1) { // a single valid variation     
-      // return a single row with information about the only variation     
+      // return a single row with information about the only variation as well as a header row for generic version of item    
       let price="";
       if (elem.item_data.variations[0].item_variation_data.price_money) {
         price=elem.item_data.variations[0].item_variation_data.price_money.amount; 
@@ -391,8 +432,19 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
               present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
               absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku,
+              group_id: elem.id,
               in_stock: "tbd use inv api",
-              price: price}];
+              price: price},
+              {is_variation_row: true, name: elem.item_data.variations[0].item_variation_data.name, 
+                category_id: elem.item_data.category_id, 
+                present_at_all_locations: elem.item_data.variations[0].present_at_all_locations, 
+                present_at_location_ids: elem.item_data.variations[0].present_at_location_ids,
+                absent_at_location_ids: elem.item_data.variations[0].absent_at_location_ids, 
+                sku: elem.item_data.variations[0].item_variation_data.sku, 
+                group_id: elem.id,
+                in_stock: "tbd use inv api",
+                price: price}
+              ];
       
      
     } else { 
