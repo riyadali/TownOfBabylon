@@ -35,6 +35,15 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.modalRef = this.modalService.show(template);
   }
   
+  // button 1 on modal is treated as submit button
+  private onSubmit() {
+    // for now do nothing
+  }
+  
+  private modalButton2Clicked() {
+    this.modalRef.hide();
+  }  
+  
   
   @ViewChild('modalContent')
   private modalContent: TemplateRef<any>;
