@@ -387,7 +387,6 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 .subscribe({
                     next(resp) { /*console.log('data: ', resp);*/
                       let locations=resp.locations;
-                      let locations=resp.locations;
                       self.squarePaymentService.listTaxes()
                        .subscribe({
                          next(resp) {
