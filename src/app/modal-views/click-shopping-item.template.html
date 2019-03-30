@@ -38,8 +38,8 @@
       <td [hidden]="currentShoppingItem.is_variation_row" class="w-35"><strong>Description</strong></td>
       <td>{{currentShoppingItem.description}}</td> 
     </tr>
-    <tr>
-      <td [hidden]="currentShoppingItem.is_variation_row" class="w-35"><strong>Locations</strong></td>
+    <tr [hidden]="currentShoppingItem.is_variation_row">
+      <td class="w-35"><strong>Locations</strong></td>
       <td>{{currentShoppingItem.locations}}</td> 
     </tr>
     <tr [hidden]="currentShoppingItem.is_variation_row">
