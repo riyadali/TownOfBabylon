@@ -411,6 +411,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                   is_variation_row: elem.is_variation_row,
                                   group_id: elem.group_id,
                                   description: elem.description,
+                                  image_url: elem.image_url,
                                   taxes: self.determineTaxes(elem, taxes)
                                 };
                               }); 
