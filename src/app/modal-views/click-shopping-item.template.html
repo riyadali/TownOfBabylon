@@ -18,25 +18,34 @@
       <td>Otto</td>
       <td>@mdo</td>
       -->      
-      <td class="w-35"><strong>Name</strong></td>
+      <td [hidden]="currentShoppingItem.is_variation_row" class="w-35"><strong>Name</strong></td>
+      <td [hidden]="!currentShoppingItem.is_variation_row" class="w-35"><strong>Variation Name</strong></td>
       <td>{{currentShoppingItem.name}}</td>    
     </tr>
-    <tr>
+    <tr [hidden]="currentShoppingItem.is_variation_row">
       <td class="w-35"><strong>Category</strong></td>
       <td>{{currentShoppingItem.category}}</td> 
     </tr>
-    <tr>
+    <tr [hidden]="!currentShoppingItem.is_variation_row">
+      <td class="w-35"><strong>SKU</strong></td>
+      <td>{{currentShoppingItem.sku}}</td> 
+    </tr>
+    <tr [hidden]="!currentShoppingItem.is_variation_row">
+      <td class="w-35"><strong>Price</strong></td>
+      <td>{{currentShoppingItem.price}}</td> 
+    </tr>
+    <tr  [hidden]="currentShoppingItem.is_variation_row">
       <td class="w-35"><strong>Description</strong></td>
       <td>{{currentShoppingItem.description}}</td> 
     </tr>
-    <tr>
+    <tr [hidden]="currentShoppingItem.is_variation_row">
       <td class="w-35"><strong>Locations</strong></td>
       <td>{{currentShoppingItem.locations}}</td> 
     </tr>
-    <tr>
+    <tr [hidden]="currentShoppingItem.is_variation_row">
       <td class="w-35"><strong>Taxes</strong></td>
       <td>{{currentShoppingItem.taxes}}</td> 
-    </tr>   
+    </tr>
   </tbody>
 </table>
 </ng-template>
