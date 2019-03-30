@@ -50,6 +50,11 @@ export class SquarePaymentService {
       catchError(this.handleError<any>('listLocations',{}))
     );
   }
+  
+  /** GET: List Taxes from the catalog */
+  listTaxes (): Observable<any> {
+    return this.listCatalog('Tax');
+  }
 
   /** GET: List items from the catalog */
   listCatalog (catalogTypes: string): Observable<any> {

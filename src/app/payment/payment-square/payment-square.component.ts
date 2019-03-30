@@ -35,6 +35,15 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.modalRef = this.modalService.show(template);
   }
   
+  // button 1 on modal is treated as submit button
+  private onSubmit() {
+    // for now do nothing
+  }
+  
+  private modalButton2Clicked() {
+    this.modalRef.hide();
+  }  
+  
   
   @ViewChild('modalContent')
   private modalContent: TemplateRef<any>;
@@ -378,41 +387,53 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 .subscribe({
                     next(resp) { /*console.log('data: ', resp);*/
                       let locations=resp.locations;
-                      self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && !elem.is_deleted
-                          && elem.item_data).flatMap(
-                            // Note flatMap takes a function that maps an element to an array
-                            // it then flattens that resulting array back to individual elements. 
-                            // The final result is all of these indivdual elements merged together in a single array
-                            // It is a usefuil way to "map" a single value to multiple values.
-                            // Alternatives are reduce and concat, so arr1.flatMap(x => [x * 2]); is equivalent to 
-                            // arr1.reduce((acc, x) => acc.concat([x * 2]), []);
+                      self.squarePaymentService.listTaxes()
+                       .subscribe({
+                         next(resp) {
+                           let taxes=resp.objects;
+                           self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && !elem.is_deleted
+                              && elem.item_data).flatMap(
+                              // Note flatMap takes a function that maps an element to an array
+                              // it then flattens that resulting array back to individual elements. 
+                              // The final result is all of these indivdual elements merged together in a single array
+                              // It is a usefuil way to "map" a single value to multiple values.
+                              // Alternatives are reduce and concat, so arr1.flatMap(x => [x * 2]); is equivalent to 
+                              // arr1.reduce((acc, x) => acc.concat([x * 2]), []);
                         
-                            self.addVariations                         
-                          ).map(elem=>{  
-                               return { name: elem.name,
-                                sku: elem.sku,
-                                price: self.determineElemPrice(elem),
-                                category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
-                                locations: self.determineLocations(elem,locations),
-                                inStock: elem.in_stock,
-                                is_variation_row: elem.is_variation_row,
-                                group_id: elem.group_id
-                              };
-                            }); 
-                    },
+                              self.addVariations                         
+                            ).map(elem=>{  
+                                return { name: elem.name,
+                                  sku: elem.sku,
+                                  price: self.determineElemPrice(elem),
+                                  category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
+                                  locations: self.determineLocations(elem,locations),
+                                  inStock: elem.in_stock,
+                                  is_variation_row: elem.is_variation_row,
+                                  group_id: elem.group_id,
+                                  description: elem.description,
+                                  taxes: self.determineTaxes(elem, taxes)
+                                };
+                              }); 
+                          }, // end next for listTaxes
+                          error(err) { //self.formError = err.message;
+                            console.log('Some error '+err.message); 
+                          }
+                       }); // end subscribe for listTaxes
+                    }, // end next aftter locations lookup
                     error(err) { //self.formError = err.message;
                       console.log('Some error '+err.message); 
                     }
-                }); 
-            },
+                }); // end subscribe for listLocations
+            }, // end next for listCatalog
             error(err) { //self.formError = err.message;
                         console.log('Some error '+err.message); 
             }
-      });
+      }); // end subscribe for listCatalog
   }
   
   // Add variations as individual rows as well as a header row for generic version of item
   private addVariations(elem): Array<any> {
+    //console.log("Elemnt is "+JSON.stringify(elem));
     if (elem.item_data.variations==null||elem.item_data.variations.length==0 ||
         (elem.item_data.variations.length==1&&
           (elem.item_data.variations[0].is_deleted || elem.item_data.variations[0].item_variation_data==null))
@@ -421,6 +442,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
                 absent_at_location_ids: elem.absent_at_location_ids, sku: "",
+                description: elem.item_data.description,
+                tax_ids: elem.item_data.tax_ids,
                 in_stock: "-",
                 price: "-"}];
     else if (elem.item_data.variations.length==1) { // a single valid variation     
@@ -432,6 +455,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return [{is_variation_row: false, name: elem.item_data.name, category_id: elem.item_data.category_id,
               present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
               absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations[0].item_variation_data.sku,
+              description: elem.item_data.description,
+              tax_ids: elem.item_data.tax_ids,
               group_id: elem.id,
               in_stock: "tbd use inv api",
               price: price},
@@ -442,6 +467,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 absent_at_location_ids: elem.item_data.variations[0].absent_at_location_ids, 
                 sku: elem.item_data.variations[0].item_variation_data.sku, 
                 group_id: elem.id,
+                description: "",
                 in_stock: "tbd use inv api",
                 price: price}
               ];
@@ -460,6 +486,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 present_at_all_locations: variation.present_at_all_locations, present_at_location_ids: variation.present_at_location_ids,
                 absent_at_location_ids: variation.absent_at_location_ids, sku: variation.item_variation_data.sku, 
                 group_id: elem.id,
+                description: "",
                 in_stock: "tbd use inv api",
                 price: price};
       });
@@ -479,6 +506,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 present_at_all_locations: elem.present_at_all_locations, present_at_location_ids: elem.present_at_location_ids,
                 absent_at_location_ids: elem.absent_at_location_ids, sku: elem.item_data.variations.length+" Variations",
                 group_id: elem.id,
+                description: elem.item_data.description,
+                tax_ids: elem.item_data.tax_ids,
                 in_stock: "tbd use inv api",
                 max_price: Math.max.apply(Math, variations.filter(variation=>variation.item_variation_data.price_money).map(
                   variation=>variation.item_variation_data.price_money.amount)
@@ -539,6 +568,27 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
   } else {
      return "";
+  } 
+ }
+  
+  // Determine the taxes for the item
+  private determineTaxes(elem, availableTaxes) {
+   if (!elem.tax_ids||elem.tax_ids.length==0){
+     // no Taxes     
+     return "";
+   } else if (elem.tax_ids.length>2) { 
+     // More than two taxes
+     if (elem.tax_ids.length==availableTaxes.length)
+        return "All Taxes";
+     else
+        //return locations.length-elem.absent_at_location_ids.length+" Locations"
+        return elem.tax_ids.length+" Taxes"  
+   } else if (elem.tax_ids.length==2) {
+      // two taxes
+      return availableTaxes.find(tax=>tax.id==elem.tax_ids[0]).tax_data.name+" and "+availableTaxes.find(tax=>tax.id==elem.tax_ids[1]).tax_data.name; 
+   } else {
+      // a single tax
+      return availableTaxes.find(tax=>tax.id==elem.tax_ids[0]).tax_data.name;
   } 
  }
   
