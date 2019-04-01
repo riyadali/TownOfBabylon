@@ -73,7 +73,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   // would be named using the group_id field and can referenced as follows: groupExpanded[group_id]
   private groupExpanded = {}; 
   
-  private currentShoppingItem;
+  private hoveringOnItem=false;
+  private hoverItemIndex=0; // no item being hovered on
+  
+  private currentShoppingItem; // for modal dialog
   
   private shoppingItems = [
     {
@@ -351,9 +354,27 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
+  // display image when hovering over item
+  private mouseOverItemHandler(i) {
+    console.log("hovering")
+    this.hoveringOnItem=true;
+    this.hoverItemIndex=i;
+  }
+  private mouseOutItemHandler(i) {
+    console.log("not hovering")
+    this.hoveringOnItem=false;
+    this.hoverItemIndex=0;
+  }
+  // determine wheter image sould be displayed for shopping item_data
+  private showImage(i) {
+    if (this.hoveringOnItem && i==this.hoverItemIndex)
+      return true;
+    else
+      return false;    
+  }  
   // handle click of shopping table row
-  private shoppingTableRowClickHandler(i, elem) {
-    //console.log("row clicked is "+i+" "+JSON.stringify(elem))
+  private shoppingTableRowClickHandler(elem) {
+    //console.log("row clicked is "+JSON.stringify(elem))
     this.currentShoppingItem = elem;
     this.modalData = {                      
                       bodyTemplate:  this.clickShoppingItemContent, 
@@ -365,8 +386,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // handle click of dropdown button in shopping table row
-  private shoppingTableRowDropdownClickHandler(i, elem) {
-    //console.log("dropdown clicked is "+i+" "+JSON.stringify(elem));
+  private shoppingTableRowDropdownClickHandler(elem) {
+    //console.log("dropdown clicked is "+JSON.stringify(elem));
     
     if (this.groupExpanded[elem.group_id]) {
        // group currently expanded
