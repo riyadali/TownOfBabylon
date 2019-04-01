@@ -1,4 +1,7 @@
 <ng-template #clickShoppingItemContent>
+  <!-- Idea for "responsive" image obtained from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_image_responsive2 -->
+  <img id="itemImageid" class="my-responsive" width="400" height="400" alt="photo of item" 
+       [src]="currentShoppingItem.image_url"/>
   <table class="table table-borderless table-sm">
   <!-- no header
   <thead>

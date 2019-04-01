@@ -411,6 +411,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                   is_variation_row: elem.is_variation_row,
                                   group_id: elem.group_id,
                                   description: elem.description,
+                                  image_url: elem.image_url,
                                   taxes: self.determineTaxes(elem, taxes)
                                 };
                               }); 
@@ -445,6 +446,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 description: elem.item_data.description,
                 tax_ids: elem.item_data.tax_ids,
                 in_stock: "-",
+                image_url: elem.item_data.image_url,
                 price: "-"}];
     else if (elem.item_data.variations.length==1) { // a single valid variation     
       // return a single row with information about the only variation as well as a header row for generic version of item    
@@ -459,6 +461,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
               tax_ids: elem.item_data.tax_ids,
               group_id: elem.id,
               in_stock: "tbd use inv api",
+              image_url: elem.item_data.image_url,
               price: price},
               {is_variation_row: true, name: elem.item_data.variations[0].item_variation_data.name, 
                 category_id: elem.item_data.category_id, 
@@ -469,6 +472,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 group_id: elem.id,
                 description: "",
                 in_stock: "tbd use inv api",
+                image_url: elem.item_data.image_url,
                 price: price}
               ];
       
@@ -488,6 +492,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 group_id: elem.id,
                 description: "",
                 in_stock: "tbd use inv api",
+                image_url: elem.item_data.image_url,
                 price: price};
       });
 
@@ -509,6 +514,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 description: elem.item_data.description,
                 tax_ids: elem.item_data.tax_ids,
                 in_stock: "tbd use inv api",
+                image_url: elem.item_data.image_url,
                 max_price: Math.max.apply(Math, variations.filter(variation=>variation.item_variation_data.price_money).map(
                   variation=>variation.item_variation_data.price_money.amount)
                 ),
