@@ -102,7 +102,12 @@
                         <i class="fas fa-angle-down"></i>
                       </span>
                     </span>
-                    {{shoppingItem.name}}
+                    <span (mouseover)="mouseOverItemHandler(i)" (mouseout)="mouseOutItemHandler(i)">
+                      {{shoppingItem.name}}
+                      <div [className]="showImage(i) ? 'my-image-show' : 'my-image-hide'">
+                       <img  [src]="shoppingItem.image_url" alt="photo of item"/>
+                      </div>
+                    </span>
                   </strong>
                 </div>
               </td>
