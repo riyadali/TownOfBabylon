@@ -15,16 +15,6 @@
 .my-row:hover {
   cursor: pointer;
 }
-// from this link https://stackoverflow.com/questions/19270594/make-image-appear-on-link-hover-css
-.my-row:hover:after {
-    content: url("https://square-production.s3.amazonaws.com/files/73207c8892af8cc81adbae5c6fd4b283d59d70bc/original.jpeg"); /* no need for qoutes */
-    display: block;
-    position: relative;
-    left: -1300px; /* change this value to one that suits you */
-    top: 100px; /* change this value to one that suits you */
-    max-height:20px !important;
-    max-width:20px !important;
-}
 // for indentation
 .my-indent {
   padding-left: 3em;
