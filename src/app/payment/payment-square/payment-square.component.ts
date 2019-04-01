@@ -356,12 +356,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // display image when hovering over item
   private mouseOverItemHandler(i) {
-    console.log("hovering")
+    //console.log("hovering")
     this.hoveringOnItem=true;
     this.hoverItemIndex=i;
   }
   private mouseOutItemHandler(i) {
-    console.log("not hovering")
+    //console.log("not hovering")
     this.hoveringOnItem=false;
     this.hoverItemIndex=0;
   }
