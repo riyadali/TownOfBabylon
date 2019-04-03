@@ -1,3 +1,9 @@
+// override some of mdbootstrap's button default attributes
+.my-btn {
+  text-transform: none !important;
+  font-size: .9rem !important;
+  font-weight: normal !important; 
+}
 // from this link https://stackoverflow.com/questions/19270594/make-image-appear-on-link-hover-css
 .my-image-show img {
   max-width: 100px;
