@@ -84,7 +84,7 @@
             <tr onclick="myFunction(this)">
           -->
           <tr class="my-row" *ngFor="let shoppingItem of shoppingItems; let i = index" 
-              (click)="shoppingTableRowClickHandler(i, shoppingItem)">
+              (click)="shoppingTableRowClickHandler(shoppingItem)">
             <ng-container *ngIf="!shoppingItem.is_variation_row||groupExpanded[shoppingItem.group_id]">
               <td class="text-primary">
                 <!-- Dynamic styles from this site https://malcoded.com/posts/angular-ngclass -->
@@ -94,7 +94,7 @@
                       using $event.stopPropagation().  Solution was found at this site
                       https://stackoverflow.com/questions/43883552/angular-4-stoppropagation-works-but-also-stops-any-further-dom-update -->
                     <span class="my-dropdown" *ngIf="shoppingItem.group_id&&!shoppingItem.is_variation_row" 
-                          (click)="shoppingTableRowDropdownClickHandler(i, shoppingItem); $event.stopPropagation();">
+                          (click)="shoppingTableRowDropdownClickHandler(shoppingItem); $event.stopPropagation();">
                       <span *ngIf="!groupExpanded[shoppingItem.group_id]">
                         <i class="fas fa-angle-right"></i>
                       </span>
@@ -102,7 +102,12 @@
                         <i class="fas fa-angle-down"></i>
                       </span>
                     </span>
-                    {{shoppingItem.name}}
+                    <span (mouseover)="mouseOverItemHandler(i)" (mouseout)="mouseOutItemHandler(i)">
+                      {{shoppingItem.name}}
+                      <div [className]="showImage(i) ? 'my-image-show' : 'my-image-hide'">
+                       <img  [src]="shoppingItem.image_url" alt="photo of item"/>
+                      </div>
+                    </span>
                   </strong>
                 </div>
               </td>
