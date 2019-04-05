@@ -52,6 +52,58 @@
   </div>
 </ng-template>
 
+<ng-template #catTemplate>
+
+  <div [innerHtml]="html"></div>
+    <!--
+    <h2>Hello</h2>
+    -->
+  <!-- popover layout from https://bootsnipp.com/snippets/oPgeG -->
+  <div class="col-sm-12 mypopover2">
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox"  class="mycheckbox" [(ngModel)]="skuCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">SKU</span>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox" class="mycheckbox" [(ngModel)]="categoryCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Category</span>
+          </label>
+        </div>
+        <!--
+        <div class="checkbox disabled">
+        -->
+        <div class="checkbox">
+          <label class="bigger-font">
+            <!--
+            <input type="checkbox" class="mycheckbox" value="" disabled>
+            -->
+            <input type="checkbox" class="mycheckbox" [(ngModel)]="locationsCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Locations</span>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox"  class="mycheckbox" [(ngModel)]="inStockCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">In Stock</span>
+          </label>
+        </div>
+        <div class="checkbox">
+          <label class="bigger-font">
+            <input type="checkbox"  class="mycheckbox" [(ngModel)]="priceCheckbox">
+            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+            <span class="text-muted">Price</span>
+          </label>
+        </div>
+  </div>
+</ng-template>
+
 <!--
 <button type="button" class="btn btn-default btn-md" 
               (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
@@ -65,7 +117,7 @@
   <h2>Shop till you drop</h2>
   
   <div class="d-flex flex-row pb-3">
-    <button type="button" class="my-btn btn btn-indigo btn-md">
+    <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" placement="bottom left">
       <span class="text-white">
         All Categories
         <i class="fas fa-angle-down my-dropdown2"></i>
