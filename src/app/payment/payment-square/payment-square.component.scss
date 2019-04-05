@@ -43,12 +43,18 @@
   padding-left: 3em;
 }
 // for popover
-.mypopover {
+.mypopover, .mypopover2 {
   margin-top: 5px !important;
   padding-left: .1em !important;
   min-width: 200px;
   line-height: 2.5em !important;
   //box-shadow: 0 4px 8px 0 rgba(0,0,0,.1), 0 1px 16px 0 rgba(0,0,0,.1), 0 2px 4px 0 rgba(0,0,0,.1);
+}
+// position popover so that it doesn't sill off the left boundary of the page
+// it seems that the .popover class causes it to be poistioned -19 in terms of the left attribute
+// So I am offsetting this negative position with a positve attribute below
+.popover .mypopover2 {  
+  left:19em  !important;
 }
 .bigger-font {
     font-size: 1.1em;
