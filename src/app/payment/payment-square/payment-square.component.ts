@@ -104,6 +104,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       price: "$1.50"
     }
   ];
+  
+  private categories = [
+    {
+      name: "All Categories"
+    },
+    {
+      name: "Beverages"
+    },
+    {
+      name: "Sports"
+    }
+  ];
 
   ngOnInit() {
     let self=this;
