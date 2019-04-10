@@ -1,6 +1,37 @@
 // styles from square
 
 // -- radio list styling
+.radio--input {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer
+}
+.radio--mark {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -7px;
+    border: 1px solid #d5d9dc;
+    background: #fff;
+    border-radius: 14px
+}
+
+.radio-is-active>.radio--mark:before {
+    position: absolute;
+    content: "";
+    left: 2px;
+    bottom: 2px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid transparent;
+    background: #343b42;
+    border-radius: 6px
+}
+
+.radio--is-focused>.radio--mark {
+    border-color: #2996cc
+}
 .radio,.radio--mark {
     width: 14px;
     height: 14px
