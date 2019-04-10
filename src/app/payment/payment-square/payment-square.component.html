@@ -59,6 +59,8 @@
     <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" type="text">
     <i class="text-muted fas fa-search input-icon--search__icon"></i>
     <i class="text-muted fas fa-times-circle input-icon--search__icon-clear"></i>
+    <option class="radio-row popover-list__item l-items-category-filter__item option" 
+            [ngValue]="category" *ngFor="let category of categories">{{category.name}}</option>
   </div> 
 </ng-template>
 
