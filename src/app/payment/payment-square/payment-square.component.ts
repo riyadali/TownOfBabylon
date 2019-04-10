@@ -117,6 +117,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       name: "Sports"
     }
   ];
+  private selectedCategory;
 
   ngOnInit() {
     let self=this;
@@ -365,6 +366,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     } else {
       this.testButtonClicked = true;
     }
+  }
+  
+  // handle selection change on category radio button
+  onCategorySelectionChange(category) {
+        this.selectedCategory = category;
+        console.log("selected item is "+category.name)
   }
   
   // display image when hovering over item
