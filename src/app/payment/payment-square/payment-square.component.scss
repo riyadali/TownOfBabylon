@@ -1,8 +1,40 @@
-// styles from square
+/ styles from square
+
+// -- radio list styling
+.radio,.radio-row {
+    display: inline-block;
+    position: relative
+}
+.radio-row {
+    vertical-align: bottom;
+    padding: 0 0 0 6px
+}
+.radio-row:last-of-type {
+    padding-bottom: 0
+}
+.l-items-filter-filter-content .radio-row {
+    width: 194px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+
+// -- popover styling square
 .popover-list__filter-input {
     border-width: 0 0 1px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0
+}
+.popover-list__item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    padding: 13px 10px;
+    line-height: 1
+}
+.popover-list__item.popover-list__item--is-focused,.popover-list__item:hover {
+    background-color: #d4eaf5
 }
 
 .input-icon {
