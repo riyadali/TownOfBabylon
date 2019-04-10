@@ -64,10 +64,14 @@
       <option class="radio-row popover-list__item l-items-category-filter__item option" 
             [ngValue]="category" *ngFor="let category of categories">{{category.name}}</option>
       -->
-       <div *ngFor="let category of categories" class="popover-list__item l-items-category-filter__item">
-        <div class="radio-row">
+      <div *ngFor="let category of categories" class="popover-list__item l-items-category-filter__item">
+        <div class="radio radio-is-active">
           <input  type="radio" class="radio--input" 
-            value="{{category.selectedChoice}}" [(ngModel)]="category" ><div class="radio-row">{{category.name}}</div>
+            value="{{category.selectedChoice}}" [(ngModel)]="category" >
+          <i class="radio--mark"></i>
+        </div>
+        <div class="radio-row">
+          {{category.name}}
         </div>
       </div>
     </div>
