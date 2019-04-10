@@ -1,6 +1,10 @@
 // styles from square
 
 // -- radio list styling
+.radio,.radio--mark {
+    width: 14px;
+    height: 14px
+}
 .radio,.radio-row {
     display: inline-block;
     position: relative
