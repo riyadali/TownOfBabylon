@@ -107,7 +107,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   private categories = [
     {
-      name: "All Categories"
+      name: "All Categories",
+      selectedChoice: true
     },
     {
       name: "Beverages"
