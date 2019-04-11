@@ -369,9 +369,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // handle selection change on category radio button
-  onCategorySelectionChange(category) {
-        this.selectedCategory = category;
-        console.log("selected item is "+category.name)
+  onCategorySelectionChange(category) {        
+        // console.log("selected category is "+this.selectedCategory)
+        // unselected existing choice
+        this.categories.find(cat=>cat.checked).checked=false; 
+        // check the new item
+        this.categories.find(cat=>cat.name==this.selectedCategory).checked=true; 
   }
   
   // display image when hovering over item
