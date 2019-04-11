@@ -68,7 +68,7 @@
         <div [className]="category.checked ? 'radio radio-is-active' : 'radio'">
           <input  type="radio" name="categoryRadioGroup"  class="radio--input" 
             [checked]="category.checked"
-            value="{{category.name}}" [(ngModel)]="category" (change)="onCategorySelectionChange(category)" >
+            value="{{category.name}}" [(ngModel)]="selectedCategory" (change)="onCategorySelectionChange(category)" >
           <i class="radio--mark"></i>
         </div>
         <div class="radio-row">
