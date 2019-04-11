@@ -67,7 +67,6 @@
       <div *ngFor="let category of categories; let idx = index" class="popover-list__item l-items-category-filter__item">
         <div [className]="category.checked ? 'radio radio-is-active' : 'radio'">
           <input  type="radio" name="categoryRadioGroup"  class="radio--input" 
-            [checked]="category.checked"
             value="{{category.name}}" [(ngModel)]="selectedCategory" (change)="onCategorySelectionChange(category)" >
           <i class="radio--mark"></i>
         </div>
