@@ -53,55 +53,29 @@
 </ng-template>
 
 <ng-template #catTemplate>
-
   <div [innerHtml]="html"></div>
-    <!--
-    <h2>Hello</h2>
-    -->
-  <!-- popover layout from https://bootsnipp.com/snippets/oPgeG -->
+  
   <div class="col-sm-12 mypopover2">
-        <div class="checkbox">
-          <label class="bigger-font">
-            <input type="checkbox"  class="mycheckbox" [(ngModel)]="skuCheckbox">
-            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-            <span class="text-muted">SKU</span>
-          </label>
+    <div class="l-items-filter-filter-content">
+      <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" type="text">
+      <i class="text-muted fas fa-search input-icon--search__icon"></i>
+      <i class="text-muted fas fa-times-circle input-icon--search__icon-clear"></i>
+      <!--
+      <option class="radio-row popover-list__item l-items-category-filter__item option" 
+            [ngValue]="category" *ngFor="let category of categories">{{category.name}}</option>
+      -->
+      <div *ngFor="let category of categories; let idx = index" class="popover-list__item l-items-category-filter__item">
+        <div [className]="category.checked ? 'radio radio-is-active' : 'radio'">
+          <input  type="radio" name="categoryRadioGroup"  class="radio--input" 
+            value="{{category.name}}" [(ngModel)]="selectedCategory" (change)="onCategorySelectionChange(category)" >
+          <i class="radio--mark"></i>
         </div>
-        <div class="checkbox">
-          <label class="bigger-font">
-            <input type="checkbox" class="mycheckbox" [(ngModel)]="categoryCheckbox">
-            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-            <span class="text-muted">Category</span>
-          </label>
+        <div class="radio-row">
+          {{category.name}}
         </div>
-        <!--
-        <div class="checkbox disabled">
-        -->
-        <div class="checkbox">
-          <label class="bigger-font">
-            <!--
-            <input type="checkbox" class="mycheckbox" value="" disabled>
-            -->
-            <input type="checkbox" class="mycheckbox" [(ngModel)]="locationsCheckbox">
-            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-            <span class="text-muted">Locations</span>
-          </label>
-        </div>
-        <div class="checkbox">
-          <label class="bigger-font">
-            <input type="checkbox"  class="mycheckbox" [(ngModel)]="inStockCheckbox">
-            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-            <span class="text-muted">In Stock</span>
-          </label>
-        </div>
-        <div class="checkbox">
-          <label class="bigger-font">
-            <input type="checkbox"  class="mycheckbox" [(ngModel)]="priceCheckbox">
-            <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-            <span class="text-muted">Price</span>
-          </label>
-        </div>
-  </div>
+      </div>
+    </div>
+  </div> 
 </ng-template>
 
 <!--

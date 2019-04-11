@@ -1,3 +1,118 @@
+// styles from square
+
+// -- radio list styling
+.radio--input {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer
+}
+.radio--mark {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -7px;
+    border: 1px solid #d5d9dc;
+    background: #fff;
+    border-radius: 14px
+}
+
+.radio-is-active>.radio--mark:before {
+    position: absolute;
+    content: "";
+    left: 2px;
+    bottom: 2px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid transparent;
+    background: #343b42;
+    border-radius: 6px
+}
+
+.radio--is-focused>.radio--mark {
+    border-color: #2996cc
+}
+.radio,.radio--mark {
+    width: 14px;
+    height: 14px
+}
+.radio,.radio-row {
+    display: inline-block;
+    position: relative
+}
+.radio-row {
+    vertical-align: bottom;
+    padding: 0 0 0 6px
+}
+.radio-row:last-of-type {
+    padding-bottom: 0
+}
+.l-items-filter-filter-content .radio-row {
+    width: 194px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+}
+
+// -- popover styling square
+.popover-list__filter-input {
+    border-width: 0 0 1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0
+}
+.popover-list__item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    padding: 13px 10px;
+    line-height: 1
+}
+.popover-list__item.popover-list__item--is-focused,.popover-list__item:hover {
+    background-color: #d4eaf5
+}
+
+.input-icon {
+    position: relative
+}
+
+.input-icon--search__icon,.input-icon--search__icon-clear,.input-icon--search__icon-focused,.input-icon--social__twitter-icon {
+    position: absolute;
+    top: 20px;
+    content: "";
+    z-index: 1
+}
+
+.input-icon--search__input,.input-icon--search__input-clear {
+    width: 100%;
+    padding-left: 34px
+}
+
+.input-icon--search__input-clear {
+    padding-right: 36px
+}
+
+.input-icon--search__icon,.input-icon--search__icon-focused {
+    left: 10px;
+    margin-top: -8.5px
+}
+
+.input-icon--search__icon-clear {
+    margin-top: -8px;
+    left: auto;
+    right: 20px
+}
+
+.input-icon--right .input-icon--search__input {
+    padding-right: 37px;
+    padding-left: 10px
+}
+
+.input-icon--right .input-icon--search__icon {
+    left: auto;
+    right: 10px
+}
+// -- end from square
 // override some of mdbootstrap's button default attributes
 .my-btn {
   text-transform: none !important;

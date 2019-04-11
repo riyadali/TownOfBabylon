@@ -104,6 +104,20 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       price: "$1.50"
     }
   ];
+  
+  private categories = [
+    {
+      name: "All Categories",
+      checked: true
+    },
+    {
+      name: "Beverages"
+    },
+    {
+      name: "Sports"
+    }
+  ];
+  private selectedCategory;
 
   ngOnInit() {
     let self=this;
@@ -352,6 +366,15 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     } else {
       this.testButtonClicked = true;
     }
+  }
+  
+  // handle selection change on category radio button
+  onCategorySelectionChange(category) {        
+        // console.log("selected category is "+this.selectedCategory)
+        // unselected existing choice
+        this.categories.find(cat=>cat.checked).checked=false; 
+        // check the new item
+        this.categories.find(cat=>cat.name==this.selectedCategory).checked=true; 
   }
   
   // display image when hovering over item
