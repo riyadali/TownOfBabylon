@@ -120,7 +120,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   ];
   */
   private categories;
-  private selectedCategory;
+  private selectedCategory="All Categories"; // initially all categories selected
   private catPopoverOpen: boolean;
   private catButtonClicked: boolean;
 
