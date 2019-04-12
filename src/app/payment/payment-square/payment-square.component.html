@@ -64,16 +64,23 @@
       <option class="radio-row popover-list__item l-items-category-filter__item option" 
             [ngValue]="category" *ngFor="let category of categories">{{category.name}}</option>
       -->
-      <div *ngFor="let category of categories; let idx = index" class="popover-list__item l-items-category-filter__item">
-        <div [className]="category.checked ? 'radio radio-is-active' : 'radio'">
-          <input  type="radio" name="categoryRadioGroup"  class="radio--input" 
-            value="{{category.name}}" [(ngModel)]="selectedCategory" (change)="onCategorySelectionChange(category)" >
-          <i class="radio--mark"></i>
+      <!-- if category button clicked (implicit -- otherwise popover wouldn't be open) and categories not loaded
+        show fa-spinner otherwise show the available categories -->
+      <span class="my-spinner" *ngIf="!categories">        
+          <i class="fas fa-spin fa-spinner"></i>       
+      </span>
+      <span *ngIf="categories">
+        <div *ngFor="let category of categories; let idx = index" class="popover-list__item l-items-category-filter__item">
+          <div [className]="category.checked ? 'radio radio-is-active' : 'radio'">
+            <input  type="radio" name="categoryRadioGroup"  class="radio--input" 
+              value="{{category.name}}" [(ngModel)]="selectedCategory" (change)="onCategorySelectionChange(category)" >
+            <i class="radio--mark"></i>
+          </div>
+          <div class="radio-row">
+            {{category.name}}
+          </div>
         </div>
-        <div class="radio-row">
-          {{category.name}}
-        </div>
-      </div>
+      </span>
     </div>
   </div> 
 </ng-template>
@@ -94,8 +101,15 @@
      <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" placement="bottom left"
         (click)="categoryButtonClickHandler()">
       <span class="text-white">
-        All Categories
-        <i class="fas fa-angle-down my-dropdown2"></i>
+         <!-- if category button clicked and categories not loaded
+        show fa-spinner otherwise show the selected category -->
+        <span  *ngIf="catButtonClicked&&!categories">
+          <i class="fas fa-spin fa-spinner"></i>
+        </span>
+        <span *ngIf="!catButtonClicked||categories">
+          {{selectedCategory}}
+          <i class="fas fa-angle-down my-dropdown2"></i>
+        </span>
       </span>
     </button>
   </div>

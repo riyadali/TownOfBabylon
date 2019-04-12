@@ -114,12 +114,18 @@
     right: 10px
 }
 // -- end from square
+
+// center the spinner
+.my-spinner {
+  margin-left: 6.2rem;
+}
 // override some of mdbootstrap's button default attributes
 .my-btn {
   text-transform: none !important;
   font-size: .9rem !important;
   font-weight: normal !important; 
   margin: .17rem !important;
+  min-width: 9.7rem;
 }
 // from this link https://stackoverflow.com/questions/19270594/make-image-appear-on-link-hover-css
 .my-image-show img {
