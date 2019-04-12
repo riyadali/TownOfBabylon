@@ -122,6 +122,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private categories;
   private selectedCategory;
   private catPopoverOpen: boolean;
+  private catButtonClicked: boolean;
 
   ngOnInit() {
     let self=this;
@@ -374,8 +375,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // Handle click of Category button
   categoryButtonClickHandler() {
+    this.catButtonClicked=true; // indicate that category button clicked at least once
     //console.log("On entry popover showing is "+this.catPopoverOpen)
-    // if category popoveer is closed on entry then pull the category recods for display
+    // if category popover is closed on entry then pull the category records for display
     let self=this;
     if (!this.catPopoverOpen) {
        // get a list of Categories from Square
