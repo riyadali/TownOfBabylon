@@ -105,6 +105,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   ];
   
+  /*
   private categories = [
     {
       name: "All Categories",
@@ -117,7 +118,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       name: "Sports"
     }
   ];
+  */
+  private categories;
   private selectedCategory;
+  private catPopoverOpen: boolean;
 
   ngOnInit() {
     let self=this;
@@ -366,6 +370,36 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     } else {
       this.testButtonClicked = true;
     }
+  }
+  
+  // Handle click of Category button
+  categoryButtonClickHandler() {
+    //console.log("On entry popover showing is "+this.catPopoverOpen)
+    // if category popoveer is closed on entry then pull the category recods for display
+    let self=this;
+    if (!this.catPopoverOpen) {
+       // get a list of Categories from Square
+       this.squarePaymentService.listCatalog("CATEGORY")
+          .subscribe({
+            next(response) { /*console.log('data: ', response);*/  
+              self.categories=response.objects.filter(elem=>!elem.is_deleted && elem.category_data)
+                    .map(elem=>{  
+                                return { name: elem.category_data.name
+                                  
+                                };
+                              });
+              // Include the "All Categories" category at the start of the list
+              self.categories.unshift({
+                                        name: "All Categories",
+                                        checked: true
+                                      });
+            }, // end next for listCatalog
+            error(err) { //self.formError = err.message;
+              console.log('Some error '+err.message); 
+            }
+          }); // end subscribe for listCatalog
+    }
+    this.catPopoverOpen=!this.catPopoverOpen;
   }
   
   // handle selection change on category radio button
