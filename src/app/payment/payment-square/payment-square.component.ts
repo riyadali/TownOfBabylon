@@ -392,9 +392,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                               });
               // Include the "All Categories" category at the start of the list
               self.categories.unshift({
-                                        name: "All Categories",
-                                        checked: true
+                                        name: "All Categories"
                                       });
+              if (!self.categories.find(cat=>cat.name==self.selectedCategory)) {
+                // previously selected category no longer found -- default to "All Categories"
+                self.selectedCategory="All Categories";
+              }
+              self.categories.find(cat=>cat.name==self.selectedCategory).checked=true;
             }, // end next for listCatalog
             error(err) { //self.formError = err.message;
               console.log('Some error '+err.message); 
