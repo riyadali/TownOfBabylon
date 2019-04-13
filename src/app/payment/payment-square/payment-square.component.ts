@@ -635,7 +635,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private determineCategory(elem, categoryList) {
    if (!elem.is_variation_row)
       if (elem.category_id) 
-        this.getCatNameFor(elem.category_id, categoryList); 
+        return this.getCatNameFor(elem.category_id, categoryList); 
       else
         return "-"
    else 
