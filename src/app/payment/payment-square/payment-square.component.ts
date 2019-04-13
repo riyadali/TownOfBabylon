@@ -399,6 +399,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 self.selectedCategory="All Categories";
               }
               self.categories.find(cat=>cat.name==self.selectedCategory).checked=true;
+              
+              self.switchCategory(self.selectedCategory); // refresh or initialize shoppping item list
             }, // end next for listCatalog
             error(err) { //self.formError = err.message;
               console.log('Some error '+err.message); 
@@ -418,11 +420,16 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
         if (tgtCat)
           tgtCat.checked=true;
     
-        // generate the new list of shopping items based on selected category
-        if (this.selectedCategory=="All Categories")
-          this.buildItemList(); // get all items
-        else // filter items by selected category
-          this.buildItemList(this.selectedCategory); 
+        this.switchCategory(this.selectedCategory); // refresh shoppping item list
+  }
+  
+  // switch to selected category
+  private switchCategory(newCategory) {
+    // generate the new list of shopping items based on selected category
+    if (newCategory=="All Categories")
+      this.buildItemList(); // get all items
+    else // filter items by category
+      this.buildItemList(newCategory); 
   }
   
   // build shooping item list based on selected category
