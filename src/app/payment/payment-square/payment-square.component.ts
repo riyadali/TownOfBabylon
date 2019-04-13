@@ -78,6 +78,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   private currentShoppingItem; // for modal dialog
   
+  /*
   private shoppingItems = [
     {
       name: "Coffee",
@@ -104,6 +105,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       price: "$1.50"
     }
   ];
+  */
+  private shoppingItems;
   
   /*
   private categories = [
@@ -126,7 +129,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     let self=this;
-    // Set the application ID
+    this.switchCategory(this.selectedCategory); // initialize shopping item list
+    
+    // Set the application ID for Square
     var applicationId = "sandbox-sq0idp-C6tuS5thsbqmjqa9LGiUyA";
 
     // Set the location ID
