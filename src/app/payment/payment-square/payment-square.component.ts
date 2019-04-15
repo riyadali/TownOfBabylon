@@ -78,6 +78,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   private currentShoppingItem; // for modal dialog
   
+  /*
   private shoppingItems = [
     {
       name: "Coffee",
@@ -104,6 +105,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       price: "$1.50"
     }
   ];
+  */
+  private shoppingItems;
   
   /*
   private categories = [
@@ -126,7 +129,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     let self=this;
-    // Set the application ID
+    this.switchCategory(this.selectedCategory); // initialize shopping item list
+    
+    // Set the application ID for Square
     var applicationId = "sandbox-sq0idp-C6tuS5thsbqmjqa9LGiUyA";
 
     // Set the location ID
@@ -397,6 +402,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
               if (!self.categories.find(cat=>cat.name==self.selectedCategory)) {
                 // previously selected category no longer found -- default to "All Categories"
                 self.selectedCategory="All Categories";
+                self.switchCategory(self.selectedCategory); // refresh shopping item list
               }
               self.categories.find(cat=>cat.name==self.selectedCategory).checked=true;
             }, // end next for listCatalog
@@ -414,7 +420,27 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
         // unselected existing choice
         this.categories.find(cat=>cat.checked).checked=false; 
         // check the new item
-        this.categories.find(cat=>cat.name==this.selectedCategory).checked=true; 
+        let tgtCat=this.categories.find(cat=>cat.name==this.selectedCategory);
+        if (tgtCat)
+          tgtCat.checked=true;
+    
+        this.switchCategory(this.selectedCategory); // refresh shopping item list
+  }
+  
+  // switch to selected category
+  private switchCategory(newCategory) {
+    // generate the new list of shopping items based on selected category
+    if (newCategory=="All Categories")
+      this.buildItemList(); // get all items
+    else // filter items by category
+      this.buildItemList(newCategory); 
+  }
+  
+  // build shooping item list based on selected category
+  private buildItemList(catg?) {
+    this.shoppingItems=null; // clear existing list in case it takes a while to retrieve new list
+    // build new list of shopping items
+    this.listCatalog('CATEGORY,ITEM', catg);    
   }
   
   // display image when hovering over item
@@ -462,11 +488,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
     
   // Get list of Catalog items
-  private listCatalog(types) {  
+  private listCatalog(types, catFilter?) {   
     let self=this;   
     this.squarePaymentService.listCatalog(types)      
       .subscribe({
-            next(response) { /*console.log('data: ', response);*/  
+            next(response) { /*console.log('data: ', response);*/
+               let categoryList=response.objects.filter(elem=>elem.type==="CATEGORY"&&elem.category_data);
                self.squarePaymentService.listLocations()
                 .subscribe({
                     next(resp) { /*console.log('data: ', resp);*/
@@ -475,8 +502,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                        .subscribe({
                          next(resp) {
                            let taxes=resp.objects;
-                           self.shoppingItems=response.objects.filter(elem=>elem.type==="ITEM" && !elem.is_deleted
-                              && elem.item_data).flatMap(
+                           let itemList=response.objects.filter(elem=>elem.type==="ITEM" && !elem.is_deleted
+                              && elem.item_data)
+                           if (catFilter) {
+                              itemList=itemList.filter(elem=>elem.item_data.category_id&&
+                                                       catFilter==self.getCatNameFor(elem.item_data.category_id,categoryList));
+                            }
+                           self.shoppingItems=itemList.flatMap(                           
                               // Note flatMap takes a function that maps an element to an array
                               // it then flattens that resulting array back to individual elements. 
                               // The final result is all of these indivdual elements merged together in a single array
@@ -489,7 +521,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                 return { name: elem.name,
                                   sku: elem.sku,
                                   price: self.determineElemPrice(elem),
-                                  category: self.determineCategory(elem,response.objects.filter(elem=>elem.type==="CATEGORY")),
+                                  category: self.determineCategory(elem,categoryList),
                                   locations: self.determineLocations(elem,locations),
                                   inStock: elem.in_stock,
                                   is_variation_row: elem.is_variation_row,
@@ -614,10 +646,19 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private determineCategory(elem, categoryList) {
    if (!elem.is_variation_row)
       if (elem.category_id) 
-        return categoryList.find(catg=>catg.id==elem.category_id).category_data.name; 
+        return this.getCatNameFor(elem.category_id, categoryList); 
       else
         return "-"
    else 
+      return "";
+  }
+  
+  // Given a category id determine its name
+  private getCatNameFor(catId, categoryList) {
+    let tgtCat=categoryList.find(catg=>catg.id==catId);
+    if (tgtCat)
+      return tgtCat.category_data.name;
+    else
       return "";
   }
 
