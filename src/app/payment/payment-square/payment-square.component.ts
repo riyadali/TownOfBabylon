@@ -127,6 +127,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private selectedCategory="All Categories"; // initially all categories selected
   private catPopoverOpen: boolean;
   private catButtonClicked: boolean;
+  private catFilter;
 
   ngOnInit() {
     let self=this;
@@ -446,9 +447,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   onCategorySelectionChange(category) {        
         // console.log("selected category is "+this.selectedCategory)
         // unselected existing choice
-        this.categories.find(cat=>cat.checked).checked=false; 
+        this.filteredCategories.find(cat=>cat.checked).checked=false; 
         // check the new item
-        let tgtCat=this.categories.find(cat=>cat.name==this.selectedCategory);
+        let tgtCat=this.filteredCategories.find(cat=>cat.name==this.selectedCategory);
         if (tgtCat)
           tgtCat.checked=true;
     
