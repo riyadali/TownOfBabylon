@@ -123,6 +123,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   ];
   */
   private categories;
+  private filteredCategories; // categories filtered by user input
   private selectedCategory="All Categories"; // initially all categories selected
   private catPopoverOpen: boolean;
   private catButtonClicked: boolean;
@@ -405,6 +406,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 self.switchCategory(self.selectedCategory); // refresh shopping item list
               }
               self.categories.find(cat=>cat.name==self.selectedCategory).checked=true;
+              self.filteredCategories=self.buildfilteredCategories();
             }, // end next for listCatalog
             error(err) { //self.formError = err.message;
               console.log('Some error '+err.message); 
@@ -412,6 +414,32 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
           }); // end subscribe for listCatalog
     }
     this.catPopoverOpen=!this.catPopoverOpen;
+  }
+  
+  // Handle change to the category filter
+  private onCatFilterChange(catFilter) { 
+    this.catFilter=catFilter;       
+    console.log("filter text is "+catFilter)
+    // build new filtered category list 
+    this.filteredCategories=this.buildfilteredCategories();       
+  }
+  
+  private buildfilteredCategories() {
+    if (!this.catFilter)
+      return this.categories;
+    else {
+      let newList=this.categories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1);
+      if (newList.filter(catg=>catg.name=="All Categories".length<1)) {
+        // "All Categories" not in filtered list -- add it 
+         newList.unshift({
+                          name: "All Categories"
+                         });
+      }
+      if (newList.find(cat=>cat.checked))
+        newList.find(cat=>cat.checked).checked=false; // uncheck any existing selected category
+      newList.find(cat=>cat.name==this.selectedCategory).checked=true;
+      return newList;
+    }    
   }
   
   // handle selection change on category radio button
