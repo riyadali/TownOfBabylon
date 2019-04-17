@@ -109,7 +109,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private shoppingItems;
   
   /*
-  private categories = [
+  private availableCategories = [
     {
       name: "All Categories",
       checked: true
@@ -122,7 +122,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   ];
   */
-  private categories;
+  private availableCategories;
   private filteredCategories; // categories filtered by user input
   private selectedCategory="All Categories"; // initially all categories selected
   private catPopoverOpen: boolean;
@@ -391,22 +391,22 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
        this.squarePaymentService.listCatalog("CATEGORY")
           .subscribe({
             next(response) { /*console.log('data: ', response);*/  
-              self.categories=response.objects.filter(elem=>!elem.is_deleted && elem.category_data)
+              self.availableCategories=response.objects.filter(elem=>!elem.is_deleted && elem.category_data)
                     .map(elem=>{  
                                 return { name: elem.category_data.name
                                   
                                 };
                               });
               // Include the "All Categories" category at the start of the list
-              self.categories.unshift({
+              self.availableCategories.unshift({
                                         name: "All Categories"
                                       });
-              if (!self.categories.find(cat=>cat.name==self.selectedCategory)) {
+              if (!self.availableCategories.find(cat=>cat.name==self.selectedCategory)) {
                 // previously selected category no longer found -- default to "All Categories"
                 self.selectedCategory="All Categories";
                 self.switchCategory(self.selectedCategory); // refresh shopping item list
               }
-              self.categories.find(cat=>cat.name==self.selectedCategory).checked=true;
+              self.availableCategories.find(cat=>cat.name==self.selectedCategory).checked=true;
               self.filteredCategories=self.buildfilteredCategories();
             }, // end next for listCatalog
             error(err) { //self.formError = err.message;
@@ -427,9 +427,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   private buildfilteredCategories() {
     if (!this.catFilter)
-      return this.categories;
+      return this.availableCategories;
     else {
-      let newList=this.categories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1);
+      let newList=this.availableCategories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1);
       if (newList.filter(catg=>catg.name=="All Categories").length<1) {
         // "All Categories" not in filtered list -- add it 
          newList.unshift({
