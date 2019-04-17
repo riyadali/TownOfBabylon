@@ -67,10 +67,10 @@
       -->
       <!-- if category button clicked (implicit -- otherwise popover wouldn't be open) and categories not loaded
         show fa-spinner otherwise show the available categories -->
-      <span class="my-spinner" *ngIf="!categories">        
+      <span class="my-spinner" *ngIf="!availableCategories">        
           <i class="fas fa-spin fa-spinner"></i>       
       </span>
-      <span *ngIf="categories">
+      <span *ngIf="availableCategories">
         <div *ngFor="let category of filteredCategories; let idx = index" class="popover-list__item l-items-category-filter__item">
           <div [className]="category.checked ? 'radio radio-is-active' : 'radio'">
             <input  type="radio" name="categoryRadioGroup"  class="radio--input" 
@@ -102,10 +102,10 @@
       <span class="text-white">
          <!-- if category button clicked and categories not loaded
         show fa-spinner otherwise show the selected category -->
-        <span  *ngIf="catButtonClicked&&!categories">
+        <span  *ngIf="catButtonClicked&&!availableCategories">
           <i class="fas fa-spin fa-spinner"></i>
         </span>
-        <span *ngIf="!catButtonClicked||categories">
+        <span *ngIf="!catButtonClicked||availableCategories">
           {{selectedCategory}}
           <i class="fas fa-angle-down my-dropdown2"></i>
         </span>
