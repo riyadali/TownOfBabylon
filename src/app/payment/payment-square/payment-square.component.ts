@@ -430,7 +430,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return this.categories;
     else {
       let newList=this.categories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1);
-      if (newList.filter(catg=>catg.name=="All Categories".length<1)) {
+      if (newList.filter(catg=>catg.name=="All Categories").length<1) {
         // "All Categories" not in filtered list -- add it 
          newList.unshift({
                           name: "All Categories"
