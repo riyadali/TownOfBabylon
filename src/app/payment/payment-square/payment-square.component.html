@@ -114,7 +114,7 @@
   </div>
    
   <div class="d-flex flex-row">
-    <table class="table table-sm table-hover">
+    <table class="table table-sm table-hover" [hidden]="!shoppingItems">
  
       <thead class="blue-grey lighten-2 text-light">
         <tr>
@@ -173,9 +173,8 @@
     
     <!-- use triggers="focus" attribute to close popover on next click.  Could not use it here
       because any selection click within popover closes it with triggers set -->
-    <button id="plusBtn" type="button" mdbBtn color="default" class="waves-light z-depth-0" [mdbPopover]="popTemplate"
-      placement="left" 
-      mdbWavesEffect >
+    <button id="plusBtn" type="button" [hidden]="!shoppingItems" mdbBtn color="default" class="waves-light z-depth-0" 
+            [mdbPopover]="popTemplate" placement="left" mdbWavesEffect >
       <div class="my-plus-circle" >
         <i class="fas fa-plus-circle fa float-right"></i>
       </div>
