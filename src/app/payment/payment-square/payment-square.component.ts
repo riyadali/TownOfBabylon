@@ -109,7 +109,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private shoppingItems;
   
   /*
-  private categories = [
+  private availableCategories = [
     {
       name: "All Categories",
       checked: true
@@ -122,10 +122,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   ];
   */
-  private categories;
+  private availableCategories;
+  private filteredCategories; // categories filtered by user input
   private selectedCategory="All Categories"; // initially all categories selected
   private catPopoverOpen: boolean;
   private catButtonClicked: boolean;
+  private catFilter;
 
   ngOnInit() {
     let self=this;
@@ -389,22 +391,24 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
        this.squarePaymentService.listCatalog("CATEGORY")
           .subscribe({
             next(response) { /*console.log('data: ', response);*/  
-              self.categories=response.objects.filter(elem=>!elem.is_deleted && elem.category_data)
+              self.availableCategories=response.objects.filter(elem=>!elem.is_deleted && elem.category_data)
                     .map(elem=>{  
                                 return { name: elem.category_data.name
                                   
                                 };
                               });
               // Include the "All Categories" category at the start of the list
-              self.categories.unshift({
+              self.availableCategories.unshift({
                                         name: "All Categories"
                                       });
-              if (!self.categories.find(cat=>cat.name==self.selectedCategory)) {
+              if (!self.availableCategories.find(cat=>cat.name==self.selectedCategory)) {
                 // previously selected category no longer found -- default to "All Categories"
                 self.selectedCategory="All Categories";
                 self.switchCategory(self.selectedCategory); // refresh shopping item list
               }
-              self.categories.find(cat=>cat.name==self.selectedCategory).checked=true;
+              self.availableCategories.find(cat=>cat.name==self.selectedCategory).checked=true;
+              
+              self.filteredCategories=self.buildfilteredCategories(); // keep filtered list in synch
             }, // end next for listCatalog
             error(err) { //self.formError = err.message;
               console.log('Some error '+err.message); 
@@ -414,17 +418,36 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.catPopoverOpen=!this.catPopoverOpen;
   }
   
+  // Handle change to the category filter
+  private onCatFilterChange(catFilter) { 
+    this.catFilter=catFilter;       
+    // console.log("filter text is "+catFilter)
+    // build new filtered category list 
+    this.filteredCategories=this.buildfilteredCategories();       
+  }
+  
+  private buildfilteredCategories() {
+    if (!this.catFilter)
+      return this.availableCategories;
+    else {
+      return this.availableCategories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1||
+                                                  catg.name=="All Categories");      
+    }    
+  }
+  
   // handle selection change on category radio button
   onCategorySelectionChange(category) {        
-        // console.log("selected category is "+this.selectedCategory)
-        // unselected existing choice
-        this.categories.find(cat=>cat.checked).checked=false; 
-        // check the new item
-        let tgtCat=this.categories.find(cat=>cat.name==this.selectedCategory);
-        if (tgtCat)
-          tgtCat.checked=true;
+    // console.log("selected category is "+this.selectedCategory)
+    // unselected existing choice
+    this.availableCategories.find(cat=>cat.checked).checked=false; 
+    // check the new item
+    let tgtCat=this.availableCategories.find(cat=>cat.name==this.selectedCategory);
+    if (tgtCat)
+      tgtCat.checked=true;
+        
+    this.filteredCategories=this.buildfilteredCategories(); // keep filtered categories in synch 
     
-        this.switchCategory(this.selectedCategory); // refresh shopping item list
+    this.switchCategory(this.selectedCategory); // refresh shopping item list
   }
   
   // switch to selected category
