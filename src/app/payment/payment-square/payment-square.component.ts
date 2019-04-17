@@ -407,7 +407,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                 self.switchCategory(self.selectedCategory); // refresh shopping item list
               }
               self.availableCategories.find(cat=>cat.name==self.selectedCategory).checked=true;
-              self.filteredCategories=self.buildfilteredCategories();
+              
+              self.filteredCategories=self.buildfilteredCategories(); // keep filtered list in synch
             }, // end next for listCatalog
             error(err) { //self.formError = err.message;
               console.log('Some error '+err.message); 
@@ -420,7 +421,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   // Handle change to the category filter
   private onCatFilterChange(catFilter) { 
     this.catFilter=catFilter;       
-    console.log("filter text is "+catFilter)
+    // console.log("filter text is "+catFilter)
     // build new filtered category list 
     this.filteredCategories=this.buildfilteredCategories();       
   }
@@ -436,15 +437,17 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // handle selection change on category radio button
   onCategorySelectionChange(category) {        
-        // console.log("selected category is "+this.selectedCategory)
-        // unselected existing choice
-        this.filteredCategories.find(cat=>cat.checked).checked=false; 
-        // check the new item
-        let tgtCat=this.filteredCategories.find(cat=>cat.name==this.selectedCategory);
-        if (tgtCat)
-          tgtCat.checked=true;
+    // console.log("selected category is "+this.selectedCategory)
+    // unselected existing choice
+    this.availableCategories.find(cat=>cat.checked).checked=false; 
+    // check the new item
+    let tgtCat=this.availableCategories.find(cat=>cat.name==this.selectedCategory);
+    if (tgtCat)
+      tgtCat.checked=true;
+        
+    this.filteredCategories=this.buildfilteredCategories(); // keep filtered categories in synch 
     
-        this.switchCategory(this.selectedCategory); // refresh shopping item list
+    this.switchCategory(this.selectedCategory); // refresh shopping item list
   }
   
   // switch to selected category
