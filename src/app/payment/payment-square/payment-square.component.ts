@@ -429,17 +429,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     if (!this.catFilter)
       return this.availableCategories;
     else {
-      let newList=this.availableCategories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1);
-      if (newList.filter(catg=>catg.name=="All Categories").length<1) {
-        // "All Categories" not in filtered list -- add it 
-         newList.unshift({
-                          name: "All Categories"
-                         });
-      }
-      if (newList.find(cat=>cat.checked))
-        newList.find(cat=>cat.checked).checked=false; // uncheck any existing selected category
-      newList.find(cat=>cat.name==this.selectedCategory).checked=true;
-      return newList;
+      return this.availableCategories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1||
+                                                  catg.name=="All Categories");      
     }    
   }
   
