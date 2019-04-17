@@ -58,9 +58,10 @@
   <div class="col-sm-12 mypopover2">
     <div class="l-items-filter-filter-content">
       <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" 
-             type="text" (input)="onCatFilterChange($event.target.value)">
+             [(ngModel)]="catFilter" type="text" (input)="onCatFilterChange($event.target.value)">
       <i class="text-muted fas fa-search input-icon--search__icon"></i>
-      <i class="text-muted fas fa-times-circle input-icon--search__icon-clear"></i>
+      <i class="text-muted fas fa-times-circle input-icon--search__icon-clear"
+         [hidden]="!catFilter" (click)="catFilterClearClickHandler()"></i>
       <!--
       <option class="radio-row popover-list__item l-items-category-filter__item option" 
             [ngValue]="category" *ngFor="let category of categories">{{category.name}}</option>
@@ -114,7 +115,12 @@
   </div>
    
   <div class="d-flex flex-row">
-    <table class="table table-sm table-hover">
+    <div class="text-center" [hidden]="shoppingItems">
+      <i class="fas fa-spin fa-spinner fa-5x"></i>
+      <br>
+      Loading catalog ...
+    </div>
+    <table class="table table-sm table-hover" [hidden]="!shoppingItems">
  
       <thead class="blue-grey lighten-2 text-light">
         <tr>
@@ -173,9 +179,8 @@
     
     <!-- use triggers="focus" attribute to close popover on next click.  Could not use it here
       because any selection click within popover closes it with triggers set -->
-    <button id="plusBtn" type="button" mdbBtn color="default" class="waves-light z-depth-0" [mdbPopover]="popTemplate"
-      placement="left" 
-      mdbWavesEffect >
+    <button id="plusBtn" type="button" [hidden]="!shoppingItems" mdbBtn color="default" class="waves-light z-depth-0" 
+            [mdbPopover]="popTemplate" placement="left" mdbWavesEffect >
       <div class="my-plus-circle" >
         <i class="fas fa-plus-circle fa float-right"></i>
       </div>

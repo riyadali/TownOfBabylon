@@ -418,6 +418,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.catPopoverOpen=!this.catPopoverOpen;
   }
   
+  // Handle clear of category filter
+  private catFilterClearClickHandler() {
+    this.catFilter=null;
+    this.filteredCategories=this.buildfilteredCategories(); 
+  }
+  
   // Handle change to the category filter
   private onCatFilterChange(catFilter) { 
     this.catFilter=catFilter;       
