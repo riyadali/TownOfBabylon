@@ -81,7 +81,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private currentShoppingItem; // for modal dialog
   
   /*
-  private availableShoppingItems = [
+  private unfilteredShoppingItems = [
     {
       name: "Coffee",
       sku: "111111",
@@ -108,7 +108,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   ];
   */
-  //private availableShoppingItems;
+  //private unfilteredShoppingItems;
+  private unfilteredShoppingItems;
   private filteredShoppingItems; // the shopping items filtered based on user display selection criteria
   
   /*
@@ -389,15 +390,19 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
    // handle click of shopButtonClicked
   private shopButtonClickHandler() {
-    let self=this;
-    if (this.availableShoppingItems) {
-      console.log("++++"+JSON.stringify(this.availableShoppingItems))
-    }
+    let self=this;    
     if (!this.filteredShoppingItems) {
       // list not built yet -- wait for item list build to complete
+      // note with subscription in place this code will 
+      // execute on any future change to availableShoppingItems 
       this.availableShoppingItems.subscribe(value => {
-        console.log("_________"+JSON.stringify(value))
-        self.filteredShoppingItems = value})
+        //console.log("_________"+JSON.stringify(value))
+        self.filteredShoppingItems = value;
+        if (!self.unFilteredShoppingItems) {
+          // base list of shopping items not set yet
+          self.unFilteredShoppingItems = value;
+        }
+      });
     }
     if(this.shopButtonClicked) {
       this.shopButtonClicked = false;
@@ -486,15 +491,20 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private switchCategory(newCategory) {
     // generate the new list of shopping items based on selected category
     if (newCategory=="All Categories")
-      this.buildItemList(); // get all items
+      this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed
+      // this.buildItemList(); // get all items
     else // filter items by category
-      this.buildItemList(newCategory); 
+      this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.category==this.selectedCategory); 
+      // this.buildItemList(newCategory); 
   }
   
-  // build shooping item list based on selected category
+  // build shopping item list based on selected category
+  // -- code no longer being executed.  I was invoking it on every change in the category selection
+  // -- in an effort to keep the display as up to date as possible with the backend.
+  // -- But this resulted in a slow UI experience.  So now I only go to the backend once to
+  // -- retrieve all possible items and then filter that list to meet the users UI needs.
   private buildItemList(catg?) {
-    //????? work needed here
-   // this.shoppingItems=null; // clear existing list in case it takes a while to retrieve new list
+    this.availableShoppingItems=null; // clear existing list in case it takes a while to retrieve new list
     // build new list of shopping items
     this.listCatalog('CATEGORY,ITEM', catg);    
   }
