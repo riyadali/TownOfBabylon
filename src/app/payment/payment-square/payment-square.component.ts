@@ -398,9 +398,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       this.availableShoppingItems.subscribe(value => {
         //console.log("_________"+JSON.stringify(value))
         self.filteredShoppingItems = value;
-        if (!self.unFilteredShoppingItems) {
+        if (!self.unfilteredShoppingItems) {
           // base list of shopping items not set yet
-          self.unFilteredShoppingItems = value;
+          self.unfilteredShoppingItems = value;
         }
       });
     }
