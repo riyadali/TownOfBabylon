@@ -389,10 +389,11 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
    // handle click of shopButtonClicked
   private shopButtonClickHandler() {
+    let self=this;
     if (this.availableShoppingItems) {
       console.log("++++"+JSON.stringify(this.availableShoppingItems))
     }
-    if (!this.availableShoppingItems) {
+    if (!this.filteredShoppingItems) {
       // list not built yet -- wait for item list build to complete
       this.availableShoppingItems.subscribe(value => {
         console.log("_________"+JSON.stringify(value))
