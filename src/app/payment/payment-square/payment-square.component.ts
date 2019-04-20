@@ -133,6 +133,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private catButtonClicked: boolean;
   private catFilter;
   
+  private availableLocations;
+  private filteredLocations; // locations filtered by user input
+  private selectedLocation="All Locations"; // initially all locations selected
+  private locationPopoverOpen: boolean;
+  private locationButtonClicked: boolean;
+  private locationFilter;
+  
   // initialize shopping item list -- concept gotten from this link https://stackoverflow.com/questions/52949215/how-to-subscribe-on-variable-changes and this one     https://stackoverflow.com/questions/48452073/angular-waiting-for-a-method-to-finish-or-a-variable-to-be-initialized
   private _availableShoppingItems;
   private _availableShoppingItems$ = new BehaviorSubject(this._availableShoppingItems);
@@ -449,10 +456,54 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.catPopoverOpen=!this.catPopoverOpen;
   }
   
+  // Handle click of Location button
+  locationButtonClickHandler() {
+    this.locationButtonClicked=true; // indicate that location button clicked at least once
+    //console.log("On entry popover showing is "+this.locationPopoverOpen)
+    // if location popover is closed on entry then pull the location records for display
+    let self=this;
+    if (!this.locationPopoverOpen) {
+       // get a list of Locations from Square
+       this.squarePaymentService.listLocations()
+          .subscribe({
+            next(response) { /*console.log('data: ', response);*/  
+              self.availableLocations=response.locations.filter(elem=>!elem.is_deleted)
+                    .map(elem=>{  
+                                return { name: elem.name
+                                  
+                                };
+                              });
+              // Include the "All Locations" location at the start of the list
+              self.availableLocations.unshift({
+                                        name: "All Locations"
+                                      });
+              if (!self.availableLocations.find(locn=>locn.name==self.selectedLocation)) {
+                // previously selected location no longer found -- default to "All Locations"
+                self.selectedLocation="All Locations";
+                self.switchLocation(self.selectedLocation); // refresh shopping item list
+              }
+              self.availableLocations.find(locn=>locn.name==self.selectedLocation).checked=true;
+              
+              self.filteredLocations=self.buildfilteredLocations(); // keep filtered list in synch
+            }, // end next for listLocations
+            error(err) { //self.formError = err.message;
+              console.log('Some error '+err.message); 
+            }
+          }); // end subscribe for listLocations
+    }
+    this.locationPopoverOpen=!this.locationPopoverOpen;
+  }
+  
   // Handle clear of category filter
   private catFilterClearClickHandler() {
     this.catFilter=null;
     this.filteredCategories=this.buildfilteredCategories(); 
+  }
+  
+  // Handle clear of location filter
+  private locationFilterClearClickHandler() {
+    this.locationFilter=null;
+    this.filteredLocations=this.buildfilteredLocations(); 
   }
   
   // Handle change to the category filter
@@ -463,12 +514,29 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.filteredCategories=this.buildfilteredCategories();       
   }
   
+  // Handle change to the location filter
+  private onlocationFilterChange(locFilter) { 
+    this.locationFilter=locFilter;       
+    // console.log("filter text is "+locFilter)
+    // build new filtered location list 
+    this.filteredLocations=this.buildfilteredLocations();       
+  }
+  
   private buildfilteredCategories() {
     if (!this.catFilter)
       return this.availableCategories;
     else {
       return this.availableCategories.filter(catg=>catg.name.toLowerCase().indexOf(this.catFilter.toLowerCase())!=-1||
                                                   catg.name=="All Categories");      
+    }    
+  }
+  
+  private buildfilteredLocations() {
+    if (!this.locationFilter)
+      return this.availableLocations;
+    else {
+      return this.availableLocations.filter(locn=>locn.name.toLowerCase().indexOf(this.locationFilter.toLowerCase())!=-1||
+                                                  locn.name=="All Locations");      
     }    
   }
   
@@ -487,6 +555,21 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.switchCategory(this.selectedCategory); // refresh shopping item list
   }
   
+  // handle selection change on location radio button
+  onLocationSelectionChange(locn) {        
+    // console.log("selected Location is "+this.selectedLocation)
+    // unselect existing choice
+    this.availableLocations.find(locn=>locn.checked).checked=false; 
+    // check the new item
+    let tgtLoc=this.availableLocations.find(locn=>locn.name==this.selectedLocation);
+    if (tgtLoc)
+      tgtLoc.checked=true;
+        
+    this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
+    
+    this.switchLocation(this.selectedLocation); // refresh shopping item list
+  }
+  
   // switch to selected category
   private switchCategory(newCategory) {
     // generate the new list of shopping items based on selected category
@@ -495,6 +578,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       // this.buildItemList(); // get all items
     else // filter items by category
       this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.category==newCategory); 
+      // this.buildItemList(newCategory); 
+  }
+  
+  // switch to selected location
+  private switchLocation(newLocation) {
+    // generate the new list of shopping items based on selected location
+    if (newLocation=="All Locations")
+      this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed
+      // this.buildItemList(); // get all items
+    else // filter items by location
+      // ?????? needs some work
+      this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.location==newLocation); 
       // this.buildItemList(newCategory); 
   }
   
