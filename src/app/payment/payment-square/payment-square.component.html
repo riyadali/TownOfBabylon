@@ -87,6 +87,41 @@
   </div> 
 </ng-template>
 
+<ng-template #locTemplate>
+  <div [innerHtml]="html"></div>
+  
+  <div class="col-sm-12 mypopover2">
+    <div class="l-items-filter-filter-content">
+      <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" 
+             [(ngModel)]="locationFilter" type="text" (input)="onLocationFilterChange($event.target.value)">
+      <i class="text-muted fas fa-search input-icon--search__icon"></i>
+      <i class="text-muted fas fa-times-circle input-icon--search__icon-clear"
+         [hidden]="!locationFilter" (click)="locationFilterClearClickHandler()"></i>
+      <!--
+      <option class="radio-row popover-list__item l-items-location-filter__item option" 
+            [ngValue]=location" *ngFor="let location of location">{{location.name}}</option>
+      -->
+      <!-- if location button clicked (implicit -- otherwise popover wouldn't be open) and locations not loaded
+        show fa-spinner otherwise show the available locations -->
+      <span class="my-spinner" *ngIf="!availableLocations">        
+          <i class="fas fa-spin fa-spinner"></i>       
+      </span>
+      <span *ngIf="availableLocations">
+        <div *ngFor="let location of filteredLocations; let idx = index" class="popover-list__item l-items-location-filter__item">
+          <div [className]="location.checked ? 'radio radio-is-active' : 'radio'">
+            <input  type="radio" name="locationRadioGroup"  class="radio--input" 
+              value="{{location.name}}" [(ngModel)]="selectedLocation" (change)="onLocationSelectionChange(location)" >
+            <i class="radio--mark"></i>
+          </div>
+          <div class="radio-row">
+            {{location.name}}
+          </div>
+        </div>
+      </span>
+    </div>
+  </div> 
+</ng-template>
+
 <!--
 <button type="button" class="btn btn-default btn-md" 
               (click)="searchCatalog('coffee',['ITEM', 'CATEGORY'])">Test InterFace</button>
@@ -98,6 +133,7 @@
   <h2>Shop till you drop</h2>
   
   <div class="d-flex flex-row pb-3">
+     <!-- Category button -->
      <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" placement="bottom left"
         (click)="categoryButtonClickHandler()">
       <span class="text-white">
@@ -108,6 +144,22 @@
         </span>
         <span *ngIf="!catButtonClicked||availableCategories">
           {{selectedCategory}}
+          <i class="fas fa-angle-down my-dropdown2"></i>
+        </span>
+      </span>
+    </button>
+    
+    <!-- Location button -->
+    <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="locTemplate" placement="bottom left"
+        (click)="locationButtonClickHandler()">
+      <span class="text-white">
+         <!-- if location button clicked and locations not loaded
+        show fa-spinner otherwise show the selected location -->
+        <span  *ngIf="locationButtonClicked&&!availableLocations">
+          <i class="fas fa-spin fa-spinner"></i>
+        </span>
+        <span *ngIf="!locationButtonClicked||availableLocations">
+          {{selectedLocation}}
           <i class="fas fa-angle-down my-dropdown2"></i>
         </span>
       </span>
