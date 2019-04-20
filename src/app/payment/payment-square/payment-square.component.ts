@@ -515,7 +515,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // Handle change to the location filter
-  private onlocationFilterChange(locFilter) { 
+  private onLocationFilterChange(locFilter) { 
     this.locationFilter=locFilter;       
     // console.log("filter text is "+locFilter)
     // build new filtered location list 
