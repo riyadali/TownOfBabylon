@@ -108,7 +108,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   ];
   */
-  //private unfilteredShoppingItems;
+ 
   private unfilteredShoppingItems;
   private filteredShoppingItems; // the shopping items filtered based on user display selection criteria
   
@@ -494,7 +494,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed
       // this.buildItemList(); // get all items
     else // filter items by category
-      this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.category==this.selectedCategory); 
+      this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.category==newCategory); 
       // this.buildItemList(newCategory); 
   }
   
