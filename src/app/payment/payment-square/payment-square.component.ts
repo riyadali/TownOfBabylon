@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnInit, Inject, TemplateRef, ViewChild } from '@angular/core';
 
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
 import { DOCUMENT } from '@angular/common';
 
 import { SquareProcessPaymentRequest } from '../../model/SquareProcessPaymentRequest';
@@ -62,7 +64,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   };
 
   paymentForm; //this is our payment form object
-  private testButtonClicked: boolean;
+  private shopButtonClicked: boolean;
   
   private skuCheckbox = false;
   private categoryCheckbox = true;
@@ -79,7 +81,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private currentShoppingItem; // for modal dialog
   
   /*
-  private shoppingItems = [
+  private unfilteredShoppingItems = [
     {
       name: "Coffee",
       sku: "111111",
@@ -106,7 +108,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   ];
   */
-  private shoppingItems;
+ 
+  private unfilteredShoppingItems;
+  private filteredShoppingItems; // the shopping items filtered based on user display selection criteria
   
   /*
   private availableCategories = [
@@ -128,10 +132,23 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private catPopoverOpen: boolean;
   private catButtonClicked: boolean;
   private catFilter;
+  
+  // initialize shopping item list -- concept gotten from this link https://stackoverflow.com/questions/52949215/how-to-subscribe-on-variable-changes and this one     https://stackoverflow.com/questions/48452073/angular-waiting-for-a-method-to-finish-or-a-variable-to-be-initialized
+  private _availableShoppingItems;
+  private _availableShoppingItems$ = new BehaviorSubject(this._availableShoppingItems);
+
+  private set availableShoppingItems(value) {
+    this._availableShoppingItems = value;
+    this._availableShoppingItems$.next(this._availableShoppingItems);
+  }
+  private get availableShoppingItems() {
+    return this._availableShoppingItems$.asObservable();
+  }
 
   ngOnInit() {
     let self=this;
-    this.switchCategory(this.selectedCategory); // initialize shopping item list
+    
+    this.listCatalog('CATEGORY,ITEM'); // initialize shopping item list 
     
     // Set the application ID for Square
     var applicationId = "sandbox-sq0idp-C6tuS5thsbqmjqa9LGiUyA";
@@ -371,12 +388,26 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
-   // handle click of testButtonClicked
-  private testButtonClickHandler() {
-    if(this.testButtonClicked) {
-      this.testButtonClicked = false;
+   // handle click of shopButtonClicked
+  private shopButtonClickHandler() {
+    let self=this;    
+    if (!this.filteredShoppingItems) {
+      // list not built yet -- wait for item list build to complete
+      // note with subscription in place this code will 
+      // execute on any future change to availableShoppingItems 
+      this.availableShoppingItems.subscribe(value => {
+        //console.log("_________"+JSON.stringify(value))
+        self.filteredShoppingItems = value;
+        if (!self.unfilteredShoppingItems) {
+          // base list of shopping items not set yet
+          self.unfilteredShoppingItems = value;
+        }
+      });
+    }
+    if(this.shopButtonClicked) {
+      this.shopButtonClicked = false;
     } else {
-      this.testButtonClicked = true;
+      this.shopButtonClicked = true;
     }
   }
   
@@ -460,14 +491,20 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private switchCategory(newCategory) {
     // generate the new list of shopping items based on selected category
     if (newCategory=="All Categories")
-      this.buildItemList(); // get all items
+      this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed
+      // this.buildItemList(); // get all items
     else // filter items by category
-      this.buildItemList(newCategory); 
+      this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.category==newCategory); 
+      // this.buildItemList(newCategory); 
   }
   
-  // build shooping item list based on selected category
+  // build shopping item list based on selected category
+  // -- code no longer being executed.  I was invoking it on every change in the category selection
+  // -- in an effort to keep the display as up to date as possible with the backend.
+  // -- But this resulted in a slow UI experience.  So now I only go to the backend once to
+  // -- retrieve all possible items and then filter that list to meet the users UI needs.
   private buildItemList(catg?) {
-    this.shoppingItems=null; // clear existing list in case it takes a while to retrieve new list
+    this.availableShoppingItems=null; // clear existing list in case it takes a while to retrieve new list
     // build new list of shopping items
     this.listCatalog('CATEGORY,ITEM', catg);    
   }
@@ -537,7 +574,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                               itemList=itemList.filter(elem=>elem.item_data.category_id&&
                                                        catFilter==self.getCatNameFor(elem.item_data.category_id,categoryList));
                             }
-                           self.shoppingItems=itemList.flatMap(                           
+                           self.availableShoppingItems=itemList.flatMap(                           
                               // Note flatMap takes a function that maps an element to an array
                               // it then flattens that resulting array back to individual elements. 
                               // The final result is all of these indivdual elements merged together in a single array
