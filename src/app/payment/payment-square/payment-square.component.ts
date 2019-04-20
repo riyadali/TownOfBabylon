@@ -585,12 +585,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private switchLocation(newLocation) {
     // generate the new list of shopping items based on selected location
     if (newLocation=="All Locations")
-      this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed
-      // this.buildItemList(); // get all items
+      this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed     
     else // filter items by location
       // ?????? needs some work
-      this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.location==newLocation); 
-      // this.buildItemList(newCategory); 
+     this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.locationsNames.indexOf(newLocation)!=-1
+                                        ||item.locationsNames.indexOf("All Locations")!=-1); 
+     
   }
   
   // build shopping item list based on selected category
@@ -684,6 +684,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                   price: self.determineElemPrice(elem),
                                   category: self.determineCategory(elem,categoryList),
                                   locations: self.determineLocations(elem,locations),
+                                  locationsNames: self.determineLocationsNames(elem,locations),
                                   inStock: elem.in_stock,
                                   is_variation_row: elem.is_variation_row,
                                   group_id: elem.group_id,
@@ -862,6 +863,42 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
      return "";
   } 
  }
+ 
+ // Build array of locations item can be found.  If it is present in all locations an array with a single element
+  // containing "All Locations" will be returned
+
+  private determineLocationsNames(elem, locations) { 
+   if (elem.present_at_all_locations) {
+     if (!elem.absent_at_location_ids || elem.absent_at_location_ids.length==0)
+        return ["All Locations"];
+     else
+        return locations.filter(locn=>elem.absent_at_location_ids.indexOf(locn.id)==-1)
+                        .map(locn=>{
+                          name: this.getLocationNameFor(locn.id, locations)
+                        })  
+   } else if (elem.present_at_location_ids&&elem.present_at_location_ids.length>0) {
+     if (elem.present_at_location_ids.length>1) {
+       return locations.filter(locn=>elem.present_at_location_ids.indexOf(locn.id)!=-1)
+                        .map(locn=>{
+                          name: this.getLocationNameFor(locn.id, locations)
+                        })  
+     } else {
+       return [locations.find(location=>location.id==elem.present_at_location_ids[0]).name]; 
+     }
+
+  } else {
+     return [];
+  } 
+ }
+
+ // Given a location id determine its name
+  private getLocationNameFor(locId, locationList) {
+    let tgtLoc=locationList.find(locn=>locn.id==locId);
+    if (tgtLoc)
+      return tgtLoc.name;
+    else
+      return "";
+  }
   
   // Determine the taxes for the item
   private determineTaxes(elem, availableTaxes) {
