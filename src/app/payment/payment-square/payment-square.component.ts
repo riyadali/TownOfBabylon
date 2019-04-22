@@ -865,9 +865,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
  }
  
  // Build array of locations item can be found.  If it is present in all locations an array with a single element
-  // containing "All Locations" will be returned
-
-  private determineLocationsNames(elem, locations) { 
+ // containing "All Locations" will be returned
+  
+ private determineLocationsNames(elem, locations) { 
    if (elem.present_at_all_locations) {
      if (!elem.absent_at_location_ids || elem.absent_at_location_ids.length==0)
         return ["All Locations"];
@@ -889,16 +889,16 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   } else {
      return [];
   } 
- }
+}
 
- // Given a location id determine its name
-  private getLocationNameFor(locId, locationList) {
+// Given a location id determine its name
+private getLocationNameFor(locId, locationList) {
     let tgtLoc=locationList.find(locn=>locn.id==locId);
     if (tgtLoc)
       return tgtLoc.name;
     else
       return "";
-  }
+}
   
   // Determine the taxes for the item
   private determineTaxes(elem, availableTaxes) {
