@@ -878,13 +878,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
      else
         return locations.filter(locn=>elem.absent_at_location_ids.indexOf(locn.id)==-1)
                         .map(locn=>{
-                          name: this.getLocationNameFor(locn.id, locations)
+                          return this.getLocationNameFor(locn.id, locations)
                         })  
    } else if (elem.present_at_location_ids&&elem.present_at_location_ids.length>0) {
      if (elem.present_at_location_ids.length>1) {
        return locations.filter(locn=>elem.present_at_location_ids.indexOf(locn.id)!=-1)
                         .map(locn=>{
-                          name: this.getLocationNameFor(locn.id, locations)
+                          return this.getLocationNameFor(locn.id, locations)
                         })  
      } else {
        return [locations.find(location=>location.id==elem.present_at_location_ids[0]).name]; 
