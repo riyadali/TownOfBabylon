@@ -469,20 +469,30 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             next(response) { /*console.log('data: ', response);*/  
               self.availableLocations=response.locations.filter(elem=>!elem.is_deleted)
                     .map(elem=>{  
-                                return { name: elem.name
-                                  
-                                };
+                                // wrap location detail in an object
+                                // this would ensure that the filtered and unfiltered version of the
+                                // location array will refer to the same element details
+                                // The filter method on an array creates a shallow copy which is what I need.
+                                // The wrapper locationObjects are distinct in the filtered and unfiltered
+                                // arrays but the underlying elements share the same details.
+                                // By doing this you don't have the hassle of keeping the element details
+                                // synchronized between the filtered and unfiltered arrays  
+                                return { locationObject: { 
+                                                            name: elem.name 
+                                                          }
+                                       };
                               });
               // Include the "All Locations" location at the start of the list
-              self.availableLocations.unshift({
-                                        name: "All Locations"
-                                      });
-              if (!self.availableLocations.find(locn=>locn.name==self.selectedLocation)) {
+              self.availableLocations.unshift({ locationObject: { 
+                                                                  name: "All Locations" 
+                                                                }
+                                              });
+              if (!self.availableLocations.find(locn=>locn.locationObject.name==self.selectedLocation)) {
                 // previously selected location no longer found -- default to "All Locations"
                 self.selectedLocation="All Locations";
                 self.switchLocation(self.selectedLocation); // refresh shopping item list
               }
-              self.availableLocations.find(locn=>locn.name==self.selectedLocation).checked=true;
+              self.availableLocations.find(locn=>locn.locationObject.name==self.selectedLocation).locationObject.checked=true;
               
               self.filteredLocations=self.buildfilteredLocations(); // keep filtered list in synch
             }, // end next for listLocations
@@ -535,8 +545,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     if (!this.locationFilter)
       return this.availableLocations;
     else {
-      return this.availableLocations.filter(locn=>locn.name.toLowerCase().indexOf(this.locationFilter.toLowerCase())!=-1||
-                                                  locn.name=="All Locations");      
+      return this.availableLocations.filter(locn=>locn.locationObject.name.toLowerCase().indexOf(this.locationFilter.toLowerCase())!=-1||
+                                                  locn.locationObject.name=="All Locations");      
     }    
   }
   
