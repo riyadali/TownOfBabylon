@@ -555,16 +555,14 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.switchCategory(this.selectedCategory); // refresh shopping item list
   }
   
-  // handle selection change on location radio button
-  onLocationSelectionChange(locn) {        
-    // console.log("selected Location is "+this.selectedLocation)
+   // handle selection change on location radio button
+  onLocationSelectionChange(locn, idx) {        
+     console.log("selected Location is "+JSON.stringify(locn))
     // unselect existing choice
-    this.availableLocations.find(locn=>locn.checked).checked=false; 
-    // check the new item
-    let tgtLoc=this.availableLocations.find(locn=>locn.name==this.selectedLocation);
-    if (tgtLoc)
-      tgtLoc.checked=true;
-        
+    if (this.filteredLocations[idx].checked)
+       this.filteredLocations[idx].checked = false;
+    else
+       this.filteredLocations[idx].checked = true;
     this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
     
     this.switchLocation(this.selectedLocation); // refresh shopping item list
