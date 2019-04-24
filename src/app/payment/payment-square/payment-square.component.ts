@@ -572,25 +572,29 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // switch to selected category
   private switchCategory(newCategory) {
-    // generate the new list of shopping items based on selected category
-    if (newCategory=="All Categories")
-      this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed
-      // this.buildItemList(); // get all items
-    else // filter items by category
-      this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.category==newCategory); 
-      // this.buildItemList(newCategory); 
+    this.filteredShoppingItems=this.filterShoppingItems();
   }
   
   // switch to selected location
   private switchLocation(newLocation) {
-    // generate the new list of shopping items based on selected location
-    if (newLocation=="All Locations")
-      this.filteredShoppingItems = this.unfilteredShoppingItems; // no filtering needed     
-    else // filter items by location
-      // ?????? needs some work
-     this.filteredShoppingItems = this.unfilteredShoppingItems.filter(item=>item.locationsNames.indexOf(newLocation)!=-1
-                                        ||item.locationsNames.indexOf("All Locations")!=-1); 
-     
+    this.filteredShoppingItems=this.filterShoppingItems();
+  }
+
+  private filterShoppingItems() {
+    let results=this.unfilteredShoppingItems;
+
+    // filter by location
+    if (this.selectedLocation!="All Locations") {
+      results=results.filter(item=>item.locationsNames.indexOf(this.selectedLocation)!=-1
+                            ||item.locationsNames.indexOf("All Locations")!=-1);
+    }
+
+    // filter by category
+    if (this.selectedCategory!="All Categories") {
+      results=results.filter(item=>item.category==this.selectedCategory);
+    }
+    
+    return results;
   }
   
   // build shopping item list based on selected category
@@ -874,13 +878,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
      else
         return locations.filter(locn=>elem.absent_at_location_ids.indexOf(locn.id)==-1)
                         .map(locn=>{
-                          name: this.getLocationNameFor(locn.id, locations)
+                          return this.getLocationNameFor(locn.id, locations)
                         })  
    } else if (elem.present_at_location_ids&&elem.present_at_location_ids.length>0) {
      if (elem.present_at_location_ids.length>1) {
        return locations.filter(locn=>elem.present_at_location_ids.indexOf(locn.id)!=-1)
                         .map(locn=>{
-                          name: this.getLocationNameFor(locn.id, locations)
+                          return this.getLocationNameFor(locn.id, locations)
                         })  
      } else {
        return [locations.find(location=>location.id==elem.present_at_location_ids[0]).name]; 
