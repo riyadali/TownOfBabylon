@@ -591,7 +591,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
     // filter by category
     if (this.selectedCategory!="All Categories") {
-      results=results.filter(item=>item.category==this.selectedCategory);
+      results=results.filter(item=>item.baseCategory==this.selectedCategory);
     }
     
     return results;
@@ -687,6 +687,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                   sku: elem.sku,
                                   price: self.determineElemPrice(elem),
                                   category: self.determineCategory(elem,categoryList),
+                                  baseCategory: self.determineBaseCategory(elem,categoryList),
                                   locations: self.determineLocations(elem,locations),
                                   locationsNames: self.determineLocationsNames(elem,locations),
                                   inStock: elem.in_stock,
@@ -808,7 +809,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
   }
   
-  // Determine the name of the category
+  // Determine the name of the category -- this is what is displyed in the report
   private determineCategory(elem, categoryList) {
    if (!elem.is_variation_row)
       if (elem.category_id) 
@@ -817,6 +818,14 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
         return "-"
    else 
       return "";
+  }
+  
+  // Determine the name of the category -- the base category is used for filtering
+  private determineBaseCategory(elem, categoryList) {
+    if (elem.category_id) 
+      return this.getCatNameFor(elem.category_id, categoryList); 
+    else
+      return "-"
   }
   
   // Given a category id determine its name
