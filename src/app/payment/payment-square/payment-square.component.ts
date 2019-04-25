@@ -478,7 +478,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                                 // By doing this you don't have the hassle of keeping the element details
                                 // synchronized between the filtered and unfiltered arrays  
                                 return { locationObject: { 
-                                                            name: elem.name 
+                                                            name: elem.name,
+                                                            checked: true
                                                           }
                                        };
                               });
@@ -567,9 +568,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // handle selection change on location radio button
   onLocationSelectionChange(locn, idx) {        
-    console.log("selected Location is "+JSON.stringify(locn))
+    //console.log("selected Location is "+JSON.stringify(locn))
     if (locn.locationObject.name=="All Locations") {
-      if (locn.locationObject.checked==true) {
+      if (locn.locationObject.checked) {
         // ensure all other locations in filtered view checked
         this.filteredLocations.forEach(locn=>{
           if (locn.locationObject.name!="All Locations") {
@@ -587,7 +588,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     } else { // not all locations
       if (locn.locationObject.checked==true) {
         // if all locations now checked ensure "All Locations" checked
-        if (!this.filteredLocations.find(locn=>locn.locationObject.checked==false)) {
+        if (!this.filteredLocations.find(locn=>locn.locationObject.checked==false&&locn.locationObject.name!=="All Locations")) {
           this.filteredLocations.find(locn=>locn.locationObject.name=="All Locations").locationObject.checked=true;
         }
       } else {
