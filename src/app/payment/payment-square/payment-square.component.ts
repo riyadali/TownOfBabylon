@@ -462,7 +462,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     //console.log("On entry popover showing is "+this.locationPopoverOpen)
     // if location popover is closed on entry then pull the location records for display
     let self=this;
-    if (!this.locationPopoverOpen) {
+    if (!this.locationPopoverOpen && !this.availableLocations) {
        // get a list of Locations from Square
        this.squarePaymentService.listLocations()
           .subscribe({
