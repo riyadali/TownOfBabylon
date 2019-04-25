@@ -135,7 +135,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   private availableLocations;
   private filteredLocations; // locations filtered by user input
-  private selectedLocation="All Locations"; // initially all locations selected
+  private locationButtonText="All Locations"; // initially all locations selected
   private locationPopoverOpen: boolean;
   private locationButtonClicked: boolean;
   private locationFilter;
@@ -485,17 +485,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
                               });
               // Include the "All Locations" location at the start of the list
               self.availableLocations.unshift({ locationObject: { 
-                                                                  name: "All Locations" 
+                                                                  name: "All Locations",
+                                                                  checked: true
                                                                 }
-                                              });
-              if (!self.availableLocations.find(locn=>locn.locationObject.name==self.selectedLocation)) {
-                // previously selected location no longer found -- default to "All Locations"
-                self.selectedLocation="All Locations";
-                self.switchLocation(self.selectedLocation); // refresh shopping item list
-              }
-              self.availableLocations.find(locn=>locn.locationObject.name==self.selectedLocation).locationObject.checked=true;
+                                              });             
               
-              self.filteredLocations=self.buildfilteredLocations(); // keep filtered list in synch
+              self.filteredLocations=self.availableLocations; // keep filtered list in synch
+              //self.filteredLocations=self.buildfilteredLocations(); // keep filtered list in synch
             }, // end next for listLocations
             error(err) { //self.formError = err.message;
               console.log('Some error '+err.message); 
@@ -599,7 +595,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
     //this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
     
-    this.switchLocation(this.selectedLocation); // refresh shopping item list
+    this.switchLocation(this.locationButtonText); // refresh shopping item list
   }
   
   // switch to selected category
@@ -616,8 +612,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     let results=this.unfilteredShoppingItems;
 
     // filter by location
-    if (this.selectedLocation!="All Locations") {
-      results=results.filter(item=>item.locationsNames.indexOf(this.selectedLocation)!=-1
+    if (this.locationButtonText!="All Locations") {
+      results=results.filter(item=>item.locationsNames.indexOf(this.locationButtonText)!=-1
                             ||item.locationsNames.indexOf("All Locations")!=-1);
     }
 
