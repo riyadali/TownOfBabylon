@@ -595,7 +595,24 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     }
     //this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
     
+    // change text for location button
+    this.locationButtonText=this.buildLocationButtonText();
+    
     this.switchLocation(this.locationButtonText); // refresh shopping item list
+  }
+  
+  // build location button text 
+  private buildLocationButtonText() {
+    let checkedLocations =  this.availableLocations.filter(
+                                  locn=>locn.locationObject.checked==true&&locn.locationObject.name!=="All Locations");
+    if (checkedLocations.length==0)
+      return "No Locations";
+    else if (checkedLocations.length==1)
+      return checkedLocations[0].locationObject.name;
+    else if (checkedLocations.length==this.availableLocations.length)
+      return "All Locations";
+    else
+      return checkedLocations.length+" Locations";
   }
   
   // switch to selected category
