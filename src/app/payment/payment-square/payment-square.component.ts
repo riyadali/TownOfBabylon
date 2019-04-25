@@ -565,10 +565,38 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.switchCategory(this.selectedCategory); // refresh shopping item list
   }
   
-   // handle selection change on location radio button
+  // handle selection change on location radio button
   onLocationSelectionChange(locn, idx) {        
     console.log("selected Location is "+JSON.stringify(locn))
-    this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
+    if (locn.locationObject.name=="All Locations") {
+      if (locn.locationObject.checked==true) {
+        // ensure all other locations in filtered view checked
+        this.filteredLocations.forEach(locn=>{
+          if (locn.locationObject.name!="All Locations") {
+            locn.locationObject.checked=true;
+          }
+        });
+      } else {
+        // ensure all other locations in filtered view not checked
+        this.filteredLocations.forEach(locn=>{
+          if (locn.locationObject.name!="All Locations") {
+            locn.locationObject.checked=false;
+          }
+        });
+      }
+    } else { // not all locations
+      if (locn.locationObject.checked==true) {
+        // if all locations now checked ensure "All Locations" checked
+        if (!this.filteredLocations.find(locn=>locn.locationObject.checked==false)) {
+          this.filteredLocations.find(locn=>locn.locationObject.name=="All Locations").locationObject.checked=true;
+        }
+      } else {
+        // ensure that "All Locations" not checked
+        this.filteredLocations.find(locn=>locn.locationObject.name=="All Locations").locationObject.checked=false;
+      }
+
+    }
+    //this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
     
     this.switchLocation(this.selectedLocation); // refresh shopping item list
   }
