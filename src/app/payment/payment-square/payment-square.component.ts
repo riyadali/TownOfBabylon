@@ -598,7 +598,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     // change text for location button
     this.locationButtonText=this.buildLocationButtonText();
     
-    this.switchLocation(this.locationButtonText); // refresh shopping item list
+    this.filteredShoppingItems=this.filterShoppingItems();
+    //this.switchLocation(this.locationButtonText); // refresh shopping item list
   }
   
   // build location button text 
@@ -620,10 +621,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.filteredShoppingItems=this.filterShoppingItems();
   }
   
+  /* -- not used
   // switch to selected location
   private switchLocation(newLocation) {
     this.filteredShoppingItems=this.filterShoppingItems();
   }
+  */
 
   private filterShoppingItems() {
     let results=this.unfilteredShoppingItems;
