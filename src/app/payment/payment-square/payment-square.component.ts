@@ -633,8 +633,23 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
 
     // filter by location
     if (this.locationButtonText!="All Locations") {
-      results=results.filter(item=>item.locationsNames.indexOf(this.locationButtonText)!=-1
-                            ||item.locationsNames.indexOf("All Locations")!=-1);
+      let checkedLocations =  this.availableLocations.filter(
+                                  locn=>locn.locationObject.checked==true&&locn.locationObject.name!=="All Locations").map(locn=>{
+                                      return locn.locationObject.name;
+                                  });
+      results=results.filter(item=>{
+                if (item.locationsNames.indexOf("All Locations")!=-1)
+                  return true;
+                else {                  
+                  let result=false;              
+                  item.locationsNames.forEach(locn=>{ 
+                      if (checkedLocations.indexOf(locn)!=-1) {
+                        result=true;
+                      }
+                  });                  
+                  return result;
+                }         
+      });
     }
 
     // filter by category
