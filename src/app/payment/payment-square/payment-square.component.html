@@ -108,13 +108,13 @@
       </span>
       <span *ngIf="availableLocations">
         <div *ngFor="let location of filteredLocations; let idx = index" class="popover-list__item l-items-location-filter__item">
-          <div [className]="location.checked ? 'radio radio-is-active' : 'radio'">
-            <input  type="radio" name="locationRadioGroup"  class="radio--input" 
-              value="{{location.name}}" [(ngModel)]="selectedLocation" (change)="onLocationSelectionChange(location)" >
+          <div [className]="location.locationObject.checked ? 'radio radio-is-active' : 'radio'">
+            <input  type="checkbox" class="radio--input" 
+               [(ngModel)]="filteredLocations[idx].locationObject.checked" (change)="onLocationSelectionChange(location,idx)" >
             <i class="radio--mark"></i>
           </div>
           <div class="radio-row">
-            {{location.name}}
+            {{location.locationObject.name}}
           </div>
         </div>
       </span>
@@ -159,7 +159,7 @@
           <i class="fas fa-spin fa-spinner"></i>
         </span>
         <span *ngIf="!locationButtonClicked||availableLocations">
-          {{selectedLocation}}
+          {{locationButtonText}}
           <i class="fas fa-angle-down my-dropdown2"></i>
         </span>
       </span>

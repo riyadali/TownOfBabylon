@@ -135,7 +135,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   private availableLocations;
   private filteredLocations; // locations filtered by user input
-  private selectedLocation="All Locations"; // initially all locations selected
+  private locationButtonText="All Locations"; // initially all locations selected
   private locationPopoverOpen: boolean;
   private locationButtonClicked: boolean;
   private locationFilter;
@@ -462,29 +462,36 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     //console.log("On entry popover showing is "+this.locationPopoverOpen)
     // if location popover is closed on entry then pull the location records for display
     let self=this;
-    if (!this.locationPopoverOpen) {
+    if (!this.locationPopoverOpen && !this.availableLocations) {
        // get a list of Locations from Square
        this.squarePaymentService.listLocations()
           .subscribe({
             next(response) { /*console.log('data: ', response);*/  
               self.availableLocations=response.locations.filter(elem=>!elem.is_deleted)
                     .map(elem=>{  
-                                return { name: elem.name
-                                  
-                                };
+                                // wrap location detail in an object
+                                // this would ensure that the filtered and unfiltered version of the
+                                // location array will refer to the same element details
+                                // The filter method on an array creates a shallow copy which is what I need.
+                                // The wrapper locationObjects are distinct in the filtered and unfiltered
+                                // arrays but the underlying elements share the same details.
+                                // By doing this you don't have the hassle of keeping the element details
+                                // synchronized between the filtered and unfiltered arrays  
+                                return { locationObject: { 
+                                                            name: elem.name,
+                                                            checked: true
+                                                          }
+                                       };
                               });
               // Include the "All Locations" location at the start of the list
-              self.availableLocations.unshift({
-                                        name: "All Locations"
-                                      });
-              if (!self.availableLocations.find(locn=>locn.name==self.selectedLocation)) {
-                // previously selected location no longer found -- default to "All Locations"
-                self.selectedLocation="All Locations";
-                self.switchLocation(self.selectedLocation); // refresh shopping item list
-              }
-              self.availableLocations.find(locn=>locn.name==self.selectedLocation).checked=true;
+              self.availableLocations.unshift({ locationObject: { 
+                                                                  name: "All Locations",
+                                                                  checked: true
+                                                                }
+                                              });             
               
-              self.filteredLocations=self.buildfilteredLocations(); // keep filtered list in synch
+              self.filteredLocations=self.availableLocations; // keep filtered list in synch
+              //self.filteredLocations=self.buildfilteredLocations(); // keep filtered list in synch
             }, // end next for listLocations
             error(err) { //self.formError = err.message;
               console.log('Some error '+err.message); 
@@ -535,8 +542,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     if (!this.locationFilter)
       return this.availableLocations;
     else {
-      return this.availableLocations.filter(locn=>locn.name.toLowerCase().indexOf(this.locationFilter.toLowerCase())!=-1||
-                                                  locn.name=="All Locations");      
+      return this.availableLocations.filter(locn=>locn.locationObject.name.toLowerCase().indexOf(this.locationFilter.toLowerCase())!=-1||
+                                                  locn.locationObject.name=="All Locations");      
     }    
   }
   
@@ -556,18 +563,57 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // handle selection change on location radio button
-  onLocationSelectionChange(locn) {        
-    // console.log("selected Location is "+this.selectedLocation)
-    // unselect existing choice
-    this.availableLocations.find(locn=>locn.checked).checked=false; 
-    // check the new item
-    let tgtLoc=this.availableLocations.find(locn=>locn.name==this.selectedLocation);
-    if (tgtLoc)
-      tgtLoc.checked=true;
-        
-    this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
+  onLocationSelectionChange(locn, idx) {        
+    //console.log("selected Location is "+JSON.stringify(locn))
+    if (locn.locationObject.name=="All Locations") {
+      if (locn.locationObject.checked) {
+        // ensure all other locations in filtered view checked
+        this.filteredLocations.forEach(locn=>{
+          if (locn.locationObject.name!="All Locations") {
+            locn.locationObject.checked=true;
+          }
+        });
+      } else {
+        // ensure all other locations in filtered view not checked
+        this.filteredLocations.forEach(locn=>{
+          if (locn.locationObject.name!="All Locations") {
+            locn.locationObject.checked=false;
+          }
+        });
+      }
+    } else { // not all locations
+      if (locn.locationObject.checked==true) {
+        // if all locations now checked ensure "All Locations" checked
+        if (!this.filteredLocations.find(locn=>locn.locationObject.checked==false&&locn.locationObject.name!=="All Locations")) {
+          this.filteredLocations.find(locn=>locn.locationObject.name=="All Locations").locationObject.checked=true;
+        }
+      } else {
+        // ensure that "All Locations" not checked
+        this.filteredLocations.find(locn=>locn.locationObject.name=="All Locations").locationObject.checked=false;
+      }
+
+    }
+    //this.filteredLocations=this.buildfilteredLocations(); // keep filtered locations in synch 
     
-    this.switchLocation(this.selectedLocation); // refresh shopping item list
+    // change text for location button
+    this.locationButtonText=this.buildLocationButtonText();
+    
+    this.filteredShoppingItems=this.filterShoppingItems();
+    //this.switchLocation(this.locationButtonText); // refresh shopping item list
+  }
+  
+  // build location button text 
+  private buildLocationButtonText() {
+    let checkedLocations =  this.availableLocations.filter(
+                                  locn=>locn.locationObject.checked==true&&locn.locationObject.name!=="All Locations");
+    if (checkedLocations.length==0)
+      return "No Locations";
+    else if (checkedLocations.length==1)
+      return checkedLocations[0].locationObject.name;
+    else if (checkedLocations.length==this.availableLocations.length-1)
+      return "All Locations";
+    else
+      return checkedLocations.length+" Locations";
   }
   
   // switch to selected category
@@ -575,18 +621,35 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.filteredShoppingItems=this.filterShoppingItems();
   }
   
+  /* -- not used
   // switch to selected location
   private switchLocation(newLocation) {
     this.filteredShoppingItems=this.filterShoppingItems();
   }
+  */
 
   private filterShoppingItems() {
     let results=this.unfilteredShoppingItems;
 
     // filter by location
-    if (this.selectedLocation!="All Locations") {
-      results=results.filter(item=>item.locationsNames.indexOf(this.selectedLocation)!=-1
-                            ||item.locationsNames.indexOf("All Locations")!=-1);
+    if (this.locationButtonText!="All Locations") {
+      let checkedLocations =  this.availableLocations.filter(
+                                  locn=>locn.locationObject.checked==true&&locn.locationObject.name!=="All Locations").map(locn=>{
+                                      return locn.locationObject.name;
+                                  });
+      results=results.filter(item=>{
+                if (item.locationsNames.indexOf("All Locations")!=-1)
+                  return true;
+                else {                  
+                  let result=false;              
+                  item.locationsNames.forEach(locn=>{ 
+                      if (checkedLocations.indexOf(locn)!=-1) {
+                        result=true;
+                      }
+                  });                  
+                  return result;
+                }         
+      });
     }
 
     // filter by category
