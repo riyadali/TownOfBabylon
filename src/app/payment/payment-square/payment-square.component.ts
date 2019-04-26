@@ -610,7 +610,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return "No Locations";
     else if (checkedLocations.length==1)
       return checkedLocations[0].locationObject.name;
-    else if (checkedLocations.length==this.availableLocations.length)
+    else if (checkedLocations.length==this.availableLocations.length-1)
       return "All Locations";
     else
       return checkedLocations.length+" Locations";
