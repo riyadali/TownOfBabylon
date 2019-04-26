@@ -109,7 +109,7 @@
       <span *ngIf="availableLocations">
         <div *ngFor="let location of filteredLocations; let idx = index" class="popover-list__item l-items-location-filter__item">
           <div [className]="location.locationObject.checked ? 'radio radio-is-active' : 'radio'">
-            <input  type="checkbox" name="{{location.locationObject.name}}"  class="radio--input" 
+            <input  type="checkbox" class="radio--input" 
                [(ngModel)]="filteredLocations[idx].locationObject.checked" (change)="onLocationSelectionChange(location,idx)" >
             <i class="radio--mark"></i>
           </div>
