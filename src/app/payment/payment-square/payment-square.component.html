@@ -137,7 +137,7 @@
         Close popover
       </button>
      <!-- Category button -->
-     <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" 
+     <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" triggers="focus"
              placement="bottom left" (click)="categoryButtonClickHandler()">
       <span class="text-white">
          <!-- if category button clicked and categories not loaded
