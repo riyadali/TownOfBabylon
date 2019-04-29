@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, OnInit, Inject, TemplateRef, ViewChild } from '@angular/core';
+// a good discussion on Hostlistener can be found here 
+// https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-2-hostlistener-1b66d45b3e3d
+import { AfterViewInit, Component, OnInit, Inject, TemplateRef, ViewChild, HostListener } from '@angular/core';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
@@ -29,6 +31,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   constructor(private squarePaymentService: SquarePaymentService, private modalService: BsModalService,
                @Inject('Window') private window: Window, @Inject(DOCUMENT) private document: any
     ) { }
+  
+  // a good discussion on Hostlistener can be found here 
+  // https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-2-hostlistener-1b66d45b3e3d
+  @HostListener('document:click', ['$event'])
+  documentClick(event: MouseEvent) {
+    // your click logic
+    // for Element attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/Element
+    // for HTMLElement attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
+    //console.log("....clicked"+JSON.stringify((event.target as HTMLElement).style))
+    //console.log("....clicked"+JSON.stringify((event.target as HTMLElement)))
+    console.log("....clicked"+(event.target as HTMLElement).outerHTML)
+  }
   
   private modalRef: BsModalRef;
   
