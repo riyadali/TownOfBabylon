@@ -137,8 +137,9 @@
         Close popover
       </button>
      <!-- Category button -->
-     <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" triggers="focus"
-             placement="bottom left" (click)="categoryButtonClickHandler()">
+     <button type="button" #refCatButton class="my-btn btn btn-indigo btn-md" 
+             [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" triggers="focus"
+             placement="bottom left" (click)="categoryButtonClickHandler(refCatButton)">
       <span class="text-white">
          <!-- if category button clicked and categories not loaded
         show fa-spinner otherwise show the selected category -->
