@@ -44,6 +44,12 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     console.log("....clicked"+(event.target as HTMLElement).outerHTML)
   }
   
+  // temp code to experiment with popover
+  private closePopover(pop) {
+    console.log(".....hiding popover")
+    pop.hide()
+  }
+  
   private modalRef: BsModalRef;
   
   private openModal(template: TemplateRef<any>) {
