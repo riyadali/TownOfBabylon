@@ -42,6 +42,10 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     //console.log("....clicked"+JSON.stringify((event.target as HTMLElement).style))
     //console.log("....clicked"+JSON.stringify((event.target as HTMLElement)))
     console.log("....clicked"+(event.target as HTMLElement).outerHTML)
+    // need to figure a way to stop click from reaching category button
+    // stop propagation only works from child going to parent ... not the other way around
+    // refer to this reference https://stackoverflow.com/questions/28210108/how-to-stop-propagating-event-from-parent-div-to-child-div
+    event.stopPropagation();
   }
   
   // temp code to experiment with popover
@@ -439,7 +443,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // Handle click of Category button
-  categoryButtonClickHandler() {
+  categoryButtonClickHandler(catButton) {
+    console.log(":::::"+(catButton as HTMLElement).outerHTML);
     this.catButtonClicked=true; // indicate that category button clicked at least once
     //console.log("On entry popover showing is "+this.catPopoverOpen)
     // if category popover is closed on entry then pull the category records for display
