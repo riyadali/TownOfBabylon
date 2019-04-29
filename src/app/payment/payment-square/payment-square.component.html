@@ -133,9 +133,12 @@
   <h2>Shop till you drop</h2>
   
   <div class="d-flex flex-row pb-3">
+      <button type="button" class="my-btn btn btn-indigo btn-md" (click)="closePopover(catPopover)">
+        Close popover
+      </button>
      <!-- Category button -->
-     <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" placement="bottom left"
-        (click)="categoryButtonClickHandler()">
+     <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" 
+             placement="bottom left" (click)="categoryButtonClickHandler()">
       <span class="text-white">
          <!-- if category button clicked and categories not loaded
         show fa-spinner otherwise show the selected category -->
@@ -150,8 +153,8 @@
     </button>
     
     <!-- Location button -->
-    <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="locTemplate" placement="bottom left"
-        (click)="locationButtonClickHandler()">
+    <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="locTemplate" #locPopover="bs-mdbPopover" 
+            placement="bottom left" (click)="locationButtonClickHandler()">
       <span class="text-white">
          <!-- if location button clicked and locations not loaded
         show fa-spinner otherwise show the selected location -->
