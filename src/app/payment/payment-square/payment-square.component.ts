@@ -153,8 +153,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private availableCategories;
   private filteredCategories; // categories filtered by user input
   private selectedCategory="All Categories"; // initially all categories selected
-  private catPopoverOpen: boolean;
-  private catButtonClicked: boolean;
+  //private catButtonClicked: boolean;
   private catFilter;
   
   private availableLocations;
@@ -443,13 +442,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // Handle click of Category button
-  categoryButtonClickHandler(catButton) {
+  categoryButtonClickHandler(catButton, catPopover) {
     console.log(":::::"+(catButton as HTMLElement).outerHTML);
-    this.catButtonClicked=true; // indicate that category button clicked at least once
-    //console.log("On entry popover showing is "+this.catPopoverOpen)
+    //this.catButtonClicked=true; // indicate that category button clicked at least once
+    //console.log("On entry popover showing is "+this.+catPopover.isOpen)
     // if category popover is closed on entry then pull the category records for display
     let self=this;
-    if (!this.catPopoverOpen) {
+    if (!+catPopover.isOpen) {
        // get a list of Categories from Square
        this.squarePaymentService.listCatalog("CATEGORY")
           .subscribe({
@@ -478,7 +477,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             }
           }); // end subscribe for listCatalog
     }
-    this.catPopoverOpen=!this.catPopoverOpen;
+    catPopover.toggle();
   }
   
   // Handle click of Location button
