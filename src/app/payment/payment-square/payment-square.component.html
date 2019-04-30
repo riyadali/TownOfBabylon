@@ -138,8 +138,8 @@
       </button>
      <!-- Category button -->
      <button type="button" #refCatButton class="my-btn btn btn-indigo btn-md" 
-             [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" triggers="focus"
-             placement="bottom left" (click)="categoryButtonClickHandler(refCatButton)">
+             [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" triggers="manual"
+             placement="bottom left" (click)="categoryButtonClickHandler(refCatButton, catPopover)">
       <span class="text-white">
          <!-- if category button clicked and categories not loaded
         show fa-spinner otherwise show the selected category -->
