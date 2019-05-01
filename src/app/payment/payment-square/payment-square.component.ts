@@ -50,19 +50,23 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     // refer to this reference https://stackoverflow.com/questions/28210108/how-to-stop-propagating-event-from-parent-div-to-child-div
     // event.stopPropagation();
     
+    console.log("....in document's click handler"+ ++this.msgid)
     if (this.categoryPopoverViewElement&&!this.catPopoverDOMElement) { // popover only attached when category button clicked
        let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
        if (catPopovers && catPopovers.length!=0) {
           this.catPopoverDOMElement=catPopovers[0] as HTMLElement;
           // now add a click handler to the targeted popover
           this.catPopoverDOMElement.addEventListener("click", event => {
-            console.log(".____________..executing cat popovers event listener");
+            console.log(".____________..executing cat popovers event listener"+this.msgid);
+            event.stopPropagation();
           });
        }
-      if (this.categoryPopoverViewElement&&this.categoryPopoverViewElement.isOpen) {
-         console.log(">>>>hide criteria met" + this.msgid);
-        this.categoryPopoverViewElement.hide();
-      }
+    }
+
+    if (this.categoryPopoverViewElement) {
+      console.log(">>>>>>>categoryPopoverViewElement"+this.msgid+this.categoryPopoverViewElement)
+      // this.categoryPopoverViewElement.hide();
+      console.log(">>>>hide criteria met"+this.msgid)
     }
   }
   
