@@ -27,6 +27,8 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
   styleUrls: ['./payment-square.component.scss']
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
+  
+  private msgid=0; // used to keep messgaes unique so they are not grouped
 
   constructor(private squarePaymentService: SquarePaymentService, private modalService: BsModalService,
                @Inject('Window') private window: Window, @Inject(DOCUMENT) private document: any
@@ -36,6 +38,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   // https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-2-hostlistener-1b66d45b3e3d
   @HostListener('document:click', ['$event'])
   documentClick(event: MouseEvent) {
+    console.log("....in document's click handler"+ ++this.msgid);
     // your click logic
     // for Element attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/Element
     // for HTMLElement attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
@@ -57,6 +60,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
           });
        }
       if (this.categoryPopoverViewElement&&this.categoryPopoverViewElement.isOpen) {
+         console.log(">>>>hide criteria met");
         this.categoryPopoverViewElement.hide();
       }
     }
