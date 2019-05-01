@@ -49,7 +49,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     
     if (this.categoryPopoverViewElement&&!this.catPopoverDOMElement) { // popover only attached when category button clicked
        let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
-       if (catPopovers && catPopovers.length==0) {
+       if (catPopovers && catPopovers.length!=0) {
           this.catPopoverDOMElement=catPopovers[0] as HTMLElement;
           // now add a click handler to the targeted popover
           this.catPopoverDOMElement.addEventListener("click", event => {
