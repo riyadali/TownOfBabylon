@@ -60,7 +60,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
           });
        }
       if (this.categoryPopoverViewElement&&this.categoryPopoverViewElement.isOpen) {
-         console.log(">>>>hide criteria met");
+         console.log(">>>>hide criteria met" + this.msgid);
         this.categoryPopoverViewElement.hide();
       }
     }
