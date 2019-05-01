@@ -448,7 +448,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     //console.log("On entry popover showing is "+this.+catPopover.isOpen)
     // if category popover is closed on entry then pull the category records for display
     let self=this;
-    if (!+catPopover.isOpen) {
+    if (!catPopover.isOpen) {
        // get a list of Categories from Square
        this.squarePaymentService.listCatalog("CATEGORY")
           .subscribe({
