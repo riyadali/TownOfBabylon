@@ -42,10 +42,39 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     //console.log("....clicked"+JSON.stringify((event.target as HTMLElement).style))
     //console.log("....clicked"+JSON.stringify((event.target as HTMLElement)))
     //console.log("....clicked"+(event.target as HTMLElement).outerHTML)
-    // need to figure a way to stop click from reaching category button
+   
     // stop propagation only works from child going to parent ... not the other way around
     // refer to this reference https://stackoverflow.com/questions/28210108/how-to-stop-propagating-event-from-parent-div-to-child-div
-    event.stopPropagation();
+    // event.stopPropagation();
+    
+    if (this.categoryPopoverViewElement&&!this.catPopoverDOMElement) { // popover only attached when category button clicked
+       let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
+       if (catPopovers && catPopovers.length==0) {
+          this.catPopoverDOMElement=catPopovers[0] as HTMLElement;
+          // now add a click handler to the targeted popover
+          this.catPopoverDOMElement.addEventListener("click", event => {
+            console.log(".____________..executing cat popovers event listener");
+          });
+       }
+  }
+  
+  private getPopoversContainingElementWithClass(targetClass) {
+    let body = document.getElementsByTagName("BODY")[0]; // get Body elementId
+    
+    // find all popovers ... note the popover content is wrapped by a div with class name "popover-body"
+    // Note -- Array.from needed refer to https://stackoverflow.com/questions/47492595/why-foreach-does-not-exist-on-nodelistof
+    let popovers = Array.from(body.getElementsByClassName("popover-body"));
+    return popovers.filter(popover=>this.elementContainsElementWithClass(popover,targetClass));   
+  }
+
+  // check if element has element below it in the DOM hierarchy with the target class
+  private elementContainsElementWithClass(element, targetClass) {
+    // Note -- Array.from needed refer to https://stackoverflow.com/questions/47492595/why-foreach-does-not-exist-on-nodelistof
+    let tgtElems =  Array.from(element.getElementsByClassName(targetClass));
+    if (tgtElems && tgtElems.length!=0) {
+      return true;
+    } else
+      return false;
   }
   
   // temp code to experiment with popover
@@ -155,6 +184,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private selectedCategory="All Categories"; // initially all categories selected
   //private catButtonClicked: boolean;
   private catFilter;
+  private categoryPopoverViewElement;
+  private catPopoverDOMElement;
   
   private availableLocations;
   private filteredLocations; // locations filtered by user input
@@ -449,6 +480,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     // if category popover is closed on entry then pull the category records for display
     let self=this;
     if (!catPopover.isOpen) {
+       this.categoryPopoverViewElement=catPopover;
        // get a list of Categories from Square
        this.squarePaymentService.listCatalog("CATEGORY")
           .subscribe({
