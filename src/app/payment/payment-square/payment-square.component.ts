@@ -56,6 +56,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             console.log(".____________..executing cat popovers event listener");
           });
        }
+    }
   }
   
   private getPopoversContainingElementWithClass(targetClass) {
