@@ -541,6 +541,9 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
               console.log('Some error '+err.message); 
             }
           }); // end subscribe for listCatalog
+    } else {
+      // popover was open to begin with. So toggle will close it .. clear the corresponding DOM element
+      this.catPopoverDOMElement=null;
     }
     catPopover.toggle();
   }
