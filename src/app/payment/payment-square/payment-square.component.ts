@@ -66,7 +66,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             console.log(".____________..executing cat popovers event listener"+this.msgid);
             event.stopPropagation();
           });
-          console.log("...attaching category button click handler completed")
+          console.log("...attaching category popover click handler completed")
        }
     }
     
@@ -217,6 +217,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private catFilter;
   private categoryPopoverViewElement;
   private catPopoverDOMElement;
+  private catPopoverDOMElementDescendants;
   
   private availableLocations;
   private filteredLocations; // locations filtered by user input
