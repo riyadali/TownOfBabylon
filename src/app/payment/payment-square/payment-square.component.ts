@@ -664,6 +664,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.filteredCategories=this.buildfilteredCategories(); // keep filtered categories in synch 
     
     this.switchCategory(this.selectedCategory); // refresh shopping item list
+    this.categoryPopoverViewElement.hide();
+    this.catPopoverDOMElement=null;
   }
   
   // handle selection change on location radio button
