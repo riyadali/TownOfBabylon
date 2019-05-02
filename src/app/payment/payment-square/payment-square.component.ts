@@ -38,7 +38,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   // https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-2-hostlistener-1b66d45b3e3d
   @HostListener('document:click', ['$event'])
   documentClick(event: MouseEvent) {
-    console.log("....in document's click handler"+ ++this.msgid);
+    // console.log("....in document's click handler"+ ++this.msgid);
     // your click logic
     // for Element attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/Element
     // for HTMLElement attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
@@ -518,7 +518,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // Handle click of Category button
   categoryButtonClickHandler(catButton, catPopover) {
-    console.log("...start of category button click handler")
+    //console.log("...start of category button click handler")
     //console.log(":::::"+(catButton as HTMLElement).outerHTML);
     //this.catButtonClicked=true; // indicate that category button clicked at least once
     //console.log("On entry popover showing is "+this.+catPopover.isOpen)
