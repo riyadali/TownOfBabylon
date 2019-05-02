@@ -50,24 +50,34 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     // refer to this reference https://stackoverflow.com/questions/28210108/how-to-stop-propagating-event-from-parent-div-to-child-div
     // event.stopPropagation();
     
-    console.log("....in document's click handler"+ ++this.msgid)
-    if (this.categoryPopoverViewElement&&!this.catPopoverDOMElement) { // popover only attached when category button clicked
+    // On first call in attach click handler to the category popover
+    // This click handler will stop propagation of clicks to the 
+    // document click handler.
+    // The document click handle automatically closes the category popover on clicks and you don't
+    // want this to happen by default if the click is within the popover.  Let the popover's handlers determine
+    // what needs to be done.
+    if (!this.catPopoverDOMElement) { // popover only attached when category button clicked
        let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
        if (catPopovers && catPopovers.length!=0) {
-          this.catPopoverDOMElement=catPopovers[0] as HTMLElement;
+          this.catPopoverDOMElement=catPopovers[0] as HTMLElement;          
           // now add a click handler to the targeted popover
           this.catPopoverDOMElement.addEventListener("click", event => {
             console.log(".____________..executing cat popovers event listener"+this.msgid);
             event.stopPropagation();
           });
+          console.log("...attaching category button click handler completed")
        }
     }
-
-    if (this.categoryPopoverViewElement) {
+    
+    // ensure DOM element built and click handler attached (See code below).  Otherwise, we will immediately
+    // try to close popover on the first click inside of it   
+    if (this.categoryPopoverViewElement&&this.catPopoverDOMElement) { 
       console.log(">>>>>>>categoryPopoverViewElement"+this.msgid+this.categoryPopoverViewElement)
       // this.categoryPopoverViewElement.hide();
       console.log(">>>>hide criteria met"+this.msgid)
+      console.log("tgt"+this.msgid+(event.target as HTMLElement).innerHTML)
     }
+    
   }
   
   private getPopoversContainingElementWithClass(targetClass) {
@@ -486,6 +496,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
   // Handle click of Category button
   categoryButtonClickHandler(catButton, catPopover) {
+    console.log("...start of category button click handler")
     //console.log(":::::"+(catButton as HTMLElement).outerHTML);
     //this.catButtonClicked=true; // indicate that category button clicked at least once
     //console.log("On entry popover showing is "+this.+catPopover.isOpen)
