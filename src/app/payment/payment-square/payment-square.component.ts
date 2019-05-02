@@ -56,6 +56,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     // The document click handle automatically closes the category popover on clicks and you don't
     // want this to happen by default if the click is within the popover.  Let the popover's handlers determine
     // what needs to be done.
+    
+    /* -- didn't real a click handler for popover after all ... but below is an example of how this could be done
     if (!this.catPopoverDOMElement) { // popover only attached when category button clicked
        let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
        if (catPopovers && catPopovers.length!=0) {
@@ -67,6 +69,16 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             event.stopPropagation();
           });
           console.log("...attaching category popover click handler completed")
+       }
+    }
+    */
+    
+    // save the DOM element for the category popover; also save a list of its descendents
+    if (!this.catPopoverDOMElement) { // popover only attached when category button clicked
+       let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
+       if (catPopovers && catPopovers.length!=0) {
+          this.catPopoverDOMElement=catPopovers[0] as HTMLElement; 
+          this.catPopoverDOMElementDescendants = this.getDescendants(this.catPopoverDOMElement); 
        }
     }
     
