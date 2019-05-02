@@ -59,7 +59,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     if (!this.catPopoverDOMElement) { // popover only attached when category button clicked
        let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
        if (catPopovers && catPopovers.length!=0) {
-          this.catPopoverDOMElement=catPopovers[0] as HTMLElement;          
+          this.catPopoverDOMElement=catPopovers[0] as HTMLElement; 
+          this.catPopoverDOMElementDescendants = this.getDescendants(this.catPopoverDOMElement);         
           // now add a click handler to the targeted popover
           this.catPopoverDOMElement.addEventListener("click", event => {
             console.log(".____________..executing cat popovers event listener"+this.msgid);
@@ -71,13 +72,21 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     
     // ensure DOM element built and click handler attached (See code below).  Otherwise, we will immediately
     // try to close popover on the first click inside of it   
-    if (this.categoryPopoverViewElement&&this.catPopoverDOMElement) { 
-      console.log(">>>>>>>categoryPopoverViewElement"+this.msgid+this.categoryPopoverViewElement)
-      // this.categoryPopoverViewElement.hide();
-      console.log(">>>>hide criteria met"+this.msgid)
-      console.log("tgt"+this.msgid+(event.target as HTMLElement).innerHTML)
+    let clickedElem =  event.target as HTMLElement;  
+    if (this.categoryPopoverViewElement&&this.catPopoverDOMElement // popover attached
+        &&clickedElem!=this.catPopoverDOMElement    // and click not within popover ...
+        &&Array.prototype.indexOf.call(this.catPopoverDOMElementDescendants, clickedElem)<0) {  // ... or its descendants
+      //console.log(">>>>>>>categoryPopoverViewElement"+this.msgid+this.categoryPopoverViewElement)
+      this.categoryPopoverViewElement.hide();
+      this.catPopoverDOMElement=null;
+      // console.log(">>>>hide criteria met"+this.msgid)
+      // console.log("tgt"+this.msgid+(event.target as HTMLElement).innerHTML)
     }
     
+  }
+  
+  private getDescendants(elem) {
+   return elem.querySelectorAll("*"); // returns a NodeList (not an array)
   }
   
   private getPopoversContainingElementWithClass(targetClass) {
