@@ -142,11 +142,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
       return false;
   }
   
+  /*
   // temp code to experiment with popover
   private closePopover(pop) {
     console.log(".....hiding popover")
     pop.hide()
   }
+  */
   
   private modalRef: BsModalRef;
   
