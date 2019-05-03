@@ -91,7 +91,8 @@
 <ng-template #locTemplate>
   <div [innerHtml]="html"></div>
   
-  <div class="col-sm-12 mypopover2">
+  <!-- the class locpopover is not used for styling but just used to locate the DOM element when the popover is attached -->
+  <div class="col-sm-12 mypopover2 locpopover">
     <div class="l-items-filter-filter-content">
       <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" 
              [(ngModel)]="locationFilter" type="text" (input)="onLocationFilterChange($event.target.value)">
