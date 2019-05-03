@@ -55,7 +55,8 @@
 <ng-template #catTemplate>
   <div [innerHtml]="html"></div>
   
-  <div class="col-sm-12 mypopover2">
+  <!-- the class catpopover is not used for styling but just used to locate the DOM element when the popover is attached -->
+  <div class="col-sm-12 mypopover2 catpopover">
     <div class="l-items-filter-filter-content">
       <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" 
              [(ngModel)]="catFilter" type="text" (input)="onCatFilterChange($event.target.value)">
@@ -90,7 +91,8 @@
 <ng-template #locTemplate>
   <div [innerHtml]="html"></div>
   
-  <div class="col-sm-12 mypopover2">
+  <!-- the class locpopover is not used for styling but just used to locate the DOM element when the popover is attached -->
+  <div class="col-sm-12 mypopover2 locpopover">
     <div class="l-items-filter-filter-content">
       <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" 
              [(ngModel)]="locationFilter" type="text" (input)="onLocationFilterChange($event.target.value)">
@@ -133,9 +135,15 @@
   <h2>Shop till you drop</h2>
   
   <div class="d-flex flex-row pb-3">
+      <!-- experminetal button to close popover
+      <button type="button" class="my-btn btn btn-indigo btn-md" (click)="closePopover(catPopover)">
+        Close popover
+      </button>
+      -->
      <!-- Category button -->
-     <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="catTemplate" placement="bottom left"
-        (click)="categoryButtonClickHandler()">
+     <button type="button" #refCatButton class="my-btn btn btn-indigo btn-md" 
+             [mdbPopover]="catTemplate" #catPopover="bs-mdbPopover" triggers="manual"
+             placement="bottom left" (click)="categoryButtonClickHandler(refCatButton, catPopover); $event.stopPropagation();">
       <span class="text-white">
          <!-- if category button clicked and categories not loaded
         show fa-spinner otherwise show the selected category -->
@@ -150,8 +158,9 @@
     </button>
     
     <!-- Location button -->
-    <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="locTemplate" placement="bottom left"
-        (click)="locationButtonClickHandler()">
+    <button type="button" #refLocButton class="my-btn btn btn-indigo btn-md" 
+            [mdbPopover]="locTemplate" #locPopover="bs-mdbPopover" triggers="manual"
+            placement="bottom left" (click)="locationButtonClickHandler(refLocButton, locPopover); $event.stopPropagation();">
       <span class="text-white">
          <!-- if location button clicked and locations not loaded
         show fa-spinner otherwise show the selected location -->

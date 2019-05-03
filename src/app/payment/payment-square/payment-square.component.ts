@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, OnInit, Inject, TemplateRef, ViewChild } from '@angular/core';
+// a good discussion on Hostlistener can be found here 
+// https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-2-hostlistener-1b66d45b3e3d
+import { AfterViewInit, Component, OnInit, Inject, TemplateRef, ViewChild, HostListener } from '@angular/core';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
@@ -25,10 +27,128 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
   styleUrls: ['./payment-square.component.scss']
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
+  
+  private msgid=0; // used to keep messages unique so they are not grouped
 
   constructor(private squarePaymentService: SquarePaymentService, private modalService: BsModalService,
                @Inject('Window') private window: Window, @Inject(DOCUMENT) private document: any
     ) { }
+  
+  // a good discussion on Hostlistener can be found here 
+  // https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-2-hostlistener-1b66d45b3e3d
+  @HostListener('document:click', ['$event'])
+  documentClick(event: MouseEvent) {
+    // console.log("....in document's click handler"+ ++this.msgid);
+    // your click logic
+    // for Element attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/Element
+    // for HTMLElement attributes refer to https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
+    //console.log("....clicked"+JSON.stringify((event.target as HTMLElement).style))
+    //console.log("....clicked"+JSON.stringify((event.target as HTMLElement)))
+    //console.log("....clicked"+(event.target as HTMLElement).outerHTML)
+   
+    // stop propagation only works from child going to parent ... not the other way around
+    // refer to this reference https://stackoverflow.com/questions/28210108/how-to-stop-propagating-event-from-parent-div-to-child-div
+    // event.stopPropagation();
+    
+    // On first call in attach click handler to the category popover
+    // This click handler will stop propagation of clicks to the 
+    // document click handler.
+    // The document click handle automatically closes the category popover on clicks and you don't
+    // want this to happen by default if the click is within the popover.  Let the popover's handlers determine
+    // what needs to be done.
+    
+    /* -- didn't really need a click handler for popover after all ... but below is an example of how this could be done
+    if (!this.catPopoverDOMElement) { // popover only attached when category button clicked
+       let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
+       if (catPopovers && catPopovers.length!=0) {
+          this.catPopoverDOMElement=catPopovers[0] as HTMLElement; 
+          this.catPopoverDOMElementDescendants = this.getDescendants(this.catPopoverDOMElement);         
+          // now add a click handler to the targeted popover
+          this.catPopoverDOMElement.addEventListener("click", event => {
+            console.log(".____________..executing cat popovers event listener"+this.msgid);
+            event.stopPropagation();
+          });
+          console.log("...attaching category popover click handler completed")
+       }
+    }
+    */
+    
+    // save the DOM element for the category popover; also save a list of its descendents
+    if (!this.catPopoverDOMElement) { // popover only attached when category button clicked
+       let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
+       if (catPopovers && catPopovers.length!=0) {
+          this.catPopoverDOMElement=catPopovers[0] as HTMLElement; 
+          this.catPopoverDOMElementDescendants = this.getDescendants(this.catPopoverDOMElement); 
+       }
+    }
+    
+    // save the DOM element for the location popover; also save a list of its descendents
+    if (!this.locationPopoverDOMElement) { // popover only attached when location button clicked
+       let locationPopovers=this.getPopoversContainingElementWithClass("locpopover"); // hopefully only one found
+       if (locationPopovers && locationPopovers.length!=0) {
+          this.locationPopoverDOMElement=locationPopovers[0] as HTMLElement; 
+          this.locationPopoverDOMElementDescendants = this.getDescendants(this.locationPopoverDOMElement); 
+       }
+    }
+    
+    // ensure DOM element built (See code below).  Otherwise, we will immediately
+    // try to close popover on the first click inside of it   
+    let clickedElem =  event.target as HTMLElement;
+    
+    // hide category popover on click outside 
+    if (this.categoryPopoverViewElement&&this.catPopoverDOMElement // popover attached
+        &&clickedElem!=this.catPopoverDOMElement    // and click not within popover ...
+        &&Array.prototype.indexOf.call(this.catPopoverDOMElementDescendants, clickedElem)<0) {  // ... or its descendants
+      //console.log(">>>>>>>categoryPopoverViewElement"+this.msgid+this.categoryPopoverViewElement)
+      this.categoryPopoverViewElement.hide();
+      this.catPopoverDOMElement=null;
+      // console.log(">>>>hide criteria met"+this.msgid)
+      // console.log("tgt"+this.msgid+(event.target as HTMLElement).innerHTML)
+    }
+    
+    // hide location popover on click outside  
+    if (this.locationPopoverViewElement&&this.locationPopoverDOMElement // popover attached
+        &&clickedElem!=this.locationPopoverDOMElement    // and click not within popover ...
+        &&Array.prototype.indexOf.call(this.locationPopoverDOMElementDescendants, clickedElem)<0) {  // ... or its descendants
+      //console.log(">>>>>>>locationPopoverViewElement"+this.msgid+this.locationPopoverViewElement)
+      this.locationPopoverViewElement.hide();
+      this.locationPopoverDOMElement=null;
+      // console.log(">>>>hide criteria met"+this.msgid)
+      // console.log("tgt"+this.msgid+(event.target as HTMLElement).innerHTML)
+    }
+    
+  }
+  
+  private getDescendants(elem) {
+   return elem.querySelectorAll("*"); // returns a NodeList (not an array)
+  }
+  
+  private getPopoversContainingElementWithClass(targetClass) {
+    let body = document.getElementsByTagName("BODY")[0]; // get Body elementId
+    
+    // find all popovers ... note the popover content is wrapped by a div with class name "popover-body"
+    // Note -- Array.from needed refer to https://stackoverflow.com/questions/47492595/why-foreach-does-not-exist-on-nodelistof
+    let popovers = Array.from(body.getElementsByClassName("popover-body"));
+    return popovers.filter(popover=>this.elementContainsElementWithClass(popover,targetClass));   
+  }
+
+  // check if element has element below it in the DOM hierarchy with the target class
+  private elementContainsElementWithClass(element, targetClass) {
+    // Note -- Array.from needed refer to https://stackoverflow.com/questions/47492595/why-foreach-does-not-exist-on-nodelistof
+    let tgtElems =  Array.from(element.getElementsByClassName(targetClass));
+    if (tgtElems && tgtElems.length!=0) {
+      return true;
+    } else
+      return false;
+  }
+  
+  /*
+  // temp code to experiment with popover
+  private closePopover(pop) {
+    console.log(".....hiding popover")
+    pop.hide()
+  }
+  */
   
   private modalRef: BsModalRef;
   
@@ -129,16 +249,20 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private availableCategories;
   private filteredCategories; // categories filtered by user input
   private selectedCategory="All Categories"; // initially all categories selected
-  private catPopoverOpen: boolean;
-  private catButtonClicked: boolean;
+  //private catButtonClicked: boolean;
   private catFilter;
+  private categoryPopoverViewElement;
+  private catPopoverDOMElement;
+  private catPopoverDOMElementDescendants;
   
   private availableLocations;
   private filteredLocations; // locations filtered by user input
   private locationButtonText="All Locations"; // initially all locations selected
-  private locationPopoverOpen: boolean;
-  private locationButtonClicked: boolean;
+  //private locationButtonClicked: boolean;
   private locationFilter;
+  private locationPopoverViewElement;
+  private locationPopoverDOMElement;
+  private locationPopoverDOMElementDescendants;
   
   // initialize shopping item list -- concept gotten from this link https://stackoverflow.com/questions/52949215/how-to-subscribe-on-variable-changes and this one     https://stackoverflow.com/questions/48452073/angular-waiting-for-a-method-to-finish-or-a-variable-to-be-initialized
   private _availableShoppingItems;
@@ -419,12 +543,21 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // Handle click of Category button
-  categoryButtonClickHandler() {
-    this.catButtonClicked=true; // indicate that category button clicked at least once
-    //console.log("On entry popover showing is "+this.catPopoverOpen)
+  private categoryButtonClickHandler(catButton, catPopover) {
+    // ensure location popover closed
+    if (this.locationPopoverViewElement) {
+      this.locationPopoverDOMElement=null;
+      this.locationPopoverViewElement.hide();
+    }
+    
+    //console.log("...start of category button click handler")
+    //console.log(":::::"+(catButton as HTMLElement).outerHTML);
+    //this.catButtonClicked=true; // indicate that category button clicked at least once
+    //console.log("On entry popover showing is "+catPopover.isOpen)
     // if category popover is closed on entry then pull the category records for display
     let self=this;
-    if (!this.catPopoverOpen) {
+    if (!catPopover.isOpen) {
+       this.categoryPopoverViewElement=catPopover;
        // get a list of Categories from Square
        this.squarePaymentService.listCatalog("CATEGORY")
           .subscribe({
@@ -452,16 +585,25 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
               console.log('Some error '+err.message); 
             }
           }); // end subscribe for listCatalog
+    } else {
+      // popover was open to begin with. So toggle will close it .. clear the corresponding DOM element
+      this.catPopoverDOMElement=null;
     }
-    this.catPopoverOpen=!this.catPopoverOpen;
+    catPopover.toggle();
   }
   
-  // Handle click of Location button
-  locationButtonClickHandler() {
-    this.locationButtonClicked=true; // indicate that location button clicked at least once
+  private locationButtonClickHandler(locationButton, locationPopover) {
+    // ensure category popover closed
+    if (this.categoryPopoverViewElement) {
+      this.catPopoverDOMElement=null;
+      this.categoryPopoverViewElement.hide();
+    }
+    
+    //this.locationButtonClicked=true; // indicate that location button clicked at least once
     //console.log("On entry popover showing is "+this.locationPopoverOpen)
     // if location popover is closed on entry then pull the location records for display
     let self=this;
+    this.locationPopoverViewElement=locationPopover;
     if (!this.locationPopoverOpen && !this.availableLocations) {
        // get a list of Locations from Square
        this.squarePaymentService.listLocations()
@@ -498,7 +640,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             }
           }); // end subscribe for listLocations
     }
-    this.locationPopoverOpen=!this.locationPopoverOpen;
+    
+    if (locationPopover.isOpen) {
+      // popover was open to begin with. So toggle will close it .. clear the corresponding DOM element
+      this.locationPopoverDOMElement=null;
+    }
+    
+    locationPopover.toggle();
   }
   
   // Handle clear of category filter
@@ -560,6 +708,8 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     this.filteredCategories=this.buildfilteredCategories(); // keep filtered categories in synch 
     
     this.switchCategory(this.selectedCategory); // refresh shopping item list
+    this.categoryPopoverViewElement.hide();
+    this.catPopoverDOMElement=null;
   }
   
   // handle selection change on location radio button
