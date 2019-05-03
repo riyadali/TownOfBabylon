@@ -256,8 +256,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private availableLocations;
   private filteredLocations; // locations filtered by user input
   private locationButtonText="All Locations"; // initially all locations selected
-  private locationPopoverOpen: boolean;
-  private locationButtonClicked: boolean;
+  //private locationButtonClicked: boolean;
   private locationFilter;
   private locationPopoverViewElement;
   private locationPopoverDOMElement;
@@ -542,11 +541,17 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // Handle click of Category button
-  categoryButtonClickHandler(catButton, catPopover) {
+  private categoryButtonClickHandler(catButton, catPopover) {
+    // ensure location popover closed
+    if (this.locationPopoverViewElement) {
+      this.locationPopoverDOMElement=null;
+      this.locationPopoverViewElement.hide();
+    }
+    
     //console.log("...start of category button click handler")
     //console.log(":::::"+(catButton as HTMLElement).outerHTML);
     //this.catButtonClicked=true; // indicate that category button clicked at least once
-    //console.log("On entry popover showing is "+this.+catPopover.isOpen)
+    //console.log("On entry popover showing is "+catPopover.isOpen)
     // if category popover is closed on entry then pull the category records for display
     let self=this;
     if (!catPopover.isOpen) {
@@ -585,12 +590,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     catPopover.toggle();
   }
   
-  // Handle click of Location button
-  locationButtonClickHandler() {
-    this.locationButtonClicked=true; // indicate that location button clicked at least once
+  private locationButtonClickHandler(locationButton, locationPopover) {
+    // ensure category popover closed
+    if (this.categoryPopoverViewElement) {
+      this.catPopoverDOMElement=null;
+      this.categoryPopoverViewElement.hide();
+    }
+    
+    //this.locationButtonClicked=true; // indicate that location button clicked at least once
     //console.log("On entry popover showing is "+this.locationPopoverOpen)
     // if location popover is closed on entry then pull the location records for display
     let self=this;
+    this.locationPopoverViewElement=locationPopover;
     if (!this.locationPopoverOpen && !this.availableLocations) {
        // get a list of Locations from Square
        this.squarePaymentService.listLocations()
@@ -627,11 +638,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             }
           }); // end subscribe for listLocations
     }
-    if (this.locationPopoverOpen) {
+    
+    if (locationPopover.isOpen) {
       // popover was open to begin with. So toggle will close it .. clear the corresponding DOM element
       this.locationPopoverDOMElement=null;
     }
-    this.locationPopoverOpen=!this.locationPopoverOpen;
+    
+    locationPopover.toggle();
   }
   
   // Handle clear of category filter
