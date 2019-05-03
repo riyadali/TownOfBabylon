@@ -55,6 +55,7 @@
 <ng-template #catTemplate>
   <div [innerHtml]="html"></div>
   
+  <!-- the class catpopover is not used for styling but just used to locate the DOM element when the popover is attached -->
   <div class="col-sm-12 mypopover2 catpopover">
     <div class="l-items-filter-filter-content">
       <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" 
@@ -90,7 +91,8 @@
 <ng-template #locTemplate>
   <div [innerHtml]="html"></div>
   
-  <div class="col-sm-12 mypopover2">
+  <!-- the class locpopover is not used for styling but just used to locate the DOM element when the popover is attached -->
+  <div class="col-sm-12 mypopover2 locpopover">
     <div class="l-items-filter-filter-content">
       <input class="popover-list__filter-input input input-icon--search__input input-icon--search__input-clear" 
              [(ngModel)]="locationFilter" type="text" (input)="onLocationFilterChange($event.target.value)">
@@ -154,8 +156,9 @@
     </button>
     
     <!-- Location button -->
-    <button type="button" class="my-btn btn btn-indigo btn-md" [mdbPopover]="locTemplate" #locPopover="bs-mdbPopover" 
-            placement="bottom left" (click)="locationButtonClickHandler()">
+    <button type="button" #refLocButton class="my-btn btn btn-indigo btn-md" 
+            [mdbPopover]="locTemplate" #locPopover="bs-mdbPopover" triggers="manual"
+            placement="bottom left" (click)="locationButtonClickHandler(refLocButton, locPopover); $event.stopPropagation();">
       <span class="text-white">
          <!-- if location button clicked and locations not loaded
         show fa-spinner otherwise show the selected location -->

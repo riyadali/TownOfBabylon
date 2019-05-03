@@ -82,15 +82,37 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
        }
     }
     
+    // save the DOM element for the location popover; also save a list of its descendents
+    if (!this.locationPopoverDOMElement) { // popover only attached when location button clicked
+       let locationPopovers=this.getPopoversContainingElementWithClass("locpopover"); // hopefully only one found
+       if (locationPopovers && locationPopovers.length!=0) {
+          this.locationPopoverDOMElement=locationPopovers[0] as HTMLElement; 
+          this.locationPopoverDOMElementDescendants = this.getDescendants(this.locationPopoverDOMElement); 
+       }
+    }
+    
     // ensure DOM element built and click handler attached (See code below).  Otherwise, we will immediately
     // try to close popover on the first click inside of it   
-    let clickedElem =  event.target as HTMLElement;  
+    let clickedElem =  event.target as HTMLElement;
+    
+    // hide category popover on click outside 
     if (this.categoryPopoverViewElement&&this.catPopoverDOMElement // popover attached
         &&clickedElem!=this.catPopoverDOMElement    // and click not within popover ...
         &&Array.prototype.indexOf.call(this.catPopoverDOMElementDescendants, clickedElem)<0) {  // ... or its descendants
       //console.log(">>>>>>>categoryPopoverViewElement"+this.msgid+this.categoryPopoverViewElement)
       this.categoryPopoverViewElement.hide();
       this.catPopoverDOMElement=null;
+      // console.log(">>>>hide criteria met"+this.msgid)
+      // console.log("tgt"+this.msgid+(event.target as HTMLElement).innerHTML)
+    }
+    
+    // hide location popover on click outside  
+    if (this.locationPopoverViewElement&&this.locationPopoverDOMElement // popover attached
+        &&clickedElem!=this.locationPopoverDOMElement    // and click not within popover ...
+        &&Array.prototype.indexOf.call(this.locationPopoverDOMElementDescendants, clickedElem)<0) {  // ... or its descendants
+      //console.log(">>>>>>>locationPopoverViewElement"+this.msgid+this.locationPopoverViewElement)
+      this.locationPopoverViewElement.hide();
+      this.locationPopoverDOMElement=null;
       // console.log(">>>>hide criteria met"+this.msgid)
       // console.log("tgt"+this.msgid+(event.target as HTMLElement).innerHTML)
     }
@@ -234,9 +256,11 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   private availableLocations;
   private filteredLocations; // locations filtered by user input
   private locationButtonText="All Locations"; // initially all locations selected
-  private locationPopoverOpen: boolean;
-  private locationButtonClicked: boolean;
+  //private locationButtonClicked: boolean;
   private locationFilter;
+  private locationPopoverViewElement;
+  private locationPopoverDOMElement;
+  private locationPopoverDOMElementDescendants;
   
   // initialize shopping item list -- concept gotten from this link https://stackoverflow.com/questions/52949215/how-to-subscribe-on-variable-changes and this one     https://stackoverflow.com/questions/48452073/angular-waiting-for-a-method-to-finish-or-a-variable-to-be-initialized
   private _availableShoppingItems;
@@ -517,11 +541,17 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
   }
   
   // Handle click of Category button
-  categoryButtonClickHandler(catButton, catPopover) {
+  private categoryButtonClickHandler(catButton, catPopover) {
+    // ensure location popover closed
+    if (this.locationPopoverViewElement) {
+      this.locationPopoverDOMElement=null;
+      this.locationPopoverViewElement.hide();
+    }
+    
     //console.log("...start of category button click handler")
     //console.log(":::::"+(catButton as HTMLElement).outerHTML);
     //this.catButtonClicked=true; // indicate that category button clicked at least once
-    //console.log("On entry popover showing is "+this.+catPopover.isOpen)
+    //console.log("On entry popover showing is "+catPopover.isOpen)
     // if category popover is closed on entry then pull the category records for display
     let self=this;
     if (!catPopover.isOpen) {
@@ -560,12 +590,18 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     catPopover.toggle();
   }
   
-  // Handle click of Location button
-  locationButtonClickHandler() {
-    this.locationButtonClicked=true; // indicate that location button clicked at least once
+  private locationButtonClickHandler(locationButton, locationPopover) {
+    // ensure category popover closed
+    if (this.categoryPopoverViewElement) {
+      this.catPopoverDOMElement=null;
+      this.categoryPopoverViewElement.hide();
+    }
+    
+    //this.locationButtonClicked=true; // indicate that location button clicked at least once
     //console.log("On entry popover showing is "+this.locationPopoverOpen)
     // if location popover is closed on entry then pull the location records for display
     let self=this;
+    this.locationPopoverViewElement=locationPopover;
     if (!this.locationPopoverOpen && !this.availableLocations) {
        // get a list of Locations from Square
        this.squarePaymentService.listLocations()
@@ -602,7 +638,13 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
             }
           }); // end subscribe for listLocations
     }
-    this.locationPopoverOpen=!this.locationPopoverOpen;
+    
+    if (locationPopover.isOpen) {
+      // popover was open to begin with. So toggle will close it .. clear the corresponding DOM element
+      this.locationPopoverDOMElement=null;
+    }
+    
+    locationPopover.toggle();
   }
   
   // Handle clear of category filter
