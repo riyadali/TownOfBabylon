@@ -28,7 +28,7 @@ declare var SqPaymentForm : any; //magic to allow us to access the SquarePayment
 })
 export class PaymentSquareComponent implements OnInit, AfterViewInit {
   
-  private msgid=0; // used to keep messgaes unique so they are not grouped
+  private msgid=0; // used to keep messages unique so they are not grouped
 
   constructor(private squarePaymentService: SquarePaymentService, private modalService: BsModalService,
                @Inject('Window') private window: Window, @Inject(DOCUMENT) private document: any
@@ -57,7 +57,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
     // want this to happen by default if the click is within the popover.  Let the popover's handlers determine
     // what needs to be done.
     
-    /* -- didn't real a click handler for popover after all ... but below is an example of how this could be done
+    /* -- didn't really need a click handler for popover after all ... but below is an example of how this could be done
     if (!this.catPopoverDOMElement) { // popover only attached when category button clicked
        let catPopovers=this.getPopoversContainingElementWithClass("catpopover"); // hopefully only one found
        if (catPopovers && catPopovers.length!=0) {
@@ -91,7 +91,7 @@ export class PaymentSquareComponent implements OnInit, AfterViewInit {
        }
     }
     
-    // ensure DOM element built and click handler attached (See code below).  Otherwise, we will immediately
+    // ensure DOM element built (See code below).  Otherwise, we will immediately
     // try to close popover on the first click inside of it   
     let clickedElem =  event.target as HTMLElement;
     
