@@ -21,7 +21,7 @@
     "rxjs": "^6.3.3",
     "zone.js": "^0.8.26",    
     "web-animations-js": "2.3.1",
-    "angular-in-memory-web-api": "^0.6.1",
+    "angular-in-memory-web-api": "^0.15.0",
     "rxjs-compat": "6.3.3",
     "angular-bootstrap-md": "^6.2.0",
     "ngx-bootstrap": "^3.0.1",
