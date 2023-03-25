@@ -19,7 +19,7 @@
     "popper.js": "^1.14.4",
     "core-js": "^2.5.7",
     "rxjs": "^6.3.3",
-    "zone.js": "^0.8.26",    
+    "zone.js": "^0.13.0",    
     "web-animations-js": "2.3.1",
     "angular-in-memory-web-api": "^0.15.0",
     "rxjs-compat": "6.3.3",
